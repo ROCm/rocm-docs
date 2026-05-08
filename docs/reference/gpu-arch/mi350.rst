@@ -1,20 +1,174 @@
 .. meta::
-   :description: AMD Instinct MI350 Series microarchitecture reference.
-   :keywords: Instinct, MI350X, MI355X, CDNA4, microarchitecture, AMD, ROCm
+   :description: Learn about the AMD Instinct MI350 Series microarchitecture based on AMD CDNA4.
+   :keywords: Instinct, MI350X, MI355X, CDNA4, microarchitecture, HBM3E, XCD, AMD, ROCm
 
 **************************************************
 AMD Instinct MI350 Series microarchitecture
 **************************************************
 
-This section covers the AMD Instinct MI350 Series GPU architecture based on AMD
-CDNA4. It includes the following topics:
+The AMD Instinct™ MI350 Series GPUs are based on the AMD CDNA4 architecture,
+and are designed for AI, HPC, and machine learning workloads. The series includes two
+products: the MI350X (1000W, air-cooled) and the MI355X (1400W, direct
+liquid-cooled).
 
-* `AMD CDNA 4 (Instinct MI350 Series) ISA reference <https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf>`_ --
-  Instruction set architecture reference for the AMD Instinct MI350 Series.
+Each GPU integrates eight vertically stacked accelerator complex dies (XCDs) and
+two I/O dies (IODs) tied together with AMD Infinity Fabric™ technology
+on-package, connecting to eight stacks of 12-Hi HBM3E memory.
 
-* `White paper <https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/white-papers/amd-cdna-4-architecture-whitepaper.pdf>`_ --
-  Architectural overview of the AMD CDNA 4 design.
+Chiplet architecture
+====================
 
-* :doc:`MI350 Series performance counters <mi350-performance-counters>` --
-  Hardware performance counters and derived metrics available for profiling
-  MI350 Series GPUs using ROCprofiler-SDK and ROCm Compute Profiler.
+The CDNA4 architecture uses a chiplet-based, heterogeneous design in which each
+chiplet uses a manufacturing process suited to its function.
+
+The accelerator complex dies (XCDs) house the computational portion of the
+processor and the lowest levels of the cache hierarchy. They are built on TSMC's
+N3P process to take advantage of improved logic density and performance. The I/O
+dies (IODs) contain the AMD Infinity Cache™, memory controllers, and
+interconnects. These functions do not benefit from the latest process technology
+and are implemented on TSMC's N6 process.
+
+The CDNA4 architecture consolidates the IOD functions into two larger dies
+rather than the four smaller IODs of the prior generation. The direct connection
+between the two IODs reduces latency and power consumption compared to the
+previous generation.
+
+Compute units
+=============
+
+Each XCD comprises 36 AMD CDNA4 compute units (CUs) organized as four arrays
+of nine CUs, of which 32 are active. The processor spans eight XCDs for up to 256 CUs
+total.
+
+.. figure:: ./images/cdna4_die_diagram.png
+   :name: mi350-die-diagram.
+   :align: center
+
+   Conceptual block diagram of an AMD CDNA4 XCD showing global resources, a
+   hardware scheduler, four ACE compute accelerators, 36 compute units each
+   with 32KB L1 cache, and a shared 4MB L2 cache.
+
+Each CU instantiates a full processor pipeline with highly threaded and parallel
+execution of scalar, vector, and matrix instructions, along with a memory
+pipeline with an L1 data cache and a Local Data Share (LDS). The 64 KB, 8-way
+set-associative instruction cache is shared between two adjacent CUs.
+
+The LDS in each CDNA4 CU is 160 KB with doubled read bandwidth compared to the
+prior generation, which improves the utilization of the vector and matrix execution
+resources for matrix multiply routines.
+
+Matrix cores and precision support
+-----------------------------------
+
+The CDNA4 Matrix Cores add hardware support for industry-standard
+micro-scaling (OCP MX) formats including MXFP8, MXFP6, and MXFP4, alongside
+existing formats such as FP16, BF16, FP8, and INT8. Execution resources for
+16-bit and smaller data types are twice as many as in the prior generation.
+
+Memory hierarchy
+================
+
+The L1 vector data cache in each CU is 32KB with 128B cache lines and 64-way
+associativity. Each XCD shares a 4MB, 16-way set-associative L2 cache with 16
+parallel channels.
+
+The AMD Infinity Cache™ is a shared 256MB memory-side cache in the IODs. The
+HBM3E memory interfaces operate at 8 Gbps, providing up to 8 TB/s of peak
+theoretical memory bandwidth and 288GB of total capacity (36GB per stack).
+
+.. figure:: ./images/mi350_conceptual_diagram.png
+   :name: mi350-block-diagram
+   :align: center
+
+   Conceptual block diagram of an AMD Instinct MI350 Series GPU showing 8 XCDs
+   connected via AMD Infinity Fabric to the AMD Infinity Cache and 8 stacks of
+   HBM3E across two IODs, with one PCIe Gen 5 host link and seven AMD Infinity
+   Fabric links for GPU-to-GPU communication.
+
+Performance
+===========
+
+The following table lists the peak theoretical performance of the MI350 Series
+GPUs for different data types.
+
+.. list-table:: Peak theoretical performance of the AMD Instinct MI350 Series GPUs.
+   :header-rows: 1
+   :name: mi350-perf-table
+
+   * - Computation and data type
+     - MI350X peak theoretical
+     - MI355X peak theoretical
+   * - Matrix FP64
+     - 72.1 TF
+     - 78.6 TF
+   * - Vector FP64
+     - 72.1 TF
+     - 78.6 TF
+   * - Matrix FP32
+     - 144.2 TF
+     - 157.3 TF
+   * - Vector FP32
+     - 144.2 TF
+     - 157.3 TF
+   * - Matrix FP16 | FP16 Sparsity
+     - 2.3 PF | 4.6 PF
+     - 2.5 PF | 5.0 PF
+   * - Vector FP16
+     - 144.2 TF
+     - 157.3 TF
+   * - Matrix BF16 | BF16 Sparsity
+     - 2.3 PF | 4.6 PF
+     - 2.5 PF | 5.0 PF
+   * - Matrix OCP-FP8 | OCP-FP8 Sparsity
+     - 4.6 PF | 9.2 PF
+     - 5.0 PF | 10 PF
+   * - Matrix MXFP8
+     - 4.6 PF
+     - 5.0 PF
+   * - Matrix MXFP6 / MXFP4
+     - 9.2 PF
+     - 10 PF
+   * - Matrix INT8 | INT8 Sparsity
+     - 4.6 POPs | 9.2 POPs
+     - 5.0 POPs | 10 POPs
+
+Node-level architecture
+========================
+
+The MI350 Series uses a fully connected 8-GPU node topology, identical to the
+prior generation. Each GPU connects to the host via one PCIe Gen 5 x16 link
+and communicates with other GPUs through 7 AMD Infinity Fabric links operating
+at 38.4 Gbps, providing over 1 TB/s of aggregate communication bandwidth per
+GPU.
+
+The MI350X uses the OAM form factor on a UBB8 baseboard compatible with prior
+generation AMD Instinct MI325X platform designs. The MI355X uses the same form
+factor but targets direct liquid-cooled infrastructure.
+
+.. figure:: ./images/mi350_platform.png
+   :name: mi350-platform
+   :align: center
+
+   AMD Instinct MI350 Series 8-socket GPU platform showing 8 MI350 Series OAMs
+   fully interconnected via AMD Infinity Fabric links, connected to dual AMD
+   EPYC processors via PCIe Gen 5, with optional PCIe switches and network and
+   storage connections.
+
+Compute and memory partitioning
+================================
+
+The MI350 Series supports spatial partitioning along XCD boundaries. The GPU
+can be divided into 1, 2, 4, or 8 compute partitions with full isolation
+between partitions. Memory can be configured in NPS1 mode, interleaving across
+all 8 HBM stacks, or NPS2 mode, which partitions the 288GB into two 144GB
+pools, one per IOD, to reduce cross-IOD Infinity Fabric traffic and improve
+latency and efficiency.
+
+.. figure:: ./images/mi350_partition.png
+   :name: mi350-partitioning
+   :align: center
+
+   AMD Instinct MI350 Series partitioning examples: single partition (SPX,
+   NPS1) with 8 XCDs and 288GB, two partitions (DPX, NPS2) with 4 XCDs and
+   144GB each, four partitions (QPX, NPS2) with 2 XCDs and 72GB each, and
+   eight partitions (CPX, NPS2) with 1 XCD and 36GB each.

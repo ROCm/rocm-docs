@@ -26,6 +26,7 @@ architectural behavior.
 
 * [AMD CDNA 4 (Instinct MI350 Series) ISA reference](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/instruction-set-architectures/amd-instinct-cdna4-instruction-set-architecture.pdf)
 * [White paper](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/white-papers/amd-cdna-4-architecture-whitepaper.pdf)
+* [AMD Instinct MI350 microarchitecture](./mi350.rst)
 * [Performance counters](./mi350-performance-counters.rst)
 :::
 
