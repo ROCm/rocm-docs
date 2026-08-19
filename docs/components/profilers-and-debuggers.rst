@@ -9,6 +9,10 @@ ROCm profiling and debugging tools
 ROCm profiling and debugging tools help you measure GPU application performance,
 identify bottlenecks, and diagnose execution faults.
 
+For an overview of the profiling tools, their relationships, and how to use
+them together, see :doc:`profiling-tools-overview`. For guidance on choosing the right tool for your performance investigation, see
+:doc:`profiling-tools-selection`.
+
 .. datatemplate:yaml:: /data/components-current.yaml
 
     {%- set defaults = load("/data/components-default.yaml").rocm_core_sdk.components -%}
