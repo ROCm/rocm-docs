@@ -149,6 +149,8 @@ Prerequisites
 
                   zypper install sudo wget rsync perl
 
+            See :doc:`/install/docker-containers` for Docker-related guidance.
+
 .. ================================================================== WINDOWS ==
 
 .. selected:: os=windows
