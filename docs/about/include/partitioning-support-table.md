@@ -24,10 +24,18 @@ available on AMD Instinct GPUs in bare metal deployments.
         <p>Bare metal</p>
       </td>
       <td rowspan="4" style="vertical-align: middle;">
-        <p>Instinct MI355X, MI350X</p>
+        <p>Instinct MI355X, Instinct MI350X</p>
       </td>
       <td>
-        <p>CPX</p>
+        <p>SPX</p>
+      </td>
+      <td>
+        <p>NPS1</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>DPX</p>
       </td>
       <td>
         <p>NPS2</p>
@@ -35,7 +43,7 @@ available on AMD Instinct GPUs in bare metal deployments.
     </tr>
     <tr>
       <td>
-        <p>DPX</p>
+        <p>CPX</p>
       </td>
       <td>
         <p>NPS2</p>
@@ -50,19 +58,11 @@ available on AMD Instinct GPUs in bare metal deployments.
       </td>
     </tr>
     <tr>
-      <td>
-        <p>SPX</p>
-      </td>
-      <td>
-        <p>NPS1</p>
-      </td>
-    </tr>
-    <tr>
       <td rowspan="3" style="vertical-align: middle;">
         <p>Instinct MI350P</p>
       </td>
       <td>
-        <p>CPX</p>
+        <p>SPX</p>
       </td>
       <td>
         <p>NPS1</p>
@@ -78,7 +78,7 @@ available on AMD Instinct GPUs in bare metal deployments.
     </tr>
     <tr>
       <td>
-        <p>SPX</p>
+        <p>CPX</p>
       </td>
       <td>
         <p>NPS1</p>
@@ -100,10 +100,10 @@ available on AMD Instinct GPUs in bare metal deployments.
         <p>Instinct MI300X</p>
       </td>
       <td>
-        <p>CPX</p>
+        <p>SPX</p>
       </td>
       <td>
-        <p>NPS4</p>
+        <p>NPS1</p>
       </td>
     </tr>
     <tr>
@@ -116,10 +116,10 @@ available on AMD Instinct GPUs in bare metal deployments.
     </tr>
     <tr>
       <td>
-        <p>SPX</p>
+        <p>CPX</p>
       </td>
       <td>
-        <p>NPS1</p>
+        <p>NPS4</p>
       </td>
     </tr>
   </tbody>
@@ -151,7 +151,7 @@ available on AMD Instinct GPUs in passthrough deployments.
         <p>KVM Passthrough</p>
       </td>
       <td style="vertical-align: middle;">
-        <p>Instinct MI355X, MI350X, MI325X, MI300X</p>
+        <p>Instinct MI355X, Instinct MI350X, <br> Instinct MI325X, Instinct MI300X</p>
       </td>
       <td rowspan="2" style="vertical-align: middle;">
         <p>SPX</p>
@@ -165,7 +165,7 @@ available on AMD Instinct GPUs in passthrough deployments.
         <p>ESXi Passthrough</p>
       </td>
       <td style="vertical-align: middle;">
-        <p>Instinct MI350P, MI300X</p>
+        <p>Instinct MI350P, Instinct MI300X</p>
       </td>
     </tr>
   </tbody>
@@ -201,7 +201,7 @@ information.
         <p>KVM SR-IOV</p>
       </td>
       <td rowspan="3" style="vertical-align: middle;">
-        <p>Instinct MI355X, MI350X</p>
+        <p>Instinct MI355X, Instinct MI350X</p>
       </td>
       <td>
         <p>1</p>
@@ -215,10 +215,10 @@ information.
     </tr>
     <tr>
       <td>
-        <p>8<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
+        <p>2<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
       </td>
       <td>
-        <p>CPX</p>
+        <p>DPX</p>
       </td>
       <td>
         <p>NPS2</p>
@@ -226,10 +226,10 @@ information.
     </tr>
     <tr>
       <td>
-        <p>2<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
+        <p>8<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
       </td>
       <td>
-        <p>DPX</p>
+        <p>CPX</p>
       </td>
       <td>
         <p>NPS2</p>
