@@ -159,7 +159,7 @@
 
          .. matrix-cell:: Debian 13
 
-         .. matrix-cell:: Ubuntu 26.04
+         .. matrix-cell:: Ubuntu 24.04
 
       .. matrix-row::
          :show-cond: gpu=mi325x
