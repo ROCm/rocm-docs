@@ -20,10 +20,10 @@ available on AMD Instinct GPUs in bare metal deployments.
   </thead>
   <tbody>
     <tr>
-      <td rowspan="7" style="vertical-align: middle;">
+      <td rowspan="11" style="vertical-align: middle;">
         <p>Bare metal</p>
       </td>
-      <td rowspan="3" style="vertical-align: middle;">
+      <td rowspan="4" style="vertical-align: middle;">
         <p>Instinct MI355X, MI350X</p>
       </td>
       <td>
@@ -50,7 +50,15 @@ available on AMD Instinct GPUs in bare metal deployments.
       </td>
     </tr>
     <tr>
-      <td rowspan="2" style="vertical-align: middle;">
+      <td>
+        <p>SPX</p>
+      </td>
+      <td>
+        <p>NPS1</p>
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="3" style="vertical-align: middle;">
         <p>Instinct MI350P</p>
       </td>
       <td>
@@ -62,6 +70,14 @@ available on AMD Instinct GPUs in bare metal deployments.
     </tr>
     <tr>
       <td>
+        <p>DPX</p>
+      </td>
+      <td>
+        <p>NPS2</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <p>SPX</p>
       </td>
       <td>
@@ -69,7 +85,18 @@ available on AMD Instinct GPUs in bare metal deployments.
       </td>
     </tr>
     <tr>
-      <td rowspan="2" style="vertical-align: middle;">
+      <td style="vertical-align: middle;">
+        <p>Instinct MI325X</p>
+      </td>
+      <td>
+        <p>SPX</p>
+      </td>
+      <td>
+        <p>NPS1</p>
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="3" style="vertical-align: middle;">
         <p>Instinct MI300X</p>
       </td>
       <td>
@@ -85,6 +112,14 @@ available on AMD Instinct GPUs in bare metal deployments.
       </td>
       <td>
         <p>NPS2</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>SPX</p>
+      </td>
+      <td>
+        <p>NPS1</p>
       </td>
     </tr>
   </tbody>
@@ -126,7 +161,7 @@ information.
         <p>1</p>
       </td>
       <td>
-        <p>SPX (Default)</p>
+        <p>SPX</p>
       </td>
       <td>
         <p>NPS1</p>
@@ -134,7 +169,7 @@ information.
     </tr>
     <tr>
       <td>
-        <p>1 or 8<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
+        <p>8<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
       </td>
       <td>
         <p>CPX</p>
@@ -145,7 +180,7 @@ information.
     </tr>
     <tr>
       <td>
-        <p>1 or 2<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
+        <p>2<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
       </td>
       <td>
         <p>DPX</p>

@@ -41,17 +41,25 @@
          :show-cond: gpu=v710
 
          .. matrix-cell:: KVM
+            :rowspan: 2
 
          .. matrix-cell:: SR-IOV
+            :rowspan: 2
 
          .. matrix-cell::
+            :rowspan: 2
 
             `GIM 9.1.0.K <https://github.com/amd/MxGPU-Virtualization/releases/tag/9.1.0.K>`__
 
          .. matrix-cell:: Ubuntu 24.04
+            :rowspan: 2
 
          .. matrix-cell:: Ubuntu 24.04
 
+      .. matrix-row::
+         :show-cond: gpu=v710
+
+         .. matrix-cell:: RHEL 9.6
+
    See the :ref:`release notes <release-virtualization-support>`
    for the full list of supported configurations.
-

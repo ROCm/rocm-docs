@@ -266,9 +266,9 @@
       .. matrix-cell::
          :show-cond: gpu=mi300a
 
-         BKC 27
+         PI100D
 
-         BKC 26.1
+         PI100C
 
       .. matrix-cell::
          :show-cond: gpu=mi250x gpu=mi250 gpu=mi210
