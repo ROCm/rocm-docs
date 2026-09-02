@@ -165,24 +165,15 @@
          :show-cond: gpu=mi325x
 
          .. matrix-cell:: KVM
-            :rowspan: 3
+            :rowspan: 2
 
          .. matrix-cell:: Passthrough
-            :rowspan: 2
 
          .. matrix-cell:: —
-            :rowspan: 2
 
          .. matrix-cell:: Ubuntu 26.04
 
          .. matrix-cell:: Ubuntu 26.04
-
-      .. matrix-row::
-         :show-cond: gpu=mi325x
-
-         .. matrix-cell:: Ubuntu 22.04
-
-         .. matrix-cell:: Ubuntu 22.04
 
       .. matrix-row::
          :show-cond: gpu=mi325x
