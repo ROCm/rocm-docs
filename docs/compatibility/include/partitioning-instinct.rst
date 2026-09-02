@@ -170,5 +170,7 @@
 
             .. matrix-cell:: NPS4
 
+      .. selected:: gpu=mi355x gpu=mi350x gpu=mi300x
 
-      [*] Multi-VF support requires a compatible firmware. See the :ref:`release notes <release-virtualization-support>` for the list of required firmware versions and supported configurations.
+         [*] Multi-VF support requires a compatible firmware. See the :ref:`release notes <release-virtualization-support>` for the list of required firmware versions and supported configurations.
+

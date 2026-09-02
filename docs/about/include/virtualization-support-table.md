@@ -194,16 +194,16 @@
         </td>
       </tr>
   <tr>
-    <td rowspan="3" style="vertical-align: middle">
+    <td rowspan="2" style="vertical-align: middle">
       <p>Instinct MI325X</p>
     </td>
-    <td rowspan="3" style="vertical-align: middle">
+    <td rowspan="2" style="vertical-align: middle">
       <p>KVM</p>
     </td>
-        <td rowspan="2" style="vertical-align: middle">
+        <td style="vertical-align: middle">
           <p>Passthrough</p>
         </td>
-        <td rowspan="2" style="vertical-align: middle">
+        <td style="vertical-align: middle">
           <p style="text-align: center">—</p>
         </td>
         <td style="vertical-align: middle">
@@ -211,14 +211,6 @@
         </td>
         <td style="vertical-align: middle">
           <p>Ubuntu 26.04</p>
-        </td>
-      </tr>
-      <tr>
-        <td style="vertical-align: middle">
-          <p>Ubuntu 22.04</p>
-        </td>
-        <td style="vertical-align: middle">
-          <p>Ubuntu 22.04</p>
         </td>
       </tr>
     <td style="vertical-align: middle">
