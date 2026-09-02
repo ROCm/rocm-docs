@@ -73,7 +73,7 @@ available on AMD Instinct GPUs in bare metal deployments.
         <p>DPX</p>
       </td>
       <td>
-        <p>NPS2</p>
+        <p>NPS1</p>
       </td>
     </tr>
     <tr>
