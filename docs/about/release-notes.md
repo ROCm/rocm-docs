@@ -501,15 +501,15 @@ ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/RO
 
 ### HuggingFace model training throughput might regress on AMD Instinct MI350X
 
-HuggingFace model training workloads might see 9–25% lower training throughput on AMD Instinct MI350X (gfx950) GPUs, including BART, GPT-2, DiT (Diffusion Transformers), BERT, Llama 2 70B Chat, and RoBERTa-large. This occurs because AOTriton 0.13b selects a suboptimal flash-attention backward kernel instead of the faster 3-kernel split used in AOTriton 0.11.2b. As a workaround, rebuild PyTorch and pin AOTriton to version 0.11.2b.
+HuggingFace model training workloads might see 9–25% lower training throughput on AMD Instinct MI350X (gfx950) GPUs, including BART, GPT-2, DiT (Diffusion Transformers), BERT, Llama 2 70B Chat, and RoBERTa-large. This occurs because AOTriton 0.13b selects a suboptimal flash-attention backward kernel instead of the faster 3-kernel split used in AOTriton 0.11.2b. As a workaround, rebuild PyTorch and pin AOTriton to version 0.11.2b. See [GitHub issue #7696](https://github.com/ROCm/TheRock/issues/7696).
 
 ### JAX BERT FP16 training might encounter a segmentation fault on some Radeon GPUs
 
-JAX BERT FP16 training workloads might encounter a segmentation fault on some AMD Radeon graphics products, such as the Radeon PRO W7900, causing training to terminate unexpectedly. As a workaround, disable XLA GPU command buffers by setting the `XLA_FLAGS="--xla_gpu_enable_command_buffer="` environment variable before launching the workload.
+JAX BERT FP16 training workloads might encounter a segmentation fault on some AMD Radeon graphics products, such as the Radeon PRO W7900, causing training to terminate unexpectedly. As a workaround, disable XLA GPU command buffers by setting the `XLA_FLAGS="--xla_gpu_enable_command_buffer="` environment variable before launching the workload. See [GitHub issue #7697](https://github.com/ROCm/TheRock/issues/7697).
 
 ### PyTorch training and fine-tuning workloads might experience GPU resets or crashes on some Radeon GPUs
 
-PyTorch training and fine-tuning workloads using Llama-Factory or Unsloth might experience GPU resets or application crashes on some AMD Radeon graphics products, such as the Radeon RX 9070 Series and Radeon AI PRO R9700. As a workaround, set the `TORCH_BLAS_PREFER_HIPBLASLT=0` environment variable to disable hipBLASLt for training and fine-tuning workloads. This workaround might result in performance degradation.
+PyTorch training and fine-tuning workloads using Llama-Factory or Unsloth might experience GPU resets or application crashes on some AMD Radeon graphics products, such as the Radeon RX 9070 Series and Radeon AI PRO R9700. As a workaround, set the `TORCH_BLAS_PREFER_HIPBLASLT=0` environment variable to disable hipBLASLt for training and fine-tuning workloads. This workaround might result in performance degradation. See [GitHub issue #7699](https://github.com/ROCm/TheRock/issues/7699).
 
 ### SGLang inference might fail with the default AITER attention backend on some Radeon GPUs
 
@@ -520,13 +520,15 @@ export SGLANG_USE_AITER=0
 export SGLANG_USE_AITER_AR=0
 ```
 
+See [GitHub issue #7700](https://github.com/ROCm/TheRock/issues/7700).
+
 ### TensorFlow ROCm v2.21 might fail to start with a libhipsparse ImportError on some Radeon GPUs
 
-TensorFlow ROCm v2.21 workloads might fail to start with an `ImportError: libhipsparse.so.4` on some AMD Radeon graphics products, such as Radeon AI PRO R9700, when ROCm is installed using pip packages. As a workaround, add `$(hipconfig -R)/lib` and `$(hipconfig -R)/lib/rocm_sysdeps/lib` to `LD_LIBRARY_PATH` before launching TensorFlow.
+TensorFlow ROCm v2.21 workloads might fail to start with an `ImportError: libhipsparse.so.4` on some AMD Radeon graphics products, such as Radeon AI PRO R9700, when ROCm is installed using pip packages. As a workaround, add `$(hipconfig -R)/lib` and `$(hipconfig -R)/lib/rocm_sysdeps/lib` to `LD_LIBRARY_PATH` before launching TensorFlow. See [GitHub issue #7701](https://github.com/ROCm/TheRock/issues/7701).
 
 ### vLLM or ComfyUI workloads might crash on some Ryzen AI systems
 
-Intermittent segmentation faults or GPU hangs might be observed when running some vLLM or ComfyUI workloads on Ryzen AI systems using gfx1103 (RDNA3) GPUs.
+Intermittent segmentation faults or GPU hangs might be observed when running some vLLM or ComfyUI workloads on Ryzen AI systems using gfx1103 (RDNA3) GPUs. See [GitHub issue #7702](https://github.com/ROCm/TheRock/issues/7702).
 
 ## ROCm resolved issues
 

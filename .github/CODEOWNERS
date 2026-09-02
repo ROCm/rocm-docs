@@ -3,6 +3,3 @@
 docs/ @ROCm/rocm-documentation
 *.md @ROCm/rocm-documentation
 *.rst @ROCm/rocm-documentation
-# External CI
-/.azuredevops/ @ROCm/external-ci
-tools/rocm-build/ @ROCm/rocm-devops
