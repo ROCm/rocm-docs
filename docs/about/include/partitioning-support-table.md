@@ -197,7 +197,7 @@ information.
   </thead>
   <tbody>
     <tr>
-      <td rowspan="7" style="vertical-align: middle;">
+      <td rowspan="6" style="vertical-align: middle;">
         <p>KVM SR-IOV</p>
       </td>
       <td rowspan="3" style="vertical-align: middle;">
@@ -265,14 +265,30 @@ information.
     </tr>
     <tr id="id1">
       <td>
-        <p>8
-        <a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
+        <p>8<a id="id2" class="footnote-reference brackets" href="#partitioning-support-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p>
       </td>
       <td>
         <p>CPX</p>
       </td>
       <td>
         <p>NPS4</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle;">
+        <p>ESXi SR-IOV</p>
+      </td>
+      <td style="vertical-align: middle;">
+        <p>Instinct MI355X, Instinct MI350X</p>
+      </td>
+      <td>
+        <p>1</p>
+      </td>
+      <td>
+        <p>SPX</p>
+      </td>
+      <td>
+        <p>NPS1</p>
       </td>
     </tr>
   </tbody>
