@@ -158,13 +158,9 @@ html_theme_options = {
     "flavor": "rocm",
     "use_download_button": True,
     "link_main_doc": False,
-    "repository_url": "https://github.com/ROCm/ROCm",
+    "repository_url": "https://github.com/ROCm/rocm-docs",
     "use_repository_button": True,
     "use_issues_button": True,
-    # "secondary_sidebar_items": {
-        # "training/Primus**": ["framework-version-toc2"],
-        # "**": ["framework-version-toc2"],
-    # },
 }
 html_title = f"AMD ROCm {ROCM_VERSION}"
 
