@@ -147,7 +147,7 @@ Supported hardware: AMD Instinct MI300X, MI325X, MI350X, and MI355X GPUs.
 For more information, see the [SPM API reference guide](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/api-reference/spm.html) and the [SPM usage guide](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/how-to/using-spm.html) for `rocprofv3`.
 
 :::{warning}
-SPM is a beta capability under active development and may affect system stability, including unexpected reboots. Do not use in production environments. See [ROCm known issues](#rocprofiler-spm-sessions-can-remain-in-a-stale-state-after-abrupt-termination) for current limitations.
+SPM is a beta capability under active development and may affect system stability, including unexpected reboots. Do not use in production environments. See [ROCm known issues](#rocprofiler-sdk-spm-sessions-can-remain-in-a-stale-state-after-abrupt-termination) for current limitations.
 :::
 
 ###### Selective ROCTx region profiling with counter collection
@@ -444,17 +444,17 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 
 ### ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
 
 #### PyTorch might display a warning when libnuma is not installed
 
-PyTorch might display a warning when importing on Linux if the system libnuma package is not installed on some Radeon graphics products, such as Radeon AI PRO R9600D. As a workaround, install the system libnuma package or configure the library path to use the ROCm-bundled NUMA libraries. See [GitHub issue #6485](https://github.com/ROCm/ROCm/issues/6485).
+PyTorch might display a warning when importing on Linux if the system libnuma package is not installed on some Radeon graphics products, such as Radeon AI PRO R9600D. As a workaround, install the system libnuma package or configure the library path to use the ROCm-bundled NUMA libraries. See [GitHub issue #7895](https://github.com/ROCm/TheRock/issues/7895).
 
 <a id="vllm-warmup-known-issue"></a>
 
 #### Significantly longer LLM warmup times on some Radeon GPUs
 
-Significantly longer warmup times might be observed in some large language model inference workloads on AMD Radeon GPUs using vLLM versions v0.21.0 through v0.25.0. As a workaround, use a vLLM release earlier than v0.21.0 or upgrade to vLLM v0.26.0 or later, which includes a fix for this issue. See [GitHub issue #6486](https://github.com/ROCm/ROCm/issues/6486).
+Significantly longer warmup times might be observed in some large language model inference workloads on AMD Radeon GPUs using vLLM versions v0.21.0 through v0.25.0. As a workaround, use a vLLM release earlier than v0.21.0 or upgrade to vLLM v0.26.0 or later, which includes a fix for this issue. See [GitHub issue #7896](https://github.com/ROCm/TheRock/issues/7896).
 
 #### SGLang default settings and some models might cause failures on Radeon GPUs
 
@@ -465,27 +465,27 @@ export SGLANG_USE_AITER=false
 export SGLANG_ROCM_FUSED_DECODE_MLA=false
 ```
 
-Additionally, some models might not function correctly on Radeon GPUs, including certain Mixture-of-Experts (MoE) models (such as GPT-OSS-20B and MiniMax-M2.7) and Qwen3-ASR models. Users experiencing these issues are recommended to use the latest upstream SGLang versions, which will include the necessary fixes once they are merged. See the [SGLang environment variables reference](https://docs.sglang.io/docs/references/environment_variables#environment-variables) for more details. See [GitHub issue #6487](https://github.com/ROCm/ROCm/issues/6487).
+Additionally, some models might not function correctly on Radeon GPUs, including certain Mixture-of-Experts (MoE) models (such as GPT-OSS-20B and MiniMax-M2.7) and Qwen3-ASR models. Users experiencing these issues are recommended to use the latest upstream SGLang versions, which will include the necessary fixes once they are merged. See the [SGLang environment variables reference](https://docs.sglang.io/docs/references/environment_variables#environment-variables) for more details. See [GitHub issue #7897](https://github.com/ROCm/TheRock/issues/7897).
 
 #### Lower-than-expected LLM inference performance on RDNA3 Radeon GPUs and Ryzen AI Max / Max+ Series Processors
 
-Lower-than-expected performance might be observed in some large language model inference workloads, including vLLM FP16 decode workloads with batch sizes of 8 or greater, on AMD Radeon RX 7900 Series Graphics, AMD Radeon RX 7800 XT Graphics, and AMD Ryzen AI Max / Max+ Series Processors when using PyTorch versions earlier than 2.14. As a workaround, set the `TORCH_BLAS_PREFER_HIPBLASLT=1` environment variable to use the hipBLASLt backend. This setting becomes the default for these architectures in PyTorch 2.14. See [GitHub issue #6488](https://github.com/ROCm/ROCm/issues/6488).
+Lower-than-expected performance might be observed in some large language model inference workloads, including vLLM FP16 decode workloads with batch sizes of 8 or greater, on AMD Radeon RX 7900 Series Graphics, AMD Radeon RX 7800 XT Graphics, and AMD Ryzen AI Max / Max+ Series Processors when using PyTorch versions earlier than 2.14. As a workaround, set the `TORCH_BLAS_PREFER_HIPBLASLT=1` environment variable to use the hipBLASLt backend. This setting becomes the default for these architectures in PyTorch 2.14. See [GitHub issue #7898](https://github.com/ROCm/TheRock/issues/7898).
 
 #### ROCprofiler-SDK SPM sessions can remain in a stale state after abrupt termination
 
-If a Streaming Performance Monitors (SPM) session is terminated abruptly (for example, with `Ctrl+C`), KFD-side SPM resources might not be released cleanly. When this happens, the KFD-side SPM resources can remain in a stale state, which might cause subsequent SPM profiling sessions to hang or fail to start with the error `Unable to acquire KFD thread: 4096`. To recover, if the profiling process is still running, terminate it manually. If the error persists, a system reboot is currently required to restore the GPU to a usable state for SPM profiling. This issue is under active investigation for a fix. See [GitHub issue #6489](https://github.com/ROCm/ROCm/issues/6489).
+If a Streaming Performance Monitors (SPM) session is terminated abruptly (for example, with `Ctrl+C`), KFD-side SPM resources might not be released cleanly. When this happens, the KFD-side SPM resources can remain in a stale state, which might cause subsequent SPM profiling sessions to hang or fail to start with the error `Unable to acquire KFD thread: 4096`. To recover, if the profiling process is still running, terminate it manually. If the error persists, a system reboot is currently required to restore the GPU to a usable state for SPM profiling. This issue is under active investigation for a fix. See [GitHub issue #7899](https://github.com/ROCm/TheRock/issues/7899).
 
 #### ROCm Compute Profiler might report inflated Avg values with per_kernel normalization
 
-When using ROCm Compute Profiler with `per_kernel` normalization, the reported Avg value for certain normalized metrics might be incorrectly inflated and can exceed the corresponding Min and Max values. This issue affects analysis results only. As a workaround, use an alternative normalization unit (`-n`/`--normal-unit`) until a fix is available. See [GitHub issue #6490](https://github.com/ROCm/ROCm/issues/6490).
+When using ROCm Compute Profiler with `per_kernel` normalization, the reported Avg value for certain normalized metrics might be incorrectly inflated and can exceed the corresponding Min and Max values. This issue affects analysis results only. As a workaround, use an alternative normalization unit (`-n`/`--normal-unit`) until a fix is available. See [GitHub issue #7900](https://github.com/ROCm/TheRock/issues/7900).
 
 #### rocALUTION and hipTensor have no dedicated HPC Expansion tarball
 
-The `amdrocm-hpc` meta-package installs rocALUTION and hipTensor, but there is no dedicated HPC Expansion tarball for tarball-based installations. The standard ROCm tarballs include both libraries. See [GitHub issue #6491](https://github.com/ROCm/ROCm/issues/6491).
+The `amdrocm-hpc` meta-package installs rocALUTION and hipTensor, but there is no dedicated HPC Expansion tarball for tarball-based installations. The standard ROCm tarballs include both libraries. See [GitHub issue #7901](https://github.com/ROCm/TheRock/issues/7901).
 
 #### HIP SPIR-V kernels might segfault on first launch
 
-HIP kernels compiled with the SPIR-V target (`--offload-arch=amdgcnspirv`) might segfault on first kernel launch at `hipLaunchKernel`. The failure affects both library-level workloads such as rocBLAS and standalone HIP applications built against the SPIR-V offload bundle. Applications compiled for a native GPU architecture target are not affected. As a workaround, compile using a direct GPU architecture target instead of `--offload-arch=amdgcnspirv`. See [GitHub issue #6492](https://github.com/ROCm/ROCm/issues/6492).
+HIP kernels compiled with the SPIR-V target (`--offload-arch=amdgcnspirv`) might segfault on first kernel launch at `hipLaunchKernel`. The failure affects both library-level workloads such as rocBLAS and standalone HIP applications built against the SPIR-V offload bundle. Applications compiled for a native GPU architecture target are not affected. As a workaround, compile using a direct GPU architecture target instead of `--offload-arch=amdgcnspirv`. See [GitHub issue #7902](https://github.com/ROCm/TheRock/issues/7902).
 
 #### RCCL might show degraded performance on multi-node configurations
 
@@ -502,11 +502,11 @@ Alternatively, add the following CMake flag during compilation:
 -DFAULT_INJECTION=OFF
 ```
 
-See [GitHub issue #6493](https://github.com/ROCm/ROCm/issues/6493).
+See [GitHub issue #7903](https://github.com/ROCm/TheRock/issues/7903).
 
 #### AMD SMI NIC telemetry supports Pollara 400 adapters only
 
-In ROCm 7.14.0, AMD SMI NIC telemetry only supports AMD AI NIC Pollara 400 adapters. Broadcom NIC support is planned for a future release. See [GitHub issue #6497](https://github.com/ROCm/ROCm/issues/6497).
+In ROCm 7.14.0, AMD SMI NIC telemetry only supports AMD AI NIC Pollara 400 adapters. Broadcom NIC support is planned for a future release. See [GitHub issue #7904](https://github.com/ROCm/TheRock/issues/7904).
 
 ### ROCm resolved issues
 
