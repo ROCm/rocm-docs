@@ -75,11 +75,47 @@ Prerequisites
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
-            .. selected:: i=pkgman i=pip i=tar
+            .. selected:: i=pkgman i=pip
 
                .. code-block:: bash
 
                   dnf install sudo wget perl
+
+            .. selected:: i=tar
+
+               .. selected:: os=rhel
+
+                  .. selected:: rhel-ver=8.10
+
+                     .. code-block:: bash
+
+                        dnf install sudo wget perl python3
+
+                  .. selected:: rhel-ver=9.4 rhel-ver=9.6 rhel-ver=9.8 rhel-ver=10.0 rhel-ver=10.2
+
+                     .. code-block:: bash
+
+                        dnf install sudo wget perl
+
+               .. selected:: os=oracle-linux
+
+                  .. selected:: oracle-linux-ver=8
+
+                     .. code-block:: bash
+
+                        dnf install sudo wget perl python3
+
+                  .. selected:: oracle-linux-ver=9 oracle-linux-ver=10
+
+                     .. code-block:: bash
+
+                        dnf install sudo wget perl
+
+               .. selected:: os=rocky-linux
+
+                  .. code-block:: bash
+
+                     dnf install sudo wget perl
 
             .. selected:: i=runfile
 
@@ -105,7 +141,7 @@ Prerequisites
 
                .. code-block:: bash
 
-                  zypper install sudo wget perl
+                  zypper install sudo wget perl python3
 
             .. selected:: i=runfile
 
