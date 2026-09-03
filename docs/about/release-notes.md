@@ -147,7 +147,7 @@ Supported hardware: AMD Instinct MI300X, MI325X, MI350X, and MI355X GPUs.
 For more information, see the [SPM API reference guide](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/api-reference/spm.html) and the [SPM usage guide](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/how-to/using-spm.html) for `rocprofv3`.
 
 :::{warning}
-SPM is a beta capability under active development and may affect system stability, including unexpected reboots. Do not use in production environments. See [ROCm known issues](#rocprofiler-spm-sessions-can-remain-in-a-stale-state-after-abrupt-termination) for current limitations.
+SPM is a beta capability under active development and may affect system stability, including unexpected reboots. Do not use in production environments. See [ROCm known issues](#rocprofiler-sdk-spm-sessions-can-remain-in-a-stale-state-after-abrupt-termination) for current limitations.
 :::
 
 ###### Selective ROCTx region profiling with counter collection
