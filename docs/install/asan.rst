@@ -72,28 +72,28 @@ and installation method.
 
    .. selector-option:: Ubuntu
       :value: ubuntu
-      :width: 2
+      :width: 3
 
    .. selector-option:: Debian
       :value: debian
-      :width: 2
+      :width: 3
 
    .. selector-option:: RHEL
       :value: rhel
-      :width: 2
+      :width: 3
       :toc-label: Red Hat Enterprise Linux
 
    .. selector-option:: Oracle Linux
       :value: oracle-linux
-      :width: 2
+      :width: 3
 
    .. selector-option:: Rocky Linux
       :value: rocky-linux
-      :width: 2
+      :width: 4
 
    .. selector-option:: SLES
       :value: sles
-      :width: 2
+      :width: 4
       :toc-label: SUSE Linux Enterprise Server
 
 .. selected:: os=ubuntu
