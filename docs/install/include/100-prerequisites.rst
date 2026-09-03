@@ -77,9 +77,17 @@ Prerequisites
 
             .. selected:: i=pkgman i=pip i=tar
 
-               .. code-block:: bash
+               .. selected:: rhel-ver=8.10 oracle-linux-ver=8
 
-                  dnf install sudo wget perl
+                  .. code-block:: bash
+
+                     dnf install sudo wget perl python3
+
+               .. selected:: rhel-ver=9.4 rhel-ver=9.6 rhel-ver=9.8 rhel-ver=10.0 rhel-ver=10.2 oracle-linux-ver=9 oracle-linux-ver=10 rocky-linux-ver=9
+
+                  .. code-block:: bash
+
+                     dnf install sudo wget perl
 
             .. selected:: i=runfile
 
@@ -105,7 +113,7 @@ Prerequisites
 
                .. code-block:: bash
 
-                  zypper install sudo wget perl
+                  zypper install sudo wget perl python3
 
             .. selected:: i=runfile
 
