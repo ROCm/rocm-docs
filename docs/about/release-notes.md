@@ -502,11 +502,11 @@ Alternatively, add the following CMake flag during compilation:
 -DFAULT_INJECTION=OFF
 ```
 
-See [GitHub issue #6493](https://github.com/ROCm/ROCm/issues/6493).
+See [GitHub issue #7903](https://github.com/ROCm/TheRock/issues/7903).
 
 #### AMD SMI NIC telemetry supports Pollara 400 adapters only
 
-In ROCm 7.14.0, AMD SMI NIC telemetry only supports AMD AI NIC Pollara 400 adapters. Broadcom NIC support is planned for a future release. See [GitHub issue #6497](https://github.com/ROCm/ROCm/issues/6497).
+In ROCm 7.14.0, AMD SMI NIC telemetry only supports AMD AI NIC Pollara 400 adapters. Broadcom NIC support is planned for a future release. See [GitHub issue #7904](https://github.com/ROCm/TheRock/issues/7904).
 
 ### ROCm resolved issues
 
