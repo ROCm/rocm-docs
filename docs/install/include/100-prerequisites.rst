@@ -83,13 +83,35 @@ Prerequisites
 
             .. selected:: i=tar
 
-               .. selected:: rhel-ver=8.10 oracle-linux-ver=8
+               .. selected:: os=rhel
 
-                  .. code-block:: bash
+                  .. selected:: rhel-ver=8.10
 
-                     dnf install sudo wget perl python3
+                     .. code-block:: bash
 
-               .. selected:: rhel-ver=9.4 rhel-ver=9.6 rhel-ver=9.8 rhel-ver=10.0 rhel-ver=10.2 oracle-linux-ver=9 oracle-linux-ver=10 rocky-linux-ver=9
+                        dnf install sudo wget perl python3
+
+                  .. selected:: rhel-ver=9.4 rhel-ver=9.6 rhel-ver=9.8 rhel-ver=10.0 rhel-ver=10.2
+
+                     .. code-block:: bash
+
+                        dnf install sudo wget perl
+
+               .. selected:: os=oracle-linux
+
+                  .. selected:: oracle-linux-ver=8
+
+                     .. code-block:: bash
+
+                        dnf install sudo wget perl python3
+
+                  .. selected:: oracle-linux-ver=9 oracle-linux-ver=10
+
+                     .. code-block:: bash
+
+                        dnf install sudo wget perl
+
+               .. selected:: os=rocky-linux
 
                   .. code-block:: bash
 
