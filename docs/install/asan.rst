@@ -72,20 +72,20 @@ and installation method.
 
    .. selector-option:: Ubuntu
       :value: ubuntu
-      :width: 3
+      :width: 4
 
    .. selector-option:: Debian
       :value: debian
-      :width: 3
+      :width: 4
 
    .. selector-option:: RHEL
       :value: rhel
-      :width: 3
+      :width: 4
       :toc-label: Red Hat Enterprise Linux
 
    .. selector-option:: Oracle Linux
       :value: oracle-linux
-      :width: 3
+      :width: 4
 
    .. selector-option:: Rocky Linux
       :value: rocky-linux
