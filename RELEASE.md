@@ -710,12 +710,12 @@ The following issues have been fixed:
 
 ### ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
 #### Minor performance regression for MIGraphX with int8-quantized models
 
-You might observe a slight performance regression when running int8-quantized models with MIGraphX. This impact is generally minimal and does not affect correctness. However, workloads sensitive to peak throughput might have reduced performance when compared to non-quantized or alternative execution paths. This issue is currently under investigation and will be fixed in a future ROCm release. See [GitHub issue #6195](https://github.com/ROCm/ROCm/issues/6195).
+You might observe a slight performance regression when running int8-quantized models with MIGraphX. This impact is generally minimal and does not affect correctness. However, workloads sensitive to peak throughput might have reduced performance when compared to non-quantized or alternative execution paths. This issue is currently under investigation and will be fixed in a future ROCm release. See [GitHub issue #7894](https://github.com/ROCm/TheRock/issues/7894).
 
 ### ROCm upcoming changes
 
