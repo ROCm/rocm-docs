@@ -75,7 +75,13 @@ Prerequisites
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
-            .. selected:: i=pkgman i=pip i=tar
+            .. selected:: i=pkgman i=pip
+
+               .. code-block:: bash
+
+                  dnf install sudo wget perl
+
+            .. selected:: i=tar
 
                .. selected:: rhel-ver=8.10 oracle-linux-ver=8
 
