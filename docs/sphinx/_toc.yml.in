@@ -166,6 +166,8 @@ subtrees:
                   title: TransferBench
                 - url: https://rocm.docs.amd.com/projects/roc-optiq/en/latest/index.html
                   title: ROCm Optiq
+                - url: https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/latest/index.html
+                  title: ROCprof Compute Viewer (RCV)
     - caption: Tutorials
       entries:
           - url: https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/
