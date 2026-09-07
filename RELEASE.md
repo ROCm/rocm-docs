@@ -330,7 +330,7 @@ matrix](../../docs/compatibility/compatibility-matrix.rst) for the complete list
 
 ROCm 7.2.1 enables support for JAX 0.8.2. For more information, see [JAX compatibility](../../docs/compatibility/ml-compatibility/jax-compatibility.rst).
 
-### ROCm Offline Installer Creator discontinuation
+#### ROCm Offline Installer Creator discontinuation
 
 The ROCm Offline Installer Creator is discontinued in ROCm 7.2.1. Equivalent installation capabilities are available through the ROCm Runfile Installer, a self-extracting installer that is not based on OS package managers. For more information, see [ROCm Runfile Installer](https://rocm.docs.amd.com/projects/install-on-linux/en/docs-7.2.1/install/rocm-runfile-installer.html).
 
@@ -771,7 +771,7 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 
 ### ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
 #### hipBLASLt performance regression for specific GEMM configurations
@@ -800,19 +800,11 @@ Affected GEMM configurations:
 
 * 8192 × 8192 × 1 × 16384
 
-Due to this issue, you might also observe a slight increase in the test or inference time. This issue is resolved in the {fab}`github`[hipBLASLt develop branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release. See [GitHub issue #6065](https://github.com/ROCm/ROCm/issues/6065).
-
-### Longer runtime for hipBLASLt GEMM operations on Instinct MI300X GPUs in partitioned mode
-
-GEMM operations using hipBLASLt might result in longer runtime on AMD Instinct MI300X GPUs configured in CPX or NPS4 partition mode (38 control units or CUs). This issue occurs when hipBLASLt fails to find applicable pre-tuned kernels. As a result, it performs an extensive kernel search, which increases both search time and the overall operation runtime. This issue is resolved in the {fab}`github`[hipBLASLt develop branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release. See [GitHub issue #6066](https://github.com/ROCm/ROCm/issues/6066).
-
-### ROCTracer might fail to report kernel operations
-
-Applications that use [ROCTracer](https://rocm.docs.amd.com/projects/roctracer/en/latest/index.html) might fail to receive some or all kernel operation events due to a ROCTracer reporting failure. ROCTracer is already deprecated and is scheduled to reach end of support (EoS) by the end of 2026 Q2. For more details on ROCTracer deprecation, see  [ROCm upcoming changes](#roctracer-rocprofiler-rocprof-and-rocprofv2-deprecation). This issue will be resolved in a future PyTorch on ROCm release that replaces ROCTracer with [ROCprofiler-SDK](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/). See [GitHub issue #6102](https://github.com/ROCm/ROCm/issues/6102).
+Due to this issue, you might also observe a slight increase in the test or inference time. This issue is resolved in the {fab}`github`[hipBLASLt develop branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release. See [GitHub issue #7892](https://github.com/ROCm/TheRock/issues/7892).
 
 #### Longer runtime for hipBLASLt GEMM operations on Instinct MI300X GPUs in partitioned mode
 
-GEMM operations using hipBLASLt might result in longer runtime on AMD Instinct MI300X GPUs configured in CPX or NPS4 partition mode (38 control units or CUs). This issue occurs when hipBLASLt fails to find applicable pre-tuned kernels. As a result, it performs an extensive kernel search, which increases both search time and the overall operation runtime. This issue is resolved in the {fab}`github`[hipBLASLt develop branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release. See [GitHub issue #6066](https://github.com/ROCm/ROCm/issues/6066).
+GEMM operations using hipBLASLt might result in longer runtime on AMD Instinct MI300X GPUs configured in CPX or NPS4 partition mode (38 control units or CUs). This issue occurs when hipBLASLt fails to find applicable pre-tuned kernels. As a result, it performs an extensive kernel search, which increases both search time and the overall operation runtime. This issue is resolved in the {fab}`github`[hipBLASLt develop branch](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipblaslt) and will be part of a future ROCm release. See [GitHub issue #7893](https://github.com/ROCm/TheRock/issues/7893).
 
 #### ROCTracer might fail to report kernel operations
 
