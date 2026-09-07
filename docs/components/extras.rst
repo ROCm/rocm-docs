@@ -23,5 +23,9 @@ for verifying hardware health, measuring system performance, and managing GPU fl
 
 * `ROCm Optiq <https://rocm.docs.amd.com/projects/roc-optiq/en/latest/index.html>`_ -- A unified visualization and analysis tool for performance data collected by ROCm profiling tools, specifically :doc:`ROCm Systems Profiler <rocprofiler-systems:index>` and :doc:`ROCm Compute Profiler <rocprofiler-compute:index>`. It provides deep insights into both system-level behavior and kernel-level performance for applications running on the ROCm stack.
 
+* :doc:`ROCprof Compute Viewer <rocprof-compute-viewer:index>` (RCV) -- Visualizes and
+  analyzes GPU thread trace data collected using ``rocprofv3``, helping developers
+  understand low-level GPU execution behavior, identify performance bottlenecks, and
+  optimize kernel efficiency.
 
 * More coming soon.

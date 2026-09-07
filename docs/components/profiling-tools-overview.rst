@@ -26,7 +26,7 @@ The suite includes the following tools:
      - A C++ library that provides the low-level profiling and tracing
        infrastructure.
    * - :doc:`rocprofv3 <rocprofiler-sdk:how-to/using-rocprofv3>`
-     - A command-line interface that exposes rocprofiler-sdk capabilities without
+     - A command-line interface that exposes ROCprofiler-SDK capabilities without
        requiring any code changes, including advanced features such as ATT, PC
        Sampling, and SPM.
    * - :doc:`ROCm Systems Profiler <rocprofiler-systems:index>`
@@ -39,7 +39,7 @@ The suite includes the following tools:
      - A desktop GUI for visualizing instruction-level ATT data, showing wavefront
        execution timelines, ISA hotspots, and stall attribution at cycle
        granularity.
-   * - :doc:`ROCm Optiq <roc-optiq:index>`
+   * - :doc:`ROCm Optiq <roc-optiq:index>` (:doc:`ROCm Extras <extras>`)
      - A unified visualization application for exploring system- and kernel-level
        profiling data from rocprofiler-systems and rocprofiler-compute, with no
        ROCm installation required on the analysis machine.
@@ -55,7 +55,7 @@ runtime layer (HIP, HSA, KFD). Tools are independent of each other — none of
 the user-facing tools routes through another user-facing tool.
 
 .. image:: /data/components/tool_stack.png
-   :alt: ROCm profiling tool stack showing user-facing tools built on rocprofiler-sdk and ROCm runtime components
+   :alt: ROCm profiling tool stack showing user-facing tools built on ROCprofiler-SDK and ROCm runtime components
    :width: 100%
    :align: center
 
@@ -64,7 +64,7 @@ The three levels are:
 1. **ROCm runtime layer** — HIP runtime, HSA runtime, and the KFD kernel driver.
    This is where GPU work is submitted and hardware access is gated.
 
-2. **rocprofiler-sdk** — The profiling infrastructure library. It intercepts API
+2. **ROCprofiler-SDK** — The profiling infrastructure library. It intercepts API
    calls, reads hardware performance counters, streams PC samples, and captures
    Advanced Thread Trace data. All higher-level tools use this library.
 
@@ -106,8 +106,8 @@ a unified, thread-safe interface for:
   CPU/GPU timelines
 * **Code object tracking**: monitoring of GPU binary load and unload events
 
-Most users interact with rocprofiler-sdk indirectly through the higher-level
-tools. For guidance on when to use rocprofiler-sdk directly, see
+Most users interact with ROCprofiler-SDK indirectly through the higher-level
+tools. For guidance on when to use ROCprofiler-SDK directly, see
 :ref:`When to choose ROCprofiler-SDK <selection-rocprofiler-sdk>`. For a
 quick overview, see
 `ROCprofiler-SDK at a glance <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/rocprofiler-sdk-doc-overview/quick-reference/rocprofiler-sdk-at-a-glance.html>`__.
@@ -142,8 +142,8 @@ not because the kernels are slow but because a data loader is starved, an MPI
 collective is blocking, or Python GIL contention is stalling the dispatch queue.
 For guidance on when to use ``rocprofiler-systems``, see
 :ref:`When to choose ROCm Systems Profiler <selection-rocprofiler-systems>`.
-For a quick overview, see
-`ROCm Systems Profiler at a glance <https://rocm.docs.amd.com/projects/rocprofiler-systems/en/systems-profiler-overview-doc/quick-reference/rocprofiler-systems-at-a-glance.html>`__.
+For an overview, see
+:doc:`What is ROCm Systems Profiler? <rocprofiler-systems:what-is-rocprof-sys>`.
 
 Two instrumentation modes are available:
 
@@ -165,8 +165,8 @@ performs deep per-kernel hardware analysis on AMD Instinct GPUs. Where
 explains why at the hardware level. For guidance on when to use
 ``rocprofiler-compute``, see
 :ref:`When to choose ROCm Compute Profiler <selection-rocprofiler-compute>`.
-For a quick overview, see
-`ROCm Compute Profiler at a glance <https://rocm.docs.amd.com/projects/rocprofiler-compute/en/compute-profiler-overview/quick-reference/rocprofiler-compute-at-a-glance.html>`__.
+For an overview, see
+:doc:`What is ROCm Compute Profiler? <rocprofiler-compute:what-is-rocprof-compute>`.
 
 AMD Instinct GPUs expose hundreds of PMU counters across dozens of hardware
 blocks (compute units, L1 cache, L2 cache, HBM controllers, shader processor
@@ -255,8 +255,8 @@ All user-facing tools depend directly on ``rocprofiler-sdk``.
 sources for its cross-domain instrumentation capabilities.
 
 .. image:: /data/components/ROCm_profiling_dependency_graph.png
-   :alt: Dependency graph showing all ROCm profiling tools built on rocprofiler-sdk and the ROCm runtime layer
-   :width: 100%
+   :alt: Dependency graph showing all ROCm profiling tools built on ROCprofiler-SDK and the ROCm runtime layer
+   :width: 150%
    :align: center
 
 The following table lists the direct dependencies and additional runtime

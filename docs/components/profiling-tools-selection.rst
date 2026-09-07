@@ -74,10 +74,10 @@ the corresponding tool section for details.
      - ``rocprofv3-avail``
      - Lists all counters and derived metrics for installed hardware.
    * - How do I build a custom profiler?
-     - rocprofiler-sdk
+     - ROCprofiler-SDK
      - Low-level C API for full control over tracing and counter collection.
    * - How do I add GPU support to an existing observability tool?
-     - rocprofiler-sdk
+     - ROCprofiler-SDK
      - Integration API for third-party tools and frameworks.
 
 .. _selection-by-level:
@@ -249,10 +249,10 @@ have ROCm installed. Common use cases include:
 
 .. _selection-rocprofiler-sdk:
 
-rocprofiler-sdk
+ROCprofiler-SDK
 ---------------
 
-Use rocprofiler-sdk directly when the higher-level tools don't meet your
+Use ROCprofiler-SDK directly when the higher-level tools don't meet your
 needs. Common use cases include:
 
 * Building a new profiling or tracing tool from scratch.
