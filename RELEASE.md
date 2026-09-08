@@ -689,7 +689,7 @@ The problem occurs when attempting to debug a program that contains code that ru
  
 The ROCR Debug Agent might also become unresponsive when attempting to capture data from a program that is experiencing queue errors, memory faults, or other triggering events.
  
-For a detailed workaround, see the [Installation troubleshooting](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/install-faq.html#issue-10-rocm-debugging-tools-might-become-unresponsive-in-selinux-enabled-distributions) documentation. This issue will be fixed in a future ROCm release. See [GitHub issue #5498](https://github.com/ROCm/ROCm/issues/5498).
+For a detailed workaround, see the [Installation troubleshooting](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/install-faq.html#issue-10-rocm-debugging-tools-might-become-unresponsive-in-selinux-enabled-distributions) documentation. This issue will be fixed in a future ROCm release. See [GitHub issue #7883](https://github.com/ROCm/TheRock/issues/7883).
 
 ### MIGraphX Python API will fail when running on Python 3.13
 
@@ -698,7 +698,7 @@ Applications using the MIGraphX Python API will fail when running on Python 3.13
 ```
 ls -l /opt/rocm-7.0.0/lib/libmigraphx_py_*.so
 ```
-The issue will be resolved in a future ROCm release. See [GitHub issue #5500](https://github.com/ROCm/ROCm/issues/5500).
+The issue will be resolved in a future ROCm release. See [GitHub issue #7884](https://github.com/ROCm/TheRock/issues/7884).
 
 ### Applications using OpenCV might fail due to package incompatibility between the OS
 
