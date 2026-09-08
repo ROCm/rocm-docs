@@ -659,12 +659,17 @@ Use the following instructions to install ROCm ASAN packages on your system.
          mkdir install
          tar -xf *.tar.gz -C install
 
-.. selected:: i=tar
-   :heading: Post-installation
-   :heading-level: 3
+.. _rocm-asan-install-post:
 
-   After installing ROCm ASAN 10.0.0, complete these post-installation steps to
-   configure your system and validate the installation.
+Post-installation
+=================
+
+After installing ROCm ASAN 10.0.0, complete these post-installation steps to
+configure your system and validate the installation.
+
+.. selected:: i=tar
+   :heading: Configure your environment
+   :heading-level: 3
 
    Configure environment variables so that ROCm ASAN libraries and tools are
    available either to all users on the system or only to your user account.
@@ -708,21 +713,24 @@ Use the following instructions to install ROCm ASAN packages on your system.
             EOF
             source ~/.bashrc
 
-   Use the following ROCm tools to verify that ROCm ASAN is correctly installed
-   and that your AMD devices are visible to the system.
+Verify your installation
+------------------------
 
-   Use ``rocminfo`` to list detected AMD GPUs and confirm that the ROCm runtimes
-   and drivers are correctly installed and loaded:
+Use the following ROCm tools to verify that ROCm ASAN is correctly installed
+and that your AMD devices are visible to the system.
 
-   .. code-block:: bash
+Use ``rocminfo`` to list detected AMD GPUs and confirm that the ROCm runtimes
+and drivers are correctly installed and loaded:
 
-      rocminfo
+.. code-block:: bash
 
-   Use the AMD SMI CLI ``amd-smi`` to validate system information:
+   rocminfo
 
-   .. code-block:: bash
+Use the AMD SMI CLI ``amd-smi`` to validate system information:
 
-      amd-smi version
+.. code-block:: bash
+
+   amd-smi version
 
 ----
 
