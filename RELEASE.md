@@ -831,7 +831,7 @@ See the full [AMD SMI changelog](https://github.com/ROCm/amdsmi/blob/release/roc
 
 ## ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
 ### RCCL performance degradation on AMD Instinct MI300X GPU with AMD Pollara AI NIC
@@ -844,7 +844,7 @@ Training models `tf2_tfm_resnet50_fp16_train` and `tf2_tfm_resnet50_fp32_train`
 might fail with a segmentation fault when run on the TensorFlow 2.20.0 Docker
 image with ROCm 7.1.1. As a workaround, use TensorFlow 2.19.x Docker image for
 training the models in ROCm 7.1.1. This issue will be fixed in a future ROCm
-release. See [GitHub issue #5718](https://github.com/ROCm/ROCm/issues/5718).
+release. See [GitHub issue #7887](https://github.com/ROCm/TheRock/issues/7887).
 
 ### AMD SMI CLI triggers repeated kernel errors on GPUs with partitioning support
 
@@ -867,7 +867,7 @@ be fixed in a future ROCm release. See [GitHub issue #5720](https://github.com/R
 
 ### Excessive bad page logs in AMD GPU Driver (amdgpu)
 
-Due to partial data corruption in the Electrically Erasable Programmable Read-Only Memory (EEPROM) and limited error handling in the AMD GPU Driver (amdgpu), excessive log output might occur when querying the reliability, availability, and serviceability (RAS) bad pages. This issue will be fixed in a future AMD GPU Driver (amdgpu) and ROCm release. See [GitHub issue #5719](https://github.com/ROCm/ROCm/issues/5719).
+Due to partial data corruption in the Electrically Erasable Programmable Read-Only Memory (EEPROM) and limited error handling in the AMD GPU Driver (amdgpu), excessive log output might occur when querying the reliability, availability, and serviceability (RAS) bad pages. This issue will be fixed in a future AMD GPU Driver (amdgpu) and ROCm release. See [GitHub issue #7888](https://github.com/ROCm/TheRock/issues/7888).
 
 ### Incorrect results in gemm_ex operations for rocBLAS and hipBLAS
 
@@ -875,7 +875,7 @@ Some `gemm_ex` operations with 8-bit input data types (`int8`, `float8`, `bfloat
 
 ### hipBLASLt performance variation for a particular FP8 GEMM operation on AMD Instinct MI325X GPUs
 
-If you’re using hipBLASLt on AMD Instinct MI325X GPUs for large FP8 GEMM operations (such as 9728x8192x65536), you might observe a noticeable performance variation. The issue is currently under investigation and will be fixed in a future ROCm release. See [GitHub issue #5734](https://github.com/ROCm/ROCm/issues/5734).
+If you’re using hipBLASLt on AMD Instinct MI325X GPUs for large FP8 GEMM operations (such as 9728x8192x65536), you might observe a noticeable performance variation. The issue is currently under investigation and will be fixed in a future ROCm release. See [GitHub issue #7889](https://github.com/ROCm/TheRock/issues/7889).
 
 ## ROCm resolved issues
 
