@@ -2666,24 +2666,24 @@ The previous default accumulator types could lead to situations in which unexpec
 
 ### ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
 #### A memory error in the kernel might lead to applications using the ROCr library becoming unresponsive
 
-Applications using the ROCr library might become unresponsive if a memory error occurs in the launched kernel when the queue from which it was launched is destroyed. The application is unable to receive further signal, resulting in the stall condition. The issue will be fixed in a future ROCm release. See [GitHub issue #5334](https://github.com/ROCm/ROCm/issues/5334).
+Applications using the ROCr library might become unresponsive if a memory error occurs in the launched kernel when the queue from which it was launched is destroyed. The application is unable to receive further signal, resulting in the stall condition. The issue will be fixed in a future ROCm release. See [GitHub issue #7876](https://github.com/ROCm/TheRock/issues/7876).
 
 #### Applications using stream capture APIs might fail during stream capture
 
-Applications using ``hipLaunchHostFunc`` with stream capture APIs might fail to capture graphs during stream capture, and return `hipErrorStreamCaptureUnsupported`. This issue resulted from an update in ``hipStreamAddCallback``. This issue will be fixed in a future ROCm release. See [GitHub issue #5337](https://github.com/ROCm/ROCm/issues/5337).
+Applications using ``hipLaunchHostFunc`` with stream capture APIs might fail to capture graphs during stream capture, and return `hipErrorStreamCaptureUnsupported`. This issue resulted from an update in ``hipStreamAddCallback``. This issue will be fixed in a future ROCm release. See [GitHub issue #7877](https://github.com/ROCm/TheRock/issues/7877).
 
 #### Compilation failure via hipRTC when compiling with std=c++11
 
-Applications compiling kernels using `hipRTC` might fail while passing the `std=c++11` compiler option. This issue will be fixed in a future ROCm release. See [GitHub issue #5341](https://github.com/ROCm/ROCm/issues/5341).
+Applications compiling kernels using `hipRTC` might fail while passing the `std=c++11` compiler option. This issue will be fixed in a future ROCm release. See [GitHub issue #7879](https://github.com/ROCm/TheRock/issues/7879).
 
 #### Compilation failure when referencing std::array if _GLIBCXX_ASSERTIONS is defined
 
-Compiling from a device kernel or function results in failure when attempting to reference `std::array` if `_GLIBCXX_ASSERTIONS` is defined. The issue occurs because there's no device definition for `std::__glibcxx_asert_fail()`. This issue will be resolved in a future ROCm release with the implementation of `std::__glibcxx_assert_fail()`. See [GitHub issue #5342](https://github.com/ROCm/ROCm/issues/5342).
+Compiling from a device kernel or function results in failure when attempting to reference `std::array` if `_GLIBCXX_ASSERTIONS` is defined. The issue occurs because there's no device definition for `std::__glibcxx_asert_fail()`. This issue will be resolved in a future ROCm release with the implementation of `std::__glibcxx_assert_fail()`. See [GitHub issue #7878](https://github.com/ROCm/TheRock/issues/7878).
 
 #### Segmentation fault in ROCprofiler-SDK due to ABI mismatch affecting std::regex
 
@@ -2691,7 +2691,7 @@ Starting with GCC 5.1, GNU `libstdc++` introduced a dual Application Binary Inte
 
 #### Decline in performance of batched GEMM operation for applications using hipBLASLT kernels
 
-Default batched General Matrix Multiplications (GEMM) operations for rocBLAS and hipBLAS on gfx1200 and gfx1201 may have a decline in performance in comparison with non-batched and strided_batched GEMM operations. By default, the batched GEMM uses hipBLASLT kernels, and switching to the Tensile kernel resolves the performance decline issue. The issue will be fixed in a future ROCm release. As a workaround, you can set the environment variable `ROCBLAS_USE_HIPBLASLT=0` before the batched GEMM operation is performed on gfx1200 and gfx1201. After completing the batched operation, reset the variable to `ROCBLAS_USE_HIPBLASLT=1` before calling non-batched or strided_batched operations. See [GitHub issue #5344](https://github.com/ROCm/ROCm/issues/5344).
+Default batched General Matrix Multiplications (GEMM) operations for rocBLAS and hipBLAS on gfx1200 and gfx1201 may have a decline in performance in comparison with non-batched and strided_batched GEMM operations. By default, the batched GEMM uses hipBLASLT kernels, and switching to the Tensile kernel resolves the performance decline issue. The issue will be fixed in a future ROCm release. As a workaround, you can set the environment variable `ROCBLAS_USE_HIPBLASLT=0` before the batched GEMM operation is performed on gfx1200 and gfx1201. After completing the batched operation, reset the variable to `ROCBLAS_USE_HIPBLASLT=1` before calling non-batched or strided_batched operations. See [GitHub issue #7881](https://github.com/ROCm/TheRock/issues/7881).
 
 #### Failure to declare out-of-bound CPERs for bad memory page
 
