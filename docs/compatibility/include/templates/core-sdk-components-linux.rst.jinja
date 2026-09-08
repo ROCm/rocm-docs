@@ -35,7 +35,8 @@
   Its show-cond = union of all distinct tokens from all item cells in the group.
   Browsers correctly handle rowspan over display:none rows.
 #}
-{%- set defaults = load("/data/components-default.yaml") -%}
+{%- set defaults  = load("/data/components-default.yaml") -%}
+{%- set gpus_data = load("/data/gpus.yaml") -%}
 {%- set current  = data -%}
 {%- set meta     = current.rocm_core_sdk.meta -%}
 {%- set tag      = meta.release_tag -%}
@@ -60,10 +61,39 @@
 {%- endif -%}
 {%- endmacro -%}
 
-{#-- Build gfx= show-cond string from a list of gfx values --#}
+{#-- slugify: "AMD Ryzen AI 9 HX 370" -> "amd-ryzen-ai-9-hx-370" --#}
+{%- macro slugify(name) -%}
+{{- name | lower | replace("+", "") | replace("  ", " ") | replace(" ", "-") -}}
+{%- endmacro -%}
+
+{#-- Tokens for a single gfx list item.
+     Plain string or mapping-without-codename → "gfx=<id>".
+     Mapping-with-codename → "gpu=<slug> ..." for each matching GPU in gpus.yaml. --#}
+{%- macro gfx_item_tokens(g) -%}
+{%- if g is mapping and g.codename is defined -%}
+{%- set ns_m = namespace(parts=[]) -%}
+{%- for fam_name, fam in gpus_data.items() if fam is mapping -%}
+{%- for gpu_name, gpu in fam.items() if gpu is mapping and gpu.gfx is defined and gpu.gfx == g.gfx and gpu.codename is defined and gpu.codename == g.codename -%}
+{%- set _ = ns_m.parts.append("gpu=" ~ slugify(gpu_name)) -%}
+{%- endfor -%}
+{%- endfor -%}
+{%- if ns_m.parts -%}{{ ns_m.parts | join(" ") }}{%- else -%}gfx={{ g.gfx }}{%- endif -%}
+{%- elif g is mapping -%}
+gfx={{ g.gfx }}
+{%- else -%}
+gfx={{ g }}
+{%- endif -%}
+{%- endmacro -%}
+
+{#-- Build show-cond token string from a gfx list.
+     Items may be plain strings or {gfx, codename?, note?} mappings. --#}
 {%- macro gfx_sc(gfx_list) -%}
 {%- set parts = [] -%}
-{%- for g in gfx_list %}{%- set _ = parts.append("gfx=" ~ g) %}{%- endfor -%}
+{%- for g in gfx_list -%}
+  {%- for tok in (gfx_item_tokens(g) | trim).split() -%}
+    {%- set _ = parts.append(tok) -%}
+  {%- endfor -%}
+{%- endfor -%}
 {{ parts | join(" ") }}
 {%- endmacro -%}
 
@@ -106,16 +136,14 @@
       {%- set _ = ns_cells.cells.append("fam=instinct fam=ryzen") -%}
     {%- elif i_bool and r_bool and y_gfx -%}
       {%- set _ = ns_cells.cells.append("fam=instinct fam=radeon") -%}
-      {%- set _ = ns_cells.cells.append(gfx_sc(y_val) | trim) -%}
+      {%- for g in y_val %}{%- set _ = ns_cells.cells.append(gfx_item_tokens(g) | trim) %}{%- endfor -%}
     {%- elif i_bool and y_gfx and not (sup.radeon is defined) -%}
       {%- set _ = ns_cells.cells.append("fam=instinct") -%}
-      {%- set _ = ns_cells.cells.append(gfx_sc(y_val) | trim) -%}
+      {%- for g in y_val %}{%- set _ = ns_cells.cells.append(gfx_item_tokens(g) | trim) %}{%- endfor -%}
     {%- elif i_gfx or r_gfx or y_gfx -%}
-      {%- set parts = [] -%}
-      {%- if i_gfx %}{%- for g in i_val %}{%- set _ = parts.append("gfx=" ~ g) %}{%- endfor %}{%- endif -%}
-      {%- if r_gfx %}{%- for g in r_val %}{%- set _ = parts.append("gfx=" ~ g) %}{%- endfor %}{%- endif -%}
-      {%- if y_gfx %}{%- for g in y_val %}{%- set _ = parts.append("gfx=" ~ g) %}{%- endfor %}{%- endif -%}
-      {%- set _ = ns_cells.cells.append(parts | join(" ")) -%}
+      {%- if i_gfx %}{%- for g in i_val %}{%- set _ = ns_cells.cells.append(gfx_item_tokens(g) | trim) %}{%- endfor %}{%- endif -%}
+      {%- if r_gfx %}{%- for g in r_val %}{%- set _ = ns_cells.cells.append(gfx_item_tokens(g) | trim) %}{%- endfor %}{%- endif -%}
+      {%- if y_gfx %}{%- for g in y_val %}{%- set _ = ns_cells.cells.append(gfx_item_tokens(g) | trim) %}{%- endfor %}{%- endif -%}
     {%- else -%}
       {%- set _ = ns_cells.cells.append("") -%}
     {%- endif -%}
@@ -167,7 +195,7 @@
   {%- endfor -%}
 {%- endfor -%}
 {%- if not ns_always.found -%}
-{%- set ns_t = namespace(tokens=[], has_fam=false, has_gfx=false) -%}
+{%- set ns_t = namespace(tokens=[], has_fam=false, has_gfx=false, has_gpu=false) -%}
 {%- for it in b_items -%}
   {%- for sc in it.cells -%}
     {%- for tok in sc.split() -%}
@@ -176,10 +204,12 @@
       {%- endif -%}
       {%- if tok.startswith("fam=") -%}{%- set ns_t.has_fam = true -%}{%- endif -%}
       {%- if tok.startswith("gfx=") -%}{%- set ns_t.has_gfx = true -%}{%- endif -%}
+      {%- if tok.startswith("gpu=") -%}{%- set ns_t.has_gpu = true -%}{%- endif -%}
     {%- endfor -%}
   {%- endfor -%}
 {%- endfor -%}
-{%- if not (ns_t.has_fam and ns_t.has_gfx) -%}
+{%- set key_count = (1 if ns_t.has_fam else 0) + (1 if ns_t.has_gfx else 0) + (1 if ns_t.has_gpu else 0) -%}
+{%- if key_count <= 1 -%}
 {{ ns_t.tokens | join(" ") }}
 {%- endif -%}
 {%- endif -%}

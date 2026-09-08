@@ -54,12 +54,13 @@
   {%- set rk_ser = parts[0] -%}
   {%- set rk_gfx = parts[1] -%}
   {%- set devices = [] -%}
-  {%- set ns_r = namespace(ser_mkt="", arch_name="", arch_mkt="") -%}
+  {%- set ns_r = namespace(ser_mkt="", arch_name="", arch_mkt="", codename="") -%}
   {%- for gpu_name, gpu in family.items() -%}
     {%- if gpu.series.name == rk_ser and gpu.gfx == rk_gfx -%}
       {%- if gpu.series.mkt_page is defined -%}{%- set ns_r.ser_mkt  = gpu.series.mkt_page -%}{%- endif -%}
       {%- set ns_r.arch_name = gpu.arch.name -%}
       {%- if gpu.arch.mkt_page is defined -%}{%- set ns_r.arch_mkt = gpu.arch.mkt_page -%}{%- endif -%}
+      {%- if gpu.codename is defined -%}{%- set ns_r.codename = gpu.codename -%}{%- endif -%}
       {%- set igpu = gpu.igpu if gpu.igpu is defined else "" -%}
       {%- set _ = devices.append({"name": gpu_name, "mkt_page": gpu.mkt_page, "igpu": igpu}) -%}
     {%- endif -%}
@@ -72,6 +73,7 @@
     "gfx":         rk_gfx,
     "arch_name":   ns_r.arch_name,
     "arch_mkt":    ns_r.arch_mkt,
+    "codename":    ns_r.codename,
     "devices":     devices
   }) -%}
 {%- endfor -%}
@@ -113,7 +115,7 @@
     <tr>
       <th class="head"><p>Device series</p></th>
       <th class="head"><p>Device</p></th>
-      <th class="head"><p>LLVM target</p></th>
+      <th class="head"><p>LLVM target / codename</p></th>
       <th class="head"><p>Architecture</p></th>
     </tr>
   </thead>
@@ -132,7 +134,7 @@
         <p><a href="{{ device.mkt_page }}" target="_blank">{{ device.name | replace("AMD ", "") }}</a>{% if device.igpu %} ({{ device.igpu }}){% endif %}</p>
 {%- endfor %}
       </td>
-      <td><p>{{ row.gfx }}</p></td>
+      <td><strong>{{ row.gfx }}</strong>{% if row.codename %}<p>{{ row.codename }}</p>{% endif %}</td>
 {%- if meta.arch_start %}
       <td{% if meta.arch_span > 1 %} rowspan="{{ meta.arch_span }}"{% endif %}>
         {%- if row.arch_mkt %}<a href="{{ row.arch_mkt }}" target="_blank">{{ row.arch_name }}</a>

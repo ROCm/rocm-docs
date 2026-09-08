@@ -33,6 +33,10 @@
   {%- if items -%}{%- set _ = grouped.append((group, items)) -%}{%- endif -%}
 {%- endfor -%}
 
+{#- fmt_gfx: formats a gfx list item as a display string.
+    Accepts a plain string (gfx ID) or a mapping {gfx, codename?, note?}. -#}
+{%- macro fmt_gfx(g) -%}{%- if g is mapping -%}{{ g.gfx }}{%- if g.codename is defined %} ({{ g.codename }} only){%- elif g.note is defined %} ({{ g.note }}){%- endif -%}{%- else -%}{{ g }}{%- endif -%}{%- endmacro -%}
+
 {%- macro anchor_id(name, version) -%}
 {{- (name | lower | replace(" ", "-")) -}}-{{- (version | string | replace(".", "-")) -}}
 {%- endmacro -%}
@@ -53,19 +57,19 @@
     {%- if support.linux.instinct is defined -%}
       {%- set ns.instinct = true -%}
       {%- if support.linux.instinct is not sameas true -%}
-        {%- for g in support.linux.instinct -%}{%- if g not in gpu_list -%}{%- set _ = gpu_list.append(g) -%}{%- endif -%}{%- endfor -%}
+        {%- for g in support.linux.instinct -%}{%- set entry = fmt_gfx(g) | trim -%}{%- if entry not in gpu_list -%}{%- set _ = gpu_list.append(entry) -%}{%- endif -%}{%- endfor -%}
       {%- endif -%}
     {%- endif -%}
     {%- if support.linux.radeon is defined -%}
       {%- set ns.radeon = true -%}
       {%- if support.linux.radeon is not sameas true -%}
-        {%- for g in support.linux.radeon -%}{%- if g not in gpu_list -%}{%- set _ = gpu_list.append(g) -%}{%- endif -%}{%- endfor -%}
+        {%- for g in support.linux.radeon -%}{%- set entry = fmt_gfx(g) | trim -%}{%- if entry not in gpu_list -%}{%- set _ = gpu_list.append(entry) -%}{%- endif -%}{%- endfor -%}
       {%- endif -%}
     {%- endif -%}
     {%- if support.linux.ryzen is defined -%}
       {%- set ns.ryzen = true -%}
       {%- if support.linux.ryzen is not sameas true -%}
-        {%- for g in support.linux.ryzen -%}{%- if g not in gpu_list -%}{%- set _ = gpu_list.append(g) -%}{%- endif -%}{%- endfor -%}
+        {%- for g in support.linux.ryzen -%}{%- set entry = fmt_gfx(g) | trim -%}{%- if entry not in gpu_list -%}{%- set _ = gpu_list.append(entry) -%}{%- endif -%}{%- endfor -%}
       {%- endif -%}
     {%- endif -%}
   {%- endif -%}
