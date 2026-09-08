@@ -1437,7 +1437,7 @@ For detailed instructions, see [Install the Python library for multiple ROCm ins
 
 ### Intermittent errors when running JAX workloads
 
-You might experience intermittent errors or segmentation faults when running JAX workloads. The issue is currently under investigation and will be addressed in an upcoming ROCm release. See [GitHub issue #5878](https://github.com/ROCm/TheRock/issues/7891).
+You might experience intermittent errors or segmentation faults when running JAX workloads. The issue is currently under investigation and will be addressed in an upcoming ROCm release. See [GitHub issue #7891](https://github.com/ROCm/TheRock/issues/7891).
 
 ### hipBLASLt performance variation for a particular FP8 GEMM operation on AMD Instinct MI325X GPUs
 
