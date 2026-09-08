@@ -18,9 +18,9 @@ GPU architectures and can be installed using the package manager or a tarball.
 
    - ASAN builds are only available for ``gfx942`` and ``gfx950`` architectures,
      plus a multiarch build (``all``, both gfx942 and gfx950).
-   - ASAN packages use the naming convention ``amdrocm-asan10.0`` or
+   - ASAN rpm and debian packages use the naming convention ``amdrocm-asan10.0`` or
      ``amdrocm-asan10.0-gfxXYZ``.
-   - ASAN packages install to ``/opt/rocm/core-asan-10.0``, separate from
+   - ASAN rpm and debian packages install to ``/opt/rocm/core-asan-10.0``, separate from
      regular ROCm installations at ``/opt/rocm/core-10.0``.
 
 ----
