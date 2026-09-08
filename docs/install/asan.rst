@@ -696,22 +696,48 @@ configure your system and validate the installation.
       .. tab-item:: User setup
 
          Configure the ROCm environment for your user by updating your shell
-         startup configuration file (``~/.bashrc`` or ``~/.profile``). Make sure
-         you're in the ``therock-tarball`` directory so the install path
-         resolves correctly.
+         startup configuration file.
 
-         .. code-block:: bash
+         Use the following commands to update your shell configuration file
+         (``~/.bashrc`` or ``~/.profile``) and add ROCm to your PATH. Before
+         proceeding, make sure you're in the ``therock-tarball`` directory so
+         the install path resolves correctly.
 
-            ROCM_INSTALL_PATH=$(pwd)/install
-            tee --append ~/.bashrc << EOF
+         .. tab-set::
 
-            # BEGIN ROCm environment configuration
-            export ROCM_PATH=$ROCM_INSTALL_PATH
-            export PATH=\$PATH:\$ROCM_PATH/bin
-            export LD_LIBRARY_PATH=\$ROCM_PATH/lib
-            # END ROCm environment configuration
-            EOF
-            source ~/.bashrc
+            .. tab-item:: .bashrc
+               :sync: bashrc
+
+               .. code-block:: bash
+
+                  # Configure ROCm PATH. Make sure you're in the therock-tarball directory before proceeding.
+                  ROCM_INSTALL_PATH=$(pwd)/install
+                  tee --append ~/.bashrc << EOF
+
+                  # BEGIN ROCm environment configuration
+                  export ROCM_PATH=$ROCM_INSTALL_PATH
+                  export PATH=\$PATH:\$ROCM_PATH/bin
+                  export LD_LIBRARY_PATH=\$ROCM_PATH/lib
+                  # END ROCm environment configuration
+                  EOF
+                  source ~/.bashrc
+
+            .. tab-item:: .profile
+               :sync: profile
+
+               .. code-block:: bash
+
+                  # Configure ROCm PATH. Make sure you're in the therock-tarball directory before proceeding.
+                  ROCM_INSTALL_PATH=$(pwd)/install
+                  tee --append ~/.profile << EOF
+
+                  # BEGIN ROCm environment configuration
+                  export ROCM_PATH=$ROCM_INSTALL_PATH
+                  export PATH=\$PATH:\$ROCM_PATH/bin
+                  export LD_LIBRARY_PATH=\$ROCM_PATH/lib
+                  # END ROCm environment configuration
+                  EOF
+                  source ~/.profile
 
 Verify your installation
 ------------------------
