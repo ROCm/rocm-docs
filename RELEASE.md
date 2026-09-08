@@ -555,7 +555,7 @@ See the full [ROCm SMI changelog](https://github.com/ROCm/rocm_smi_lib/blob/rele
 
 ## ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
 ### Radeon AI PRO R9700 hangs when running Stable Diffusion 2.1 at batch sizes above four
@@ -563,12 +563,12 @@ issues related to individual components, review the [Detailed component changes]
 Radeon AI PRO R9700 GPUs might hang when running [Stable Diffusion
 2.1](https://huggingface.co/stabilityai/stable-diffusion-2-1) with batch sizes
 greater than four. As a workaround, limit batch sizes to four or fewer. This issue
-will be addressed in a future ROCm release. See [issue #4770](https://github.com/ROCm/ROCm/issues/4770) on GitHub.
+will be addressed in a future ROCm release. See [issue #7875](https://github.com/ROCm/TheRock/issues/7875) on GitHub.
 
 ### RCCL MSCCL initialization failure
 
 When splitting a communicator using `ncclCommSplit` in some GPU configurations, MSCCL initialization can cause a segmentation fault. The recommended workaround is to disable MSCCL with `export RCCL_MSCCL_ENABLE=0`.
-This issue will be fixed in a future ROCm release. See [issue #4769](https://github.com/ROCm/ROCm/issues/4769) on GitHub.
+This issue will be fixed in a future ROCm release. See [issue #7874](https://github.com/ROCm/TheRock/issues/7874) on GitHub.
 
 ### AMD SMI CLI: CPER entries not dumped continuously when using follow flag
 
@@ -585,7 +585,7 @@ See [issue #4768](https://github.com/ROCm/ROCm/issues/4768) on GitHub.
   with `dnf remove rocm-core` on RHEL or `zypper remove rocm-core` on SLES.
 
 As a workaround, manually remove the `rocm-smi-lib` package using `sudo dnf remove rocm-smi-lib` or `sudo zypper remove rocm-smi-lib`.
-See [issue #4767](https://github.com/ROCm/ROCm/issues/4767) on GitHub.
+See [issue #7873](https://github.com/ROCm/TheRock/issues/7873) on GitHub.
 
 ## ROCm upcoming changes
 
