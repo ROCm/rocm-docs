@@ -1408,7 +1408,7 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 
 ## ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
 ### ROCm multi-version installation might cause amd-smi CLI failure
@@ -1433,11 +1433,11 @@ python3 -m pip install --user .
 `sudo` might be required. Use flag `--break-system-packages` if `pip un/installation` fails.
 ```
 
-For detailed instructions, see [Install the Python library for multiple ROCm instances](https://rocm.docs.amd.com/projects/amdsmi/en/latest/install/install.html#install-the-python-library-for-multiple-rocm-instances). The issue will be fixed in a future ROCm release. See [GitHub issue #5875](https://github.com/ROCm/ROCm/issues/5875).
+For detailed instructions, see [Install the Python library for multiple ROCm instances](https://rocm.docs.amd.com/projects/amdsmi/en/latest/install/install.html#install-the-python-library-for-multiple-rocm-instances). The issue will be fixed in a future ROCm release. See [GitHub issue #7890](https://github.com/ROCm/TheRock/issues/7890).
 
 ### Intermittent errors when running JAX workloads
 
-You might experience intermittent errors or segmentation faults when running JAX workloads. The issue is currently under investigation and will be addressed in an upcoming ROCm release. See [GitHub issue #5878](https://github.com/ROCm/ROCm/issues/5878).
+You might experience intermittent errors or segmentation faults when running JAX workloads. The issue is currently under investigation and will be addressed in an upcoming ROCm release. See [GitHub issue #5878](https://github.com/ROCm/TheRock/issues/7891).
 
 ### hipBLASLt performance variation for a particular FP8 GEMM operation on AMD Instinct MI325X GPUs
 
