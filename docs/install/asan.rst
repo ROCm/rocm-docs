@@ -5,33 +5,23 @@
 :selector-toc2: Installation environment
 :selector-toc2-icon: fa-solid fa-computer
 
-**********************************************
-Install AMD ROCm with ASAN (AddressSanitizer)
-**********************************************
+***************************
+Install AMD ROCm with ASAN
+***************************
 
 .. _rocm-asan-install:
 
 ASAN (AddressSanitizer) builds of ROCm are available for specific AMD Instinct
 GPU architectures and can be installed using the package manager or a tarball.
-ASAN-instrumented libraries help you detect memory errors such as out-of-bounds
-accesses and use-after-free bugs in applications that use ROCm.
 
-ASAN packages install to ``/opt/rocm/core-asan-10.0``, separate from a regular
-ROCm installation at ``/opt/rocm/core-10.0``, so you can keep both on the same
-system.
+.. important::
 
-.. note::
-
-   ASAN builds are only available for the ``gfx942`` and ``gfx950``
-   architectures, plus a multiarch build (``all``) that supports both. ASAN
-   packages use the naming convention ``amdrocm-<component>-asan10.0`` or
-   ``amdrocm-<component>-asan10.0-gfx<XYZ>`` for architecture-specific builds.
-
-Before installing ROCm ASAN, make sure your system meets the ROCm hardware,
-software, and driver requirements. For instructions, see the
-:ref:`ROCm installation prerequisites <rocm-prerequisites>`. For system
-requirements and support information, see the :doc:`Compatibility matrix
-</compatibility/compatibility-matrix>`.
+   - ASAN builds are only available for ``gfx942`` and ``gfx950`` architectures,
+     plus a multiarch build (``all``, both gfx942 and gfx950).
+   - ASAN packages use the naming convention ``amdrocm-asan10.0`` or
+     ``amdrocm-asan10.0-gfxXYZ``.
+   - ASAN packages install to ``/opt/rocm/core-asan-10.0``, separate from
+     regular ROCm installations at ``/opt/rocm/core-10.0``.
 
 ----
 
@@ -220,6 +210,15 @@ and installation method.
 
 ----
 
+.. _rocm-asan-install-prerequisites:
+
+Prerequisites
+=============
+
+Before installing ROCm ASAN, make sure your system meets the ROCm hardware, software, and driver requirements. For more information, see :doc:`Install AMD ROCm <rocm>`. 
+
+For system requirements and support information, see the :doc:`Compatibility matrix </compatibility/compatibility-matrix>`.
+
 .. _rocm-asan-install-rocm:
 
 Install ROCm ASAN
@@ -233,8 +232,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
    :heading: Register ROCm repositories
    :heading-level: 3
 
-   Register the ASAN ROCm repository with your system's package manager. This
-   lets you install and update ROCm ASAN packages.
+   Complete the ROCm installation prerequisites to install dependencies and configure GPU access permissions before proceeding.
 
    .. selected:: os=ubuntu
 
