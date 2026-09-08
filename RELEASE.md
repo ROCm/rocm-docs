@@ -1574,7 +1574,7 @@ and in-depth descriptions.
 
 ## ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
 ### Systems with a display GPU and eight AMD Instinct MI300 series GPUs reboot when loading the AMDGPU driver
@@ -1610,7 +1610,7 @@ In ROCm 6.4.0, it’s not recommended to use the `--kokkos-trace` option. `--kok
 
 ### Compute partition modification is restricted with concurrent operations running in parallel
  
-Modification to compute partition in GPU is prohibited by design while concurrent operations run in parallel. You must ensure no concurrent operations on the device are running when attempting to modify the compute partitions. Additional checks and error messaging to inform users of correct operation for partition modification are planned for future ROCm releases. See [GitHub issue #4605](https://github.com/ROCm/ROCm/issues/4605).
+Modification to compute partition in GPU is prohibited by design while concurrent operations run in parallel. You must ensure no concurrent operations on the device are running when attempting to modify the compute partitions. Additional checks and error messaging to inform users of correct operation for partition modification are planned for future ROCm releases. See [GitHub issue #4605](https://github.com/ROCm/TheRock/issues/7866).
 
 ### MIOpen generates incorrect results for particular input with FP32 data type
 
@@ -1643,7 +1643,7 @@ See [GitHub issue #4610](https://github.com/ROCm/ROCm/issues/4610).
 
 ### Rare occurrence of AMDGPU driver failing to load in a VM on Quanta system
 
-In a rare occurrence (1 in 500 reboots), the guest kernel might display the call trace due to the AMDGPU driver failing to load in a repeated power cycle virtual machine (VM) on a Quanta system. This issue will limit you from using the AMD GPUs in the guest kernel. As a workaround, reboot the VM to avoid the failure. See [GitHub issue #4611](https://github.com/ROCm/ROCm/issues/4611).
+In a rare occurrence (1 in 500 reboots), the guest kernel might display the call trace due to the AMDGPU driver failing to load in a repeated power cycle virtual machine (VM) on a Quanta system. This issue will limit you from using the AMD GPUs in the guest kernel. As a workaround, reboot the VM to avoid the failure. See [GitHub issue #7867](https://github.com/ROCm/TheRock/issues/7867).
 
 ### Clang compilation failure might occur due to incorrectly installed GNU C++ runtime
 
@@ -1663,19 +1663,19 @@ Alternatively, you can modify the `rocprof` script located at `/opt/rocm-6.x.x/b
 ```
 ROCPROFV1_LD_PRELOAD=$MY_HSA_TOOLS_LIB
 ```
-See [GitHub issue #4613](https://github.com/ROCm/ROCm/issues/4613).
+See [GitHub issue #7868](https://github.com/ROCm/TheRock/issues/7868).
 
 ### Applications using HIP runtime might stop the graph capture process
 
-Applications using the HIP runtime might stop the graph capture process if the HIP runtime detects an invalid stale state from a previous capture on the same HIP stream. Resetting the stale set for every new capture in the HIP runtime can resolve the issue. The issue will be fixed in a future ROCm release. See [GitHub issue #4614](https://github.com/ROCm/ROCm/issues/4614).
+Applications using the HIP runtime might stop the graph capture process if the HIP runtime detects an invalid stale state from a previous capture on the same HIP stream. Resetting the stale set for every new capture in the HIP runtime can resolve the issue. The issue will be fixed in a future ROCm release. See [GitHub issue #7869](https://github.com/ROCm/TheRock/issues/7869).
 
 ### Incorrect computation results in hipBLASLt for specific transpose configuration
 
-When running the hipBLASLt library using the transpose configuration (TT) with FP32 and XF32 data types, you might receive incorrect computation results. As a workaround, select alternative solutions from the list returned by `hipblasLtMatmulAlgoGetHeuristic()`. Verify the result to identify the correct alternative solution. The issue will be fixed in a future ROCm release. See [GitHub issue #4615](https://github.com/ROCm/ROCm/issues/4615).
+When running the hipBLASLt library using the transpose configuration (TT) with FP32 and XF32 data types, you might receive incorrect computation results. As a workaround, select alternative solutions from the list returned by `hipblasLtMatmulAlgoGetHeuristic()`. Verify the result to identify the correct alternative solution. The issue will be fixed in a future ROCm release. See [GitHub issue #7870](https://github.com/ROCm/TheRock/issues/7870).
 
 ### Incorrect result in RCCL when using LL protocol in graph mode with MSCCL++ enabled
 
-In RCCL library, you might receive incorrect results in All-Reduce collective API, when using Link Layer (LL) protocol in graph mode while MSCCL++ is enabled. This issue occurs when the protocal state information are updated in the host-side code instead of in a kernel, which is not supported in graph mode. As a workaround, you can disable MSCCL++ by setting the environment variable `RCCL_MSCCLPP_ENABLE=0`. However, consider that this might negatively impact the performance. The issue will be fixed in a future ROCm release. See [GitHub issue #4616](https://github.com/ROCm/ROCm/issues/4616).
+In RCCL library, you might receive incorrect results in All-Reduce collective API, when using Link Layer (LL) protocol in graph mode while MSCCL++ is enabled. This issue occurs when the protocal state information are updated in the host-side code instead of in a kernel, which is not supported in graph mode. As a workaround, you can disable MSCCL++ by setting the environment variable `RCCL_MSCCLPP_ENABLE=0`. However, consider that this might negatively impact the performance. The issue will be fixed in a future ROCm release. See [GitHub issue #7871](https://github.com/ROCm/TheRock/issues/7871).
 
 ### ROCm installation might fail in some Linux distribution kernels
 
@@ -1683,7 +1683,7 @@ ROCm 6.4.0 might encounter an installation issue on some Linux distribution kern
 
 As a result, the AMD kernel driver Dynamic Kernel Mode Support (DKMS) package might fail to install when the symbols required to use the PeerDirect API with Mellanox NICs are not found. In the event of such a failure, the AMD DKMS package attempts to locate these symbols directly from the Mellanox installation. However, for non-standard Mellanox NIC installations, the AMD DKMS package might not be able to locate these symbols.
 
-This issue will be fixed in a future ROCm release. As a workaround, you can run the script that allows the DKMS package to locate Mellanox symbols from the Mellanox installation without you requiring to update the new DKMS package. For downloading the script and getting more details on the issue and workaround, see [GitHub issue #4671](https://github.com/ROCm/ROCm/issues/4671).
+This issue will be fixed in a future ROCm release. As a workaround, you can run the script that allows the DKMS package to locate Mellanox symbols from the Mellanox installation without you requiring to update the new DKMS package. For downloading the script and getting more details on the issue and workaround, see [GitHub issue #7872](https://github.com/ROCm/TheRock/issues/7872).
 
 ## ROCm resolved issues
 
