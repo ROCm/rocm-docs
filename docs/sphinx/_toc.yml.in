@@ -123,26 +123,23 @@ subtrees:
                         title: LLVM
                 - file: components/profilers-and-debuggers.rst
                   title: Profiling and debugging tools
-                  subtrees:
-                  - caption: "Profiling: Start Here"
-                    entries:
-                        - file: components/profiling-tools-overview.rst
-                          title: ROCm profiling tools overview
-                        - file: components/profiling-tools-selection.rst
-                          title: Choosing the right ROCm profiling tool
-                  - entries:
-                        - url: ${project:rocprofiler-compute}
-                          title: ROCm Compute Profiler (rocprofiler-compute)
-                        - url: ${project:rocprofiler-systems}
-                          title: ROCm Systems Profiler (rocprofiler-systems)
-                        - url: ${project:rocprofiler-sdk}
-                          title: ROCprofiler-SDK
-                        - url: ${project:rocdbgapi}
-                          title: ROCdbgapi
-                        - url: ${project:rocgdb}
-                          title: ROCm Debugger (ROCgdb)
-                        - url: ${project:rocr_debug_agent}
-                          title: ROCR Debug Agent
+                  entries:
+                      - file: components/profiling-tools-overview.rst
+                        title: ROCm profiling tools overview
+                      - file: components/profiling-tools-selection.rst
+                        title: Choosing the right ROCm profiling tool
+                      - url: ${project:rocprofiler-compute}
+                        title: ROCm Compute Profiler (rocprofiler-compute)
+                      - url: ${project:rocprofiler-systems}
+                        title: ROCm Systems Profiler (rocprofiler-systems)
+                      - url: ${project:rocprofiler-sdk}
+                        title: ROCprofiler-SDK
+                      - url: ${project:rocdbgapi}
+                        title: ROCdbgapi
+                      - url: ${project:rocgdb}
+                        title: ROCm Debugger (ROCgdb)
+                      - url: ${project:rocr_debug_agent}
+                        title: ROCR Debug Agent
                 - file: components/control-and-monitoring-tools.rst
                   title: Control and monitoring tools
                   entries:
