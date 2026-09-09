@@ -31,7 +31,7 @@ To edit or add to the documentation, first clone the appropriate repository, ens
 
 | Module | Repository |
 | --- | --- |
-| ROCm stack | [https://github.com/ROCm/legacy-rocm-build](https://github.com/ROCm/legacy-rocm-build) |
+| ROCm stack | [https://github.com/ROCm/rocm-docs](https://github.com/ROCm/rocm-docs) |
 | ROCm libraries | [https://github.com/ROCm/rocm-libraries](https://github.com/ROCm/rocm-libraries) |
 | ROCm systems projects | [https://github.com/ROCm/rocm-systems](https://github.com/ROCm/rocm-systems) |
 
@@ -56,9 +56,9 @@ python3 -m sphinx -T -E -b html -d _build/doctrees -D language=en . _build/html
 The output will be saved to the `docs/_build` folder. Open `docs/_build/html/index.html` to view the documentation.
 
 ```{note}
-If your build returns an error due to missing packages, run 
+If your build returns an error due to missing packages, run
 
-`pip3 install -r sphinx/requirements.txt` 
+`pip3 install -r sphinx/requirements.txt`
 
 This command only needs to be run once.
 ```
