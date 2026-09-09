@@ -780,6 +780,557 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - GFXIP Major version
           - GFXIP Minor version
         *
+          - AMD Ryzen AI Max PRO 390
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max PRO 385
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max PRO 380
+          - Radeon 8040S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max+ PRO 395
+          - Radeon 8060S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 40
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max+ 395
+          - Radeon 8060S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 40
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max+ 392
+          - Radeon 8060S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 40
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max+ 388
+          - Radeon 8060S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 40
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max 390
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max 385
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX PRO 475
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX PRO 470
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 PRO 465
+          - Radeon 880M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 12
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 7 PRO 450
+          - Radeon 860M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 8
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 5 PRO 440
+          - Radeon 840M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX 475
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX 470
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 465
+          - Radeon 880M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 12
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 7 450
+          - Radeon 860M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 8
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX PRO 375
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX PRO 370
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX 375
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX 370
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 365
+          - Radeon 880M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 12
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 7 PRO 350
+          - Radeon 860M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 8
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 7 350
+          - Radeon 860M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 8
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 7 345
+          - Radeon 840M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 5 PRO 340
+          - Radeon 840M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 5 340
+          - Radeon 840M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 5 330
+          - Radeon 820M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 2
+          - 32 or 64
+          - 128
+          - N/A
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 5
+        *
           - AMD Ryzen 7 7840U
           - Radeon 780M
           - RDNA3
@@ -818,12 +1369,12 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 11
           - 0
         *
-          - AMD Ryzen AI 9 HX 375
-          - Radeon 890M
-          - RDNA3.5
-          - gfx1150
+          - AMD Ryzen 7 PRO 250
+          - Radeon 780M
+          - RDNA3
+          - gfx1103
           - Dynamic + carveout
-          - 16
+          - 12
           - 32 or 64
           - 128
           - N/A
@@ -835,37 +1386,56 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 512
           - 32
           - 11
-          - 5
+          - 0
         *
-          - AMD Ryzen AI Max+ PRO 395
-          - Radeon 8060S
-          - RDNA3.5
-          - gfx1151
+          - AMD Ryzen 7 260
+          - Radeon 780M
+          - RDNA3
+          - gfx1103
           - Dynamic + carveout
-          - 40
+          - 12
           - 32 or 64
           - 128
-          - 32
+          - N/A
           - 2
           - 256
           - 32
           - 16
           - 32
-          - 768
+          - 512
           - 32
           - 11
-          - 5
+          - 0
         *
-          - AMD Ryzen AI 7 350
-          - Radeon 860M
-          - RDNA3.5
-          - gfx1152
+          - AMD Ryzen 7 250
+          - Radeon 780M
+          - RDNA3
+          - gfx1103
+          - Dynamic + carveout
+          - 12
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 0
+        *
+          - AMD Ryzen 5 PRO 230
+          - Radeon 760M
+          - RDNA3
+          - gfx1103
           - Dynamic + carveout
           - 8
           - 32 or 64
           - 128
           - N/A
-          - 1
+          - 2
           - 256
           - 32
           - 16
@@ -873,4 +1443,137 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 512
           - 32
           - 11
-          - 5
+          - 0
+        *
+          - AMD Ryzen 5 PRO 220
+          - Radeon 740M
+          - RDNA3
+          - gfx1103
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 0
+        *
+          - AMD Ryzen 5 PRO 215
+          - Radeon 740M
+          - RDNA3
+          - gfx1103
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 0
+        *
+          - AMD Ryzen 5 240
+          - Radeon 760M
+          - RDNA3
+          - gfx1103
+          - Dynamic + carveout
+          - 8
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 0
+        *
+          - AMD Ryzen 5 230
+          - Radeon 760M
+          - RDNA3
+          - gfx1103
+          - Dynamic + carveout
+          - 8
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 0
+        *
+          - AMD Ryzen 5 220
+          - Radeon 740M
+          - RDNA3
+          - gfx1103
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 0
+        *
+          - AMD Ryzen 3 PRO 210
+          - Radeon 740M
+          - RDNA3
+          - gfx1103
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 0
+        *
+          - AMD Ryzen 3 210
+          - Radeon 740M
+          - RDNA3
+          - gfx1103
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - N/A
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 32
+          - 11
+          - 0
