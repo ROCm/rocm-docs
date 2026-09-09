@@ -754,9 +754,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 11
           - 0
 
-  .. tab-item:: AMD Ryzen APUs
-
-    .. list-table::
+  .. list-table::
         :header-rows: 1
         :name: ryzen-arch-spec-table
 
@@ -780,59 +778,59 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - GFXIP Major version
           - GFXIP Minor version
         *
-          - AMD Ryzen 7 7840U
-          - Radeon 780M
-          - RDNA3
-          - gfx1103
-          - Dynamic + carveout
-          - 12
-          - 32 or 64
-          - 128
-          - N/A
-          - 2
-          - 256
-          - 32
-          - 16
-          - 32
-          - 512
-          - 32
-          - 11
-          - 0
-        *
-          - AMD Ryzen 9 270
-          - Radeon 780M
-          - RDNA3
-          - gfx1103
-          - Dynamic + carveout
-          - 12
-          - 32 or 64
-          - 128
-          - N/A
-          - 2
-          - 256
-          - 32
-          - 16
-          - 32
-          - 512
-          - 32
-          - 11
-          - 0
-        *
-          - AMD Ryzen AI 9 HX 375
-          - Radeon 890M
+          - AMD Ryzen AI Max PRO 390
+          - Radeon 8050S
           - RDNA3.5
-          - gfx1150
+          - gfx1151
           - Dynamic + carveout
-          - 16
+          - 32
           - 32 or 64
           - 128
-          - N/A
+          - 32
           - 2
           - 256
           - 32
           - 16
           - 32
-          - 512
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max PRO 385
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max PRO 380
+          - Radeon 8040S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 16
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
           - 32
           - 11
           - 5
@@ -856,16 +854,111 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 11
           - 5
         *
-          - AMD Ryzen AI 7 350
-          - Radeon 860M
+          - AMD Ryzen AI Max+ 395
+          - Radeon 8060S
           - RDNA3.5
-          - gfx1152
+          - gfx1151
           - Dynamic + carveout
-          - 8
+          - 40
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max+ 392
+          - Radeon 8060S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 40
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max+ 388
+          - Radeon 8060S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 40
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max 390
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max 385
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 9 HX PRO 475
+          - Radeon 890M
+          - RDNA3.5
+          - gfx1150
+          - Dynamic + carveout
+          - 16
           - 32 or 64
           - 128
           - N/A
-          - 1
+          - 2
           - 256
           - 32
           - 16
