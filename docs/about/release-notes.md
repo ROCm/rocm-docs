@@ -30,7 +30,7 @@ This approach streamlines installation, reduces footprint, and accelerates innov
 
 (preview-stream-note)=
 :::{note}
-ROCm 7.14.0 follows the [versioning discontinuity that began with the 7.9.0 preview](https://rocm.docs.amd.com/en/7.9.0-preview/about/release-notes.html#preview-stream-note) release.
+ROCm 7.14.0 follows the [versioning discontinuity that began with the 7.9.0 preview and ended with 7.13.0 preview](https://rocm.docs.amd.com/en/7.13.0-preview/release/versions.html) release.
 :::
 
 ### Release highlights
