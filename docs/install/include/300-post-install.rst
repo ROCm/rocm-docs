@@ -451,6 +451,12 @@ complete your system configuration and validate the installation.
       <https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/>`__
       documentation portal.
 
+   .. selected:: fam=ryzen
+
+      ROCm uses a shared system memory pool with Ryzen. To modify the shared memory
+      configuration, see `Memory tuning (UMA carveout and GTT)
+      <https://rocm.docs.amd.com/projects/amdsmi/en/develop/how-to/amdsmi-cli-tool.html#memory-tuning-uma-carveout-and-gtt>`__.
+
    .. selected:: fam=all fam=instinct
 
       To learn about HPC libraries and applications, see
