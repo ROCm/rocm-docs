@@ -1051,3 +1051,20 @@ Uninstall ROCm ASAN
       .. code-block:: bash
 
          source ~/.bashrc
+
+----
+
+.. _rocm-asan-next-steps:
+
+Next steps
+==========
+
+To run applications with ASAN instrumentation, ensure the following:
+
+- Linux kernel ≥ 5.6 with HMM enabled
+- ``HSA_XNACK=1``
+- ``-fsanitize=address``
+- Instrumented runtimes
+
+For more information, see the `GPU sanitizer guide
+<https://github.com/ROCm/TheRock/blob/main/docs/development/sanitizers.md#using-asan-instrumented-libraries>`_.
