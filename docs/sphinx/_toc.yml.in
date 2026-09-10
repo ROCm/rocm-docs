@@ -125,9 +125,9 @@ subtrees:
                   title: Profiling and debugging tools
                   entries:
                       - file: components/profiling-tools-overview.rst
-                        title: ROCm profiling tools overview
+                        title: "Profiling: tool overview"
                       - file: components/profiling-tools-selection.rst
-                        title: Choosing the right ROCm profiling tool
+                        title: "Profiling: choosing the right tool"
                       - url: ${project:rocprofiler-compute}
                         title: ROCm Compute Profiler (rocprofiler-compute)
                       - url: ${project:rocprofiler-systems}
@@ -163,8 +163,6 @@ subtrees:
                   title: TransferBench
                 - url: https://rocm.docs.amd.com/projects/roc-optiq/en/latest/index.html
                   title: ROCm Optiq
-                - url: https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/latest/index.html
-                  title: ROCprof Compute Viewer (RCV)
     - caption: Tutorials
       entries:
           - url: https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/

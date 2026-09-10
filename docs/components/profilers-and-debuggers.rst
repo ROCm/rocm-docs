@@ -36,24 +36,23 @@ them together, see :doc:`profiling-tools-overview`. For guidance on choosing the
     {%-     endif -%}
     {%- endfor %}
 
-.. _visualization-analysis-tools:
+.. note::
 
-Visualization and analysis tools
-=================================
+   In addition to the profiling tools included in the ROCm Core SDK, AMD
+   provides standalone visualization and analysis tools that help developers
+   explore, interpret, and gain deeper insights from collected performance
+   data. These tools are distributed separately and complement the ROCm
+   profiling workflow.
 
-In addition to the profiling tools included in the ROCm Core SDK, AMD provides
-standalone visualization and analysis tools that help developers explore,
-interpret, and gain deeper insights from collected performance data. These
-tools are distributed separately as part of :doc:`ROCm Extras <extras>` and
-complement the ROCm profiling workflow.
+   * :doc:`ROCm Optiq <roc-optiq:index>` is a unified tool for visualizing and
+     analyzing performance data collected by ROCm Systems Profiler and ROCm
+     Compute Profiler, providing insight into both system-level behavior and
+     kernel-level performance for applications running on the ROCm stack. It
+     is distributed separately as part of :doc:`ROCm Extras <extras>`.
 
-* :doc:`ROCm Optiq <roc-optiq:index>` is a unified tool for visualizing and
-  analyzing performance data collected by ROCm Systems Profiler and ROCm
-  Compute Profiler, providing insight into both system-level behavior and
-  kernel-level performance for applications running on the ROCm stack.
 
-* :doc:`ROCprof Compute Viewer <rocprof-compute-viewer:index>` visualizes and
-  analyzes GPU thread trace data collected using ``rocprofv3``, helping
-  developers understand low-level GPU execution behavior, identify
-  performance bottlenecks, and optimize kernel efficiency.
+   * :doc:`ROCprof Compute Viewer <rocprof-compute-viewer:index>` visualizes
+     and analyzes GPU thread trace data collected using ``rocprofv3``,
+     helping developers understand low-level GPU execution behavior,
+     identify performance bottlenecks, and optimize kernel efficiency.
 
