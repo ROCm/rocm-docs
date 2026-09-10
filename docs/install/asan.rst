@@ -1,6 +1,6 @@
 .. meta::
    :description: How to install AMD ROCm with AddressSanitizer (ASAN) instrumentation for AMD Instinct GPUs
-   :keywords: linux, install, download, setup, asan, addresssanitizer, sanitizer, ubuntu, debian, red, hat, rhel, oracle, rocky, suse, sles, instinct, mi300a, mi300x, mi350x, gfx942, gfx950, package, manager, tarball
+   :keywords: linux, install, download, setup, asan, addresssanitizer, sanitizer, ubuntu, debian, red, hat, rhel, oracle, rocky, suse, sles, instinct, mi300a, mi300x, mi325x, mi350p, mi350x, mi355x, gfx942, gfx950, package, manager, tarball
 
 :selector-toc2: Installation environment
 :selector-toc2-icon: fa-solid fa-computer
@@ -48,8 +48,17 @@ and installation method.
       :key: gpu
       :sort: desc
 
+      .. selector-option:: AMD Instinct MI355X (gfx950)
+         :value: amd-instinct-mi355x gfx=gfx950
+
       .. selector-option:: AMD Instinct MI350X (gfx950)
          :value: amd-instinct-mi350x gfx=gfx950
+
+      .. selector-option:: AMD Instinct MI350P (gfx950)
+         :value: amd-instinct-mi350p gfx=gfx950
+
+      .. selector-option:: AMD Instinct MI325X (gfx942)
+         :value: amd-instinct-mi325x gfx=gfx942
 
       .. selector-option:: AMD Instinct MI300X (gfx942)
          :value: amd-instinct-mi300x gfx=gfx942
@@ -583,7 +592,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
           ASAN instrumentation.
         - Runtimes, libraries, system control and monitoring tools, and other
           essential components with ASAN.
-      * - ``amdrocm-core-dev-asan10.0``
+      * - ``amdrocm-core-devel-asan10.0``
         - ROCm Developer Essentials
         - Development environment. Install this to build ROCm applications with
           ASAN support.
@@ -687,8 +696,8 @@ configure your system and validate the installation.
             ROCM_INSTALL_PATH=$(pwd)/install
             sudo tee /etc/profile.d/set-rocm-env.sh << EOF
             export ROCM_PATH=$ROCM_INSTALL_PATH
-            export PATH=\$PATH:\$ROCM_PATH/bin
-            export LD_LIBRARY_PATH=\$ROCM_PATH/lib
+            export PATH=\$ROCM_PATH/bin:\$PATH
+            export LD_LIBRARY_PATH=\$ROCM_PATH/lib:\$LD_LIBRARY_PATH
             EOF
             sudo chmod +x /etc/profile.d/set-rocm-env.sh
             source /etc/profile.d/set-rocm-env.sh
@@ -716,8 +725,8 @@ configure your system and validate the installation.
 
                   # BEGIN ROCm environment configuration
                   export ROCM_PATH=$ROCM_INSTALL_PATH
-                  export PATH=\$PATH:\$ROCM_PATH/bin
-                  export LD_LIBRARY_PATH=\$ROCM_PATH/lib
+                  export PATH=\$ROCM_PATH/bin:\$PATH
+                  export LD_LIBRARY_PATH=\$ROCM_PATH/lib:\$LD_LIBRARY_PATH
                   # END ROCm environment configuration
                   EOF
                   source ~/.bashrc
@@ -733,8 +742,8 @@ configure your system and validate the installation.
 
                   # BEGIN ROCm environment configuration
                   export ROCM_PATH=$ROCM_INSTALL_PATH
-                  export PATH=\$PATH:\$ROCM_PATH/bin
-                  export LD_LIBRARY_PATH=\$ROCM_PATH/lib
+                  export PATH=\$ROCM_PATH/bin:\$PATH
+                  export LD_LIBRARY_PATH=\$ROCM_PATH/lib:\$LD_LIBRARY_PATH
                   # END ROCm environment configuration
                   EOF
                   source ~/.profile
@@ -862,7 +871,7 @@ Uninstall ROCm ASAN
 
       .. code-block:: bash
 
-         rm -rf ~/therock-tarball
+         rm -rf $ROCM_PATH/therock-tarball
 
    2. Remove the ROCm environment variables from your configuration.
 
@@ -883,8 +892,8 @@ Uninstall ROCm ASAN
 
                # BEGIN ROCm environment configuration
                export ROCM_PATH=$ROCM_INSTALL_PATH
-               export PATH=$PATH:$ROCM_PATH/bin
-               export LD_LIBRARY_PATH=$ROCM_PATH/lib
+               export PATH=$ROCM_PATH/bin:$PATH
+               export LD_LIBRARY_PATH=$ROCM_PATH/lib:$LD_LIBRARY_PATH
                # END ROCm environment configuration
 
    3. Reload your shell configuration:
