@@ -22,6 +22,7 @@ GPU architectures and can be installed using the package manager or a tarball.
      ``amdrocm-asan10.0-gfxXYZ``.
    - ASAN rpm and debian packages install to ``/opt/rocm/core-asan-10.0``, separate from
      regular ROCm installations at ``/opt/rocm/core-10.0``.
+   - ASAN packages are approximately 4× larger than a standard ROCm installation due to debug symbols and ASAN instrumentation.
 
 ----
 
