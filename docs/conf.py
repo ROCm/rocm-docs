@@ -201,7 +201,6 @@ rst_prolog = "\n".join(
 numfig = False
 
 exclude_patterns = [
-    "exclude/**",
     "**/include/**",
     "**/extension/**",
     "**/images/**",
