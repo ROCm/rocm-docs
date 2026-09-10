@@ -137,7 +137,7 @@ rocm_core_sdk:
             - gfx1201
             - gfx1200
             - gfx1100
-            - {gfx: gfx1101, note: except Radeon PRO V710}
+            - {gfx: gfx1101, except: [AMD Radeon PRO V710]}
             - gfx1102
     rocSOLVER:
       version: 3.36.0

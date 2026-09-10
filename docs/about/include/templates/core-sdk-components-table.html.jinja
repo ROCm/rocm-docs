@@ -34,8 +34,8 @@
 {%- endfor -%}
 
 {#- fmt_gfx: formats a gfx list item as a display string.
-    Accepts a plain string (gfx ID) or a mapping {gfx, codename?, note?}. -#}
-{%- macro fmt_gfx(g) -%}{%- if g is mapping -%}{{ g.gfx }}{%- if g.codename is defined %} ({{ g.codename }} only){%- elif g.note is defined %} ({{ g.note }}){%- endif -%}{%- else -%}{{ g }}{%- endif -%}{%- endmacro -%}
+    Accepts a plain string (gfx ID), a mapping {gfx, codename?, note?}, or a mapping {gpu}. -#}
+{%- macro fmt_gfx(g) -%}{%- if g is mapping -%}{%- if g.gpu is defined -%}{{ g.gpu }}{%- else -%}{{ g.gfx }}{%- if g.codename is defined %} ({{ g.codename }} only){%- elif g.except is defined %} (except {{ g.except | join(", ") }}){%- elif g.note is defined %} ({{ g.note }}){%- endif -%}{%- endif -%}{%- else -%}{{ g }}{%- endif -%}{%- endmacro -%}
 
 {%- macro anchor_id(name, version) -%}
 {{- (name | lower | replace(" ", "-")) -}}-{{- (version | string | replace(".", "-")) -}}

@@ -45,9 +45,21 @@
 
 {#-- Tokens for a single gfx list item.
      Plain string or mapping-without-codename → "gfx=<id>".
+     Mapping-with-gpu → "gpu=<slug>" directly from the GPU name.
+     Mapping-with-except → "gpu=<slug> ..." for all GPUs with matching gfx, minus excluded names.
      Mapping-with-codename → "gpu=<slug> ..." for each matching GPU in gpus.yaml. --#}
 {%- macro gfx_item_tokens(g) -%}
-{%- if g is mapping and g.codename is defined -%}
+{%- if g is mapping and g.gpu is defined -%}
+gpu={{ slugify(g.gpu) }}
+{%- elif g is mapping and g.except is defined -%}
+{%- set ns_m = namespace(parts=[]) -%}
+{%- for fam_name, fam in gpus_data.items() if fam is mapping -%}
+{%- for gpu_name, gpu in fam.items() if gpu is mapping and gpu.gfx is defined and gpu.gfx == g.gfx and gpu_name not in g.except -%}
+{%- set _ = ns_m.parts.append("gpu=" ~ slugify(gpu_name)) -%}
+{%- endfor -%}
+{%- endfor -%}
+{%- if ns_m.parts -%}{{ ns_m.parts | join(" ") }}{%- else -%}gfx={{ g.gfx }}{%- endif -%}
+{%- elif g is mapping and g.codename is defined -%}
 {%- set ns_m = namespace(parts=[]) -%}
 {%- for fam_name, fam in gpus_data.items() if fam is mapping -%}
 {%- for gpu_name, gpu in fam.items() if gpu is mapping and gpu.gfx is defined and gpu.gfx == g.gfx and gpu.codename is defined and gpu.codename == g.codename -%}

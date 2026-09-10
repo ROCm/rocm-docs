@@ -32,7 +32,7 @@ $defs:
         format: uri
 
   gfxItem:
-    description: A specific gfx target, optionally qualified by codename or note.
+    description: A specific GPU target — a gfx ID string, a qualified gfx object, or a GPU product name.
     oneOf:
       - type: string
         pattern: "^gfx[0-9a-z]+$"
@@ -46,9 +46,21 @@ $defs:
           codename:
             type: string
             description: Silicon codename (limits support to that codename only).
+          except:
+            type: array
+            items:
+              type: string
+            description: GPU product names to exclude (must match gpus.yaml entry names).
           note:
             type: string
-            description: Free-text qualifier (e.g. "except Radeon PRO V710").
+            description: Free-text qualifier shown in the components table.
+      - type: object
+        required: [gpu]
+        additionalProperties: false
+        properties:
+          gpu:
+            type: string
+            description: GPU product name matching an entry in gpus.yaml (e.g. "AMD Radeon PRO W7700").
 
   familySupport:
     description: "true for all GPUs in the family, false to exclude, or a list of specific gfx targets."
