@@ -578,39 +578,189 @@ Use the following instructions to install ROCm ASAN packages on your system.
    you to install only what is necessary for your use case. The following table
    describes available ROCm ASAN meta packages:
 
-   .. list-table::
-      :header-rows: 1
-      :widths: 25 20 30 25
+   .. selected:: os=rhel
 
-      * - Meta package name
-        - Use case
-        - Description
-        - Contents
-      * - ``amdrocm-asan10.0``
-        - ROCm Base
-        - Core runtime environment. Install this to run ROCm applications with
-          ASAN instrumentation.
-        - Runtimes, libraries, system control and monitoring tools, and other
-          essential components with ASAN.
-      * - ``amdrocm-core-devel-asan10.0``
-        - ROCm Developer Essentials
-        - Development environment. Install this to build ROCm applications with
-          ASAN support.
-        - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
-          library files, and headers with ASAN.
-      * - ``amdrocm-developer-tools-asan10.0``
-        - ROCm Profiler
-        - Install this to profile and optimize ROCm applications with ASAN.
-        - Profilers and related tools with ASAN instrumentation.
-      * - ``amdrocm-opencl-asan10.0``
-        - ROCm OpenCL
-        - Install this to run OpenCL applications on ROCm with ASAN.
-        - Components needed to run OpenCL with ASAN.
-      * - ``amdrocm-core-sdk-asan10.0``
-        - ROCm Full Suite
-        - Install this if you need everything with ASAN.
-        - The complete ROCm Core SDK including runtimes, compilers, development
-          tools, and dependencies with ASAN.
+      .. selected:: rhel-ver=9
+
+         .. list-table::
+            :header-rows: 1
+            :widths: 25 20 30 25
+
+            * - Meta package name
+              - Use case
+              - Description
+              - Contents
+            * - ``amdrocm-asan10.0``
+              - ROCm Base
+              - Core runtime environment. Install this to run ROCm applications with
+                ASAN instrumentation.
+              - Runtimes, libraries, system control and monitoring tools, and other
+                essential components with ASAN.
+            * - ``amdrocm-core-devel-asan10.0``
+              - ROCm Developer Essentials
+              - Development environment. Install this to build ROCm applications with
+                ASAN support.
+              - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
+                library files, and headers with ASAN.
+            * - ``amdrocm-developer-tools-asan10.0``
+              - ROCm Profiler
+              - Install this to profile and optimize ROCm applications with ASAN.
+              - Profilers and related tools with ASAN instrumentation.
+            * - ``amdrocm-opencl-asan10.0``
+              - ROCm OpenCL
+              - Install this to run OpenCL applications on ROCm with ASAN.
+              - Components needed to run OpenCL with ASAN.
+            * - ``amdrocm-core-sdk-asan10.0``
+              - ROCm Full Suite
+              - Install this if you need everything with ASAN.
+              - The complete ROCm Core SDK including runtimes, compilers, development
+                tools, and dependencies with ASAN.
+
+      .. selected:: rhel-ver=10 rhel-ver=8
+
+         .. list-table::
+            :header-rows: 1
+            :widths: 25 20 30 25
+
+            * - Meta package name
+              - Use case
+              - Description
+              - Contents
+            * - ``amdrocm-asan10.0``
+              - ROCm Base
+              - Core runtime environment. Install this to run ROCm applications with
+                ASAN instrumentation.
+              - Runtimes, libraries, system control and monitoring tools, and other
+                essential components with ASAN.
+            * - ``amdrocm-core-dev-asan10.0``
+              - ROCm Developer Essentials
+              - Development environment. Install this to build ROCm applications with
+                ASAN support.
+              - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
+                library files, and headers with ASAN.
+            * - ``amdrocm-developer-tools-asan10.0``
+              - ROCm Profiler
+              - Install this to profile and optimize ROCm applications with ASAN.
+              - Profilers and related tools with ASAN instrumentation.
+            * - ``amdrocm-opencl-asan10.0``
+              - ROCm OpenCL
+              - Install this to run OpenCL applications on ROCm with ASAN.
+              - Components needed to run OpenCL with ASAN.
+            * - ``amdrocm-core-sdk-asan10.0``
+              - ROCm Full Suite
+              - Install this if you need everything with ASAN.
+              - The complete ROCm Core SDK including runtimes, compilers, development
+                tools, and dependencies with ASAN.
+
+   .. selected:: os=sles
+
+      .. selected:: sles-ver=16
+
+         .. list-table::
+            :header-rows: 1
+            :widths: 25 20 30 25
+
+            * - Meta package name
+              - Use case
+              - Description
+              - Contents
+            * - ``amdrocm-asan10.0``
+              - ROCm Base
+              - Core runtime environment. Install this to run ROCm applications with
+                ASAN instrumentation.
+              - Runtimes, libraries, system control and monitoring tools, and other
+                essential components with ASAN.
+            * - ``amdrocm-core-devel-asan10.0``
+              - ROCm Developer Essentials
+              - Development environment. Install this to build ROCm applications with
+                ASAN support.
+              - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
+                library files, and headers with ASAN.
+            * - ``amdrocm-developer-tools-asan10.0``
+              - ROCm Profiler
+              - Install this to profile and optimize ROCm applications with ASAN.
+              - Profilers and related tools with ASAN instrumentation.
+            * - ``amdrocm-opencl-asan10.0``
+              - ROCm OpenCL
+              - Install this to run OpenCL applications on ROCm with ASAN.
+              - Components needed to run OpenCL with ASAN.
+            * - ``amdrocm-core-sdk-asan10.0``
+              - ROCm Full Suite
+              - Install this if you need everything with ASAN.
+              - The complete ROCm Core SDK including runtimes, compilers, development
+                tools, and dependencies with ASAN.
+
+      .. selected:: sles-ver=15
+
+         .. list-table::
+            :header-rows: 1
+            :widths: 25 20 30 25
+
+            * - Meta package name
+              - Use case
+              - Description
+              - Contents
+            * - ``amdrocm-asan10.0``
+              - ROCm Base
+              - Core runtime environment. Install this to run ROCm applications with
+                ASAN instrumentation.
+              - Runtimes, libraries, system control and monitoring tools, and other
+                essential components with ASAN.
+            * - ``amdrocm-core-dev-asan10.0``
+              - ROCm Developer Essentials
+              - Development environment. Install this to build ROCm applications with
+                ASAN support.
+              - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
+                library files, and headers with ASAN.
+            * - ``amdrocm-developer-tools-asan10.0``
+              - ROCm Profiler
+              - Install this to profile and optimize ROCm applications with ASAN.
+              - Profilers and related tools with ASAN instrumentation.
+            * - ``amdrocm-opencl-asan10.0``
+              - ROCm OpenCL
+              - Install this to run OpenCL applications on ROCm with ASAN.
+              - Components needed to run OpenCL with ASAN.
+            * - ``amdrocm-core-sdk-asan10.0``
+              - ROCm Full Suite
+              - Install this if you need everything with ASAN.
+              - The complete ROCm Core SDK including runtimes, compilers, development
+                tools, and dependencies with ASAN.
+
+   .. selected:: os=ubuntu os=debian os=oracle-linux os=rocky-linux
+
+      .. list-table::
+         :header-rows: 1
+         :widths: 25 20 30 25
+
+         * - Meta package name
+           - Use case
+           - Description
+           - Contents
+         * - ``amdrocm-asan10.0``
+           - ROCm Base
+           - Core runtime environment. Install this to run ROCm applications with
+             ASAN instrumentation.
+           - Runtimes, libraries, system control and monitoring tools, and other
+             essential components with ASAN.
+         * - ``amdrocm-core-dev-asan10.0``
+           - ROCm Developer Essentials
+           - Development environment. Install this to build ROCm applications with
+             ASAN support.
+           - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
+             library files, and headers with ASAN.
+         * - ``amdrocm-developer-tools-asan10.0``
+           - ROCm Profiler
+           - Install this to profile and optimize ROCm applications with ASAN.
+           - Profilers and related tools with ASAN instrumentation.
+         * - ``amdrocm-opencl-asan10.0``
+           - ROCm OpenCL
+           - Install this to run OpenCL applications on ROCm with ASAN.
+           - Components needed to run OpenCL with ASAN.
+         * - ``amdrocm-core-sdk-asan10.0``
+           - ROCm Full Suite
+           - Install this if you need everything with ASAN.
+           - The complete ROCm Core SDK including runtimes, compilers, development
+             tools, and dependencies with ASAN.
 
    .. note::
 
