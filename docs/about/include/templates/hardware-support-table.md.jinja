@@ -78,6 +78,12 @@
   }) -%}
 {%- endfor -%}
 
+{#-- Step 2b: check whether any row has a codename (controls column header text) --#}
+{%- set ns_hdr = namespace(has_codename=false) -%}
+{%- for row in rows -%}
+  {%- if row.codename -%}{%- set ns_hdr.has_codename = true -%}{%- endif -%}
+{%- endfor -%}
+
 {#-- Step 3: compute per-row span metadata (series_start/span, arch_start/span) --#}
 {%- set row_meta = [] -%}
 {%- for row in rows -%}
@@ -115,7 +121,7 @@
     <tr>
       <th class="head"><p>Device series</p></th>
       <th class="head"><p>Device</p></th>
-      <th class="head"><p>LLVM target / codename</p></th>
+      <th class="head"><p>LLVM target{% if ns_hdr.has_codename %} / codename{% endif %}</p></th>
       <th class="head"><p>Architecture</p></th>
     </tr>
   </thead>
