@@ -32,7 +32,12 @@
   - instinct: true, radeon: true, ryzen: [gfx...] → TWO cells: "fam=instinct fam=radeon" | "gfx=..."
 
   Group header cell: one cell spanning all group items (:rowspan: N).
-  Its show-cond = union of all distinct tokens from all item cells in the group.
+  When a group has BOTH fam= items (instinct/radeon) AND gfx= items (ryzen-gfx),
+  all tokens are converted to gpu= slugs (single key, all OR'd) via gpus_data.
+  This avoids the cross-key AND constraint in matchesConditions while keeping a
+  single header cell. Prevents orphan headers for unsupported Ryzen GPUs like
+  gfx1103 while correctly showing headers for supported gfx like gfx1150-gfx1153.
+  gfx= tokens from ryzen cells are NOT promoted to fam=ryzen.
   Browsers correctly handle rowspan over display:none rows.
 #}
 {%- set defaults  = load("/data/components-default.yaml") -%}
@@ -160,11 +165,11 @@ gfx={{ g }}
       {%- set _ = ns_cells.cells.append("") -%}
     {%- endif -%}
     {%- set _ = unordered.append({
-      "name":    name,
-      "group":   comps_d[name].group,
-      "version": comps_c[name].version,
-      "url":     linux_url(name) | trim,
-      "cells":   ns_cells.cells
+      "name":     name,
+      "group":    comps_d[name].group,
+      "version":  comps_c[name].version,
+      "url":      linux_url(name) | trim,
+      "cells":    ns_cells.cells
     }) -%}
   {%- endif -%}
 {%- endfor -%}
@@ -195,37 +200,12 @@ gfx={{ g }}
   {%- set _ = ns_g.blocks.append({"label": ns_g.cur_label, "start": ns_g.cur_start, "count": ns_g.cur_count}) -%}
 {%- endif -%}
 
-{#-- Compute group header show-cond: union of all distinct tokens from all item cells.
-     If any item has an empty (always-visible) show-cond, the header must also be
-     always visible (no show-cond), since the group is needed for those GPUs. --#}
-{%- macro group_header_sc(block) -%}
-{%- set b_items = items[block.start : block.start + block.count] -%}
-{%- set ns_always = namespace(found=false) -%}
-{%- for it in b_items -%}
-  {%- for sc in it.cells -%}
-    {%- if sc == "" -%}{%- set ns_always.found = true -%}{%- endif -%}
-  {%- endfor -%}
-{%- endfor -%}
-{%- if not ns_always.found -%}
-{%- set ns_t = namespace(tokens=[], has_fam=false, has_gfx=false, has_gpu=false) -%}
-{%- for it in b_items -%}
-  {%- for sc in it.cells -%}
-    {%- for tok in sc.split() -%}
-      {%- if tok not in ns_t.tokens -%}
-        {%- set ns_t.tokens = ns_t.tokens + [tok] -%}
-      {%- endif -%}
-      {%- if tok.startswith("fam=") -%}{%- set ns_t.has_fam = true -%}{%- endif -%}
-      {%- if tok.startswith("gfx=") -%}{%- set ns_t.has_gfx = true -%}{%- endif -%}
-      {%- if tok.startswith("gpu=") -%}{%- set ns_t.has_gpu = true -%}{%- endif -%}
-    {%- endfor -%}
-  {%- endfor -%}
-{%- endfor -%}
-{%- set key_count = (1 if ns_t.has_fam else 0) + (1 if ns_t.has_gfx else 0) + (1 if ns_t.has_gpu else 0) -%}
-{%- if key_count <= 1 -%}
-{{ ns_t.tokens | join(" ") }}
-{%- endif -%}
-{%- endif -%}
-{%- endmacro -%}
+{#-- Map fam= token to gpus_data key --#}
+{%- set fam_key_map = {
+  "fam=instinct": "AMD Instinct",
+  "fam=radeon":   "AMD Radeon",
+  "fam=ryzen":    "AMD Ryzen"
+} -%}
 
 .. matrix::
    :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
@@ -241,15 +221,72 @@ gfx={{ g }}
 
 {% for block in ns_g.blocks %}
 {%- set b_items = items[block.start : block.start + block.count] -%}
-{%- set hdr_sc = group_header_sc(block) | trim %}
+{%- set ns_h = namespace(fam_toks=[], gfx_toks=[], has_empty=false) -%}
+{%- for it in b_items -%}
+  {%- for sc in it.cells -%}
+    {%- if sc == "" -%}
+      {%- set ns_h.has_empty = true -%}
+    {%- else -%}
+      {%- for tok in sc.split() -%}
+        {%- if tok.startswith("fam=") and tok not in ns_h.fam_toks -%}
+          {%- set ns_h.fam_toks = ns_h.fam_toks + [tok] -%}
+        {%- elif not tok.startswith("fam=") and tok not in ns_h.gfx_toks -%}
+          {%- set ns_h.gfx_toks = ns_h.gfx_toks + [tok] -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{#-- When BOTH fam= and gfx=/gpu= tokens exist, convert all to gpu= slugs
+     so everything uses a single key (OR'd) and avoids cross-key AND. --#}
+{%- set ns_hdr = namespace(sc="") -%}
+{%- if ns_h.has_empty or ns_h.fam_toks | length >= 3 -%}
+{%- elif ns_h.fam_toks and ns_h.gfx_toks -%}
+  {%- set ns_slugs = namespace(parts=[]) -%}
+  {%- for ftok in ns_h.fam_toks -%}
+    {%- if ftok in fam_key_map -%}
+      {%- set fam_key = fam_key_map[ftok] -%}
+      {%- if fam_key in gpus_data -%}
+        {%- for gpu_name, gpu in gpus_data[fam_key].items() if gpu is mapping -%}
+          {%- set slug_tok = "gpu=" ~ slugify(gpu_name) -%}
+          {%- if slug_tok not in ns_slugs.parts -%}
+            {%- set ns_slugs.parts = ns_slugs.parts + [slug_tok] -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- for gtok in ns_h.gfx_toks -%}
+    {%- if gtok.startswith("gpu=") -%}
+      {%- if gtok not in ns_slugs.parts -%}
+        {%- set ns_slugs.parts = ns_slugs.parts + [gtok] -%}
+      {%- endif -%}
+    {%- elif gtok.startswith("gfx=") -%}
+      {%- set gfx_id = gtok[4:] -%}
+      {%- for fam_name, fam in gpus_data.items() if fam is mapping -%}
+        {%- for gpu_name, gpu in fam.items() if gpu is mapping and gpu.gfx is defined and gpu.gfx == gfx_id -%}
+          {%- set slug_tok = "gpu=" ~ slugify(gpu_name) -%}
+          {%- if slug_tok not in ns_slugs.parts -%}
+            {%- set ns_slugs.parts = ns_slugs.parts + [slug_tok] -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- set ns_hdr.sc = ns_slugs.parts | join(" ") -%}
+{%- elif ns_h.fam_toks -%}
+  {%- set ns_hdr.sc = ns_h.fam_toks | join(" ") -%}
+{%- else -%}
+  {%- set ns_hdr.sc = ns_h.gfx_toks | join(" ") -%}
+{%- endif %}
    .. matrix-row::
 
       .. matrix-cell:: {{ block.label }}
 {%- if block.count > 1 %}
          :rowspan: {{ block.count }}
 {%- endif %}
-{%- if hdr_sc != "" %}
-         :show-cond: {{ hdr_sc }}
+{%- if ns_hdr.sc != "" %}
+         :show-cond: {{ ns_hdr.sc }}
 {%- endif %}
 
 {% for sc in b_items[0].cells %}
