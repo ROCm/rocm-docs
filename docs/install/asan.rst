@@ -1122,14 +1122,14 @@ Uninstall ROCm ASAN
       .. tab-set::
 
          .. tab-item:: System-wide setup
-         :sync: setup-scope
+            :sync: setup-scope
 
             .. code-block:: bash
 
                sudo rm -f /etc/profile.d/set-rocm-asan-env.sh
 
          .. tab-item:: User setup
-         :sync: setup-scope
+            :sync: setup-scope
 
             Remove the ROCm environment configuration block from your shell
             configuration file (``~/.bashrc`` or ``~/.profile``).
@@ -1158,14 +1158,14 @@ Uninstall ROCm ASAN
       .. tab-set::
 
          .. tab-item:: System-wide setup
-         :sync: setup-scope
+            :sync: setup-scope
 
             .. code-block:: bash
 
                sudo rm -f /etc/profile.d/set-rocm-asan-env.sh
 
          .. tab-item:: User setup
-         :sync: setup-scope
+            :sync: setup-scope
 
             Remove the ROCm environment configuration block from your shell
             configuration file (``~/.bashrc`` or ``~/.profile``).
