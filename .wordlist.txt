@@ -826,6 +826,7 @@ amdrocm
 amdsmi
 api
 aqlprofile
+asan
 asc
 async
 aten
