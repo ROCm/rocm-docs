@@ -219,8 +219,8 @@ subtrees:
                         title: RDNA 2 ISA reference
                       - url: https://docs.amd.com/v/u/en-US/rdna-shader-instruction-set-architecture
                         title: RDNA ISA reference
-                - file: reference/gpu-arch/older-architectures.rst
-                  title: Older architectures
+                - file: reference/gpu-arch/gcn-vega.rst
+                  title: GCN and Vega architectures
                   entries:
                       - url: https://www.amd.com/system/files/TechDocs/vega-7nm-shader-instruction-set-architecture.pdf
                         title: Vega 7nm (Instinct MI50) ISA reference

@@ -1,13 +1,13 @@
 .. meta::
-   :description: ISA references for older AMD GPU architectures, including Vega and GCN 3.
-   :keywords: Vega, GCN, GCN 3, Instinct MI50, Instinct MI25, microarchitecture, ISA, AMD, ROCm
+   :description: ISA references for AMD GCN and Vega GPU architectures.
+   :keywords: GCN, GCN 3, Vega, Instinct MI50, Instinct MI25, microarchitecture, ISA, AMD, ROCm
 
 **************************************************
-Older AMD GPU architectures
+AMD GCN and Vega architectures
 **************************************************
 
-This page collects instruction set architecture (ISA) references for older AMD
-GPU architectures. Detailed microarchitecture documentation for these
+This page collects instruction set architecture (ISA) references for the AMD GCN
+and Vega GPU architectures. Detailed microarchitecture documentation for these
 architectures is coming soon.
 
 ISA references
