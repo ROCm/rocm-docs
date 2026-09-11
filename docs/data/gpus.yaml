@@ -273,286 +273,334 @@ AMD Ryzen:
     series: *ryzen_ai_max_pro_400_series
     igpu: Radeon 8065S
     arch: *arch_rdna_3_5
+    codename: Gorgon Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-400-series/amd-ryzen-ai-max-plus-pro-495.html
   AMD Ryzen AI Max PRO 490:
     gfx: gfx1151
     series: *ryzen_ai_max_pro_400_series
     igpu: Radeon 8050S
     arch: *arch_rdna_3_5
+    codename: Gorgon Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-400-series/amd-ryzen-ai-max-pro-490.html
   AMD Ryzen AI Max PRO 485:
     gfx: gfx1151
     series: *ryzen_ai_max_pro_400_series
     igpu: Radeon 8050S
     arch: *arch_rdna_3_5
+    codename: Gorgon Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-400-series/amd-ryzen-ai-max-pro-485.html
   AMD Ryzen AI Max+ PRO 395:
     gfx: gfx1151
     series: *ryzen_ai_max_pro_300_series
     igpu: Radeon 8060S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-300-series/amd-ryzen-ai-max-plus-pro-395.html
   AMD Ryzen AI Max PRO 390:
     gfx: gfx1151
     series: *ryzen_ai_max_pro_300_series
     igpu: Radeon 8050S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-300-series/amd-ryzen-ai-max-pro-390.html
   AMD Ryzen AI Max PRO 385:
     gfx: gfx1151
     series: *ryzen_ai_max_pro_300_series
     igpu: Radeon 8050S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-300-series/amd-ryzen-ai-max-pro-385.html
   AMD Ryzen AI Max PRO 380:
     gfx: gfx1151
     series: *ryzen_ai_max_pro_300_series
     igpu: Radeon 8040S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-300-series/amd-ryzen-ai-max-pro-380.html
   AMD Ryzen AI Max+ 395:
     gfx: gfx1151
     series: *ryzen_ai_max_300_series
     igpu: Radeon 8060S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html
   AMD Ryzen AI Max+ 392:
     gfx: gfx1151
     series: *ryzen_ai_max_300_series
     igpu: Radeon 8060S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-392.html
   AMD Ryzen AI Max+ 388:
     gfx: gfx1151
     series: *ryzen_ai_max_300_series
     igpu: Radeon 8060S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-388.html
   AMD Ryzen AI Max 390:
     gfx: gfx1151
     series: *ryzen_ai_max_300_series
     igpu: Radeon 8050S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-390.html
   AMD Ryzen AI Max 385:
     gfx: gfx1151
     series: *ryzen_ai_max_300_series
     igpu: Radeon 8050S
     arch: *arch_rdna_3_5
+    codename: Strix Halo
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-385.html
   AMD Ryzen AI 9 HX PRO 475:
     gfx: gfx1150
     series: *ryzen_ai_pro_400_series
     igpu: Radeon 890M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-400-series/amd-ryzen-ai-9-hx-pro-475.html
   AMD Ryzen AI 9 HX PRO 470:
     gfx: gfx1150
     series: *ryzen_ai_pro_400_series
     igpu: Radeon 890M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-400-series/amd-ryzen-ai-9-hx-pro-470.html
   AMD Ryzen AI 9 PRO 465:
     gfx: gfx1150
     series: *ryzen_ai_pro_400_series
     igpu: Radeon 880M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-400-series/amd-ryzen-ai-9-pro-465.html
   AMD Ryzen AI 7 PRO 450:
     gfx: gfx1152
     series: *ryzen_ai_pro_400_series
     igpu: Radeon 860M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-400-series/amd-ryzen-ai-7-pro-450.html
   AMD Ryzen AI 5 PRO 440:
     gfx: gfx1152
     series: *ryzen_ai_pro_400_series
     igpu: Radeon 840M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-400-series/amd-ryzen-ai-5-pro-440.html
   AMD Ryzen AI 5 PRO 435:
     gfx: gfx1153
     series: *ryzen_ai_pro_400_series
     igpu: Radeon 840M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-400-series/amd-ryzen-ai-5-pro-435.html
   AMD Ryzen AI 9 HX 475:
     gfx: gfx1150
     series: *ryzen_ai_400_series
     igpu: Radeon 890M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-400-series/amd-ryzen-ai-9-hx-475.html
   AMD Ryzen AI 9 HX 470:
     gfx: gfx1150
     series: *ryzen_ai_400_series
     igpu: Radeon 890M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-400-series/amd-ryzen-ai-9-hx-470.html
   AMD Ryzen AI 9 465:
     gfx: gfx1150
     series: *ryzen_ai_400_series
     igpu: Radeon 880M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-400-series/amd-ryzen-ai-9-465.html
   AMD Ryzen AI 7 450:
     gfx: gfx1152
     series: *ryzen_ai_400_series
     igpu: Radeon 860M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-400-series/amd-ryzen-ai-7-450.html
   AMD Ryzen AI 5 435:
     gfx: gfx1153
     series: *ryzen_ai_400_series
     igpu: Radeon 840M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-400-series/amd-ryzen-ai-5-435.html
   AMD Ryzen AI 5 430:
     gfx: gfx1153
     series: *ryzen_ai_400_series
     igpu: Radeon 840M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-400-series/amd-ryzen-ai-5-430.html
   AMD Ryzen AI 7 445:
     gfx: gfx1153
     series: *ryzen_ai_400_series
     igpu: Radeon 840M
     arch: *arch_rdna_3_5
+    codename: Gorgon Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-400-series/amd-ryzen-ai-7-445.html
   AMD Ryzen AI 9 HX PRO 375:
     gfx: gfx1150
     series: *ryzen_ai_pro_300_series
     igpu: Radeon 890M
     arch: *arch_rdna_3_5
+    codename: Strix Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-300-series/amd-ryzen-ai-9-hx-pro-375.html
   AMD Ryzen AI 9 HX PRO 370:
     gfx: gfx1150
     series: *ryzen_ai_pro_300_series
     igpu: Radeon 890M
     arch: *arch_rdna_3_5
+    codename: Strix Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-300-series/amd-ryzen-ai-9-hx-pro-370.html
   AMD Ryzen AI 7 PRO 350:
     gfx: gfx1152
     series: *ryzen_ai_pro_300_series
     igpu: Radeon 860M
     arch: *arch_rdna_3_5
+    codename: Krackan Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-300-series/amd-ryzen-ai-7-pro-350.html
   AMD Ryzen AI 5 PRO 340:
     gfx: gfx1152
     series: *ryzen_ai_pro_300_series
     igpu: Radeon 840M
     arch: *arch_rdna_3_5
+    codename: Krackan Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-300-series/amd-ryzen-ai-5-pro-340.html
   AMD Ryzen AI 9 HX 375:
     gfx: gfx1150
     series: *ryzen_ai_300_series
     igpu: Radeon 890M
     arch: *arch_rdna_3_5
+    codename: Strix Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-9-hx-375.html
   AMD Ryzen AI 9 HX 370:
     gfx: gfx1150
     series: *ryzen_ai_300_series
     igpu: Radeon 890M
     arch: *arch_rdna_3_5
+    codename: Strix Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-9-hx-370.html
   AMD Ryzen AI 9 365:
     gfx: gfx1150
     series: *ryzen_ai_300_series
     igpu: Radeon 880M
     arch: *arch_rdna_3_5
+    codename: Strix Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-9-365.html
   AMD Ryzen AI 7 350:
     gfx: gfx1152
     series: *ryzen_ai_300_series
     igpu: Radeon 860M
     arch: *arch_rdna_3_5
+    codename: Krackan Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-7-350.html
   AMD Ryzen AI 7 345:
     gfx: gfx1152
     series: *ryzen_ai_300_series
     igpu: Radeon 840M
     arch: *arch_rdna_3_5
+    codename: Krackan Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-7-345.html
   AMD Ryzen AI 5 340:
     gfx: gfx1152
     series: *ryzen_ai_300_series
     igpu: Radeon 840M
     arch: *arch_rdna_3_5
+    codename: Krackan Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-5-340.html
   AMD Ryzen AI 5 330:
     gfx: gfx1152
     series: *ryzen_ai_300_series
     igpu: Radeon 820M
     arch: *arch_rdna_3_5
+    codename: Krackan Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-5-330.html
   AMD Ryzen 7 PRO 250:
     gfx: gfx1103
     series: *ryzen_pro_200_series
     igpu: Radeon 780M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-250.html
   AMD Ryzen 5 PRO 230:
     gfx: gfx1103
     series: *ryzen_pro_200_series
     igpu: Radeon 760M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-5-pro-230.html
   AMD Ryzen 5 PRO 220:
     gfx: gfx1103
     series: *ryzen_pro_200_series
     igpu: Radeon 740M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-5-pro-220.html
   AMD Ryzen 5 PRO 215:
     gfx: gfx1103
     series: *ryzen_pro_200_series
     igpu: Radeon 740M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-5-pro-215.html
   AMD Ryzen 3 PRO 210:
     gfx: gfx1103
     series: *ryzen_pro_200_series
     igpu: Radeon 740M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-3-pro-210.html
   AMD Ryzen 9 270:
     gfx: gfx1103
     series: *ryzen_200_series
     igpu: Radeon 780M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-9-270.html
   AMD Ryzen 7 260:
     gfx: gfx1103
     series: *ryzen_200_series
     igpu: Radeon 780M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-7-260.html
   AMD Ryzen 7 250:
     gfx: gfx1103
     series: *ryzen_200_series
     igpu: Radeon 780M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-7-250.html
   AMD Ryzen 5 240:
     gfx: gfx1103
     series: *ryzen_200_series
     igpu: Radeon 760M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-5-240.html
   AMD Ryzen 5 230:
     gfx: gfx1103
     series: *ryzen_200_series
     igpu: Radeon 760M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-5-230.html
   AMD Ryzen 5 220:
     gfx: gfx1103
     series: *ryzen_200_series
     igpu: Radeon 740M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-5-220.html
   AMD Ryzen 3 210:
     gfx: gfx1103
     series: *ryzen_200_series
     igpu: Radeon 740M
     arch: *arch_rdna_3
+    codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-3-210.html

@@ -82,6 +82,22 @@
   {%- endif -%}
 {%- endfor -%}
 
+{#-- ── Codename fingerprint groups ───────────────────────────────────────── --#}
+{%- set ns_codename = namespace(seen=[], groups=[]) -%}
+{%- for name in gpu_names -%}
+  {%- if instinct_gpus[name].codename is defined -%}
+    {%- set fp = instinct_gpus[name].codename -%}
+    {%- if fp not in ns_codename.seen -%}
+      {%- set ns_codename.seen = ns_codename.seen + [fp] -%}
+      {%- set _ = ns_codename.groups.append({"fp": fp, "gpus": [name]}) -%}
+    {%- else -%}
+      {%- for g in ns_codename.groups if g.fp == fp -%}
+        {%- set _ = g.gpus.append(name) -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
 {#-- ── OS version fingerprint groups ─────────────────────────────────────── --#}
 {%- set os_distros = [
   {"key": "Ubuntu",                       "show_cond": "ubuntu",       "header": "Supported Ubuntu versions",                          "prefix": "Ubuntu"},
@@ -182,6 +198,18 @@
          :show-cond: {{ show_cond(g.gpus) }}
 
 {% endfor %}
+{%- if ns_codename.groups | length > 0 %}
+   .. matrix-row::
+
+      .. matrix-cell:: Codename
+         :header:
+
+{% for g in ns_codename.groups %}
+      .. matrix-cell:: {{ g.fp }}
+         :show-cond: {{ show_cond(g.gpus) }}
+
+{% endfor %}
+{%- endif %}
 {%- for i in range(os_distros | length) %}
 {%- set distro = os_distros[i] %}
 {%- set groups = ns_os.all_groups[i] %}

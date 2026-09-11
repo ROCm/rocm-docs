@@ -111,6 +111,22 @@
   {%- endif -%}
 {%- endfor -%}
 
+{#-- ── Codename fingerprint groups (gpu= show-cond) ────────────────────── --#}
+{%- set ns_codename = namespace(seen=[], groups=[]) -%}
+{%- for name in gpu_names -%}
+  {%- if ryzen_gpus[name].codename is defined -%}
+    {%- set fp = ryzen_gpus[name].codename -%}
+    {%- if fp not in ns_codename.seen -%}
+      {%- set ns_codename.seen = ns_codename.seen + [fp] -%}
+      {%- set _ = ns_codename.groups.append({"fp": fp, "gpus": [name]}) -%}
+    {%- else -%}
+      {%- for g in ns_codename.groups if g.fp == fp -%}
+        {%- set _ = g.gpus.append(name) -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
 {#-- ── Ubuntu version fingerprint groups (gpu= show-cond) ───────────────── --#}
 {%- set ns_ubuntu = namespace(seen=[], groups=[]) -%}
 {%- for name in gpu_names -%}
@@ -180,6 +196,18 @@
          :show-cond: gfx={{ gfx }}
 
 {% endfor %}
+{%- if ns_codename.groups | length > 0 %}
+   .. matrix-row::
+
+      .. matrix-cell:: Codename
+         :header:
+
+{% for g in ns_codename.groups %}
+      .. matrix-cell:: {{ g.fp }}
+         :show-cond: {{ show_cond_gpu(g.gpus) }}
+
+{% endfor %}
+{%- endif %}
 {%- if ns_ubuntu.groups | length > 0 %}
 
    .. matrix-row::
