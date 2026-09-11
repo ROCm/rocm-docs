@@ -827,7 +827,7 @@ Post-installation
 After installing ROCm ASAN 10.0.0, complete these post-installation steps to
 configure your system and validate the installation.
 
-.. selected:: i=tar
+.. selected:: i=pkgman i=tar
    :heading: Configure your environment
    :heading-level: 3
 
@@ -838,66 +838,158 @@ configure your system and validate the installation.
 
       .. tab-item:: System-wide setup
 
-         Create a profile script so that all users inherit the ROCm environment
-         variables when they start a shell session. Make sure you're in the
-         ``therock-tarball-asan`` directory before proceeding.
+         .. selected:: i=tar
 
-         .. code-block:: bash
+            Make sure you're in the ``therock-tarball-asan`` directory before
+            proceeding.
 
-            ROCM_INSTALL_PATH=$(pwd)/install
-            sudo tee /etc/profile.d/set-rocm-env.sh << EOF
-            export ROCM_PATH=$ROCM_INSTALL_PATH
-            export PATH=\$ROCM_PATH/bin:\$PATH
-            export LD_LIBRARY_PATH=\$ROCM_PATH/lib:\$LD_LIBRARY_PATH
-            EOF
-            sudo chmod +x /etc/profile.d/set-rocm-env.sh
-            source /etc/profile.d/set-rocm-env.sh
+            .. code-block:: bash
+
+               # Set ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
+               ROCM_ASAN_INSTALL_PATH=$(pwd)/install
+               sudo tee /etc/profile.d/set-rocm-asan-env.sh << EOF
+               # ROCm ASan Configuration
+               export ROCM_ASAN_PATH=$ROCM_ASAN_INSTALL_PATH
+
+               # Add ROCm bin to PATH
+               export PATH=\$PATH:\$ROCM_ASAN_PATH/bin
+
+               # Enable XNACK for device-side GPU instrumentation
+               # Without this, only host-side (CPU) errors will be detected
+               export HSA_XNACK=1
+
+               # Locate ASan runtime directory and append instrumented library directories
+               ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
+               export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+               EOF
+               sudo chmod +x /etc/profile.d/set-rocm-asan-env.sh
+               source /etc/profile.d/set-rocm-asan-env.sh
+
+         .. selected:: i=pkgman
+
+            .. code-block:: bash
+
+               sudo tee /etc/profile.d/set-rocm-asan-env.sh << 'EOF'
+               # ROCm ASan Configuration
+               export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
+
+               # Enable XNACK for device-side GPU instrumentation
+               # Without this, only host-side (CPU) errors will be detected
+               export HSA_XNACK=1
+
+               # Locate ASan runtime directory and append instrumented library directories
+               ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
+               export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+               EOF
+               sudo chmod +x /etc/profile.d/set-rocm-asan-env.sh
+               source /etc/profile.d/set-rocm-asan-env.sh
 
       .. tab-item:: User setup
 
-         Configure the ROCm environment for your user by updating your shell
+         Configure the ROCm ASAN environment for your user by updating your shell
          startup configuration file.
-
-         Use the following commands to update your shell configuration file
-         (``~/.bashrc`` or ``~/.profile``) and add ROCm to your PATH. Before
-         proceeding, make sure you're in the ``therock-tarball-asan`` directory so
-         the install path resolves correctly.
 
          .. tab-set::
 
             .. tab-item:: .bashrc
                :sync: bashrc
 
-               .. code-block:: bash
+               .. selected:: i=tar
 
-                  # Configure ROCm PATH. Make sure you're in the therock-tarball-asan directory before proceeding.
-                  ROCM_INSTALL_PATH=$(pwd)/install
-                  tee --append ~/.bashrc << EOF
+                  Make sure you're in the ``therock-tarball-asan`` directory
+                  before proceeding.
 
-                  # BEGIN ROCm environment configuration
-                  export ROCM_PATH=$ROCM_INSTALL_PATH
-                  export PATH=\$ROCM_PATH/bin:\$PATH
-                  export LD_LIBRARY_PATH=\$ROCM_PATH/lib:\$LD_LIBRARY_PATH
-                  # END ROCm environment configuration
-                  EOF
-                  source ~/.bashrc
+                  .. code-block:: bash
+
+                     # Set ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
+                     ROCM_ASAN_INSTALL_PATH=$(pwd)/install
+                     tee --append ~/.bashrc << EOF
+                     # BEGIN ROCm ASan Configuration
+                     export ROCM_ASAN_PATH=$ROCM_ASAN_INSTALL_PATH
+
+                     # Add ROCm bin to PATH
+                     export PATH=\$PATH:\$ROCM_ASAN_PATH/bin
+
+                     # Enable XNACK for device-side GPU instrumentation
+                     # Without this, only host-side (CPU) errors will be detected
+                     export HSA_XNACK=1
+
+                     # Locate ASan runtime directory and append instrumented library directories
+                     ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
+                     export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+                     # END ROCm ASan Configuration
+                     EOF
+                     source ~/.bashrc
+
+               .. selected:: i=pkgman
+
+                  .. code-block:: bash
+
+                     # Set ROCM_ASAN_PATH to the ASan install tree
+                     tee --append ~/.bashrc << 'EOF'
+                     # BEGIN ROCm ASan Configuration
+                     export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
+
+                     # Enable XNACK for device-side GPU instrumentation
+                     # Without this, only host-side (CPU) errors will be detected
+                     export HSA_XNACK=1
+
+                     # Locate ASan runtime directory and append instrumented library directories
+                     ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
+                     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+                     # END ROCm ASan Configuration
+                     EOF
+                     source ~/.bashrc
 
             .. tab-item:: .profile
                :sync: profile
 
-               .. code-block:: bash
+               .. selected:: i=tar
 
-                  # Configure ROCm PATH. Make sure you're in the therock-tarball-asan directory before proceeding.
-                  ROCM_INSTALL_PATH=$(pwd)/install
-                  tee --append ~/.profile << EOF
+                  Make sure you're in the ``therock-tarball-asan`` directory
+                  before proceeding.
 
-                  # BEGIN ROCm environment configuration
-                  export ROCM_PATH=$ROCM_INSTALL_PATH
-                  export PATH=\$ROCM_PATH/bin:\$PATH
-                  export LD_LIBRARY_PATH=\$ROCM_PATH/lib:\$LD_LIBRARY_PATH
-                  # END ROCm environment configuration
-                  EOF
-                  source ~/.profile
+                  .. code-block:: bash
+
+                     # Set ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
+                     ROCM_ASAN_INSTALL_PATH=$(pwd)/install
+                     tee --append ~/.profile << EOF
+                     # BEGIN ROCm ASan Configuration
+                     export ROCM_ASAN_PATH=$ROCM_ASAN_INSTALL_PATH
+
+                     # Add ROCm bin to PATH
+                     export PATH=\$PATH:\$ROCM_ASAN_PATH/bin
+
+                     # Enable XNACK for device-side GPU instrumentation
+                     # Without this, only host-side (CPU) errors will be detected
+                     export HSA_XNACK=1
+
+                     # Locate ASan runtime directory and append instrumented library directories
+                     ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
+                     export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+                     # END ROCm ASan Configuration
+                     EOF
+                     source ~/.profile
+
+               .. selected:: i=pkgman
+
+                  .. code-block:: bash
+
+                     # Set ROCM_ASAN_PATH to the ASan install tree
+                     tee --append ~/.profile << 'EOF'
+                     # BEGIN ROCm ASan Configuration
+                     export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
+
+                     # Enable XNACK for device-side GPU instrumentation
+                     # Without this, only host-side (CPU) errors will be detected
+                     export HSA_XNACK=1
+
+                     # Locate ASan runtime directory and append instrumented library directories
+                     ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
+                     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+                     # END ROCm ASan Configuration
+                     EOF
+                     source ~/.profile
 
 Verify your installation
 ------------------------
