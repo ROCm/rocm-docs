@@ -1116,7 +1116,7 @@ Uninstall ROCm ASAN
 
          The following command assumes you're working with the
          ``therock-tarball-asan`` directory. If you chose a different directory
-         name when :ref:`installing ROCm <rocm-install-tar>`, adjust the
+         name when :doc:`installing ROCm <rocm>`, adjust the
          command accordingly.
 
       .. code-block:: bash
