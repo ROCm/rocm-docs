@@ -49,6 +49,9 @@ $defs:
       igpu:
         type: string
         description: Integrated GPU name (Ryzen APUs only)
+      codename:
+        type: string
+        description: Silicon codename
       mkt_page:
         type: string
         format: uri

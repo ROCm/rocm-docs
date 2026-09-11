@@ -41,7 +41,10 @@ rocm_core_sdk:
       support:
         linux:
           instinct: true
-          ryzen: [gfx1150 (Strix Point only), gfx1151, gfx1152 (Krackan Point only)]
+          ryzen:
+            - {gfx: gfx1150, codename: Strix Point}
+            - gfx1151
+            - {gfx: gfx1152, codename: Krackan Point}
     ROCm Data Center Tool:
       version: 1.3.1
       support: {linux: {instinct: true}}
@@ -51,7 +54,10 @@ rocm_core_sdk:
         linux:
           instinct: true
           radeon: true
-          ryzen: [gfx1150 (Strix Point only), gfx1151, gfx1152 (Krackan Point only)]
+          ryzen:
+            - {gfx: gfx1150, codename: Strix Point}
+            - gfx1151
+            - {gfx: gfx1152, codename: Krackan Point}
     ROCprofiler-SDK:
       version: 1.3.5
       support:
@@ -127,7 +133,12 @@ rocm_core_sdk:
       support:
         linux:
           instinct: [gfx950, gfx942, gfx90a]
-          radeon: [gfx1201, gfx1200, gfx1100, gfx1101 (except Radeon PRO V710), gfx1102]
+          radeon:
+            - gfx1201
+            - gfx1200
+            - gfx1100
+            - {gfx: gfx1101, except: [AMD Radeon PRO V710]}
+            - gfx1102
     rocSOLVER:
       version: 3.36.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
