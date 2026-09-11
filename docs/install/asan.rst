@@ -837,7 +837,7 @@ configure your system and validate the installation.
    .. tab-set::
 
       .. tab-item:: System-wide setup
-         :sync: setup-scope
+         :sync: system-wide
 
          .. selected:: i=tar
 
@@ -891,7 +891,7 @@ configure your system and validate the installation.
                source /etc/profile.d/set-rocm-asan-env.sh
 
       .. tab-item:: User setup
-         :sync: setup-scope
+         :sync: user-setup
 
          Configure the ROCm ASAN environment for your user by updating your shell
          startup configuration file.
@@ -1122,14 +1122,14 @@ Uninstall ROCm ASAN
       .. tab-set::
 
          .. tab-item:: System-wide setup
-            :sync: setup-scope
+            :sync: system-wide
 
             .. code-block:: bash
 
                sudo rm -f /etc/profile.d/set-rocm-asan-env.sh
 
          .. tab-item:: User setup
-            :sync: setup-scope
+            :sync: user-setup
 
             Remove the ROCm environment configuration block from your shell
             configuration file (``~/.bashrc`` or ``~/.profile``).
@@ -1158,14 +1158,14 @@ Uninstall ROCm ASAN
       .. tab-set::
 
          .. tab-item:: System-wide setup
-            :sync: setup-scope
+            :sync: system-wide
 
             .. code-block:: bash
 
                sudo rm -f /etc/profile.d/set-rocm-asan-env.sh
 
          .. tab-item:: User setup
-            :sync: setup-scope
+            :sync: user-setup
 
             Remove the ROCm environment configuration block from your shell
             configuration file (``~/.bashrc`` or ``~/.profile``).
