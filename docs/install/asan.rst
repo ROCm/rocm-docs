@@ -977,7 +977,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
-            sudo zypper remove amdrocm-asan10.0
+            sudo zypper remove amdrocm-*-asan10.0*
 
    2. Remove ROCm repositories.
 
