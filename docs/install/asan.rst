@@ -840,12 +840,13 @@ configure your system and validate the installation.
 
          .. selected:: i=tar
 
-            Make sure you're in the ``therock-tarball-asan`` directory before
-            proceeding.
+            Create a profile script so that all users inherit the ROCm ASAN
+            environment variables when they start a shell session. Make sure
+            you're in the ``therock-tarball-asan`` directory before proceeding.
 
             .. code-block:: bash
 
-               # Set ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
+               # Configure ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
                ROCM_ASAN_INSTALL_PATH=$(pwd)/install
                sudo tee /etc/profile.d/set-rocm-asan-env.sh << EOF
                # ROCm ASan Configuration
@@ -867,8 +868,12 @@ configure your system and validate the installation.
 
          .. selected:: i=pkgman
 
+            Create a profile script so that all users inherit the ROCm ASAN
+            environment variables when they start a shell session.
+
             .. code-block:: bash
 
+               # Configure ROCM_ASAN_PATH to the ASan install tree
                sudo tee /etc/profile.d/set-rocm-asan-env.sh << 'EOF'
                # ROCm ASan Configuration
                export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
@@ -889,6 +894,18 @@ configure your system and validate the installation.
          Configure the ROCm ASAN environment for your user by updating your shell
          startup configuration file.
 
+         .. selected:: i=tar
+
+            Use the following commands to update your shell configuration file
+            (``~/.bashrc`` or ``~/.profile``) and add ROCm ASAN to your PATH.
+            Before proceeding, make sure you're in the ``therock-tarball-asan``
+            directory so the install path resolves correctly.
+
+         .. selected:: i=pkgman
+
+            Use the following commands to update your shell configuration file
+            (``~/.bashrc`` or ``~/.profile``) and add ROCm ASAN to your PATH.
+
          .. tab-set::
 
             .. tab-item:: .bashrc
@@ -896,12 +913,9 @@ configure your system and validate the installation.
 
                .. selected:: i=tar
 
-                  Make sure you're in the ``therock-tarball-asan`` directory
-                  before proceeding.
-
                   .. code-block:: bash
 
-                     # Set ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
+                     # Configure ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
                      ROCM_ASAN_INSTALL_PATH=$(pwd)/install
                      tee --append ~/.bashrc << EOF
                      # BEGIN ROCm ASan Configuration
@@ -925,7 +939,7 @@ configure your system and validate the installation.
 
                   .. code-block:: bash
 
-                     # Set ROCM_ASAN_PATH to the ASan install tree
+                     # Configure ROCM_ASAN_PATH to the ASan install tree
                      tee --append ~/.bashrc << 'EOF'
                      # BEGIN ROCm ASan Configuration
                      export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
@@ -946,12 +960,9 @@ configure your system and validate the installation.
 
                .. selected:: i=tar
 
-                  Make sure you're in the ``therock-tarball-asan`` directory
-                  before proceeding.
-
                   .. code-block:: bash
 
-                     # Set ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
+                     # Configure ROCM_ASAN_PATH to the ASan install tree (tarball extract path)
                      ROCM_ASAN_INSTALL_PATH=$(pwd)/install
                      tee --append ~/.profile << EOF
                      # BEGIN ROCm ASan Configuration
@@ -975,7 +986,7 @@ configure your system and validate the installation.
 
                   .. code-block:: bash
 
-                     # Set ROCM_ASAN_PATH to the ASan install tree
+                     # Configure ROCM_ASAN_PATH to the ASan install tree
                      tee --append ~/.profile << 'EOF'
                      # BEGIN ROCm ASan Configuration
                      export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
@@ -1104,6 +1115,21 @@ Uninstall ROCm ASAN
             sudo zypper clean --all
             sudo zypper refresh
 
+   3. Remove the ROCm environment variables from your configuration.
+
+      .. tab-set::
+
+         .. tab-item:: System-wide setup
+
+            .. code-block:: bash
+
+               sudo rm -f /etc/profile.d/set-rocm-asan-env.sh
+
+         .. tab-item:: User setup
+
+            Remove the ROCm environment configuration block from your shell
+            configuration file (``~/.bashrc`` or ``~/.profile``).
+
 .. ================================================================== TARBALL ==
 
 .. selected:: i=tar
@@ -1131,26 +1157,12 @@ Uninstall ROCm ASAN
 
             .. code-block:: bash
 
-               sudo rm -f /etc/profile.d/set-rocm-env.sh
+               sudo rm -f /etc/profile.d/set-rocm-asan-env.sh
 
          .. tab-item:: User setup
 
-            Edit your ``~/.bashrc`` file and remove the ROCm environment
-            configuration section:
-
-            .. code-block:: bash
-
-               # BEGIN ROCm environment configuration
-               export ROCM_PATH=$ROCM_INSTALL_PATH
-               export PATH=$ROCM_PATH/bin:$PATH
-               export LD_LIBRARY_PATH=$ROCM_PATH/lib:$LD_LIBRARY_PATH
-               # END ROCm environment configuration
-
-   3. Reload your shell configuration:
-
-      .. code-block:: bash
-
-         source ~/.bashrc
+            Remove the ROCm environment configuration block from your shell
+            configuration file (``~/.bashrc`` or ``~/.profile``).
 
 ----
 
