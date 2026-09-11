@@ -1939,6 +1939,8 @@ Use the following instructions to install ROCm packages on your system.
 
 .. ================================================================== TARBALL ==
 
+.. _rocm-install-tar:
+
 .. selected:: i=tar
    :heading: Create the installation directory
    :heading-level: 4

@@ -780,11 +780,11 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
    .. code-block:: bash
 
-      mkdir therock-tarball && cd therock-tarball
+      mkdir therock-tarball-asan && cd therock-tarball-asan
 
    .. important::
 
-      Subsequent commands assume you're working with the ``therock-tarball``
+      Subsequent commands assume you're working with the ``therock-tarball-asan``
       directory. If you choose a different directory name, adjust the commands
       accordingly.
 
@@ -840,7 +840,7 @@ configure your system and validate the installation.
 
          Create a profile script so that all users inherit the ROCm environment
          variables when they start a shell session. Make sure you're in the
-         ``therock-tarball`` directory before proceeding.
+         ``therock-tarball-asan`` directory before proceeding.
 
          .. code-block:: bash
 
@@ -860,7 +860,7 @@ configure your system and validate the installation.
 
          Use the following commands to update your shell configuration file
          (``~/.bashrc`` or ``~/.profile``) and add ROCm to your PATH. Before
-         proceeding, make sure you're in the ``therock-tarball`` directory so
+         proceeding, make sure you're in the ``therock-tarball-asan`` directory so
          the install path resolves correctly.
 
          .. tab-set::
@@ -870,7 +870,7 @@ configure your system and validate the installation.
 
                .. code-block:: bash
 
-                  # Configure ROCm PATH. Make sure you're in the therock-tarball directory before proceeding.
+                  # Configure ROCm PATH. Make sure you're in the therock-tarball-asan directory before proceeding.
                   ROCM_INSTALL_PATH=$(pwd)/install
                   tee --append ~/.bashrc << EOF
 
@@ -887,7 +887,7 @@ configure your system and validate the installation.
 
                .. code-block:: bash
 
-                  # Configure ROCm PATH. Make sure you're in the therock-tarball directory before proceeding.
+                  # Configure ROCm PATH. Make sure you're in the therock-tarball-asan directory before proceeding.
                   ROCM_INSTALL_PATH=$(pwd)/install
                   tee --append ~/.profile << EOF
 
@@ -1020,9 +1020,16 @@ Uninstall ROCm ASAN
 
    1. Remove the directory containing the ROCm ASAN installation:
 
+      .. important::
+
+         The following command assumes you're working with the
+         ``therock-tarball-asan`` directory. If you chose a different directory
+         name when :ref:`installing ROCm <rocm-install-tar>`, adjust the
+         command accordingly.
+
       .. code-block:: bash
 
-         rm -rf $ROCM_PATH/therock-tarball
+         rm -rf therock-tarball-asan
 
    2. Remove the ROCm environment variables from your configuration.
 
