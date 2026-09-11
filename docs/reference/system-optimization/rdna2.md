@@ -20,7 +20,7 @@ Workstation workloads, much like those for HPC, have a unique set of
 requirements: a blend of both graphics and compute, certification, stability,
 and more.
 
-For more information about RDNA2, see the [RDNA 2 Instruction Set Architecture: Reference Guide](https://www.amd.com/system/files/TechDocs/rdna2-shader-instruction-set-architecture.pdf).
+For more information about RDNA2, see the [RDNA 2 Instruction Set Architecture: Reference Guide](https://docs.amd.com/v/u/en-US/rdna2-shader-instruction-set-architecture).
 
 ## System settings
 

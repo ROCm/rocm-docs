@@ -61,16 +61,19 @@ architectural behavior.
 :::{grid-item-card}
 **RDNA™** (Radeon and Ryzen)
 
-* [AMD RDNA 4 ISA reference](https://www.amd.com/content/dam/amd/en/documents/radeon-tech-docs/instruction-set-architectures/rdna4-instruction-set-architecture.pdf)
-* [AMD RDNA 3 ISA reference](https://www.amd.com/system/files/TechDocs/rdna3-shader-instruction-set-architecture-feb-2023_0.pdf)
-* [AMD RDNA 2 ISA reference](https://www.amd.com/system/files/TechDocs/rdna2-shader-instruction-set-architecture.pdf)
-* [AMD RDNA ISA reference](https://www.amd.com/system/files/TechDocs/rdna-shader-instruction-set-architecture.pdf)
+* [AMD RDNA architecture](./rdna.rst)
+* [AMD RDNA 4 ISA reference](https://docs.amd.com/v/u/en-US/rdna4-instruction-set-architecture)
+* [AMD RDNA 3.5 ISA reference](https://docs.amd.com/v/u/en-US/rdna35_instruction_set_architecture)
+* [AMD RDNA 3 ISA reference](https://docs.amd.com/v/u/en-US/rdna3-shader-instruction-set-architecture-feb-2023_0)
+* [AMD RDNA 2 ISA reference](https://docs.amd.com/v/u/en-US/rdna2-shader-instruction-set-architecture)
+* [AMD RDNA ISA reference](https://docs.amd.com/v/u/en-US/rdna-shader-instruction-set-architecture)
 
 :::
 
 :::{grid-item-card}
 **Older architectures**
 
+* [Older AMD GPU architectures](./older-architectures.rst)
 * [AMD Vega 7nm (Instinct MI50) ISA reference](https://www.amd.com/system/files/TechDocs/vega-7nm-shader-instruction-set-architecture.pdf)
 * [AMD Vega (Instinct MI25) ISA reference](https://www.amd.com/system/files/TechDocs/vega-shader-instruction-set-architecture.pdf)
 * [AMD GCN 3 ISA reference](https://www.amd.com/system/files/TechDocs/gcn3-instruction-set-architecture.pdf)
