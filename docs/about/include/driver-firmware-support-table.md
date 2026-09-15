@@ -286,8 +286,8 @@
   <tbody>
     <tr>
       <td style="vertical-align: middle">
-        <p>Inbox kernel driver (Ubuntu 26.04)<br>
-          6.14.0-1018 OEM kernel or newer (Ubuntu 24.04)
+        <p>Ubuntu 26.04: use inbox kernel driver <br>
+          Ubuntu 24.04.4: 6.17 OEM kerne
         </p>
       </td>
       <td rowspan="30" style="vertical-align: middle">
