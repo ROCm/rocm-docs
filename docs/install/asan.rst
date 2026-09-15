@@ -255,8 +255,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/ubuntu2604/
             Suites: stable
@@ -277,8 +277,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/ubuntu2404/
             Suites: stable
@@ -299,8 +299,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/ubuntu2204/
             Suites: stable
@@ -323,8 +323,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/debian13/
             Suites: stable
@@ -345,8 +345,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/debian12/
             Suites: stable
@@ -364,8 +364,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
             name=ROCm 10.0.0
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel10/x86_64
             enabled=1
@@ -379,8 +379,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
             name=ROCm 10.0.0
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
             enabled=1
@@ -394,8 +394,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
             name=ROCm 10.0.0
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel8/x86_64
             enabled=1
@@ -411,8 +411,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
             name=ROCm 10.0.0
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel10/x86_64
             enabled=1
@@ -426,8 +426,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
             name=ROCm 10.0.0
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
             enabled=1
@@ -441,8 +441,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
             name=ROCm 10.0.0
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel8/x86_64
             enabled=1
@@ -456,8 +456,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
       .. code-block:: bash
 
-         sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-         [amdrocm-stable]
+         sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+         [amdrocm-stable-asan]
          name=ROCm 10.0.0
          baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
          enabled=1
@@ -473,8 +473,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/zypp/repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
+            sudo tee /etc/zypp/repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
             name=ROCm 10.0.0
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/sles16/x86_64
             enabled=1
@@ -488,8 +488,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/zypp/repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
+            sudo tee /etc/zypp/repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
             name=ROCm 10.0.0
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/sles15/x86_64
             enabled=1
@@ -996,7 +996,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
-            sudo rm -f /etc/apt/sources.list.d/amdrocm-stable.sources
+            sudo rm -f /etc/apt/sources.list.d/amdrocm-stable-asan.sources
 
             # Clear the cache and clean the system
             sudo rm -rf /var/cache/apt/*
@@ -1007,7 +1007,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
-            sudo rm -f /etc/yum.repos.d/amdrocm-stable.repo*
+            sudo rm -f /etc/yum.repos.d/amdrocm-stable-asan.repo*
 
             # Clear the cache and clean the system
             sudo rm -rf /var/cache/dnf
@@ -1017,7 +1017,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
-            sudo zypper removerepo "amdrocm-stable"
+            sudo zypper removerepo "amdrocm-stable-asan"
 
             # Clear the cache and clean the system
             sudo zypper clean --all
