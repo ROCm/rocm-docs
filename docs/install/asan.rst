@@ -751,6 +751,9 @@ configure your system and validate the installation.
                # Locate ASan runtime directory and append instrumented library directories
                ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+               export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+               export LD_PRELOAD="\${ASAN_LIB_PATH%/*}/\$ASAN_LIB_NAME:\${ROCM_ASAN_PATH}/lib/libamdhip64.so:\${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                EOF
                sudo chmod +x /etc/profile.d/set-rocm-asan-env.sh
                source /etc/profile.d/set-rocm-asan-env.sh
@@ -774,6 +777,9 @@ configure your system and validate the installation.
                # Locate ASan runtime directory and append instrumented library directories
                ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+               export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+               export LD_PRELOAD="${ASAN_LIB_PATH%/*}/$ASAN_LIB_NAME:${ROCM_ASAN_PATH}/lib/libamdhip64.so:${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                EOF
                sudo chmod +x /etc/profile.d/set-rocm-asan-env.sh
                source /etc/profile.d/set-rocm-asan-env.sh
@@ -821,6 +827,9 @@ configure your system and validate the installation.
                      # Locate ASan runtime directory and append instrumented library directories
                      ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                      export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+                     export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+                     export LD_PRELOAD="\${ASAN_LIB_PATH%/*}/\$ASAN_LIB_NAME:\${ROCM_ASAN_PATH}/lib/libamdhip64.so:\${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                      # END ROCm ASan Configuration
                      EOF
                      source ~/.bashrc
@@ -841,6 +850,9 @@ configure your system and validate the installation.
                      # Locate ASan runtime directory and append instrumented library directories
                      ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+                     export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+                     export LD_PRELOAD="${ASAN_LIB_PATH%/*}/$ASAN_LIB_NAME:${ROCM_ASAN_PATH}/lib/libamdhip64.so:${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                      # END ROCm ASan Configuration
                      EOF
                      source ~/.bashrc
@@ -868,6 +880,9 @@ configure your system and validate the installation.
                      # Locate ASan runtime directory and append instrumented library directories
                      ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                      export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+                     export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+                     export LD_PRELOAD="\${ASAN_LIB_PATH%/*}/\$ASAN_LIB_NAME:\${ROCM_ASAN_PATH}/lib/libamdhip64.so:\${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                      # END ROCm ASan Configuration
                      EOF
                      source ~/.profile
@@ -888,6 +903,9 @@ configure your system and validate the installation.
                      # Locate ASan runtime directory and append instrumented library directories
                      ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+                     export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+                     export LD_PRELOAD="${ASAN_LIB_PATH%/*}/$ASAN_LIB_NAME:${ROCM_ASAN_PATH}/lib/libamdhip64.so:${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                      # END ROCm ASan Configuration
                      EOF
                      source ~/.profile
