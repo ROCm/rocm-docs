@@ -8,7 +8,7 @@ _os:
 _versions:
   - &ubuntu_26_04 { version: "26.04", kernel: "GA 7.0", graphics: true }
   - &ubuntu_24_04 { version: "24.04.4", kernel: "GA 6.8", graphics: true }
-  - &ubuntu_24_04_hwe { version: "24.04.4", kernel: "HWE 6.17", graphics: true }
+  - &ubuntu_24_04_hwe { version: "24.04.4", kernel: "OEM 6.17", graphics: true }
   - &ubuntu_22_04 { version: "22.04.5", kernel: "GA 5.15" }
   - &debian_13 { version: "13", kernel: "6.12" }
   - &debian_12 { version: "12", kernel: "6.1.0" }
