@@ -110,7 +110,7 @@ Most users interact with ROCprofiler-SDK indirectly through the higher-level
 tools. For guidance on when to use ROCprofiler-SDK directly, see
 :ref:`When to choose ROCprofiler-SDK <selection-rocprofiler-sdk>`. For a
 quick overview, see
-`ROCprofiler-SDK at a glance <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/quick-reference/rocprofiler-sdk-at-a-glance.html>`__.
+`What is ROCprofiler-SDK? <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/what-is-rocprofiler-sdk.html>`__.
 
 .. _profiling-rocprofv3:
 
@@ -123,7 +123,7 @@ development. Run your application under ``rocprofv3`` and it writes structured
 output files containing trace data, counter values, or samples. For guidance
 on when to use ``rocprofv3``, see :ref:`When to choose rocprofv3 <selection-rocprofv3>`.
 For a quick overview, see
-`rocprofv3 — command-line profiling interface <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/quick-reference/rocprofiler-sdk-at-a-glance.html#rocprofv3-command-line-profiling-interface>`__.
+`rocprofv3 — command-line profiling interface <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/what-is-rocprofiler-sdk.html#rocprofv3-command-line-profiling-interface>`__.
 
 .. _profiling-rocprofiler-systems:
 
@@ -217,7 +217,7 @@ instruction is stalling, how wavefronts occupy execution pipelines over time,
 and where LDS bank conflicts or memory latency consumes cycles. For guidance on
 when to use RCV, see :ref:`When to choose RCV <selection-rcv>`. For a quick
 overview, see
-`RCV at a glance <https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/amd-mainline/quick-reference/rcv-at-a-glance.html>`__.
+`What is RCV? <https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/amd-mainline/what_is_rcv.html>`__.
 
 .. _profiling-optiq:
 
