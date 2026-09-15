@@ -131,6 +131,6 @@ AMD Radeon:
 
 AMD Ryzen:
   linux:
-    - {os: "Ubuntu 26.04", driver: "Inbox kernel driver"}
-    - {os: "Ubuntu 24.04", driver: "6.14.0-1018 OEM kernel or newer"}
+    - {os: "Ubuntu 26.04", driver: "use inbox kernel driver"}
+    - {os: "Ubuntu 24.04", driver: "6.17 OEM kernel"}
   windows: [*adrenalin_26_8_1, *windows_oem_26_10_32]
