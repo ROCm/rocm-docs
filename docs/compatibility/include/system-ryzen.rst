@@ -32,7 +32,7 @@
          `AMD Ryzen AI PRO 400 Series <https://www.amd.com/en/products/processors/laptop/ryzen-for-business.html#tabs-0d174caf43-item-87690677fc-tab>`__
 
       .. matrix-cell::
-         :show-cond: gpu=ai-5-435 gpu=ai-5-430 gpu=ai-7-445 gpu=ai-9-hx-475 gpu=ai-9-hx-470 gpu=ai-9-465 gpu=ai-7-450 
+         :show-cond: gpu=ai-5-435 gpu=ai-5-430 gpu=ai-7-445 gpu=ai-9-hx-475 gpu=ai-9-hx-470 gpu=ai-9-465 gpu=ai-7-450
 
          `AMD Ryzen AI 400 Series <https://www.amd.com/en/products/processors/consumer/ryzen-ai.html#tabs-f556098628-item-808b56dca3-tab>`__
 
@@ -47,7 +47,7 @@
          `AMD Ryzen AI 300 Series <https://www.amd.com/en/products/processors/consumer/ryzen-ai.html#tabs-f556098628-item-54e149d850-tab>`__
 
       .. matrix-cell::
-         :show-cond: gpu=7-pro-250 gpu=5-pro-230 gpu=5-pro-220 gpu=5-pro-215 gpu=3-pro-210 
+         :show-cond: gpu=7-pro-250 gpu=5-pro-230 gpu=5-pro-220 gpu=5-pro-215 gpu=3-pro-210
 
          `AMD Ryzen PRO 200 Series <https://www.amd.com/en/products/processors/laptop/ryzen-for-business.html#tabs-0d174caf43-item-a8ec88d07e-tab>`__
 
@@ -138,7 +138,7 @@
 
          26.04 (GA kernel: 7.0)
 
-         24.04.4 (HWE kernel: 6.17)
+         24.04.4 (OEM kernel: 6.17)
 
    .. matrix-row::
       :show-cond: os=windows

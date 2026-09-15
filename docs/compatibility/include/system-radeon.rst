@@ -83,9 +83,9 @@
 
          Ubuntu 26.04 (GA kernel: 7.0)
 
-         Ubuntu 24.04.4 (GA kernel: 6.8)
+         Ubuntu 24.04.4 (HWE 6.17)
 
-         Ubuntu 22.04.5 (GA kernel: 5.15)
+         Ubuntu 22.04.5 (HWE 6.8)
 
    .. matrix-row::
       :show-cond: os=rhel
