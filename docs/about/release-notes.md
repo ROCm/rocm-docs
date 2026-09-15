@@ -530,6 +530,10 @@ TensorFlow ROCm v2.21 workloads might fail to start with an `ImportError: libhip
 
 Intermittent segmentation faults or GPU hangs might be observed when running some vLLM or ComfyUI workloads on Ryzen AI systems using gfx1103 (RDNA3) GPUs. See [GitHub issue #7702](https://github.com/ROCm/TheRock/issues/7702).
 
+### Concurrent rocprofv3 profiling causes node reset on AMD Instinct MI300A GPUs 
+
+Running ``rocprofv3 --pmc`` or ``--kernel-trace`` concurrently across multiple GPUs of a single AMD Instinct MI300A node might hard-reset the node, terminating all co-resident jobs and requiring a manul power cycle to recover. As a workaround, rebuild ROCprofiler-SDK from the {fab}`github`[ROCm/rocm-systems](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler-sdk)`develop` branch which includes the fix.
+
 ## ROCm resolved issues
 
 The following notable issues have been fixed in ROCm 10.0.0.
