@@ -497,7 +497,7 @@ release.
 
 ## ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
 
 ### HuggingFace model training throughput might regress on AMD Instinct MI350X
 
@@ -529,6 +529,10 @@ TensorFlow ROCm v2.21 workloads might fail to start with an `ImportError: libhip
 ### vLLM or ComfyUI workloads might crash on some Ryzen AI systems
 
 Intermittent segmentation faults or GPU hangs might be observed when running some vLLM or ComfyUI workloads on Ryzen AI systems using gfx1103 (RDNA3) GPUs. See [GitHub issue #7702](https://github.com/ROCm/TheRock/issues/7702).
+
+### Concurrent rocprofv3 profiling causes node reset on AMD Instinct MI300A GPUs
+
+Running ``rocprofv3 --pmc`` or ``--kernel-trace`` concurrently across multiple GPUs of a single AMD Instinct MI300A node might hard-reset the node, terminating all co-resident jobs and requiring a manual power cycle to recover. As a workaround, rebuild ROCprofiler-SDK from the {fab}`github`[ROCm/rocm-systems](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler-sdk)`develop` branch, which includes the fix. See [GitHub issue #8229](https://github.com/ROCm/TheRock/issues/8229).
 
 ## ROCm resolved issues
 
