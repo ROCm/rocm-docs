@@ -255,8 +255,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/ubuntu2604/
             Suites: stable
@@ -277,8 +277,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/ubuntu2404/
             Suites: stable
@@ -299,8 +299,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/ubuntu2204/
             Suites: stable
@@ -323,8 +323,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/debian13/
             Suites: stable
@@ -345,8 +345,8 @@ Use the following instructions to install ROCm ASAN packages on your system.
             wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                 gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
-            sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
-            X-Repo-Id: amdrocm-stable
+            sudo tee /etc/apt/sources.list.d/amdrocm-stable-asan.sources << EOF
+            X-Repo-Id: amdrocm-stable-asan
             Types: deb
             URIs: https://stable.repo.amd.com/rocm/core/packages-asan/debian12/
             Suites: stable
@@ -364,9 +364,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
-            name=ROCm 10.0.0
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel10/x86_64
             enabled=1
             gpgcheck=1
@@ -379,9 +379,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
-            name=ROCm 10.0.0
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
             enabled=1
             gpgcheck=1
@@ -394,9 +394,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
-            name=ROCm 10.0.0
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel8/x86_64
             enabled=1
             gpgcheck=1
@@ -411,9 +411,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
-            name=ROCm 10.0.0
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel10/x86_64
             enabled=1
             gpgcheck=1
@@ -426,9 +426,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
-            name=ROCm 10.0.0
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
             enabled=1
             gpgcheck=1
@@ -441,9 +441,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
-            name=ROCm 10.0.0
+            sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel8/x86_64
             enabled=1
             gpgcheck=1
@@ -456,9 +456,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
       .. code-block:: bash
 
-         sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
-         [amdrocm-stable]
-         name=ROCm 10.0.0
+         sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
+         [amdrocm-stable-asan]
+         name=ROCm 10.0.0 asan
          baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
          enabled=1
          gpgcheck=1
@@ -473,9 +473,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/zypp/repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
-            name=ROCm 10.0.0
+            sudo tee /etc/zypp/repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/sles16/x86_64
             enabled=1
             gpgcheck=1
@@ -488,9 +488,9 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo tee /etc/zypp/repos.d/amdrocm-stable.repo <<EOF
-            [amdrocm-stable]
-            name=ROCm 10.0.0
+            sudo tee /etc/zypp/repos.d/amdrocm-stable-asan.repo <<EOF
+            [amdrocm-stable-asan]
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/sles15/x86_64
             enabled=1
             gpgcheck=1
@@ -579,155 +579,43 @@ Use the following instructions to install ROCm ASAN packages on your system.
    you to install only what is necessary for your use case. The following table
    describes available ROCm ASAN meta packages:
 
-   .. selected:: os=rhel
+   .. selected:: os=rhel os=oracle-linux os=rocky-linux os=sles
 
-      .. selected:: rhel-ver=9
+      .. list-table::
+         :header-rows: 1
+         :widths: 25 20 30 25
 
-         .. list-table::
-            :header-rows: 1
-            :widths: 25 20 30 25
+         * - Meta package name
+           - Use case
+           - Description
+           - Contents
+         * - ``amdrocm-asan10.0``
+           - ROCm Base
+           - Core runtime environment. Install this to run ROCm applications with
+             ASAN instrumentation.
+           - Runtimes, libraries, system control and monitoring tools, and other
+             essential components with ASAN.
+         * - ``amdrocm-core-devel-asan10.0``
+           - ROCm Developer Essentials
+           - Development environment. Install this to build ROCm applications with
+             ASAN support.
+           - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
+             library files, and headers with ASAN.
+         * - ``amdrocm-developer-tools-asan10.0``
+           - ROCm Profiler
+           - Install this to profile and optimize ROCm applications with ASAN.
+           - Profilers and related tools with ASAN instrumentation.
+         * - ``amdrocm-opencl-asan10.0``
+           - ROCm OpenCL
+           - Install this to run OpenCL applications on ROCm with ASAN.
+           - Components needed to run OpenCL with ASAN.
+         * - ``amdrocm-core-sdk-asan10.0``
+           - ROCm Full Suite
+           - Install this if you need everything with ASAN.
+           - The complete ROCm Core SDK including runtimes, compilers, development
+             tools, and dependencies with ASAN.
 
-            * - Meta package name
-              - Use case
-              - Description
-              - Contents
-            * - ``amdrocm-asan10.0``
-              - ROCm Base
-              - Core runtime environment. Install this to run ROCm applications with
-                ASAN instrumentation.
-              - Runtimes, libraries, system control and monitoring tools, and other
-                essential components with ASAN.
-            * - ``amdrocm-core-devel-asan10.0``
-              - ROCm Developer Essentials
-              - Development environment. Install this to build ROCm applications with
-                ASAN support.
-              - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
-                library files, and headers with ASAN.
-            * - ``amdrocm-developer-tools-asan10.0``
-              - ROCm Profiler
-              - Install this to profile and optimize ROCm applications with ASAN.
-              - Profilers and related tools with ASAN instrumentation.
-            * - ``amdrocm-opencl-asan10.0``
-              - ROCm OpenCL
-              - Install this to run OpenCL applications on ROCm with ASAN.
-              - Components needed to run OpenCL with ASAN.
-            * - ``amdrocm-core-sdk-asan10.0``
-              - ROCm Full Suite
-              - Install this if you need everything with ASAN.
-              - The complete ROCm Core SDK including runtimes, compilers, development
-                tools, and dependencies with ASAN.
-
-      .. selected:: rhel-ver=10 rhel-ver=8
-
-         .. list-table::
-            :header-rows: 1
-            :widths: 25 20 30 25
-
-            * - Meta package name
-              - Use case
-              - Description
-              - Contents
-            * - ``amdrocm-asan10.0``
-              - ROCm Base
-              - Core runtime environment. Install this to run ROCm applications with
-                ASAN instrumentation.
-              - Runtimes, libraries, system control and monitoring tools, and other
-                essential components with ASAN.
-            * - ``amdrocm-core-dev-asan10.0``
-              - ROCm Developer Essentials
-              - Development environment. Install this to build ROCm applications with
-                ASAN support.
-              - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
-                library files, and headers with ASAN.
-            * - ``amdrocm-developer-tools-asan10.0``
-              - ROCm Profiler
-              - Install this to profile and optimize ROCm applications with ASAN.
-              - Profilers and related tools with ASAN instrumentation.
-            * - ``amdrocm-opencl-asan10.0``
-              - ROCm OpenCL
-              - Install this to run OpenCL applications on ROCm with ASAN.
-              - Components needed to run OpenCL with ASAN.
-            * - ``amdrocm-core-sdk-asan10.0``
-              - ROCm Full Suite
-              - Install this if you need everything with ASAN.
-              - The complete ROCm Core SDK including runtimes, compilers, development
-                tools, and dependencies with ASAN.
-
-   .. selected:: os=sles
-
-      .. selected:: sles-ver=16
-
-         .. list-table::
-            :header-rows: 1
-            :widths: 25 20 30 25
-
-            * - Meta package name
-              - Use case
-              - Description
-              - Contents
-            * - ``amdrocm-asan10.0``
-              - ROCm Base
-              - Core runtime environment. Install this to run ROCm applications with
-                ASAN instrumentation.
-              - Runtimes, libraries, system control and monitoring tools, and other
-                essential components with ASAN.
-            * - ``amdrocm-core-devel-asan10.0``
-              - ROCm Developer Essentials
-              - Development environment. Install this to build ROCm applications with
-                ASAN support.
-              - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
-                library files, and headers with ASAN.
-            * - ``amdrocm-developer-tools-asan10.0``
-              - ROCm Profiler
-              - Install this to profile and optimize ROCm applications with ASAN.
-              - Profilers and related tools with ASAN instrumentation.
-            * - ``amdrocm-opencl-asan10.0``
-              - ROCm OpenCL
-              - Install this to run OpenCL applications on ROCm with ASAN.
-              - Components needed to run OpenCL with ASAN.
-            * - ``amdrocm-core-sdk-asan10.0``
-              - ROCm Full Suite
-              - Install this if you need everything with ASAN.
-              - The complete ROCm Core SDK including runtimes, compilers, development
-                tools, and dependencies with ASAN.
-
-      .. selected:: sles-ver=15
-
-         .. list-table::
-            :header-rows: 1
-            :widths: 25 20 30 25
-
-            * - Meta package name
-              - Use case
-              - Description
-              - Contents
-            * - ``amdrocm-asan10.0``
-              - ROCm Base
-              - Core runtime environment. Install this to run ROCm applications with
-                ASAN instrumentation.
-              - Runtimes, libraries, system control and monitoring tools, and other
-                essential components with ASAN.
-            * - ``amdrocm-core-dev-asan10.0``
-              - ROCm Developer Essentials
-              - Development environment. Install this to build ROCm applications with
-                ASAN support.
-              - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
-                library files, and headers with ASAN.
-            * - ``amdrocm-developer-tools-asan10.0``
-              - ROCm Profiler
-              - Install this to profile and optimize ROCm applications with ASAN.
-              - Profilers and related tools with ASAN instrumentation.
-            * - ``amdrocm-opencl-asan10.0``
-              - ROCm OpenCL
-              - Install this to run OpenCL applications on ROCm with ASAN.
-              - Components needed to run OpenCL with ASAN.
-            * - ``amdrocm-core-sdk-asan10.0``
-              - ROCm Full Suite
-              - Install this if you need everything with ASAN.
-              - The complete ROCm Core SDK including runtimes, compilers, development
-                tools, and dependencies with ASAN.
-
-   .. selected:: os=ubuntu os=debian os=oracle-linux os=rocky-linux
+   .. selected:: os=ubuntu os=debian
 
       .. list-table::
          :header-rows: 1
@@ -863,6 +751,9 @@ configure your system and validate the installation.
                # Locate ASan runtime directory and append instrumented library directories
                ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+               export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+               export LD_PRELOAD="\${ASAN_LIB_PATH%/*}/\$ASAN_LIB_NAME:\${ROCM_ASAN_PATH}/lib/libamdhip64.so:\${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                EOF
                sudo chmod +x /etc/profile.d/set-rocm-asan-env.sh
                source /etc/profile.d/set-rocm-asan-env.sh
@@ -886,6 +777,9 @@ configure your system and validate the installation.
                # Locate ASan runtime directory and append instrumented library directories
                ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+               export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+               export LD_PRELOAD="${ASAN_LIB_PATH%/*}/$ASAN_LIB_NAME:${ROCM_ASAN_PATH}/lib/libamdhip64.so:${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                EOF
                sudo chmod +x /etc/profile.d/set-rocm-asan-env.sh
                source /etc/profile.d/set-rocm-asan-env.sh
@@ -933,6 +827,9 @@ configure your system and validate the installation.
                      # Locate ASan runtime directory and append instrumented library directories
                      ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                      export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+                     export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+                     export LD_PRELOAD="\${ASAN_LIB_PATH%/*}/\$ASAN_LIB_NAME:\${ROCM_ASAN_PATH}/lib/libamdhip64.so:\${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                      # END ROCm ASan Configuration
                      EOF
                      source ~/.bashrc
@@ -953,6 +850,9 @@ configure your system and validate the installation.
                      # Locate ASan runtime directory and append instrumented library directories
                      ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+                     export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+                     export LD_PRELOAD="${ASAN_LIB_PATH%/*}/$ASAN_LIB_NAME:${ROCM_ASAN_PATH}/lib/libamdhip64.so:${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                      # END ROCm ASan Configuration
                      EOF
                      source ~/.bashrc
@@ -980,6 +880,9 @@ configure your system and validate the installation.
                      # Locate ASan runtime directory and append instrumented library directories
                      ASAN_LIB_PATH=\$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                      export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\${ASAN_LIB_PATH%/*}:\${ROCM_ASAN_PATH}/lib:\${ROCM_ASAN_PATH}/lib/llvm/lib:\${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+                     export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+                     export LD_PRELOAD="\${ASAN_LIB_PATH%/*}/\$ASAN_LIB_NAME:\${ROCM_ASAN_PATH}/lib/libamdhip64.so:\${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                      # END ROCm ASan Configuration
                      EOF
                      source ~/.profile
@@ -1000,6 +903,9 @@ configure your system and validate the installation.
                      # Locate ASan runtime directory and append instrumented library directories
                      ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
                      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+                     export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+                     export LD_PRELOAD="${ASAN_LIB_PATH%/*}/$ASAN_LIB_NAME:${ROCM_ASAN_PATH}/lib/libamdhip64.so:${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
                      # END ROCm ASan Configuration
                      EOF
                      source ~/.profile
@@ -1090,7 +996,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
-            sudo rm -f /etc/apt/sources.list.d/amdrocm-stable.sources
+            sudo rm -f /etc/apt/sources.list.d/amdrocm-stable-asan.sources
 
             # Clear the cache and clean the system
             sudo rm -rf /var/cache/apt/*
@@ -1101,7 +1007,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
-            sudo rm -f /etc/yum.repos.d/amdrocm-stable.repo*
+            sudo rm -f /etc/yum.repos.d/amdrocm-stable-asan.repo*
 
             # Clear the cache and clean the system
             sudo rm -rf /var/cache/dnf
@@ -1111,7 +1017,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
-            sudo zypper removerepo "amdrocm-stable"
+            sudo zypper removerepo "amdrocm-stable-asan"
 
             # Clear the cache and clean the system
             sudo zypper clean --all
