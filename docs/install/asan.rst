@@ -366,7 +366,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel10/x86_64
             enabled=1
             gpgcheck=1
@@ -381,7 +381,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
             enabled=1
             gpgcheck=1
@@ -396,7 +396,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel8/x86_64
             enabled=1
             gpgcheck=1
@@ -413,7 +413,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel10/x86_64
             enabled=1
             gpgcheck=1
@@ -428,7 +428,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
             enabled=1
             gpgcheck=1
@@ -443,7 +443,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel8/x86_64
             enabled=1
             gpgcheck=1
@@ -458,7 +458,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
          [amdrocm-stable-asan]
-         name=ROCm 10.0.0
+         name=ROCm 10.0.0 asan
          baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
          enabled=1
          gpgcheck=1
@@ -475,7 +475,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/zypp/repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/sles16/x86_64
             enabled=1
             gpgcheck=1
@@ -490,7 +490,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/zypp/repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0
+            name=ROCm 10.0.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/sles15/x86_64
             enabled=1
             gpgcheck=1
