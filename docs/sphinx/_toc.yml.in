@@ -38,6 +38,10 @@ subtrees:
             title: ROCm Runfile Installer
           - file: install/build-from-source.rst
             title: Build ROCm from source
+          - file: install/asan.rst
+            title: Install ROCm with ASAN
+          - file: install/docker-containers.md
+            title: Docker containers
           - file: ai-ecosystem.md
             title: Install AI frameworks
             entries:
@@ -49,8 +53,6 @@ subtrees:
                   title: vLLM
                 - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/sglang.html
                   title: SGLang
-          - file: install/asan.rst
-            title: Install ROCm with ASAN
     - caption: Components
       entries:
           - file: components/core.rst
