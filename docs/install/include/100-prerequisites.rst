@@ -225,7 +225,7 @@ Prerequisites
 
             .. code-block:: bash
 
-               sudo apt update && sudo apt install linux-oem-24.04c
+               sudo apt update && sudo apt install linux-oem-24.04d
 
             Reboot your system after installing the OEM kernel.
 
@@ -242,7 +242,7 @@ Prerequisites
 
             .. code-block:: bash
 
-               sudo apt update && sudo apt install linux-oem-24.04c
+               sudo apt update && sudo apt install linux-oem-24.04d
 
             Reboot your system after installing the OEM kernel.
 
@@ -539,7 +539,7 @@ Prerequisites
 
                   .. code-block:: bash
 
-                     sudo apt update && sudo apt install linux-oem-24.04c
+                     sudo apt update && sudo apt install linux-oem-24.04d
 
                   Reboot your system after installing the OEM kernel.
 
