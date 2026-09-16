@@ -225,7 +225,7 @@ Prerequisites
 
             .. code-block:: bash
 
-               sudo apt update && sudo apt install linux-oem-24.04c
+               sudo apt update && sudo apt install linux-oem-24.04d
 
             Reboot your system after installing the OEM kernel.
 
@@ -237,12 +237,12 @@ Prerequisites
             :heading: Install the OEM kernel
             :heading-level: 3
 
-            Ryzen APUs require the OEM kernel 6.14 for Ubuntu 24.04. Use the
+            Ryzen APUs require the OEM kernel 6.14 or newer for Ubuntu 24.04. Use the
             following command to install it using ``apt``.
 
             .. code-block:: bash
 
-               sudo apt update && sudo apt install linux-oem-24.04c
+               sudo apt update && sudo apt install linux-oem-24.04d
 
             Reboot your system after installing the OEM kernel.
 
@@ -534,12 +534,12 @@ Prerequisites
                   :chevron: down-up
                   :open:
 
-                  Ryzen APUs require the OEM kernel 6.14 for Ubuntu 24.04. Use the
+                  Ryzen APUs require the OEM kernel 6.14 or newer for Ubuntu 24.04. Use the
                   following command to install it using ``apt``.
 
                   .. code-block:: bash
 
-                     sudo apt update && sudo apt install linux-oem-24.04c
+                     sudo apt update && sudo apt install linux-oem-24.04d
 
                   Reboot your system after installing the OEM kernel.
 
