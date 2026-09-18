@@ -110,7 +110,7 @@ Most users interact with ROCprofiler-SDK indirectly through the higher-level
 tools. For guidance on when to use ROCprofiler-SDK directly, see
 :ref:`When to choose ROCprofiler-SDK <selection-rocprofiler-sdk>`. For a
 quick overview, see
-`What is ROCprofiler-SDK? <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/what-is-rocprofiler-sdk.html>`__.
+`What is ROCprofiler-SDK? <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/what-is-rocprofiler-sdk.html>`__.
 
 .. _profiling-rocprofv3:
 
@@ -123,7 +123,7 @@ development. Run your application under ``rocprofv3`` and it writes structured
 output files containing trace data, counter values, or samples. For guidance
 on when to use ``rocprofv3``, see :ref:`When to choose rocprofv3 <selection-rocprofv3>`.
 For a quick overview, see
-`rocprofv3 — command-line profiling interface <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/what-is-rocprofiler-sdk.html#rocprofv3-command-line-profiling-interface>`__.
+`rocprofv3 — command-line profiling interface <https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/latest/what-is-rocprofiler-sdk.html#rocprofv3-command-line-profiling-interface>`__.
 
 .. _profiling-rocprofiler-systems:
 
@@ -143,7 +143,7 @@ collective is blocking, or Python GIL contention is stalling the dispatch queue.
 For guidance on when to use ``rocprofiler-systems``, see
 :ref:`When to choose ROCm Systems Profiler <selection-rocprofiler-systems>`.
 For an overview, see
-`What is ROCm Systems Profiler? <https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/what-is-rocprof-sys.html>`__.
+`What is ROCm Systems Profiler? <https://rocm.docs.amd.com/projects/rocprofiler-systems/en/latest/what-is-rocprof-sys.html>`__.
 
 Two instrumentation modes are available:
 
@@ -166,7 +166,7 @@ explains why at the hardware level. For guidance on when to use
 ``rocprofiler-compute``, see
 :ref:`When to choose ROCm Compute Profiler <selection-rocprofiler-compute>`.
 For an overview, see
-`What is ROCm Compute Profiler? <https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/what-is-rocprof-compute.html>`__.
+`What is ROCm Compute Profiler? <https://rocm.docs.amd.com/projects/rocprofiler-compute/en/latest/what-is-rocprof-compute.html>`__.
 
 AMD Instinct GPUs expose hundreds of PMU counters across dozens of hardware
 blocks (compute units, L1 cache, L2 cache, HBM controllers, shader processor
@@ -217,7 +217,7 @@ instruction is stalling, how wavefronts occupy execution pipelines over time,
 and where LDS bank conflicts or memory latency consumes cycles. For guidance on
 when to use RCV, see :ref:`When to choose RCV <selection-rcv>`. For a quick
 overview, see
-`What is RCV? <https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/amd-mainline/what_is_rcv.html>`__.
+`What is RCV? <https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/latest/what_is_rcv.html>`__.
 
 .. _profiling-optiq:
 
