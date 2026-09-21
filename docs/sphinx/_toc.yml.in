@@ -128,10 +128,6 @@ subtrees:
                 - file: components/profilers-and-debuggers.rst
                   title: Profiling and debugging tools
                   entries:
-                      - file: components/profiling-tools-overview.rst
-                        title: "Profiling: tool overview"
-                      - file: components/profiling-tools-selection.rst
-                        title: "Profiling: choosing the right tool"
                       - url: ${project:rocprofiler-compute}
                         title: ROCm Compute Profiler (rocprofiler-compute)
                       - url: ${project:rocprofiler-systems}
