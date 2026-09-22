@@ -7,7 +7,7 @@ on:
 jobs:
   comment-preview-link:
     name: Comment RTD Preview Link
-    runs-on: ubuntu-latest
+    runs-on: rocm-docs-ci
     permissions:
       pull-requests: write
     steps:
