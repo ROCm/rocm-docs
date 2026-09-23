@@ -49,8 +49,8 @@ Get started
 
 * Follow :doc:`/install/rocm` to set up ROCm on your system.
 
-ROCm handbooks
-==============
+ROCm handbook
+=============
 
 The `ROCm handbook <https://rocm-handbook.amd.com/en/latest/index.html>`__
 provides a unified, book-style reference for ROCm and HIP. It aggregates
