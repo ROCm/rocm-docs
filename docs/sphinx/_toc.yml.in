@@ -38,6 +38,8 @@ subtrees:
             title: ROCm Runfile Installer
           - file: install/build-from-source.rst
             title: Build ROCm from source
+          - file: install/spack.rst
+            title: Install ROCm packages using Spack
     - caption: Components
       entries:
           - file: components/core.rst
