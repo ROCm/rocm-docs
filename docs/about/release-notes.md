@@ -47,24 +47,24 @@ For the full list of supported Linux distributions, see [Operating system suppor
 ROCm 10.0.0 adds support for the following virtualization configurations on AMD Instinct GPUs:
 
 * On AMD Instinct MI355X and MI350X:
-  * Passthrough Ubuntu 22.04 host OS with Ubuntu 22.04 guest OS.
+  * KVM Passthrough Ubuntu 22.04 host OS with Ubuntu 22.04 guest OS.
 * On AMD Instinct MI350P:
-  * Passthrough ESXi 9.1 with Ubuntu 24.04 guest OS.
+  * ESXi Passthrough VMware ESXi 9.1 with Ubuntu 24.04 guest OS.
 * On AMD Instinct MI325X:
-  * Passthrough Ubuntu 24.04 host OS with Ubuntu 24.04 guest OS.
-  * Passthrough Ubuntu 22.04 host OS with Ubuntu 22.04 guest OS.
-  * Passthrough Ubuntu 24.04 host OS with RHEL 9.4 guest OS.
-  * Passthrough RHEL 9.4 host OS with RHEL 9.4 guest OS.
+  * KVM Passthrough Ubuntu 24.04 host OS with Ubuntu 24.04 guest OS.
+  * KVM Passthrough Ubuntu 22.04 host OS with Ubuntu 22.04 guest OS.
+  * KVM Passthrough Ubuntu 24.04 host OS with RHEL 9.4 guest OS.
+  * KVM Passthrough RHEL 9.4 host OS with RHEL 9.4 guest OS.
   * KVM SR-IOV RHEL 10.2 host OS with RHEL 10.2 guest OS.
 * On AMD Instinct MI300X:
-  * Passthrough Ubuntu 24.04 host OS with Ubuntu 24.04 guest OS.
-  * Passthrough Ubuntu 24.04 host OS with RHEL 9.4 guest OS.
-  * Passthrough RHEL 9.4 host OS with RHEL 9.4 guest OS.
-  * Passthrough ESXi 8 U3 with Ubuntu 24.04 and Ubuntu 22.04 guest OS.
+  * KVM Passthrough Ubuntu 24.04 host OS with Ubuntu 24.04 guest OS.
+  * KVM Passthrough Ubuntu 24.04 host OS with RHEL 9.4 guest OS.
+  * KVM Passthrough RHEL 9.4 host OS with RHEL 9.4 guest OS.
+  * KVM Passthrough ESXi 8 U3 with Ubuntu 24.04 and Ubuntu 22.04 guest OS.
   * KVM SR-IOV RHEL 10.2 host OS with RHEL 10.2 guest OS.
 * On AMD Instinct MI210:
-  * Passthrough Ubuntu 24.04 host OS with Ubuntu 24.04 guest OS.
-  * Passthrough Ubuntu 22.04 host OS with Ubuntu 22.04 guest OS.
+  * KVM Passthrough Ubuntu 24.04 host OS with Ubuntu 24.04 guest OS.
+  * KVM Passthrough Ubuntu 22.04 host OS with Ubuntu 22.04 guest OS.
 
 Supported Single Root I/O Virtualization (SR-IOV) configurations require the [AMD GPU Virtualization Driver (GIM) 9.2.0.K](https://github.com/amd/MxGPU-Virtualization/releases/tag/9.2.0.K). For details, see [GPU virtualization support](#gpu-virtualization-support).
 
@@ -321,7 +321,7 @@ ROCm requires a coordinated stack of compatible firmware, driver, and user-space
 
 ## GPU virtualization support
 
-AMD Instinct data center GPUs support virtualization in the following configurations. Supported SR-IOV configurations require the AMD GPU Virtualization Driver (GIM) 9.2.0.K—see the [AMD Instinct Virtualization Driver documentation](https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.2.0.k/) for more information.
+AMD Instinct and Radeon GPUs support virtualization in the following configurations. Supported SR-IOV configurations require the AMD GPU Virtualization Driver (GIM) 9.2.0.K—see the [AMD Instinct Virtualization Driver documentation](https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.2.0.k/) for more information.
 
 ```{datatemplate:yaml} /data/virtualization-support.yaml
 :template: virtualization-support-table.md.jinja
