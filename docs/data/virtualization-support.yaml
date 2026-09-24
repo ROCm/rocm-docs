@@ -58,11 +58,11 @@ AMD Instinct:
   AMD Instinct MI350P:
     - hypervisor: KVM
       technology: Passthrough
-      host_os: ESXi 9.1
-      guest_os: [Ubuntu 24.04]
-    - hypervisor: KVM
-      technology: Passthrough
       host_os: Debian 13
+      guest_os: [Ubuntu 24.04]
+    - hypervisor: ESXi
+      technology: Passthrough
+      host_os: VMware ESXi 9.1
       guest_os: [Ubuntu 24.04]
 
   AMD Instinct MI325X:
