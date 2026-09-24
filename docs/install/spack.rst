@@ -246,7 +246,7 @@ ROCm packages in Spack
    * - openmp-extras
      - ``rocm-openmp-extras``
      - 5.6.0
-     - 7.2.3 (Not released under TheRock)
+     - 7.2.3
 
    * - RCCL
      - ``rccl``
