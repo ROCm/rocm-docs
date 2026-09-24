@@ -56,9 +56,9 @@ AMD Instinct:
       guest_os: [Ubuntu 24.04]
 
   AMD Instinct MI350P:
-    - hypervisor: KVM
+    - hypervisor: ESXi
       technology: Passthrough
-      host_os: ESXi 9.1
+      host_os: VMware ESXi 9.1
       guest_os: [Ubuntu 24.04]
     - hypervisor: KVM
       technology: Passthrough
