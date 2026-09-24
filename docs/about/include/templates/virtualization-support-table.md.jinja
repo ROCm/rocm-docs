@@ -74,9 +74,10 @@
 
     {#- Tech+driver: start when prev row has different tech or driver -#}
     {%- set prev_hyp  = rows[i-1].hyp      if i > 0 else "" -%}
-    {%- set prev_tech = rows[i-1].tech    if i > 0 else "" -%}
+    {%- set prev_hyp  = rows[i-1].hyp      if i > 0 else "" -%}
+    {%- set prev_tech = rows[i-1].tech     if i > 0 else "" -%}
     {%- set prev_drv  = rows[i-1].drv_name if i > 0 else "" -%}
-    {%- set td_start = (i == 0) or (prev_tech != row.tech) or (prev_drv != row.drv_name) -%}
+    {%- set td_start = (i == 0) or (prev_hyp != row.hyp) or (prev_tech != row.tech) or (prev_drv != row.drv_name) -%}
     {%- set ns_t = namespace(n=0, done=false) -%}
     {%- for fr in rows[i:] -%}
       {%- if not ns_t.done -%}
