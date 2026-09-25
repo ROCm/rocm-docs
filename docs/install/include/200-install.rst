@@ -341,7 +341,7 @@ Use the following instructions to install ROCm packages on your system.
 
                sudo apt update
 
-      .. selected:: ubuntu-ver=24.04.4
+      .. selected:: ubuntu-ver=24.04.4 ubuntu-ver=24.04
 
          .. selected:: fam=all
 
@@ -389,7 +389,7 @@ Use the following instructions to install ROCm packages on your system.
 
                sudo apt update
 
-      .. selected:: ubuntu-ver=22.04.5
+      .. selected:: ubuntu-ver=22.04.5 ubuntu-ver=22.04
 
          .. selected:: fam=all
 
