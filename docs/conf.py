@@ -119,7 +119,7 @@ extensions = [
     "rocm_docs_custom.matrix",
     "rocm_docs_custom.icon",
     "rocm_docs_custom.csv_list_to_table",
-    "rocm_docs_custom.remote_content",
+    "rocm_docs.remote_content",
     "rocm_docs_custom.remote_yaml",
     "rocm_docs_custom.version_ref",
     "sphinxcontrib.datatemplates",
