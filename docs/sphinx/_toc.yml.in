@@ -38,6 +38,8 @@ subtrees:
             title: ROCm Runfile Installer
           - file: install/build-from-source.rst
             title: Build ROCm from source
+          - file: install/spack.rst
+            title: Install ROCm packages using Spack
           - file: install/asan.rst
             title: Install ROCm with ASAN
           - file: install/docker-containers.md
