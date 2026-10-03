@@ -8,6 +8,8 @@ updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/docs/sphinx" # Location of package manifests
     open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
     schedule:
       interval: "daily"
     versioning-strategy: increase
@@ -19,6 +21,8 @@ updates:
     directories:
       - "/"
       - "/.github/actions/*"
+    cooldown:
+      default-days: 7
     schedule:
       interval: "daily"
     commit-message:
