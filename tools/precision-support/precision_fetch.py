@@ -23,6 +23,7 @@ import sys
 import tempfile
 from pathlib import Path
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 try:
@@ -245,12 +246,14 @@ _GH_API = "https://api.github.com"
 
 
 def _gh_request(token: str, url: str) -> dict:
+    if urlparse(url).scheme != "https":
+        raise ValueError(f"Refusing non-HTTPS GitHub API URL: {url}")
     req = Request(url, headers={
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
     })
-    with urlopen(req, timeout=30) as resp:
+    with urlopen(req, timeout=30) as resp:  # noqa: S310  # nosec B310 - scheme checked above
         return json.loads(resp.read())
 
 
