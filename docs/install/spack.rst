@@ -1,0 +1,752 @@
+.. meta::
+  :description: How to use Spack to install ROCm.
+  :keywords: Spack, package management tool, AMD, ROCm
+
+************************************
+Using Spack to install ROCm packages
+************************************
+
+Spack is a package management tool designed to support multiple software
+versions and configurations on a wide variety of platforms and environments. It
+was designed for large supercomputing centers, where many users share common
+software installations on clusters with exotic architectures using libraries
+that do not have a standard ABI. Spack is non-destructive: installing a new
+version does not break existing installations, so many configurations can
+coexist on the same system.
+
+Most importantly, Spack is simple. It offers a simple ``spec`` syntax, so users
+can concisely specify versions and configuration options. Spack is also simple
+for package authors: package files are written in pure Python, and specs allow
+package authors to maintain a single file for many different builds of the same
+package.
+
+See the `official Spack documentation <https://spack-tutorial.readthedocs.io/en/latest/>`_ for more information.
+
+Installing prerequisites for Spack
+==================================
+
+.. note::
+    You must install all prerequisites before installing Spack.
+
+
+.. tab-set::
+    .. tab-item:: Ubuntu
+        :sync: Ubuntu
+
+        .. code-block:: shell
+
+            # Install some essential utilities:
+            apt-get -y update
+            apt-get -y install make patch bash tar gzip unzip bzip2 file gnupg2 git gawk
+            apt-get -y update
+            apt-get -y install xz-utils
+            apt-get -y install build-essential
+            apt-get -y install vim
+            apt-get -y install libpci-dev
+            # Install Python:
+            apt-get -y install python3
+            apt-get -y upgrade python3-pip
+            # Install Compilers:
+            apt-get -y install gcc
+            apt-get -y install gfortran
+            apt-get -y install liblzma-dev
+            apt-get -y install libbz2-dev
+
+    .. tab-item:: SLES
+        :sync: SLES
+
+        .. code-block:: shell
+
+            # Install some essential utilities:
+            zypper update
+            zypper install make patch bash tar gzip unzip bzip xz file gnupg2 git awk
+            zypper in -t pattern
+            zypper install vim
+            # Install Python:
+            zypper install python3
+            zypper install python3-pip
+            # Install Compilers:
+            zypper install gcc
+            zypper install gcc-fortran
+            zypper install gcc-c++
+
+Building ROCm components using Spack
+===================================================
+
+1. To use the Spack package manager, clone the Spack project from `<https://github.com/spack/spack>`__.
+
+   .. code-block:: shell
+
+      git clone https://github.com/spack/spack.git
+
+2. Initialize Spack.
+
+   The ``setup-env.sh`` script initializes the Spack environment.
+
+   .. code-block:: shell
+
+      cd spack
+      . share/spack/setup-env.sh
+
+   Spack commands are available once the above steps are completed. To list the available commands, use ``help``.
+
+   .. code-block:: shell
+
+      spack help
+
+After running ``setup-env.sh``, the develop branch of the `Spack packages repository <https://github.com/spack/spack-packages>`_ will be cloned and used.
+
+.. note::
+  To use your own local version of spack packages execute the following command:
+
+  .. code-block:: shell
+
+    spack repo set --destination /path/to/local/spack-packages builtin
+
+
+ROCm packages in Spack
+===================================================
+
+.. note::
+  The supported ROCm components and their versions listed below were accurate as of the time of initial ROCm release. For the most up-to-date information, see the latest version of this information at `ROCm packages in Spack <https://rocm.docs.amd.com/en/latest/install/spack.html#rocm-packages-in-spack>`_.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Component
+     - Spack package name
+     - Minimum supported version
+     - Latest supported version
+
+   * - AMD SMI
+     - ``amdsmi``
+     - 5.6.0
+     - 7.14.0
+
+   * - aqlprofile
+     - ``hsa-amd-aqlprofile``
+     - 7.0.0
+     - 7.14.0
+
+   * - comgr
+     - ``comgr``
+     - 5.6.0
+     - 7.14.0
+
+   * - Composable Kernel
+     - ``composable-kernel``
+     - 5.6.0
+     - 7.14.0
+
+   * - devicelibs
+     - ``rocm-device-libs``
+     - 5.6.0
+     - 7.14.0
+
+   * - HIP (hip_in_vdi)
+     - ``hip``
+     - 5.6.0
+     - 7.14.0
+
+   * - hipBLAS
+     - ``hipblas``
+     - 5.6.0
+     - 7.14.0
+
+   * - hipBLAS-common
+     - ``hipblas-common``
+     - 6.3.0
+     - 7.14.0
+
+   * - hipBLASLt
+     - ``hipblaslt``
+     - 6.0.0
+     - 7.14.0
+
+   * - HIPCC
+     - ``hipcc``
+     - 5.7.0
+     - 7.14.0
+
+   * - hipCUB
+     - ``hipcub``
+     - 5.6.0
+     - 7.14.0
+
+   * - hipFFT
+     - ``hipfft``
+     - 5.6.0
+     - 7.14.0
+
+   * - hipfort
+     - ``hipfort``
+     - 5.6.0
+     - 7.2.3 (Not released under TheRock)
+
+   * - HIPIFY
+     - ``hipify-clang``
+     - 5.6.0
+     - 7.14.0
+
+   * - hipRAND
+     - ``hiprand``
+     - 5.6.0
+     - 7.14.0
+
+   * - hipSOLVER
+     - ``hipsolver``
+     - 5.6.0
+     - 7.14.0
+
+   * - hipSPARSE
+     - ``hipsparse``
+     - 5.6.0
+     - 7.14.0
+
+   * - hipSPARSELt
+     - ``hipsparselt``
+     - 6.0.0
+     - 7.14.0
+
+   * - hipTensor
+     - ``hip-tensor``
+     - 5.7.0
+     - 7.14.0
+
+   * - HIP Tests
+     - ``hip-tests``
+     - 6.1.0
+     - 7.14.0
+
+   * - llvm
+     - ``llvm-amdgpu``
+     - 5.6.0
+     - 7.14.0
+
+   * - MIGraphX
+     - ``migraphx``
+     - 5.6.0
+     - 7.14.0
+
+   * - MIOpen (HIP)
+     - ``miopen-hip``
+     - 5.6.0
+     - 7.14.0
+
+   * - MIVisionX
+     - ``mivisionx``
+     - 5.6.0
+     - 7.14.0
+
+   * - OpenCL
+     - ``rocm-opencl``
+     - 5.6.0
+     - 7.14.0
+
+   * - openmp-extras
+     - ``rocm-openmp-extras``
+     - 5.6.0
+     - 7.2.3
+
+   * - RCCL
+     - ``rccl``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocAL
+     - ``rocal``
+     - 6.2.0
+     - 7.2.3 (Not released under TheRock)
+
+   * - rocALUTION
+     - ``rocalution``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocBLAS
+     - ``rocblas``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCdbgapi
+     - ``rocm-dbgapi``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocDecode
+     - ``rocdecode``
+     - 6.1.0
+     - 7.14.0
+
+   * - rocFFT
+     - ``rocfft``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocJPEG
+     - ``rocjpeg``
+     - 6.3.0
+     - 7.14.0
+
+   * - rocm-core
+     - ``rocm-core``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocminfo
+     - ``rocminfo``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocMLIR
+     - ``rocmlir``
+     - 5.4.0
+     - 7.2.3 (Not released under TheRock)
+
+   * - ROCm Bandwidth Test
+     - ``rocm-bandwidth-test``
+     - 5.6.0
+     - 7.2.3 (Not released under TheRock)
+
+   * - ROCm CMake
+     - ``rocm-cmake``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCm Compute Profiler
+     - ``rocprofiler-compute``
+     - 6.3.2
+     - 7.14.0
+
+   * - ROCm Data Center Tool (RDC)
+     - ``rdc``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCm Debug Agent
+     - ``rocm-debug-agent``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCm Debugger (ROCgdb)
+     - ``rocm-gdb``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCm Examples
+     - ``rocm-examples``
+     - 6.2.0
+     - 7.14.0
+
+   * - ROCm SMI Library
+     - ``rocm-smi-lib``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCm Systems Profiler
+     - ``rocprofiler-systems``
+     - 6.3.0
+     - 7.14.0
+
+   * - ROCm Validation Suite
+     - ``rocm-validation-suite``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocPRIM
+     - ``rocprim``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCProfiler
+     - ``rocprofiler-dev``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocprofiler-register
+     - ``rocprofiler-register``
+     - 6.1.0
+     - 7.14.0
+
+   * - ROCprofiler-SDK
+     - ``rocprofiler-sdk``
+     - 6.2.4
+     - 7.14.0
+
+   * - rocPyDecode
+     - ``rocpydecode``
+     - 6.2.0
+     - 7.2.3 (Not released under TheRock)
+
+   * - rocRAND
+     - ``rocrand``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCr Runtime
+     - ``hsa-rocr-dev``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocSHMEM
+     - ``rocshmem``
+     - 6.4.0
+     - 7.14.0
+
+   * - rocSOLVER
+     - ``rocsolver``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocSPARSE
+     - ``rocsparse``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocThrust
+     - ``rocthrust``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCTracer
+     - ``roctracer-dev``
+     - 5.6.0
+     - 7.14.0
+
+   * - roctracer-dev-api
+     - ``roctracer-dev-api``
+     - 5.6.0
+     - 7.14.0
+
+   * - rocWMMA
+     - ``rocwmma``
+     - 5.6.0
+     - 7.14.0
+
+   * - ROCm Performance Primitives (RPP)
+     - ``rpp``
+     - 5.7.0
+     - 7.14.0
+
+   * - TransferBench
+     - ``transferbench``
+     - 6.3.0
+     - 7.2.3 (Not released under TheRock)
+
+   * - aqlprofile (old)
+     - ``aqlprofile``
+     - 5.6.0
+     - 6.4.3 (final)
+
+   * - clang-ocl
+     - ``rocm-clang-ocl``
+     - 5.6.0
+     - 6.1.2 (final)
+
+   * - Omniperf
+     - ``omniperf``
+     - 6.2.0
+     - 6.3.1 (final)
+
+   * - Omnitrace
+     - ``omnitrace``
+     - rocm-6.2.0
+     - rocm-6.3.0 (final)
+
+   * - ROCT Thunk Interface
+     - ``hsakmt-roct``
+     - 5.6.0
+     - 6.2.4 (final)
+
+   * - Tensile
+     - ``rocm-tensile``
+     - 5.6.0
+     - 7.14.0
+
+Installing ROCm components using Spack
+===================================================
+
+1. ``rocm-cmake``
+
+   Install the default variants and the latest version of ``rocm-cmake``.
+
+   .. code-block:: shell
+
+      spack install rocm-cmake
+
+   To install a specific version of ``rocm-cmake``, use:
+
+   .. code-block:: shell
+
+      spack install rocm-cmake@<version number>
+
+   For example, ``spack install rocm-cmake@7.14.0``
+
+2. ``info``
+
+   The ``info`` command displays basic package information. It shows the preferred, safe, and
+   deprecated versions, in addition to the available variants. It also shows the dependencies with other
+   packages.
+
+   .. code-block:: shell
+
+      spack info llvm-amdgpu
+
+   For example:
+
+   .. code-block:: shell-session
+
+      $ spack info llvm-amdgpu
+      CMakePackage:   llvm-amdgpu
+
+      Description:
+         Toolkit for the construction of highly optimized compilers, optimizers, and run-time environments
+
+      Homepage: https://github.com/ROCm/llvm-project
+
+      Preferred version:
+          7.14.0    https://github.com/ROCm/llvm-project/archive/refs/tags/therock-7.14.tar.gz
+
+      Safe versions:
+          7.14.0   https://github.com/ROCm/llvm-project/archive/refs/tags/therock-7.14.tar.gz
+          7.13.0   https://github.com/ROCm/llvm-project/archive/refs/tags/therock-7.13.tar.gz
+          7.2.3    https://github.com/ROCm/llvm-project/archive/rocm-7.2.3.tar.gz
+          7.2.1    https://github.com/ROCm/MIVisionX/archive/rocm-7.2.1.tar.gz
+          7.2.0    https://github.com/ROCm/MIVisionX/archive/rocm-7.2.0.tar.gz
+          7.1.1    https://github.com/ROCm/MIVisionX/archive/rocm-7.1.1.tar.gz
+          7.1.0    https://github.com/ROCm/MIVisionX/archive/rocm-7.1.0.tar.gz
+          7.0.2    https://github.com/ROCm/MIVisionX/archive/rocm-7.0.2.tar.gz
+          7.0.0    https://github.com/ROCm/MIVisionX/archive/rocm-7.0.0.tar.gz
+          6.4.3    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.3.tar.gz
+          6.4.3    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.3.tar.gz
+          6.4.2    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.2.tar.gz
+          6.4.1    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.1.tar.gz
+          6.4.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.0.tar.gz
+          6.3.3    https://github.com/ROCm/MIVisionX/archive/rocm-6.3.3.tar.gz
+          6.3.2    https://github.com/ROCm/MIVisionX/archive/rocm-6.3.2.tar.gz
+          6.3.1    https://github.com/ROCm/MIVisionX/archive/rocm-6.3.1.tar.gz
+          6.3.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.3.0.tar.gz
+          6.2.4    https://github.com/ROCm/MIVisionX/archive/rocm-6.2.4.tar.gz
+          6.2.1    https://github.com/ROCm/MIVisionX/archive/rocm-6.2.1.tar.gz
+          6.2.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.2.0.tar.gz
+          6.1.2    https://github.com/ROCm/MIVisionX/archive/rocm-6.1.2.tar.gz
+          6.1.1    https://github.com/ROCm/MIVisionX/archive/rocm-6.1.1.tar.gz
+          6.1.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.1.0.tar.gz
+          6.0.2    https://github.com/ROCm/MIVisionX/archive/rocm-6.0.2.tar.gz
+          6.0.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.0.0.tar.gz
+          5.7.1    https://github.com/ROCm/MIVisionX/archive/rocm-5.7.1.tar.gz
+          5.7.0    https://github.com/ROCm/MIVisionX/archive/rocm-5.7.0.tar.gz
+
+      Deprecated versions:
+          None
+
+      Variants:
+          build_system [cmake]           cmake
+            Build systems supported by the package
+
+          build_type [Release]           Debug, MinSizeRel, RelWithDebInfo, Release
+            when build_system=cmake
+               CMake build type
+
+          generator [ninja]              none
+            when build_system=cmake
+               the build system generator to use
+
+          ipo [false]                    false, true
+            when build_system=cmake %cmake@3.9:
+               CMake interprocedural optimization
+
+          link_llvm_dylib [false]        false, true
+            Link LLVM tools against the LLVM shared library
+
+          llvm_dylib [false]             false, true
+            Build LLVM shared library, containing all components in a single shared library
+
+          rocm-device-libs [true]        false, true
+            Build ROCm device libs as external LLVM project instead of a standalone spack package.
+
+
+      Dependencies:
+          c                      build
+          cmake@3.13.4:          build
+          cxx                    build
+          gmake                  build
+            when build_system=cmake generator=make
+          libdrm                 build, link
+            when @7.1:
+          libelf                 build, link
+            when @7.1:
+          libxml2                link
+          ncurses+termlib        link
+          ninja                  build
+            when build_system=cmake generator=ninja
+          numactl                build, link
+            when @7.1:
+          pkgconfig              build
+          py-pyaml               build, link
+            when @7.13:
+          python                 build
+          xxd                    build, link
+            when @7.1:
+          z3                     link
+          zlib-api               link
+
+      Licenses:
+          Apache-2.0
+
+Installing variants for ROCm components
+===================================================
+
+The variants listed above indicate that the ``llvm-amdgpu`` package is built by
+default with ``build_type=Release``, ``rocm-device-libs=true``, ``llvm_dylib=false``, and ``link_llvm_dylib=false`` by default.
+But it also supports ``build_type=Debug`` and ``RelWithDebInfo`` , with ``rocm-device-libs=false``, ``llvm_dylib=true`` and ``link_llvm_dylib=true``.
+
+For example:
+
+.. code-block:: shell
+
+   spack install llvm-amdgpu build_type=Debug #Debug build with variants set to default
+   spack install llvm-amdgpu~rocm-device-libs build_type=Debug #rocm-device-libs variant is set to false so ROCm device libs won’t be built
+
+
+* ``spack spec`` command
+
+  To display the dependency tree, the ``spack spec`` command can be used with the same format.
+
+  For example:
+
+  .. code-block:: shell-session
+
+     $ spack spec mivisionx
+
+     -   mivisionx@7.14.0~add_tests~asan+hip~ipo amdgpu_target:=auto build_system=cmake build_type=Release commit=112b6ba9e8ab872a3e1b95afb037be0cea84fddd generator=make platform=linux os=ubuntu24.04 target=zen2 %cxx=gcc@13.3.
+     -       ^cmake@3.31.12~doc+ncurses+ownlibs~qtgui build_system=generic build_type=Release platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
+     -       ^curl@8.20.0~gssapi~ldap~libidn2~librtmp~libssh~libssh2+nghttp2 build_system=autotools libs:=shared,static tls:=openssl platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
+     -           ^nghttp2@1.67.1 build_system=autotools platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
+     -       ^ncurses@6.6~symlinks+termlib abi=none build_system=autotools patches:=7a351bc platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
+     -       ^zlib-ng@2.3.3+compat+new_strategies+opt+pic+shared build_system=autotools platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
+     -     ^compiler-wrapper@1.1.0 build_system=generic platform=linux os=ubuntu24.04 target=zen2
+     -     ^ffmpeg@6.1.1~X+bzlib~doc~drawtext+gpl~libaom~libmp3lame~libopenjpeg~libopus~libsnappy~libspeex~libssh~libvorbis~libvpx~libwebp~libx264~libxml2~libzmq~lzma~nonfree~openssl~sdl2+shared+version3 build_system=autotools patches:=5726e8e platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
+     ...
+
+Creating an environment
+===================================================
+
+You can create an environment with all the required components of your version, install them collectively, and work in the environment.
+
+1. Create a Spack environment.
+
+   .. code-block:: shell
+
+      spack env create myenv
+
+2. Activate the created environment.
+
+   .. code-block:: shell
+
+      spack env activate myenv
+
+3. Add the ROCm packages.
+
+   .. code-block:: shell
+
+      spack add
+      rocm-cmake@7.14.0 rocm-dbgapi@7.14.0 rocm-debug-agent@7.14.0 rocm-gdb@7.14.0 rocminfo@7.14.0 \
+      rocm-opencl@7.14.0 rocm-smi-lib@7.14.0 rocprim@7.14.0 rocprofiler-dev@7.14.0 rocrand@7.14.0  \
+      rocthrust@7.14.0 roctracer-dev@7.14.0
+
+4. Generate the build plan.
+
+   .. code-block:: shell
+
+      spack concretize
+
+5. Install the packages.
+
+   .. code-block:: shell
+
+      spack install
+
+Creating and applying a patch before installation
+===================================================
+
+Spack installs ROCm packages after pulling the source code from GitHub and building it locally. In
+order to build a component with any modification to the source code, you must generate a patch and
+apply it before the build phase.
+
+To generate a patch and build with the changes:
+
+1. Stage the source code. For example:
+
+   .. code-block:: shell
+
+      spack stage hip@7.14.0
+      # This will pull the 7.14.0 release version source code of hip and display the path to spack-src directory where entire source code is available
+
+   You should see something like this:
+
+   .. code-block:: shell-session
+
+      ==> Using cached archive: /data/root/temp/rocm-7.14.0/spack/var/spack/cache/_source-cache/archive/d8/d8dba8cdf05463afb7879de2833983cafa6a006ba719815a35b96d9b92fc7fc4.tar.gz
+      ==> Using cached archive: /data/root/temp/rocm-7.14.0/spack/var/spack/cache/_source-cache/archive/82/829e61a5c54d0c8325d02b0191c0c8254b5740e63b8bfdb05eec9e03d48f7d2c.tar.gz
+      ==> Using cached archive: /data/root/temp/rocm-7.14.0/spack/var/spack/cache/_source-cache/archive/80/8081d4ab1a43ffa1cebd646668d83008b799ab98c14daf7b455922355a439c8a.tar.gz
+      ==> Moving resource stage
+              source: /tmp/root/spack-stage/resource-clr-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/
+              destination: /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/clr
+      ==> Moving resource stage
+              source: /tmp/root/spack-stage/resource-hip-tests-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/
+              destination: /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/hip-tests
+      ==> Staged hip in /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46
+
+2. Change directory to ``spack-src`` inside the staged directory.
+
+   .. code-block:: shell-session
+
+      /spack$ cd /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46
+      /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46$ cd spack-src/
+
+3. Create a new Git repository.
+
+   .. code-block:: shell
+
+      /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git init
+
+4. Add the entire directory to the repository.
+
+   .. code-block:: shell
+
+      /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git add .
+
+5. Make the required changes to the source code.
+
+   .. code-block:: shell
+
+      /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src# vi hipamd/CMakeLists.txt
+      # Make required changes in the source code
+
+6. Generate the patch using the ``git diff`` command.
+
+   .. code-block:: shell
+
+      diff > /spack/var/spack/repos/builtin/packages/hip/0001-modifications.patch
+      /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git diff > /spack/var/spack/repos/builtin/packages/hip/0001-modifications.patch
+
+7. Update the recipe with the patch file name and any conditions you want to apply.
+
+   .. code-block:: shell
+
+      /tmp/root/spack-stage/spack-stage-hip-7.14.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ spack edit hip
+
+8. Provide the patch file name and the conditions for the patch to be applied in the ``hip`` recipe as follows.
+
+   .. code-block:: shell
+
+      patch("0001-modifications.patch", when="@7.14.0")
+
+   Spack will apply ``0001-modifications.patch`` on the 7.14.0 release code before starting the ``hip`` build.
+
+9. After each modification, you must update the recipe. If there is no change to the recipe, run
+
+   .. code-block:: shell
+
+      touch /spack/var/spack/repos/builtin/packages/hip/package.py
