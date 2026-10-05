@@ -502,7 +502,7 @@
   modes on partition-capable accelerators, noting that analysis derives logical
   XCD, L2 channel, and HBM channel counts from them.
 
-* [Profile vLLM workloads](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#profile-vllm-workloads) guide for profiling vLLM workloads and its caveats.
+* [Profile vLLM workloads](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.1.0/how-to/profile/mode.html#profile-vllm-workloads) guide for profiling vLLM workloads and its caveats.
 
 ##### Changed
 
