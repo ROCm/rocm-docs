@@ -18,13 +18,19 @@ Fortran.
 
 .. tip::
 
-   * For a complete description of the HIP programming language, see the
-     :doc:`HIP documentation <hip:index>`.
-   * Developers who require a unified, book-style reference for ROCm and HIP can
-     consult the `AMD ROCm Programming Guide <https://rocm-handbook.amd.com/projects/amd-rocm-programming-guide/en/latest/>`__.
-     It aggregates documentation from the ROCm portal and organizes it into a
-     structured format optimized for in-depth study and offline access in both
-     PDF and HTML formats.
+   For a complete description of the HIP programming language, see the
+   :doc:`HIP documentation <hip:index>`.
+
+.. seealso::
+
+   Developers who require a unified, book-style reference for ROCm and HIP can
+   consult the `ROCm handbook <https://rocm-handbook.amd.com/en/latest/index.html>`__.
+   It aggregates documentation from the ROCm portal and organizes it into a
+   structured format optimized for in-depth study and offline access in both
+   PDF and HTML formats. The handbook includes the following volumes:
+
+   * `AMD ROCm Programming Guide <https://rocm-handbook.amd.com/projects/amd-rocm-programming-guide/en/latest/>`__
+   * `AMD ROCm Optimization Guide <https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/>`__
 
 HIP is an API based on C++ that provides a runtime and kernel language for GPU
 programming and is the essential ROCm programming language. HIP enables

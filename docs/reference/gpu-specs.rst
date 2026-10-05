@@ -86,6 +86,23 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 9
           - 5
         *
+          - MI350P
+          - CDNA4
+          - gfx950
+          - 144
+          - 128 (32 per XCD)
+          - 64
+          - 160
+          - 128
+          - 16 (4 per XCD)
+          - 32
+          - 16 per 2 CUs
+          - 64 per 2 CUs
+          - 512
+          - 12.5
+          - 9
+          - 5
+        *
           - MI325X
           - CDNA3
           - gfx942
@@ -370,6 +387,24 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 0
         *
           - Radeon AI PRO R9600D
+          - RDNA4
+          - gfx1201
+          - 32
+          - 48
+          - 32 or 64
+          - 128
+          - 48
+          - 8
+          - N/A
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 12
+          - 0
+        *
+          - Radeon AI PRO R9600
           - RDNA4
           - gfx1201
           - 32

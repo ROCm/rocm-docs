@@ -1,11 +1,11 @@
-.. selected:: rocm-ver=7.14.0
+.. selected:: rocm-ver=10.1.0
 
    .. selected:: i=tar
 
       The standard ROCm tarball installation includes the HPC SDK. No
       additional steps are required. For details on ROCm tarball installation,
-      refer to `Install AMD ROCm 7.14.0
-      <https://rocm.docs.amd.com/en/docs-7.14.0/install/rocm.html>`__ and
+      refer to `Install AMD ROCm 10.1.0
+      <https://rocm.docs.amd.com/en/docs-10.1.0/install/rocm.html>`__ and
       select **Tarball** installation method from installation environment
       selector.
 
@@ -23,19 +23,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14 amdrocm-hpc-sdk7.14
+                   sudo apt install amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14 amdrocm-hpc-sdk7.14
+                   sudo dnf install amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14 amdrocm-hpc-sdk7.14
+                   sudo zypper install amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
 
       .. selected:: gfx=gfx950
 
@@ -45,19 +45,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx950 amdrocm-hpc-sdk7.14-gfx950
+                   sudo apt install amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx950 amdrocm-hpc-sdk7.14-gfx950
+                   sudo dnf install amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx950 amdrocm-hpc-sdk7.14-gfx950
+                   sudo zypper install amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
 
       .. selected:: gfx=gfx942
 
@@ -67,19 +67,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx942 amdrocm-hpc-sdk7.14-gfx942
+                   sudo apt install amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx942 amdrocm-hpc-sdk7.14-gfx942
+                   sudo dnf install amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx942 amdrocm-hpc-sdk7.14-gfx942
+                   sudo zypper install amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
 
       .. selected:: gfx=gfx90a
 
@@ -89,19 +89,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx90a amdrocm-hpc-sdk7.14-gfx90a
+                   sudo apt install amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx90a amdrocm-hpc-sdk7.14-gfx90a
+                   sudo dnf install amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx90a amdrocm-hpc-sdk7.14-gfx90a
+                   sudo zypper install amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
 
       .. selected:: gfx=gfx908
 
@@ -111,19 +111,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx908 amdrocm-hpc-sdk7.14-gfx908
+                   sudo apt install amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx908 amdrocm-hpc-sdk7.14-gfx908
+                   sudo dnf install amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx908 amdrocm-hpc-sdk7.14-gfx908
+                   sudo zypper install amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
 
       .. selected:: gfx=gfx1200
 
@@ -133,19 +133,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1200 amdrocm-hpc-sdk7.14-gfx1200
+                   sudo apt install amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1200 amdrocm-hpc-sdk7.14-gfx1200
+                   sudo dnf install amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1200 amdrocm-hpc-sdk7.14-gfx1200
+                   sudo zypper install amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
 
       .. selected:: gfx=gfx1201
 
@@ -155,19 +155,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1201 amdrocm-hpc-sdk7.14-gfx1201
+                   sudo apt install amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1201 amdrocm-hpc-sdk7.14-gfx1201
+                   sudo dnf install amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1201 amdrocm-hpc-sdk7.14-gfx1201
+                   sudo zypper install amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
 
       .. selected:: gfx=gfx1100
 
@@ -177,19 +177,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1100 amdrocm-hpc-sdk7.14-gfx1100
+                   sudo apt install amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1100 amdrocm-hpc-sdk7.14-gfx1100
+                   sudo dnf install amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1100 amdrocm-hpc-sdk7.14-gfx1100
+                   sudo zypper install amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
 
       .. selected:: gfx=gfx1101
 
@@ -199,19 +199,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1101 amdrocm-hpc-sdk7.14-gfx1101
+                   sudo apt install amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1101 amdrocm-hpc-sdk7.14-gfx1101
+                   sudo dnf install amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1101 amdrocm-hpc-sdk7.14-gfx1101
+                   sudo zypper install amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
 
       .. selected:: gfx=gfx1102
 
@@ -221,19 +221,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1102 amdrocm-hpc-sdk7.14-gfx1102
+                   sudo apt install amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1102 amdrocm-hpc-sdk7.14-gfx1102
+                   sudo dnf install amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1102 amdrocm-hpc-sdk7.14-gfx1102
+                   sudo zypper install amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
 
       .. selected:: gfx=gfx1103
 
@@ -243,19 +243,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1103 amdrocm-hpc-sdk7.14-gfx1103
+                   sudo apt install amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1103 amdrocm-hpc-sdk7.14-gfx1103
+                   sudo dnf install amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1103 amdrocm-hpc-sdk7.14-gfx1103
+                   sudo zypper install amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
 
       .. selected:: gfx=gfx1151
 
@@ -265,19 +265,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1151 amdrocm-hpc-sdk7.14-gfx1151
+                   sudo apt install amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1151 amdrocm-hpc-sdk7.14-gfx1151
+                   sudo dnf install amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1151 amdrocm-hpc-sdk7.14-gfx1151
+                   sudo zypper install amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
 
       .. selected:: gfx=gfx1150
 
@@ -287,19 +287,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1150 amdrocm-hpc-sdk7.14-gfx1150
+                   sudo apt install amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1150 amdrocm-hpc-sdk7.14-gfx1150
+                   sudo dnf install amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1150 amdrocm-hpc-sdk7.14-gfx1150
+                   sudo zypper install amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
 
       .. selected:: gfx=gfx1152
 
@@ -309,19 +309,19 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1152 amdrocm-hpc-sdk7.14-gfx1152
+                   sudo apt install amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1152 amdrocm-hpc-sdk7.14-gfx1152
+                   sudo dnf install amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1152 amdrocm-hpc-sdk7.14-gfx1152
+                   sudo zypper install amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
 
       .. selected:: gfx=gfx1153
 
@@ -331,17 +331,18 @@
 
                .. code-block:: bash
 
-                   sudo apt install amdrocm-hpc7.14-gfx1153 amdrocm-hpc-sdk7.14-gfx1153
+                   sudo apt install amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
 
             .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
                .. code-block:: bash
 
-                   sudo dnf install amdrocm-hpc7.14-gfx1153 amdrocm-hpc-sdk7.14-gfx1153
+                   sudo dnf install amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
 
             .. selected:: os=sles
 
                .. code-block:: bash
 
-                   sudo zypper install amdrocm-hpc7.14-gfx1153 amdrocm-hpc-sdk7.14-gfx1153
+                   sudo zypper install amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
+
 

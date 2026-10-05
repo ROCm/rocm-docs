@@ -13,14 +13,16 @@
       driver: null | {name: str, url: str}
       host_os: str
       guest_os: [str, ...]   # one row per element
+      vf_modes: [str, ...]   # parallel to guest_os; "\n"-separated for multi-mode cells
 
   RST rowspan rules:
   - Hypervisor cell spans all rows for that GPU's consecutive same-hypervisor entries.
   - Technology + driver cells span all rows across consecutive same-hypervisor/technology/driver entries.
   - Host OS cell spans len(guest_os) rows within each entry.
-  - Each guest_os value is one matrix-row (continuation rows emit only the guest_os cell).
+  - Each guest_os value is one matrix-row (continuation rows emit only the guest_os and vf_mode cells).
 #}
 {%- set instinct = data["AMD Instinct"] -%}
+{%- set ns_fn = namespace(needed=false, mv_gpu_names=[]) -%}
 
 {#-- slugify: "AMD Instinct MI355X" -> "amd-instinct-mi355x" --#}
 {%- macro slugify(name) -%}
@@ -54,8 +56,8 @@
    .. selected:: {{ all_slugs }}
 
       Supported SR-IOV configurations require the GPU-IOV Module (GIM) driver
-      9.2.0.K -- see the `AMD Instinct Virtualization Driver documentation
-      <https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.2.0.k/>`__ to
+      9.3.0.K -- see the `AMD Instinct Virtualization Driver documentation
+      <https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.3.0.k/>`__ to
       get started.
 
 
@@ -73,6 +75,8 @@
          .. matrix-cell:: Host OS
 
          .. matrix-cell:: Guest OS
+
+         .. matrix-cell:: VF per GPU – Compute Mode – Memory Mode
 
 {%- for gpu_name in virt_gpu_names %}
 {%- set slug = slugify(gpu_name) %}
@@ -130,6 +134,12 @@
 {%- set host_rowspan = entry.guest_os | length %}
 {%- for guest_os in entry.guest_os %}
 {%- set is_first_guest = loop.first %}
+{%- set raw_vf = entry.vf_modes[loop.index0] | string | trim if entry.vf_modes is defined else "—" -%}
+{%- if '[*]' in raw_vf -%}
+{%- set ns_fn.needed = true -%}
+{%- if gpu_name not in ns_fn.mv_gpu_names -%}{%- set ns_fn.mv_gpu_names = ns_fn.mv_gpu_names + [gpu_name] -%}{%- endif -%}
+{%- endif -%}
+{%- set vf_lines = raw_vf.split('\n') %}
 
       .. matrix-row::
          :show-cond: gpu={{ slug }}
@@ -184,12 +194,32 @@
 {%- endif %}
 {%- endif %}
          .. matrix-cell:: {{ guest_os }}
+{% if vf_lines | length > 1 %}
+         .. matrix-cell::
+
+{% for vf_line in vf_lines %}
+            | {{ vf_line | replace('[*]', ' :ref:`[*] <virt-multivf-note>`') }}
+{%- endfor %}
+
+{% else %}
+         .. matrix-cell:: {{ raw_vf | replace('[*]', ' :ref:`[*] <virt-multivf-note>`') }}
+{% endif %}
 {%- endfor %}
 {%- endfor %}
 {%- endfor %}
 
 {%- endfor %}
 {%- endfor %}
+{%- if ns_fn.needed %}
+
+   .. selected:: {{ gpu_slugs(ns_fn.mv_gpu_names) }}
+
+      .. container::
+
+         .. _virt-multivf-note:
+
+         [*] Multi-VF support requires a compatible firmware.
+{% endif %}
 
    See the :ref:`release notes <release-virtualization-support>`
    for the full list of supported configurations.

@@ -126,6 +126,7 @@ CountOnes
 Cron
 CuPy
 DBRX
+DCGM
 DCLK
 DCQCN
 DDA
@@ -286,6 +287,7 @@ HIPify
 HLO
 HPC
 HPCG
+HPCToolkit
 HPE
 HPL
 HSA
@@ -313,6 +315,9 @@ ILDLT
 ILP
 ILU
 IMDb
+integrators
+IOD
+IODs
 IOMMU
 IOP
 IOPM
@@ -511,6 +516,7 @@ PILImage
 PLDM
 PMCs
 PMI
+POPs
 POR
 POSIX
 POTF
@@ -534,6 +540,7 @@ PerfDb
 Perfetto
 PipelineParallel
 Pipelining
+PMU
 PnP
 Pollara
 PowerEdge
@@ -695,6 +702,7 @@ TPU
 TPUs
 TPX
 TRTRI
+TSMC
 TSME
 TT
 TTM

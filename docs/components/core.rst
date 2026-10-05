@@ -22,8 +22,9 @@ applications on AMD hardware.
         "Runtime and compilers",
         "Profiling and debugging tools",
         "Control and monitoring tools",
-        "Media libraries",
-        "Storage"
+        "Media and vision libraries",
+        "Storage libraries",
+        "Threading libraries"
     ] -%}
 
     {# Collect groups not in the predefined order so they appear at the end. #}

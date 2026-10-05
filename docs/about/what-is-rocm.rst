@@ -48,3 +48,15 @@ Get started
   compatibility information.
 
 * Follow :doc:`/install/rocm` to set up ROCm on your system.
+
+ROCm handbook
+=============
+
+The `ROCm handbook <https://rocm-handbook.amd.com/en/latest/index.html>`__
+provides a unified, book-style reference for ROCm and HIP. It aggregates
+documentation from the ROCm portal into a structured format optimized for
+in-depth study and offline access in both PDF and HTML. It includes the
+following volumes:
+
+* `AMD ROCm Programming Guide <https://rocm-handbook.amd.com/projects/amd-rocm-programming-guide/en/latest/>`__
+* `AMD ROCm Optimization Guide <https://rocm-handbook.amd.com/projects/amd-rocm-optimization-guide/en/latest/>`__

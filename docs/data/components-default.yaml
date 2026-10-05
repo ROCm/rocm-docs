@@ -3,8 +3,9 @@
 _groups:
   - &math_libs Math and compute libraries
   - &comm_libs Communication libraries
-  - &media_libs Media libraries
+  - &media_libs Media and vision libraries
   - &storage Storage libraries
+  - &threading Threading libraries
   - &runtimes Runtimes and compilers
   - &compilers Runtimes and compilers
   - &profilers Profiling and debugging tools
@@ -91,6 +92,18 @@ rocm_core_sdk:
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipSPARSELt/en/${rtd_version_slug}/
         github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipsparselt
+    hipThreads:
+      group: *threading
+      description: Concurrency library that implements C++ threading and synchronization primitives for AMD GPU kernels.
+      xref:
+        rtd_project: https://rocm.docs.amd.com/projects/hipThreads/en/${rtd_version_slug}/
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipthreads
+    libhipcxx:
+      group: *math_libs
+      description: The C++ Standard Library for HIP, providing an opt-in, incremental, heterogeneous implementation of C++ Standard Library features that work in both host and device code.
+      xref:
+        rtd_project: https://rocm.docs.amd.com/projects/libhipcxx/en/${rtd_version_slug}/
+        github_repo: https://github.com/ROCm/libhipcxx/tree/${release_tag}
     LLVM:
       group: *compilers
       description: AMD's LLVM-based compiler infrastructure, including the ROCm device compiler (amdclang), which compiles HIP and OpenCL code for AMD GPUs.
@@ -145,6 +158,12 @@ rocm_core_sdk:
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocJPEG/en/${rtd_version_slug}/
         github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocjpeg
+    RPP:
+      group: *media_libs
+      description: Computer vision library for AMD processors with HIP or CPU backends.
+      xref:
+        rtd_project: https://rocm.docs.amd.com/projects/rpp/en/${rtd_version_slug}/
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rpp
     rocminfo:
       group: *sys_tools
       description: Reports system information.

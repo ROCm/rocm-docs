@@ -41,7 +41,7 @@ radeon_ryzen:
   - { display: amdgpu-install, value: amdgpu-install }
   # - { display: pip,            value: pip             }
   # - { display: Tarball,        value: tar             }
-#
+
 windows:
   - { display: pip,     value: pip }
   - { display: Tarball, value: tar }

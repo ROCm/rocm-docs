@@ -257,28 +257,6 @@
 
                    sudo zypper install amdrocm-hpc10.0-gfx1103 amdrocm-hpc-sdk10.0-gfx1103
 
-      .. selected:: gfx=gfx1030
-
-         2. Use the following command to install HPC SDK for your ``gfx1030`` GPU:
-
-            .. selected:: os=ubuntu os=debian
-
-               .. code-block:: bash
-
-                   sudo apt install amdrocm-hpc10.0-gfx1030 amdrocm-hpc-sdk10.0-gfx1030
-
-            .. selected:: os=rhel os=rocky-linux os=oracle-linux
-
-               .. code-block:: bash
-
-                   sudo dnf install amdrocm-hpc10.0-gfx1030 amdrocm-hpc-sdk10.0-gfx1030
-
-            .. selected:: os=sles
-
-               .. code-block:: bash
-
-                   sudo zypper install amdrocm-hpc10.0-gfx1030 amdrocm-hpc-sdk10.0-gfx1030
-
       .. selected:: gfx=gfx1151
 
          2. Use the following command to install HPC SDK for your ``gfx1151`` GPU:

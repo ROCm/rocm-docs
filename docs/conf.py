@@ -11,8 +11,8 @@ import sys
 from pathlib import Path
 from subprocess import run
 
-ROCM_VERSION = "10.0.0"
-GA_DATE = "2026-08-26"
+ROCM_VERSION = "10.1.0"
+GA_DATE = "2026-10-05"
 
 DOCS_DIR = Path(__file__).parent.resolve()
 ROOT_DIR = DOCS_DIR.parent
@@ -119,7 +119,7 @@ extensions = [
     "rocm_docs_custom.matrix",
     "rocm_docs_custom.icon",
     "rocm_docs_custom.csv_list_to_table",
-    "rocm_docs_custom.remote_content",
+    "rocm_docs.remote_content",
     "rocm_docs_custom.remote_yaml",
     "rocm_docs_custom.version_ref",
     "sphinxcontrib.datatemplates",

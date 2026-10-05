@@ -16,12 +16,15 @@ Install PyTorch and JAX on AMD GPUs. Includes hardware-specific instructions
 for AMD Instinct and Radeon GPUs and Ryzen APUs across Linux and Windows using
 pip.
 
-- [Install PyTorch](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/pytorch/install.html)
-- [Install JAX](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/jax/install.html)
-- [Install TensorFlow](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/tensorflow/install.html)
+- [Install PyTorch](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/pytorch/install.html?rocm-ver=10.1.0)
+- [Install JAX](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/jax/install.html?rocm-ver=10.1.0)
+- [Install TensorFlow](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/tensorflow/install.html?rocm-ver=10.1.0)
 :::
 
 :::{grid-item-card} Training
+Train and scale models on AMD GPUs. Primus provides end-to-end training
+infrastructure for multiple popular backend frameworks, including Megatron,
+TorchTitan, and MaxText.
 
 - [Primus](https://rocm.docs.amd.com/projects/primus)
 :::
@@ -30,11 +33,11 @@ pip.
 Serve LLMs and generative AI models using high-performance inference frameworks.
 Covers single-node and distributed multi-GPU deployments.
 
-- [vLLM](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/vllm.html)
-- [SGLang](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/sglang.html)
+- [vLLM](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/vllm.html?rocm-ver=10.1.0)
+- [SGLang](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/sglang.html?rocm-ver=10.1.0)
 - [ATOM](https://rocm.docs.amd.com/projects/atom/en/latest/)
-- [MIGraphX](https://rocm.docs.amd.com/projects/AMDMIGraphX)
-- [ONNX Runtime](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/onnxruntime.html)
+- [MIGraphX](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/migraphx.html?rocm-ver=10.1.0)
+- [ONNX Runtime](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/onnxruntime.html?rocm-ver=10.1.0)
 - [xDiT](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/xdit.html)
 - [ComfyUI](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/comfy.html)
 :::

@@ -24,7 +24,7 @@ $defs:
 
   virtEntry:
     type: object
-    required: [hypervisor, technology, host_os, guest_os]
+    required: [hypervisor, technology, host_os, guest_os, vf_modes]
     additionalProperties: false
     properties:
       hypervisor:
@@ -38,8 +38,20 @@ $defs:
         type: string
       guest_os:
         type: array
+        minItems: 1
         items:
           type: string
+      vf_modes:
+        type: array
+        minItems: 1
+        items:
+          type: string
+          minLength: 1
+        description: >-
+          Parallel to guest_os (same length and order). Each element is the raw
+          display string for the VF per GPU – Compute Mode – Memory Mode column.
+          Use "\n" to separate multiple modes within one cell (e.g.
+          "1 - SPX - NPS1\n2[*] - DPX - NPS2"). Use "N/A" when not applicable.
 
   driverInfo:
     type: object

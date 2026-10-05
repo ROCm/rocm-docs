@@ -29,15 +29,26 @@ OpenMPI, UCX, and Ubuntu.
 
    .. selector-option:: All
       :value: all
-      :width: 6
+      :width: 3
 
    .. selector-option:: AMD Instinct™
       :value: instinct
-      :width: 6
+      :width: 3
       :toc-label: AMD Instinct
+
+   .. selector-option:: AMD Radeon™
+      :value: radeon
+      :width: 3
+      :toc-label: AMD Radeon
+
+   .. selector-option:: AMD Ryzen™
+      :value: ryzen
+      :width: 3
+      :toc-label: AMD Ryzen
 
 .. datatemplate:yaml:: /data/gpus.yaml
    :template: gpu-selector.rst.jinja
+   :gfx-allow: gfx908 gfx90a gfx942 gfx950 gfx1100 gfx1101 gfx1102 gfx1103 gfx1150 gfx1151 gfx1152 gfx1153 gfx1200 gfx1201
 
 .. datatemplate:yaml:: /data/gpus.yaml
    :template: misc/os-selector-no-windows.rst.jinja
@@ -45,11 +56,17 @@ OpenMPI, UCX, and Ubuntu.
 .. selector:: ROCm version
    :key: rocm-ver
 
+   .. selector-option:: 10.1.0
+      :value: 10.1.0
+      :width: 4
+
    .. selector-option:: 10.0.0
       :value: 10.0.0
+      :width: 4
 
    .. selector-option:: 7.14.0
       :value: 7.14.0
+      :width: 4
 
 .. selector:: Installation method
    :show-cond: os=ubuntu os=debian
@@ -99,12 +116,16 @@ HPC SDK includes `hipTensor <https://github.com/ROCm/rocm-libraries/tree/develop
 Install HPC SDK
 ---------------
 
+.. include:: ./include/rocm10.1.0-install.rst
+
 .. include:: ./include/rocm10.0.0-install.rst
 
 .. include:: ./include/rocm7.14.0-install.rst
 
 Uninstall HPC SDK
 ----------------------
+
+.. include:: ./include/rocm10.1.0-uninstall.rst
 
 .. include:: ./include/rocm10.0.0-uninstall.rst
 

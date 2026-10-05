@@ -1,5 +1,6 @@
 .cline_storage
 .venv
+.venv-docs
 .vscode
 build
 __pycache__

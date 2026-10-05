@@ -79,6 +79,8 @@ subtrees:
                         title: hipSPARSE
                       - url: ${project:hipsparselt}
                         title: hipSPARSELt
+                      - url: https://advanced-micro-devices-libhipcxx-internal--390.com.readthedocs.build/en/390/index.html
+                        title: libhipcxx
                       - url: ${project:miopen}
                         title: MIOpen
                       - url: ${project:rocblas}
@@ -105,17 +107,24 @@ subtrees:
                       - url: ${project:rocshmem}
                         title: rocSHMEM
                 - file: components/media-libs.rst
-                  title: Media libraries
+                  title: Media and vision libraries
                   entries:
                       - url: ${project:rocdecode}
                         title: rocDecode
                       - url: ${project:rocjpeg}
                         title: rocJPEG
+                      - url: ${project:rpp}
+                        title: RPP
                 - file: components/storage-libs.rst
                   title: Storage libraries
                   entries:
                       - url: ${project:hipfile}
                         title: hipFile
+                - file: components/threading-libs.rst
+                  title: Threading libraries
+                  entries:
+                      - url: ${project:hipthreads}
+                        title: hipThreads
                 - file: components/runtimes-and-compilers.rst
                   title: Runtime and compilers
                   entries:
@@ -208,6 +217,28 @@ subtrees:
                         title: CDNA1 ISA reference
                       - url: https://www.amd.com/content/dam/amd/en/documents/instinct-business-docs/white-papers/amd-cdna-white-paper.pdf
                         title: CDNA1 white paper
+                - file: reference/gpu-arch/rdna.rst
+                  title: RDNA architecture
+                  entries:
+                      - url: https://docs.amd.com/v/u/en-US/rdna4-instruction-set-architecture
+                        title: RDNA 4 ISA reference
+                      - url: https://docs.amd.com/v/u/en-US/rdna35_instruction_set_architecture
+                        title: RDNA 3.5 ISA reference
+                      - url: https://docs.amd.com/v/u/en-US/rdna3-shader-instruction-set-architecture-feb-2023_0
+                        title: RDNA 3 ISA reference
+                      - url: https://docs.amd.com/v/u/en-US/rdna2-shader-instruction-set-architecture
+                        title: RDNA 2 ISA reference
+                      - url: https://docs.amd.com/v/u/en-US/rdna-shader-instruction-set-architecture
+                        title: RDNA ISA reference
+                - file: reference/gpu-arch/gcn-vega.rst
+                  title: GCN and Vega architectures
+                  entries:
+                      - url: https://www.amd.com/system/files/TechDocs/vega-7nm-shader-instruction-set-architecture.pdf
+                        title: Vega 7nm (Instinct MI50) ISA reference
+                      - url: https://www.amd.com/system/files/TechDocs/vega-shader-instruction-set-architecture.pdf
+                        title: Vega (Instinct MI25) ISA reference
+                      - url: https://www.amd.com/system/files/TechDocs/gcn3-instruction-set-architecture.pdf
+                        title: GCN 3 ISA reference
           - file: reference/system-optimization/index.rst
             title: AMD GPU system optimization
             entries:
