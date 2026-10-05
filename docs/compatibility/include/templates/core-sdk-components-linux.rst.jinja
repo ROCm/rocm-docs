@@ -149,6 +149,11 @@ gfx={{ g }}
       {%- set _ = ns_cells.cells.append("fam=instinct") -%}
     {%- elif r_bool and not (sup.instinct is defined) and not (sup.ryzen is defined) -%}
       {%- set _ = ns_cells.cells.append("fam=radeon") -%}
+    {%- elif r_bool and y_bool and not (sup.instinct is defined) -%}
+      {%- set _ = ns_cells.cells.append("fam=radeon fam=ryzen") -%}
+    {%- elif r_bool and y_gfx and not (sup.instinct is defined) -%}
+      {%- set _ = ns_cells.cells.append("fam=radeon") -%}
+      {%- for g in y_val %}{%- set _ = ns_cells.cells.append(gfx_item_tokens(g) | trim) %}{%- endfor -%}
     {%- elif i_bool and y_bool and not (sup.radeon is defined) -%}
       {%- set _ = ns_cells.cells.append("fam=instinct fam=ryzen") -%}
     {%- elif i_bool and r_bool and y_gfx -%}
@@ -295,7 +300,11 @@ gfx={{ g }}
          :show-cond: {{ sc }}
 {%- endif %}
 
+{% if b_items[0].url %}
          `{{ b_items[0].name }} {{ b_items[0].version }} <{{ b_items[0].url }}>`__
+{% else %}
+         {{ b_items[0].name }} {{ b_items[0].version }}
+{% endif %}
 
 {% endfor %}
 {%- for item in b_items[1:] %}
@@ -307,7 +316,11 @@ gfx={{ g }}
          :show-cond: {{ sc }}
 {%- endif %}
 
+{% if item.url %}
          `{{ item.name }} {{ item.version }} <{{ item.url }}>`__
+{% else %}
+         {{ item.name }} {{ item.version }}
+{% endif %}
 
 {% endfor %}
 {% endfor %}

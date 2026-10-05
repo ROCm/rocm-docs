@@ -453,14 +453,7 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
   fields or bricks also specified on the same plan description. This
   support will be added in a future release of rocFFT.
 
-* Added support for very large FFTs on gfx1250.
-
-##### Deprecations
-
-* The `rocfft_execution_info_set_load_callback` and `rocfft_execution_info_set_store_callback` APIs are now
-  deprecated and will be removed in a future release. They allow for specifying callbacks as device function
-  pointers at plan execution time, but rocFFT cannot optimize the combined code. Instead, users should specify JIT
-  callbacks on plan descriptions.
+* Support for very large FFTs on gfx1250.
 
 ##### Resolved issues
 
@@ -483,6 +476,11 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 * Function pointer callbacks specified via `rocfft_execution_info_set_load_callback` or
   `rocfft_execution_info_set_store_callback` are not functional on gfx1250 and `rocfft_execute` will fail in this case.
 
+##### Upcoming changes
+
+* The `rocfft_execution_info_set_load_callback` and `rocfft_execution_info_set_store_callback` APIs are now
+  deprecated and will be removed in a future release. They allow for specifying callbacks as device function
+  pointers at plan execution time, but rocFFT cannot optimize the combined code. Instead, users should specify JIT callbacks on plan descriptions.
 
 #### **rocJPEG** (1.9.0)
 
