@@ -79,6 +79,8 @@ subtrees:
                         title: hipSPARSE
                       - url: ${project:hipsparselt}
                         title: hipSPARSELt
+                      - url: https://advanced-micro-devices-libhipcxx-internal--390.com.readthedocs.build/en/390/index.html
+                        title: libhipcxx
                       - url: ${project:miopen}
                         title: MIOpen
                       - url: ${project:rocblas}
@@ -105,17 +107,24 @@ subtrees:
                       - url: ${project:rocshmem}
                         title: rocSHMEM
                 - file: components/media-libs.rst
-                  title: Media libraries
+                  title: Media and vision libraries
                   entries:
                       - url: ${project:rocdecode}
                         title: rocDecode
                       - url: ${project:rocjpeg}
                         title: rocJPEG
+                      - url: ${project:rpp}
+                        title: RPP
                 - file: components/storage-libs.rst
                   title: Storage libraries
                   entries:
                       - url: ${project:hipfile}
                         title: hipFile
+                - file: components/threading-libs.rst
+                  title: Threading libraries
+                  entries:
+                      - url: ${project:hipthreads}
+                        title: hipThreads
                 - file: components/runtimes-and-compilers.rst
                   title: Runtime and compilers
                   entries:

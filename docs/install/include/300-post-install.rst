@@ -177,7 +177,7 @@ complete your system configuration and validate the installation.
 
          .. code-block:: shell-session
 
-            AMDSMI Tool: 27.0.0+6b0e43f3 | AMDSMI Library version: 27.0.0 | ROCm version: 10.0.0 | amdgpu version: 7.1.3.31500000 | ionic version: N/A
+            AMDSMI Tool: 27.1.0+7da43026 | AMDSMI Library version: 27.1.0 | ROCm version: 10.1.0 | amdgpu version: 7.1.9.31600000 | ionic version: N/A
 
    .. selected:: i=pip
 

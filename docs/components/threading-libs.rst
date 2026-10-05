@@ -1,12 +1,12 @@
 .. meta::
-   :description: AMD ROCm media libraries for GPU-accelerated video decoding and image processing.
-   :keywords: media, vision, rocDecode, rocJPEG, RPP, video, decode, image, ROCm
+   :description: AMD ROCm threading libraries
+   :keywords: threading, hipThreads, libraries, SDK, ROCm
 
-************************************
-ROCm media and vision libraries
-************************************
+******************************
+ROCm threading libraries
+******************************
 
-ROCm media and vision libraries provide GPU-accelerated video and image decoding, image processing, and computer vision primitives for AMD GPUs.
+ROCm threading libraries provide GPU threading support for applications running on AMD GPUs.
 
 .. datatemplate:yaml:: /data/components-current.yaml
 
@@ -15,7 +15,7 @@ ROCm media and vision libraries provide GPU-accelerated video and image decoding
     {%- set slug = data.rocm_core_sdk.meta.rtd_version_slug -%}
     {%- set tag = data.rocm_core_sdk.meta.release_tag -%}
     {%- for name, comp in defaults.items() | sort(attribute="0") -%}
-    {%-     if comp.group == "Media and vision libraries" -%}
+    {%-     if comp.group == "Threading libraries" -%}
     {%-         set cur = current.get(name, {}) -%}
     {%-         set ver_label = " " + cur.version|string if cur.version is defined else "" -%}
     {%-         set desc = " -- " + comp.description if comp.description is defined else "" -%}

@@ -7,7 +7,7 @@
 
    .. code-block:: bash
 
-      curl -fsSLO https://repo.radeon.com/rocm/installer/rocm-runfile-installer/rocm-rel-10.0/rocm-installer-10.0.0-4.run && bash rocm-installer-10.0.0-4.run
+      curl -fsSLO https://stable.repo.amd.com/rocm/core/linux-installers/rocm-installer-10.1.0-5.run && bash rocm-installer-10.1.0-5.run
 
 .. selected:: i=runfile
    :heading: Configuration options

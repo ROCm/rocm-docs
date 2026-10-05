@@ -404,6 +404,24 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 12
           - 0
         *
+          - Radeon AI PRO R9600
+          - RDNA4
+          - gfx1201
+          - 32
+          - 48
+          - 32 or 64
+          - 128
+          - 48
+          - 8
+          - N/A
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 12
+          - 0
+        *
           - Radeon PRO V710
           - RDNA3
           - gfx1101

@@ -2,21 +2,20 @@
 
 rocm_core_sdk:
   meta:
-    release_tag: therock-10.0
-    rtd_version_slug: docs-10.0.0
+    release_tag: therock-10.1
+    rtd_version_slug: docs-10.1.0
   components:
     AMD SMI:
-      version: 27.0.0
+      version: 27.1.0
       support: {linux: {instinct: true, radeon: true}}
     Composable Kernel:
-      version: 1.2.0
-      changelog: true
+      version: 1.3.0
       support: {linux: {instinct: true, radeon: true}, windows: {radeon: true}}
     HIP:
-      version: 10.0.0
+      version: 10.1.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     HIPIFY:
-      version: 10.0.0
+      version: 10.1.0
       changelog: false
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     LLVM:
@@ -24,7 +23,7 @@ rocm_core_sdk:
       changelog: false
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     MIOpen:
-      version: 3.6.0
+      version: 3.6.1
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     RCCL:
       version: 2.30.7
@@ -37,7 +36,7 @@ rocm_core_sdk:
       changelog: true
       support: {linux: {instinct: true, radeon: true}}
     ROCm Compute Profiler:
-      version: 3.8.0
+      version: 3.9.0
       support:
         linux:
           instinct: true
@@ -45,11 +44,12 @@ rocm_core_sdk:
             - {gfx: gfx1150, codename: Strix Point}
             - gfx1151
             - {gfx: gfx1152, codename: Krackan Point}
+            - gfx1153
     ROCm Data Center Tool:
-      version: 1.3.1
+      version: 1.4.0
       support: {linux: {instinct: true}}
     ROCm Systems Profiler:
-      version: 1.8.0
+      version: 1.9.0
       support:
         linux:
           instinct: true
@@ -59,14 +59,14 @@ rocm_core_sdk:
             - gfx1151
             - {gfx: gfx1152, codename: Krackan Point}
     ROCprofiler-SDK:
-      version: 1.3.5
+      version: 1.4.1
       support:
         linux:
           instinct: true
           radeon: true
           ryzen: [gfx1150, gfx1151, gfx1152, gfx1153]
     ROCr Debug Agent:
-      version: 2.1.0
+      version: 2.2.0
       support: {linux: {instinct: true, radeon: true}}
     ROCr Runtime:
       version: 1.21.0
@@ -76,47 +76,60 @@ rocm_core_sdk:
       changelog: false
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipBLAS:
-      version: 3.6.0
+      version: 3.7.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipBLASLt:
       version: 1.4.1
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipCUB:
-      version: 4.6.0
+      version: 4.7.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipFFT:
-      version: 1.0.25
+      version: 1.0.26
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipFile:
-      version: 0.4.0
+      version: 0.5.0
       support: {linux: {instinct: true}}
     hipRAND:
       version: 3.4.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipSOLVER:
-      version: 3.6.0
+      version: 3.7.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipSPARSE:
-      version: 4.7.0
+      version: 4.8.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipSPARSELt:
       version: 0.2.9
       support: {linux: {instinct: [gfx950, gfx942]}, windows: {instinct: [gfx950, gfx942]}}
+    hipThreads:
+      version: 1.0.0
+      support: {linux: {radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
+    libhipcxx:
+      version: 3.0.2
+      support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocBLAS:
-      version: 5.6.0
+      version: 5.7.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocDecode:
-      version: 1.9.0
+      version: 1.10.0
       support:
         linux:
           instinct: true
           radeon: true
           ryzen: [gfx1150, gfx1151, gfx1152, gfx1153]
     rocFFT:
-      version: 1.0.39
+      version: 1.0.40
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocJPEG:
-      version: 1.7.0
+      version: 1.9.0
+      support:
+        linux:
+          instinct: true
+          radeon: true
+          ryzen: [gfx1150, gfx1151, gfx1152, gfx1153]
+    RPP:
+      version: 3.2.0
       support:
         linux:
           instinct: true
@@ -129,7 +142,7 @@ rocm_core_sdk:
       version: 5.0.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocSHMEM:
-      version: 3.6.0
+      version: 3.7.0
       support:
         linux:
           instinct: [gfx950, gfx942, gfx90a]
@@ -140,13 +153,13 @@ rocm_core_sdk:
             - {gfx: gfx1101, except: [AMD Radeon PRO V710]}
             - gfx1102
     rocSOLVER:
-      version: 3.36.0
+      version: 3.37.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocSPARSE:
-      version: 5.0.0
+      version: 5.1.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocThrust:
-      version: 4.6.0
+      version: 4.7.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocWMMA:
       version: 2.2.1

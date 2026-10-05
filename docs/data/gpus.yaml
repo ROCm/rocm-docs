@@ -152,6 +152,11 @@ AMD Radeon:
     series: *radeon_ai_pro_r9000_series
     arch: *arch_rdna_4
     mkt_page: https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9600d.html
+  AMD Radeon AI PRO R9600:
+    gfx: gfx1201
+    series: *radeon_ai_pro_r9000_series
+    arch: *arch_rdna_4
+    mkt_page: https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9600.html
   AMD Radeon RX 9070 XT:
     gfx: gfx1201
     series: *radeon_rx_9000_series

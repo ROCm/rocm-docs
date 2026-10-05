@@ -8,44 +8,84 @@
   Slug derivation: GPU name lowercased, spaces replaced with hyphens, "+" removed.
   e.g. "AMD Instinct MI355X" -> "amd-instinct-mi355x"
        "AMD Ryzen AI Max+ PRO 495" -> "amd-ryzen-ai-max-pro-495"
+
+  Optional directive option:
+
+    :gfx-allow: <space-separated gfx targets>
+
+  Restricts the dropdowns to GPUs whose ``gfx`` target appears in the list.
+  Use it on pages that ship for a narrower set of targets than ROCm as a
+  whole (for example the HPC SDK, whose packages cover only a subset).
+  When the option is omitted every GPU in gpus.yaml is listed, so pages that
+  do not set it -- /install/rocm and /compatibility/compatibility-matrix --
+  are unaffected. A family with no remaining GPUs emits no dropdown.
+
+  Example::
+
+     .. datatemplate:yaml:: /data/gpus.yaml
+        :template: gpu-selector.rst.jinja
+        :gfx-allow: gfx942 gfx950
 #}
 {%- set instinct = data["AMD Instinct"] -%}
 {%- set radeon   = data["AMD Radeon"] -%}
 {%- set ryzen    = data["AMD Ryzen"] -%}
+
+{#- A bare ":gfx-allow:" with no value arrives as True, not a string. -#}
+{%- set gfx_allow_raw = options.get("gfx-allow", "") if options else "" -%}
+{%- set gfx_allow = gfx_allow_raw.split() if gfx_allow_raw is string else [] -%}
+
+{#- Drop GPUs whose gfx target is not allowed. Empty list means "allow all". -#}
+{%- set instinct_items = [] -%}
+{%- for gpu_name, gpu in instinct.items() if not gfx_allow or gpu.gfx in gfx_allow -%}
+{%- set _ = instinct_items.append((gpu_name, gpu)) -%}
+{%- endfor -%}
+{%- set radeon_items = [] -%}
+{%- for gpu_name, gpu in radeon.items() if not gfx_allow or gpu.gfx in gfx_allow -%}
+{%- set _ = radeon_items.append((gpu_name, gpu)) -%}
+{%- endfor -%}
+{%- set ryzen_items = [] -%}
+{%- for gpu_name, gpu in ryzen.items() if not gfx_allow or gpu.gfx in gfx_allow -%}
+{%- set _ = ryzen_items.append((gpu_name, gpu)) -%}
+{%- endfor -%}
 
 {%- macro slugify(name) -%}
 {{ name | lower | replace("+", "") | replace("  ", " ") | replace(" ", "-") }}
 {%- endmacro -%}
 
 .. selected:: fam=instinct fam=radeon fam=ryzen
-
+{% if instinct_items %}
    .. selector-dropdown:: Instinct GPU
       :key: gpu
       :show-cond: fam=instinct
       :sort: desc
 
-{% for gpu_name, gpu in instinct.items() %}
+{% for gpu_name, gpu in instinct_items %}
       .. selector-option:: {{ gpu_name }} ({{ gpu.gfx }})
          :value: {{ slugify(gpu_name) }} gfx={{ gpu.gfx }}
 
 {% endfor %}
+{%- endif %}
+{%- if radeon_items %}
    .. selector-dropdown:: Radeon GPU
       :key: gpu
       :show-cond: fam=radeon
       :sort: desc
 
-{% for gpu_name, gpu in radeon.items() %}
+{% for gpu_name, gpu in radeon_items %}
       .. selector-option:: {{ gpu_name }} ({{ gpu.gfx }})
          :value: {{ slugify(gpu_name) }} gfx={{ gpu.gfx }}
 
 {% endfor %}
+{%- endif %}
+{%- if ryzen_items %}
    .. selector-dropdown:: Ryzen APU
       :key: gpu
       :show-cond: fam=ryzen
       :sort: desc
 
-{% for gpu_name, gpu in ryzen.items() %}
+{% for gpu_name, gpu in ryzen_items %}
       .. selector-option:: {{ gpu_name }} ({{ gpu.igpu }}) ({{ gpu.gfx }})
          :value: {{ slugify(gpu_name) }} gfx={{ gpu.gfx }}
 
 {% endfor %}
+{%- endif %}

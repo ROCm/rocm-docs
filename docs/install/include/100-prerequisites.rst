@@ -179,7 +179,7 @@ Prerequisites
 
 .. selected:: os=wsl
 
-   .. selected:: ubuntu-ver=26.04
+   .. selected:: ubuntu-ver=26.04.1
       :heading: Install WSL2 and Ubuntu 26.04
       :heading-level: 3
 
@@ -189,7 +189,7 @@ Prerequisites
 
       Complete the following instructions in your WSL2 environment.
 
-   .. selected:: ubuntu-ver=24.04.4
+   .. selected:: ubuntu-ver=24.04.5
       :heading: Install WSL2 and Ubuntu 24.04
       :heading-level: 3
 
@@ -217,7 +217,7 @@ Prerequisites
 
       .. selected:: os=ubuntu os=wsl
 
-         .. selected:: ubuntu-ver=24.04.4
+         .. selected:: ubuntu-ver=24.04.5
             :heading: Install the OEM kernel
             :heading-level: 3
 
@@ -235,7 +235,7 @@ Prerequisites
 
       .. selected:: os=ubuntu
 
-         .. selected:: ubuntu-ver=24.04.4
+         .. selected:: ubuntu-ver=24.04.5
             :heading: Install the OEM kernel
             :heading-level: 3
 
@@ -527,7 +527,7 @@ Prerequisites
 
          .. selected:: fam=all
 
-            .. selected:: ubuntu-ver=24.04.4
+            .. selected:: ubuntu-ver=24.04.5
 
                .. dropdown:: Install the OEM kernel for Ryzen APUs
                   :animate: fade-in-slide-down
@@ -547,12 +547,9 @@ Prerequisites
 
       .. selected:: os=wsl
 
-         To build the ROCDXG library for WSL2, you'll need GCC 11.4 or later and
-         CMake 3.15 or later.
-
          .. code-block:: bash
 
-            sudo apt install libatomic1 libquadmath0 gcc g++ cmake
+            sudo apt install libatomic1 libquadmath0
 
       .. selected:: os=rhel os=oracle-linux os=rocky-linux
 
@@ -573,7 +570,7 @@ Prerequisites
 
    .. selected:: os=ubuntu
 
-      .. selected:: ubuntu-ver=26.04
+      .. selected:: ubuntu-ver=26.04.1
          :heading: Install Python
          :heading-level: 3
 
@@ -584,7 +581,7 @@ Prerequisites
 
             sudo apt install python3.14 python3.14-venv
 
-      .. selected:: ubuntu-ver=24.04.4
+      .. selected:: ubuntu-ver=24.04.5
          :heading: Install Python
          :heading-level: 3
 

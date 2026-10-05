@@ -2,9 +2,9 @@
    :description: Guide for choosing the right ROCm GPU profiling tool based on your performance question and analysis level.
    :keywords: profiler, tracer, rocprofiler, rocprofv3, rocprofiler-sdk, rocprofiler-systems, rocprofiler-compute, RCV, Optiq, ROCm, performance, tool selection, choose
 
-*************************************
+***************************************
 Choosing the right ROCm profiling tool
-*************************************
+***************************************
 
 This topic provides guidance on selecting the appropriate ROCm profiling tool for
 your performance investigation. Each tool operates at a distinct level of the

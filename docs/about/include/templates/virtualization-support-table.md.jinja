@@ -5,7 +5,7 @@
 
   Primary data: virtualization-support.yaml (passed as `data` by the caller)
 
-  Column order: AMD GPU | Hypervisor | Virtualization technology | Virtualization driver | Host OS | Guest OS
+  Column order: AMD GPU | Hypervisor | Virtualization technology | Virtualization driver | Host OS | Guest OS | VF per GPU - Compute Mode - Memory Mode
 
   Row expansion:
     - Each config entry (hypervisor+technology+driver+host_os) expands into one row
@@ -15,6 +15,8 @@
       (can merge across config entries within a GPU if tech and driver match)
     - hypervisor cell: rowspan = consecutive sub-rows with the same hypervisor
     - GPU cell: rowspan = total sub-rows for the GPU
+    - vf_mode cell: one cell per guest OS row (no rowspan); multi-mode values
+      are stored as newline-separated strings and rendered with <br>
 #}
 {%- set instinct = data["AMD Instinct"] -%}
 {%- set radeon   = data["AMD Radeon"] -%}
@@ -22,12 +24,13 @@
 {#---------------------------------------------------------------------------
   build_subrows(gpu_configs)
   Expands a list of config entries into flat sub-rows.
-  Each sub-row: {tech, driver_name, driver_url, host_os, guest_os,
+  Each sub-row: {tech, driver_name, driver_url, host_os, guest_os, vf_mode,
                  is_host_first, host_span, is_tech_first, tech_span,
                  is_hyp_first, hyp_span, is_gpu_first, gpu_span}
   (span values filled in a second pass)
 ---------------------------------------------------------------------------#}
 {%- macro render_table(family) -%}
+{%- set ns_fn = namespace(count=0) -%}
 
 {#-- Step 1: for each GPU, build flat list of sub-rows --#}
 {%- set gpu_rows = [] -%}
@@ -39,6 +42,14 @@
     {%- set drv_url  = cfg.driver.url  if cfg.driver is defined else "" -%}
     {%- set n_guests = cfg.guest_os | length -%}
     {%- for g in cfg.guest_os -%}
+      {%- set raw_vf = cfg.vf_modes[loop.index0] | string | trim if cfg.vf_modes is defined else "—" -%}
+{%- set vf_parts = raw_vf.split('[*]') -%}
+{%- set ns_vf = namespace(html=vf_parts[0]) -%}
+{%- for part in vf_parts[1:] -%}
+  {%- set ns_fn.count = ns_fn.count + 1 -%}
+  {%- set ns_vf.html = ns_vf.html ~ '<a href="#fn-multivf" style="vertical-align:super;font-size:0.75em;">[*]</a>' ~ part -%}
+{%- endfor -%}
+{%- set vf = ns_vf.html -%}
       {%- set _ = sub_list.append({
         "hyp":        cfg.hypervisor,
         "tech":       cfg.technology,
@@ -46,6 +57,7 @@
         "drv_url":    drv_url,
         "host_os":    cfg.host_os,
         "guest_os":   g,
+        "vf_mode":    vf,
         "host_span":  n_guests,
         "is_host_first": loop.first
       }) -%}
@@ -72,8 +84,7 @@
       {%- endif -%}
     {%- endfor -%}
 
-    {#- Tech+driver: start when prev row has different tech or driver -#}
-    {%- set prev_hyp  = rows[i-1].hyp      if i > 0 else "" -%}
+    {#- Tech+driver: start when prev row has different hyp, tech, or driver -#}
     {%- set prev_hyp  = rows[i-1].hyp      if i > 0 else "" -%}
     {%- set prev_tech = rows[i-1].tech     if i > 0 else "" -%}
     {%- set prev_drv  = rows[i-1].drv_name if i > 0 else "" -%}
@@ -81,11 +92,8 @@
     {%- set ns_t = namespace(n=0, done=false) -%}
     {%- for fr in rows[i:] -%}
       {%- if not ns_t.done -%}
-        {%- if fr.tech == row.tech and fr.drv_name == row.drv_name and fr.hyp == row.hyp -%}
-          {%- set ns_t.n = ns_t.n + 1 -%}
-        {%- else -%}
-          {%- set ns_t.done = true -%}
-        {%- endif -%}
+        {%- if fr.tech == row.tech and fr.drv_name == row.drv_name and fr.hyp == row.hyp -%}{%- set ns_t.n = ns_t.n + 1 -%}
+        {%- else -%}{%- set ns_t.done = true -%}{%- endif -%}
       {%- endif -%}
     {%- endfor -%}
 
@@ -102,12 +110,13 @@
 
 {#-- Step 3: render the HTML table --#}
 <table class="rocm-docs-table table">
-  <colgroup style="width: 14%;">
-    <colgroup style="width: 14%;">
-      <colgroup style="width: 17%;">
-        <colgroup style="width: 17%;">
-          <colgroup style="width: 19%;">
-            <colgroup style="width: 19%;">
+  <colgroup style="width: 12%;">
+    <colgroup style="width: 8%;">
+      <colgroup style="width: 14%;">
+        <colgroup style="width: 14%;">
+          <colgroup style="width: 16%;">
+            <colgroup style="width: 16%;">
+              <colgroup style="width: 20%;">
   <thead>
     <tr>
       <th class="head"><p>AMD GPU</p></th>
@@ -116,6 +125,7 @@
       <th class="head"><p>Virtualization driver</p></th>
       <th class="head"><p>Host OS</p></th>
       <th class="head"><p>Guest OS</p></th>
+      <th class="head"><p>VF per GPU - Compute Mode - Memory Mode</p></th>
     </tr>
   </thead>
   <tbody>
@@ -143,11 +153,17 @@
       <td{% if row.host_span > 1 %} rowspan="{{ row.host_span }}" style="vertical-align: middle"{% endif %}><p>{{ row.host_os }}</p></td>
 {%- endif %}
       <td><p>{{ row.guest_os }}</p></td>
+      <td><p>{{ row.vf_mode | replace('\n', '<br>') }}</p></td>
     </tr>
 {%- endfor %}
 {%- endfor %}
   </tbody>
 </table>
+{%- if ns_fn.count > 0 %}
+<p id="fn-multivf" style="font-size: 0.875em; margin-top: 0.5em;">
+  <sup>[*]</sup> Multi-VF support requires a compatible firmware.
+</p>
+{%- endif %}
 {%- endmacro -%}
 
 ::::{tab-set}

@@ -18,10 +18,10 @@ GPU architectures and can be installed using the package manager or a tarball.
 
    - ASAN builds are only available for ``gfx942`` and ``gfx950`` architectures,
      plus a multiarch build (``all``, both gfx942 and gfx950).
-   - ASAN rpm and debian packages use the naming convention ``amdrocm-asan10.0`` or
-     ``amdrocm-asan10.0-gfxXYZ``.
-   - ASAN rpm and debian packages install to ``/opt/rocm/core-asan-10.0``, separate from
-     regular ROCm installations at ``/opt/rocm/core-10.0``.
+   - ASAN rpm and debian packages use the naming convention ``amdrocm-asan10.1`` or
+     ``amdrocm-asan10.1-gfxXYZ``.
+   - ASAN rpm and debian packages install to ``/opt/rocm/core-asan-10.1``, separate from
+     regular ROCm installations at ``/opt/rocm/core-10.1``.
    - ASAN packages are approximately 4× larger than a standard ROCm installation due to debug symbols and ASAN instrumentation.
 
 ----
@@ -366,7 +366,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0 asan
+            name=ROCm 10.1.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel10/x86_64
             enabled=1
             gpgcheck=1
@@ -381,7 +381,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0 asan
+            name=ROCm 10.1.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
             enabled=1
             gpgcheck=1
@@ -396,7 +396,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0 asan
+            name=ROCm 10.1.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel8/x86_64
             enabled=1
             gpgcheck=1
@@ -413,7 +413,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0 asan
+            name=ROCm 10.1.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel10/x86_64
             enabled=1
             gpgcheck=1
@@ -428,7 +428,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0 asan
+            name=ROCm 10.1.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
             enabled=1
             gpgcheck=1
@@ -443,7 +443,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0 asan
+            name=ROCm 10.1.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel8/x86_64
             enabled=1
             gpgcheck=1
@@ -458,7 +458,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          sudo tee /etc/yum.repos.d/amdrocm-stable-asan.repo <<EOF
          [amdrocm-stable-asan]
-         name=ROCm 10.0.0 asan
+         name=ROCm 10.1.0 asan
          baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/rhel9/x86_64
          enabled=1
          gpgcheck=1
@@ -475,7 +475,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/zypp/repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0 asan
+            name=ROCm 10.1.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/sles16/x86_64
             enabled=1
             gpgcheck=1
@@ -490,7 +490,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo tee /etc/zypp/repos.d/amdrocm-stable-asan.repo <<EOF
             [amdrocm-stable-asan]
-            name=ROCm 10.0.0 asan
+            name=ROCm 10.1.0 asan
             baseurl=https://stable.repo.amd.com/rocm/core/packages-asan/sles15/x86_64
             enabled=1
             gpgcheck=1
@@ -513,19 +513,19 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo apt install amdrocm-asan10.0
+            sudo apt install amdrocm-asan10.1
 
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
 
-            sudo apt install amdrocm-asan10.0-gfx942
+            sudo apt install amdrocm-asan10.1-gfx942
 
       .. selected:: gfx=gfx950
 
          .. code-block:: bash
 
-            sudo apt install amdrocm-asan10.0-gfx950
+            sudo apt install amdrocm-asan10.1-gfx950
 
    .. selected:: os=rhel os=oracle-linux os=rocky-linux
 
@@ -533,19 +533,19 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm-asan10.0
+            sudo dnf install amdrocm-asan10.1
 
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm-asan10.0-gfx942
+            sudo dnf install amdrocm-asan10.1-gfx942
 
       .. selected:: gfx=gfx950
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm-asan10.0-gfx950
+            sudo dnf install amdrocm-asan10.1-gfx950
 
    .. selected:: os=sles
 
@@ -553,19 +553,19 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
          .. code-block:: bash
 
-            sudo zypper install amdrocm-asan10.0
+            sudo zypper install amdrocm-asan10.1
 
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
 
-            sudo zypper install amdrocm-asan10.0-gfx942
+            sudo zypper install amdrocm-asan10.1-gfx942
 
       .. selected:: gfx=gfx950
 
          .. code-block:: bash
 
-            sudo zypper install amdrocm-asan10.0-gfx950
+            sudo zypper install amdrocm-asan10.1-gfx950
 
 .. ============================================================ META PACKAGES ==
 
@@ -589,27 +589,27 @@ Use the following instructions to install ROCm ASAN packages on your system.
            - Use case
            - Description
            - Contents
-         * - ``amdrocm-asan10.0``
+         * - ``amdrocm-asan10.1``
            - ROCm Base
            - Core runtime environment. Install this to run ROCm applications with
              ASAN instrumentation.
            - Runtimes, libraries, system control and monitoring tools, and other
              essential components with ASAN.
-         * - ``amdrocm-core-devel-asan10.0``
+         * - ``amdrocm-core-devel-asan10.1``
            - ROCm Developer Essentials
            - Development environment. Install this to build ROCm applications with
              ASAN support.
-           - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
+           - ``amdrocm-asan10.1`` plus compilers, CMake configurations, static
              library files, and headers with ASAN.
-         * - ``amdrocm-developer-tools-asan10.0``
+         * - ``amdrocm-developer-tools-asan10.1``
            - ROCm Profiler
            - Install this to profile and optimize ROCm applications with ASAN.
            - Profilers and related tools with ASAN instrumentation.
-         * - ``amdrocm-opencl-asan10.0``
+         * - ``amdrocm-opencl-asan10.1``
            - ROCm OpenCL
            - Install this to run OpenCL applications on ROCm with ASAN.
            - Components needed to run OpenCL with ASAN.
-         * - ``amdrocm-core-sdk-asan10.0``
+         * - ``amdrocm-core-sdk-asan10.1``
            - ROCm Full Suite
            - Install this if you need everything with ASAN.
            - The complete ROCm Core SDK including runtimes, compilers, development
@@ -625,27 +625,27 @@ Use the following instructions to install ROCm ASAN packages on your system.
            - Use case
            - Description
            - Contents
-         * - ``amdrocm-asan10.0``
+         * - ``amdrocm-asan10.1``
            - ROCm Base
            - Core runtime environment. Install this to run ROCm applications with
              ASAN instrumentation.
            - Runtimes, libraries, system control and monitoring tools, and other
              essential components with ASAN.
-         * - ``amdrocm-core-dev-asan10.0``
+         * - ``amdrocm-core-dev-asan10.1``
            - ROCm Developer Essentials
            - Development environment. Install this to build ROCm applications with
              ASAN support.
-           - ``amdrocm-asan10.0`` plus compilers, CMake configurations, static
+           - ``amdrocm-asan10.1`` plus compilers, CMake configurations, static
              library files, and headers with ASAN.
-         * - ``amdrocm-developer-tools-asan10.0``
+         * - ``amdrocm-developer-tools-asan10.1``
            - ROCm Profiler
            - Install this to profile and optimize ROCm applications with ASAN.
            - Profilers and related tools with ASAN instrumentation.
-         * - ``amdrocm-opencl-asan10.0``
+         * - ``amdrocm-opencl-asan10.1``
            - ROCm OpenCL
            - Install this to run OpenCL applications on ROCm with ASAN.
            - Components needed to run OpenCL with ASAN.
-         * - ``amdrocm-core-sdk-asan10.0``
+         * - ``amdrocm-core-sdk-asan10.1``
            - ROCm Full Suite
            - Install this if you need everything with ASAN.
            - The complete ROCm Core SDK including runtimes, compilers, development
@@ -654,7 +654,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
    .. note::
 
       All ASAN meta packages follow the naming convention
-      ``amdrocm-<component>-asan10.0`` or ``amdrocm-<component>-asan10.0-gfx<XYZ>``
+      ``amdrocm-<component>-asan10.1`` or ``amdrocm-<component>-asan10.1-gfx<XYZ>``
       for architecture-specific builds.
 
 .. ================================================================== TARBALL ==
@@ -687,7 +687,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
       .. code-block:: bash
 
-         wget https://stable.repo.amd.com/rocm/core/tarball-asan/therock-dist-linux-multiarch-10.0.0.tar.gz
+         wget https://stable.repo.amd.com/rocm/core/tarball-asan/therock-dist-linux-multiarch-10.1.0.tar.gz
          mkdir install
          tar -xf *.tar.gz -C install
 
@@ -695,7 +695,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
       .. code-block:: bash
 
-         wget https://stable.repo.amd.com/rocm/core/tarball-asan/therock-dist-linux-gfx94X-dcgpu-10.0.0.tar.gz
+         wget https://stable.repo.amd.com/rocm/core/tarball-asan/therock-dist-linux-gfx94X-dcgpu-10.1.0.tar.gz
          mkdir install
          tar -xf *.tar.gz -C install
 
@@ -703,7 +703,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
       .. code-block:: bash
 
-         wget https://stable.repo.amd.com/rocm/core/tarball-asan/therock-dist-linux-gfx950-dcgpu-10.0.0.tar.gz
+         wget https://stable.repo.amd.com/rocm/core/tarball-asan/therock-dist-linux-gfx950-dcgpu-10.1.0.tar.gz
          mkdir install
          tar -xf *.tar.gz -C install
 
@@ -712,7 +712,7 @@ Use the following instructions to install ROCm ASAN packages on your system.
 Post-installation
 =================
 
-After installing ROCm ASAN 10.0.0, complete these post-installation steps to
+After installing ROCm ASAN 10.1.0, complete these post-installation steps to
 configure your system and validate the installation.
 
 .. selected:: i=pkgman i=tar
@@ -768,7 +768,7 @@ configure your system and validate the installation.
                # Configure ROCM_ASAN_PATH to the ASan install tree
                sudo tee /etc/profile.d/set-rocm-asan-env.sh << 'EOF'
                # ROCm ASan Configuration
-               export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
+               export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.1
 
                # Enable XNACK for device-side GPU instrumentation
                # Without this, only host-side (CPU) errors will be detected
@@ -841,7 +841,7 @@ configure your system and validate the installation.
                      # Configure ROCM_ASAN_PATH to the ASan install tree
                      tee --append ~/.bashrc << 'EOF'
                      # BEGIN ROCm ASan Configuration
-                     export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
+                     export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.1
 
                      # Enable XNACK for device-side GPU instrumentation
                      # Without this, only host-side (CPU) errors will be detected
@@ -894,7 +894,7 @@ configure your system and validate the installation.
                      # Configure ROCM_ASAN_PATH to the ASan install tree
                      tee --append ~/.profile << 'EOF'
                      # BEGIN ROCm ASan Configuration
-                     export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.0
+                     export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.1
 
                      # Enable XNACK for device-side GPU instrumentation
                      # Without this, only host-side (CPU) errors will be detected
@@ -950,19 +950,19 @@ Uninstall ROCm ASAN
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm-asan10.0
+               sudo apt autoremove amdrocm-asan10.1
 
          .. selected:: gfx=gfx942
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm-asan10.0-gfx942
+               sudo apt autoremove amdrocm-asan10.1-gfx942
 
          .. selected:: gfx=gfx950
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm-asan10.0-gfx950
+               sudo apt autoremove amdrocm-asan10.1-gfx950
 
       .. selected:: os=rhel os=oracle-linux os=rocky-linux
 
@@ -970,25 +970,25 @@ Uninstall ROCm ASAN
 
             .. code-block:: bash
 
-               sudo dnf remove amdrocm-asan10.0
+               sudo dnf remove amdrocm-asan10.1
 
          .. selected:: gfx=gfx942
 
             .. code-block:: bash
 
-               sudo dnf remove amdrocm-asan10.0-gfx942
+               sudo dnf remove amdrocm-asan10.1-gfx942
 
          .. selected:: gfx=gfx950
 
             .. code-block:: bash
 
-               sudo dnf remove amdrocm-asan10.0-gfx950
+               sudo dnf remove amdrocm-asan10.1-gfx950
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-            sudo zypper remove amdrocm-*-asan10.0*
+            sudo zypper remove amdrocm-*-asan10.1*
 
    2. Remove ROCm repositories.
 
@@ -1000,7 +1000,7 @@ Uninstall ROCm ASAN
 
             # Clear the cache and clean the system
             sudo rm -rf /var/cache/apt/*
-            sudo apt clean all
+            sudo apt clean
             sudo apt update
 
       .. selected:: os=rhel os=oracle-linux os=rocky-linux

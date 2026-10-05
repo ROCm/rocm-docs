@@ -47,7 +47,9 @@ additional licenses. Please review individual repositories for more information.
 | [hipSOLVER](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipsolver/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/hipsolver/LICENSE.md) |
 | [hipSPARSE](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipsparse/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/hipsparse/LICENSE.md) |
 | [hipSPARSELt](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipsparselt/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/hipsparselt/LICENSE.md) |
+| [hipThreads](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hipthreads/) | [Apache 2.0 with LLVM Exceptions](https://github.com/ROCm/rocm-libraries/blob/develop/projects/hipthreads/LICENSE.txt) |
 | [hipTensor](https://github.com/ROCm/rocm-libraries/tree/develop/projects/hiptensor/) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/hiptensor/LICENSE) |
+| [libhipcxx](https://github.com/ROCm/libhipcxx) | [Apache 2.0 with LLVM Exceptions](https://github.com/ROCm/libhipcxx/blob/amd-develop/LICENSE.TXT) |
 | [llvm-project](https://github.com/ROCm/llvm-project/) | [Apache](https://github.com/ROCm/llvm-project/blob/amd-staging/LICENSE.TXT) |
 | [llvm-project/flang](https://github.com/ROCm/llvm-project/tree/amd-staging/flang) | [Apache 2.0](https://github.com/ROCm/llvm-project/blob/amd-staging/flang/LICENSE.TXT) |
 | [MIGraphX](https://github.com/ROCm/AMDMIGraphX/) | [MIT](https://github.com/ROCm/AMDMIGraphX/blob/develop/LICENSE) |
@@ -71,7 +73,7 @@ additional licenses. Please review individual repositories for more information.
 | [ROCm Data Center (RDC)](https://github.com/ROCm/rocm-systems/tree/develop/projects/rdc/) | [MIT](https://github.com/ROCm/rocm-systems/blob/develop/projects/rdc/LICENSE.md) |
 | [ROCm-Device-Libs](https://github.com/ROCm/llvm-project/tree/amd-staging/amd/device-libs) | [The University of Illinois/NCSA](https://github.com/ROCm/llvm-project/blob/amd-staging/amd/device-libs/LICENSE.TXT) |
 | [ROCm-OpenCL-Runtime](https://github.com/ROCm/rocm-systems/tree/develop/projects/clr/opencl/) | [MIT](https://github.com/ROCm/rocm-systems/blob/develop/projects/clr/opencl/LICENSE.md) |
-| [ROCm Performance Primitives (RPP)](https://github.com/ROCm/rpp) | [MIT](https://github.com/ROCm/rpp/blob/develop/LICENSE) |
+| [ROCm Performance Primitives (RPP)](https://github.com/ROCm/rocm-libraries/tree/develop/projects/rpp) | [MIT](https://github.com/ROCm/rocm-libraries/blob/develop/projects/rpp/LICENSE) |
 | [ROCm SMI Lib](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocm-smi-lib/) | [MIT](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocm-smi-lib/LICENSE.md) |
 | [ROCm Systems Profiler](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler-systems/) | [MIT](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocprofiler-systems/LICENSE.md) |
 | [ROCm Validation Suite](https://github.com/ROCm/ROCmValidationSuite/) | [MIT](https://github.com/ROCm/ROCmValidationSuite/blob/master/LICENSE) |

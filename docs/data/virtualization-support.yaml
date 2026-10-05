@@ -3,9 +3,15 @@
 
 # Anchors {{{
 _drivers:
-  - &gim_9_2_0_k
-    name: GIM 9.2.0.K
-    url: https://github.com/amd/MxGPU-Virtualization/releases/tag/9.2.0.K
+  - &gim_9_3_0_k
+    name: GIM 9.3.0.K
+    url: https://github.com/amd/MxGPU-Virtualization/releases/tag/9.3.0.K
+
+_vf_modes:
+  - &vf_spx "1 - SPX - NPS1"
+  - &vf_mi355_sriov "1 - SPX - NPS1\n2[*] - DPX - NPS2\n8[*] - CPX - NPS2"
+  - &vf_mi300_sriov "1 - SPX - NPS1\n8[*] - CPX - NPS4"
+  - &vf_na "N/A"
 # }}}
 
 AMD Instinct:
@@ -14,154 +20,228 @@ AMD Instinct:
       technology: Passthrough
       host_os: Ubuntu 26.04
       guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 22.04
       guest_os: [Ubuntu 22.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
+      host_os: Ubuntu 26.04
+      guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_spx]
+    - hypervisor: KVM
+      technology: SR-IOV
+      driver: *gim_9_3_0_k
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04, RHEL 10.0, RHEL 9.6]
+      vf_modes: [*vf_mi355_sriov, *vf_spx, *vf_spx]
     - hypervisor: ESXi
       technology: SR-IOV
       host_os: VMware ESXi 9.1
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_spx]
 
   AMD Instinct MI350X:
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 26.04
       guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 22.04
       guest_os: [Ubuntu 22.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
+      host_os: Ubuntu 26.04
+      guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_spx]
+    - hypervisor: KVM
+      technology: SR-IOV
+      driver: *gim_9_3_0_k
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04, RHEL 10.0, RHEL 9.6]
+      vf_modes: [*vf_mi355_sriov, *vf_spx, *vf_spx]
     - hypervisor: ESXi
       technology: SR-IOV
       host_os: VMware ESXi 9.1
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_spx]
 
   AMD Instinct MI350P:
     - hypervisor: KVM
       technology: Passthrough
       host_os: Debian 13
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_spx]
     - hypervisor: ESXi
       technology: Passthrough
       host_os: VMware ESXi 9.1
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_spx]
+    - hypervisor: ESXi
+      technology: SR-IOV
+      host_os: VMware ESXi 9.1
+      guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_spx]
 
   AMD Instinct MI325X:
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 26.04
       guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04, RHEL 9.4]
+      vf_modes: [*vf_spx, *vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 22.04
       guest_os: [Ubuntu 22.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: RHEL 9.4
       guest_os: [RHEL 9.4]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
+      host_os: Ubuntu 26.04
+      guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_spx]
+    - hypervisor: KVM
+      technology: SR-IOV
+      driver: *gim_9_3_0_k
       host_os: Ubuntu 22.04
       guest_os: [Ubuntu 22.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
       host_os: RHEL 10.2
       guest_os: [RHEL 10.2]
+      vf_modes: [*vf_spx]
+    - hypervisor: KVM
+      technology: SR-IOV
+      driver: *gim_9_3_0_k
+      host_os: RHEL 9.4
+      guest_os: [Ubuntu 24.04, RHEL 9.4]
+      vf_modes: [*vf_spx, *vf_spx]
 
   AMD Instinct MI300X:
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 26.04
       guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04, RHEL 9.4]
+      vf_modes: [*vf_spx, *vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 22.04
       guest_os: [Ubuntu 22.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: RHEL 9.4
       guest_os: [RHEL 9.4]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: Passthrough
       host_os: ESXi 8 U3
       guest_os: [Ubuntu 24.04, Ubuntu 22.04]
+      vf_modes: [*vf_spx, *vf_spx]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
+      host_os: Ubuntu 26.04
+      guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_spx]
+    - hypervisor: KVM
+      technology: SR-IOV
+      driver: *gim_9_3_0_k
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_mi300_sriov]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
       host_os: Ubuntu 22.04
       guest_os: [Ubuntu 22.04]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
       host_os: RHEL 10.2
       guest_os: [RHEL 10.2]
+      vf_modes: [*vf_spx]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
       host_os: RHEL 9.4
       guest_os: [RHEL 9.4]
+      vf_modes: [*vf_mi300_sriov]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
       host_os: RHEL 9.4
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_mi300_sriov]
 
   AMD Instinct MI210:
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 26.04
       guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_na]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_na]
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 22.04
       guest_os: [Ubuntu 22.04]
+      vf_modes: [*vf_na]
     - hypervisor: KVM
       technology: Passthrough
       host_os: RHEL 9.4
       guest_os: [Ubuntu 22.04]
+      vf_modes: [*vf_na]
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
+      host_os: Ubuntu 26.04
+      guest_os: [Ubuntu 26.04]
+      vf_modes: [*vf_na]
+    - hypervisor: KVM
+      technology: SR-IOV
+      driver: *gim_9_3_0_k
       host_os: RHEL 9.4
       guest_os: [Ubuntu 22.04, RHEL 9.4]
+      vf_modes: [*vf_na, *vf_na]
 
 AMD Radeon:
   AMD Radeon AI PRO R9700S:
@@ -169,10 +249,18 @@ AMD Radeon:
       technology: Passthrough
       host_os: Ubuntu 24.04
       guest_os: [Ubuntu 24.04]
+      vf_modes: [*vf_na]
 
   AMD Radeon PRO V710:
     - hypervisor: KVM
       technology: SR-IOV
-      driver: *gim_9_2_0_k
+      driver: *gim_9_3_0_k
+      host_os: Ubuntu 26.04
+      guest_os: [Ubuntu 26.04, Ubuntu 24.04, RHEL 10.2, RHEL 9.6]
+      vf_modes: ["1 to 12", "1 to 12", "1 to 12", "1 to 12"]
+    - hypervisor: KVM
+      technology: SR-IOV
+      driver: *gim_9_3_0_k
       host_os: Ubuntu 24.04
-      guest_os: [Ubuntu 24.04, RHEL 9.6]
+      guest_os: [Ubuntu 24.04, RHEL 10.2, RHEL 9.6]
+      vf_modes: ["1 to 12", "1 to 12", "1 to 12"]

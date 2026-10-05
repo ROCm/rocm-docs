@@ -64,12 +64,20 @@
 {%- for fp in fp_order -%}
 {%- set group = gpu_items | selectattr("fp", "equalto", fp) | list -%}
 {%- set first = group[0] -%}
+{#--
+  Fit one row: Bootstrap columns when 12 divides evenly (1, 2, 3, 4, 6, 12
+  options), otherwise an equal percentage. The previous hardcoded map fell
+  back to "4" for every other count, which wrapped 6-option groups onto two
+  rows and shrank single-option groups to a quarter width.
+--#}
 {%- set n_opts = first.distros | length -%}
-{%- if n_opts == 2 %}{%- set w = "6" -%}
-{%- elif n_opts == 3 %}{%- set w = "4" -%}
-{%- elif n_opts == 4 %}{%- set w = "3" -%}
-{%- elif n_opts == 5 %}{%- set w = "20%" -%}
-{%- else %}{%- set w = "4" -%}
+{%- set n_opts = n_opts if n_opts > 0 else 1 -%}
+{%- if 12 % n_opts == 0 -%}
+{%- set w = (12 // n_opts) | string -%}
+{%- elif 100 % n_opts == 0 -%}
+{%- set w = (100 // n_opts) | string ~ "%" -%}
+{%- else -%}
+{%- set w = (100.0 / n_opts) | round(4) | string ~ "%" -%}
 {%- endif %}
 
    .. selector:: {{ header }}
