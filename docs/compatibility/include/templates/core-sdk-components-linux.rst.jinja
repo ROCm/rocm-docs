@@ -150,7 +150,6 @@ gfx={{ g }}
     {%- elif r_bool and not (sup.instinct is defined) and not (sup.ryzen is defined) -%}
       {%- set _ = ns_cells.cells.append("fam=radeon") -%}
     {%- elif r_bool and y_bool and not (sup.instinct is defined) -%}
-    {%- elif r_bool and y_bool and not (sup.instinct is defined) -%}
       {%- set _ = ns_cells.cells.append("fam=radeon fam=ryzen") -%}
     {%- elif r_bool and y_gfx and not (sup.instinct is defined) -%}
       {%- set _ = ns_cells.cells.append("fam=radeon") -%}
@@ -286,6 +285,9 @@ gfx={{ g }}
   {%- set ns_hdr.sc = ns_h.gfx_toks | join(" ") -%}
 {%- endif %}
    .. matrix-row::
+{%- if ns_hdr.sc != "" %}
+      :show-cond: {{ ns_hdr.sc }}
+{%- endif %}
 
       .. matrix-cell:: {{ block.label }}
 {%- if block.count > 1 %}
@@ -301,11 +303,22 @@ gfx={{ g }}
          :show-cond: {{ sc }}
 {%- endif %}
 
+{% if b_items[0].url %}
          `{{ b_items[0].name }} {{ b_items[0].version }} <{{ b_items[0].url }}>`__
+{% else %}
+         {{ b_items[0].name }} {{ b_items[0].version }}
+{% endif %}
 
 {% endfor %}
 {%- for item in b_items[1:] %}
+{%- set ns_row = namespace(sc="") -%}
+{%- if item.cells | length == 1 and item.cells[0] != "" -%}
+  {%- set ns_row.sc = item.cells[0] -%}
+{%- endif %}
    .. matrix-row::
+{%- if ns_row.sc != "" %}
+      :show-cond: {{ ns_row.sc }}
+{%- endif %}
 
 {% for sc in item.cells %}
       .. matrix-cell::
@@ -313,7 +326,11 @@ gfx={{ g }}
          :show-cond: {{ sc }}
 {%- endif %}
 
+{% if item.url %}
          `{{ item.name }} {{ item.version }} <{{ item.url }}>`__
+{% else %}
+         {{ item.name }} {{ item.version }}
+{% endif %}
 
 {% endfor %}
 {% endfor %}
