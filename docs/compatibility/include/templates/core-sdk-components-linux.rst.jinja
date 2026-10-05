@@ -285,9 +285,6 @@ gfx={{ g }}
   {%- set ns_hdr.sc = ns_h.gfx_toks | join(" ") -%}
 {%- endif %}
    .. matrix-row::
-{%- if ns_hdr.sc != "" %}
-      :show-cond: {{ ns_hdr.sc }}
-{%- endif %}
 
       .. matrix-cell:: {{ block.label }}
 {%- if block.count > 1 %}
@@ -311,14 +308,7 @@ gfx={{ g }}
 
 {% endfor %}
 {%- for item in b_items[1:] %}
-{%- set ns_row = namespace(sc="") -%}
-{%- if item.cells | length == 1 and item.cells[0] != "" -%}
-  {%- set ns_row.sc = item.cells[0] -%}
-{%- endif %}
    .. matrix-row::
-{%- if ns_row.sc != "" %}
-      :show-cond: {{ ns_row.sc }}
-{%- endif %}
 
 {% for sc in item.cells %}
       .. matrix-cell::
