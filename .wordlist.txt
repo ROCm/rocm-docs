@@ -285,6 +285,7 @@ HIPification
 HIPify
 HLO
 HPC
+HPCToolkit
 HPCG
 HPE
 HPL
@@ -513,6 +514,7 @@ PILImage
 PLDM
 PMCs
 PMI
+PMU
 POPs
 POR
 POSIX
@@ -1110,6 +1112,7 @@ initramfs
 inlining
 installable
 instrSize
+integrators
 interop
 interpolators
 interprocedural
