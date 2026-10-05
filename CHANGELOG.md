@@ -118,7 +118,7 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
   - The WSL backend returned success with a zeroed structure, so `rev_id` read as `0x0`, and where it did report the not-supported value Python rendered it as the raw `0xffffffff`. Python and the CLI now render it as `N/A`.
   - `amdsmi_asic_info_t` is now reset through one shared initializer used by every backend, so a field a backend cannot supply keeps its not-supported value rather than a plausible zero.
 
-##### Upcoming Changes
+##### Upcoming changes
 
 - **UUIDs will be replaced by CUIDs in an upcoming version**.
   - UUIDs will soon be replaced with Component Unified IDs (CUIDs). These CUIDs will be consistent across various AMD tools and products so users will be able to definitively identify their devices regardless of what tool they're using.
@@ -174,11 +174,23 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 #### **HIP** (10.1.0)
 
 ##### Added
-* New HIP APIs
-    - Device Management: support for querying a device identifier.
-      * `hipDeviceGetLuid` returns the locally unique identifier (LUID) and device node mask for a device
-    - Device Management: support for API parity with corresponding CUDA API.
-      * `hipInitDevice` initializes the runtime state for the requested device, but does not make the device current for the calling thread. It also sets the requested flags and ensures the device's default stream is created.
+* New HIP APIs:
+    - Device Management: Support for the following APIs for parity with corresponding CUDA APIs.
+      * `hipDeviceGetLuid` returns the locally unique identifier (LUID) and device node mask for the specified device.
+      * `hipInitDevice` initializes the runtime state for the specified device without making it the current device for the calling thread. It also applies the requested flags and ensures the device's default stream is created.
+* New HIP device attribute:
+    - `hipDeviceAttributeHostAllocDmaBufSupported` is now supported, enabling host-allocated buffer sharing.
+* Support for host-NUMA virtual memory management (VMM) in `hipMemCreate()` and related VMM APIs. These APIs now support `hipMemLocationTypeHostNuma` and `hipMemLocationTypeHostNumaCurrent`, enabling allocations backed by physical host memory on the selected NUMA node. Previously, support was limited to GPU VMM pools with deferred host access. This enhancement aligns HIP behavior with the corresponding CUDA APIs and expands support for NUMA-aware memory allocation.
+* Support for coarse-grained memory coherency on Windows. In supported Windows configurations, applications can now use unified memory to reduce memory footprint by eliminating unnecessary host-device data copies. Components interacting with the device can directly access host memory pointers and enable coarse-grained memory coherency by registering and pinning the associated host allocations using `hipHostRegister()` with the `hipExtHostRegisterCoarseGrained` flag. This provides behavior on Windows that is consistent with the existing Linux implementation while improving memory efficiency.
+
+##### Resolved issues
+* On Windows, HIP runtime now correctly handles non-P2P data transfers between GPUs and coordinates multi-GPU kernel execution. It eliminates deadlocks and invalid values in multi-process workloads and resolves issues observed when running LLMs on multi-GPU Windows configurations.
+* Resolved an out-of-memory issue affecting certain AMD APUs, such as Strix Halo, on Windows when loading LLMs that could exceed dedicated graphics memory and spill into shared memory. The HIP runtime now correctly uses the full unified memory pool available on high-memory APUs, enabling system RAM to be dynamically allocated as graphics memory. This enhancement improves memory utilization and supports the execution of larger AI models on affected APU platforms.
+* Fixed a memory leak in the HIP/HSA runtime that could occur during stream and signal creation on certain GPUs. The issue was triggered by `hipStreamCreate()`, resulting in allocated signal objects not being properly released. The HIP/HSA runtime now correctly releases allocated signal objects during stream destruction and runtime cleanup, eliminating the memory leak and improving resource management.
+
+##### Known issues
+
+* Under WSL2 (Windows Subsystem for Linux 2), GPU device-side memory faults might not be reported correctly and can result in the process hanging.
 
 #### **hipBLAS** (3.7.0)
 
@@ -269,6 +281,12 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 
 * Fixed `hipsolverDnXpotrs` calling 32-bit potrs instead of 64-bit potrs.
 
+#### **hipSPARSE** (4.8.0)
+
+##### Added
+* The generic API routines `hipsparseSpGEAM_createDescr`, `hipsparseSpGEAM_destroyDescr`, `hipsparseSpGEAM_bufferSize`, `hipsparseSpGEAM_nnz`, and `hipsparseSpGEAM` for sparse matrix-matrix addition (`C = alpha * op(A) + beta * op(B)`), along with the `hipsparseSpGEAMDescr_t` type and the `hipsparseSpGEAMAlg_t` algorithm enum, to match the cuSPARSE 13.3 generic `SpGEAM` API.
+* Batched support to `hipsparseSDDMM` for CSR format.
+
 #### **hipThreads** (1.0.0)
 
 ##### Added
@@ -277,12 +295,6 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 * A persistent scheduler kernel that accepts work from both the host and the device, with multi-fiber (SIMD width) execution so a single unit of work can run across multiple GPU lanes.
 * Runtime-tunable scheduling. Scheduler concurrency can be configured at runtime through the `HIPTHREADS_VCORES_PER_WGP` environment variable to match your GPU and workload.
 * Cross-platform build and tooling. A CMake build with native HIP language support, a lit-based test suite, and example projects. All are supported on Linux and Windows.
-
-#### **hipSPARSE** (4.8.0)
-
-##### Added
-* The generic API routines `hipsparseSpGEAM_createDescr`, `hipsparseSpGEAM_destroyDescr`, `hipsparseSpGEAM_bufferSize`, `hipsparseSpGEAM_nnz`, and `hipsparseSpGEAM` for sparse matrix-matrix addition (`C = alpha * op(A) + beta * op(B)`), along with the `hipsparseSpGEAMDescr_t` type and the `hipsparseSpGEAMAlg_t` algorithm enum, to match the cuSPARSE 13.3 generic `SpGEAM` API.
-* Batched support to `hipsparseSDDMM` for CSR format.
 
 #### **libhipcxx** (3.0.2)
 
@@ -295,7 +307,7 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 * Structured bindings for `cuda::std::tuple`, `cuda::std::pair`, and `cuda::std::array`.
 * Experimental `{async_}resource_ref`.
 * Support for Clang 15.
-* Made `lerp` usable in device code.
+* Support for using `lerp` in device code.
 
 ##### Changed
 
@@ -407,7 +419,7 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 * Fix incorrect results from Level 1 `dot` and `dotc` batched and strided-batched forms, including their `_ex` forms, when `batch_count` is greater than 65535. Every batch item at index 65535 and beyond reduced an empty range and returned zero. The ILP64 (`_64`) forms were unaffected, as they chunk the batch dimension below that limit.
 * Fix incorrect results from Level 3 batched and strided-batched `trsm` on the small left-side device path when `batch_count` is greater than 65535 and each batch item has a distinct `A` pointer. Threads that finished the first grid pass left the kernel, so later passes could not reload `A`. Also fix Level 3 `trmm` out-of-place when `batch_count` is greater than 65535 and a per-batch `alpha` of zero caused the kernel to skip remaining batches. The ILP64 (`_64`) forms were unaffected, as they chunk the batch dimension below that limit.
 * Fix the hipBLASLt backend returning `rocblas_status_internal_error` when an explicit GEMM solution index is unsupported. The call now returns `rocblas_status_invalid_value`, matching Tensile.
-* Fix `ROCBLAS_TENSILE_GEMM_OVERRIDE_PATH` ignoring the solution indices reported by `rocblas_gemm_ex_get_solutions` and `rocblas-gemm-tune`. Tensile solutions are reported as negative indices and were previously discarded when loading an override file, leaving the default kernel selection in place. Raw positive Tensile indices in existing override files are still honored after fix. An entry which names no Tensile solution is skipped with a warning instead of failing the other overrides in the file.
+* Fix `ROCBLAS_TENSILE_GEMM_OVERRIDE_PATH` ignoring the solution indices reported by `rocblas_gemm_ex_get_solutions` and `rocblas-gemm-tune`. Tensile solutions are reported as negative indices and were previously discarded when loading an override file, leaving the default kernel selection in place. Raw positive Tensile indices in existing override files are still honored after this fix. An entry which names no Tensile solution is skipped with a warning instead of failing the other overrides in the file.
 * Fix `rocblas-gemm-tune` skipped best solution reporting when it came from the Tensile backend. Problems whose fastest kernel belongs to neither backend, such as the internal gemv kernel, remain unreported as no index can name them.
 * Fix a process hang on Windows exit when profile logging is enabled (`ROCBLAS_LAYER` bit 2, for example `ROCBLAS_LAYER=4`). The profile dump waited on a worker thread that the loader had already terminated during `DLL_PROCESS_DETACH`.
 
@@ -441,14 +453,7 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
   fields or bricks also specified on the same plan description. This
   support will be added in a future release of rocFFT.
 
-* Added support for very large FFTs on gfx1250.
-
-##### Deprecations
-
-* The `rocfft_execution_info_set_load_callback` and `rocfft_execution_info_set_store_callback` APIs are now
-  deprecated and will be removed in a future release. They allow for specifying callbacks as device function
-  pointers at plan execution time, but rocFFT cannot optimize the combined code. Instead, users should specify JIT
-  callbacks on plan descriptions.
+* Support for very large FFTs on gfx1250.
 
 ##### Resolved issues
 
@@ -471,6 +476,11 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 * Function pointer callbacks specified via `rocfft_execution_info_set_load_callback` or
   `rocfft_execution_info_set_store_callback` are not functional on gfx1250 and `rocfft_execute` will fail in this case.
 
+##### Upcoming changes
+
+* The `rocfft_execution_info_set_load_callback` and `rocfft_execution_info_set_store_callback` APIs are now
+  deprecated and will be removed in a future release. They allow for specifying callbacks as device function
+  pointers at plan execution time, but rocFFT cannot optimize the combined code. Instead, users should specify JIT callbacks on plan descriptions.
 
 #### **rocJPEG** (1.9.0)
 
@@ -500,7 +510,7 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
   modes on partition-capable accelerators, noting that analysis derives logical
   XCD, L2 channel, and HBM channel counts from them.
 
-* [Profile vLLM workloads](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#profile-vllm-workloads) guide for profiling vLLM workloads and its caveats.
+* [Profile vLLM workloads](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.1.0/how-to/profile/mode.html#profile-vllm-workloads) guide for profiling vLLM workloads and its caveats.
 
 ##### Changed
 
@@ -531,7 +541,7 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 
 - Removed the unused `GetBlockNameStr()` test helper and its GPU block name map. Nothing called it, and its `static_assert` on `AMDSMI_GPU_BLOCK_LAST` broke the RDC build whenever AMD SMI added an IP block.
 
-##### Resolved Issues
+##### Resolved issues
 
 - `RDC_FI_GPU_MEMORY_CUR_BANDWIDTH` no longer reports zero under DMA or copy-only memory traffic on GPUs whose instantaneous UMC activity does not reflect DMA transfers. It now derives memory activity from the `mem_activity_acc` accumulator over firmware time, and falls back to the instantaneous `umc_activity` reading when the accumulator or firmware timestamp is unavailable.
 
@@ -673,7 +683,7 @@ replaces Perfetto as the primary trace output.
   unconditionally (when ROCm ≥ 7.2 / AMD SMI fabric handle support is
   detected) rather than behind build flags.
 
-##### Resolved Issues
+##### Resolved issues
 * Fixed `reduce_wg` and `reduce_wave` operations producing incorrect results for some scenarios
 * Fixed compilation of rocSHMEM when using clang++ instead of hipcc
 * Fixed team-relative PE rank computation in GDA alltoallv
