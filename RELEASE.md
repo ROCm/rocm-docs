@@ -1476,7 +1476,7 @@ Improved the performance of:
 
 ## ROCm known issues
 
-ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/ROCm/labels/Verified%20Issue). For known
+ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). For known
 issues related to individual components, review the [Detailed component changes](#detailed-component-changes).
 
 ### MIGraphX Python API will fail when running on Python 3.13
@@ -1486,7 +1486,7 @@ Applications using the MIGraphX Python API will fail when running on Python 3.13
 ```
 ls -l /opt/rocm-7.1.0/lib/libmigraphx_py_*.so
 ```
-The issue will be resolved in a future ROCm release. See [GitHub issue #5500](https://github.com/ROCm/ROCm/issues/5500).
+The issue will be resolved in a future ROCm release. See [GitHub issue #7884](https://github.com/ROCm/TheRock/issues/7884).
 
 ### rocprofv3 fails on RPM-based OS with Python 3.10 (and later)
 
@@ -1494,7 +1494,7 @@ On RPM-based operating systems (such as RHEL 8), the `rocprofv3` tool fails with
 
 ### ROCgdb might fail on SR-IOV guest VMs
 
-ROCgdb might fail when running the `step-schedlock-spurious-waves.exp` test case on SR-IOV guest virtual machines (VMs). As a workaround, avoid running an inferior in ROCgdb if a background process is already heavily utilizing the GPU. The issue is currently under investigation and will be fixed in a future ROCm release. See [GitHub issue #5607](https://github.com/ROCm/ROCm/issues/5607).
+ROCgdb might fail when running the `step-schedlock-spurious-waves.exp` test case on SR-IOV guest virtual machines (VMs). As a workaround, avoid running an inferior in ROCgdb if a background process is already heavily utilizing the GPU. The issue is currently under investigation and will be fixed in a future ROCm release. See [GitHub issue #7885](https://github.com/ROCm/TheRock/issues/7885).
 
 ### Issue uninstalling ROCm Bandwidth Test using amdgpu-install script
 
@@ -1506,7 +1506,7 @@ Running `hipblaslt-test` or `hipblaslt-bench` without installing the OpenBLAS de
 ```
 libopenblas.so.0: cannot open shared object file: No such file or directory
 ```
-As a workaround, first install `libopenblas-dev` or `libopenblas-deve`, depending on the package manager used. The issue will be fixed in a future ROCm release. See [GitHub issue #5639](https://github.com/ROCm/ROCm/issues/5639).
+As a workaround, first install `libopenblas-dev` or `libopenblas-deve`, depending on the package manager used. The issue will be fixed in a future ROCm release. See [GitHub issue #7886](https://github.com/ROCm/TheRock/issues/7886).
 
 ### Reduced precision in gemm_ex operations for rocBLAS and hipBLAS
 
