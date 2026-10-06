@@ -294,10 +294,6 @@ AMD SMI adds a backend as a technical preview feature for reporting GPU telemetr
 
 * **Documented capability differences:** A published guide covers prerequisites and the full set of capabilities that differ between native Linux and WSL2. For more details, refer to [Using AMD SMI under WSL](https://rocm.docs.amd.com/projects/amdsmi/en/docs-10.1.0/how-to/amdsmi-wsl-mode.html).
 
-##### AMD SMI PyPI wheel support
-
-AMD SMI is now available as a PyPI wheel package, installable via `pip install amd-smi`. The wheel provides access to the `amd-smi` Python library and CLI without requiring a full ROCm installation workflow. Both bare-metal and virtualized environments are supported.
-
 ### Libraries
 
 #### Component addition to ROCm Core SDK
