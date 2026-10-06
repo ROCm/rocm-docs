@@ -81,7 +81,7 @@ subtrees:
                         title: hipSPARSE
                       - url: ${project:hipsparselt}
                         title: hipSPARSELt
-                      - url: https://advanced-micro-devices-libhipcxx-internal--390.com.readthedocs.build/en/390/index.html
+                      - url: https://rocm.docs.amd.com/projects/libhipcxx/en/latest/index.html
                         title: libhipcxx
                       - url: ${project:miopen}
                         title: MIOpen

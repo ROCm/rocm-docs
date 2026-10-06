@@ -183,6 +183,10 @@ Prerequisites
       :heading: Install WSL2 and Ubuntu 26.04
       :heading-level: 3
 
+      .. note::
+
+         WSL support in ROCm 10.1.0 is provided as a **Technical Preview**. You might encounter `known issues <https://rocm.docs.amd.com/en/latest/about/release-notes.html#rocm-known-issues>`__ that will be addressed in future releases.
+
       Install WSL2 and Ubuntu 26.04 on your Windows system. See `How to install Linux on Windows
       with WSL2 (Microsoft Learn)
       <https://learn.microsoft.com/en-us/windows/wsl/install>`__ for instructions.
@@ -193,6 +197,10 @@ Prerequisites
       :heading: Install WSL2 and Ubuntu 24.04
       :heading-level: 3
 
+      .. note::
+
+         WSL support in ROCm 10.1.0 is provided as a **Technical Preview**. You might encounter `known issues <https://rocm.docs.amd.com/en/latest/about/release-notes.html#rocm-known-issues>`__ that will be addressed in future releases.
+
       Install WSL2 and Ubuntu 24.04 on your Windows system. See `How to install Linux on Windows
       with WSL2 (Microsoft Learn)
       <https://learn.microsoft.com/en-us/windows/wsl/install>`__ for instructions.
@@ -202,6 +210,10 @@ Prerequisites
    .. selected:: ubuntu-ver=22.04.5
       :heading: Install WSL2 and Ubuntu 22.04
       :heading-level: 3
+
+      .. note::
+
+         WSL support in ROCm 10.1.0 is provided as a **Technical Preview**. You might encounter `known issues <https://rocm.docs.amd.com/en/latest/about/release-notes.html#rocm-known-issues>`__ that will be addressed in future releases.
 
       Install WSL2 and Ubuntu 22.04 on your Windows system. See `How to install Linux on Windows
       with WSL2 (Microsoft Learn)

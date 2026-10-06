@@ -472,7 +472,7 @@
   deprecated and will be removed in a future release. They allow for specifying callbacks as device function
   pointers at plan execution time, but rocFFT cannot optimize the combined code. Instead, users should specify JIT callbacks on plan descriptions.
 
-#### **rocJPEG** (1.9.0)
+#### **rocJPEG** (1.10.0)
 
 ##### Added
 
@@ -525,7 +525,7 @@
 
 * Corrected the VGPR allocation label from `RVGPRseq` to `VGPRs` in gfx9 memory charts
 
-#### **ROCm Data Center Tool** (1.4.0)
+#### **ROCm Data Center Tool** (1.3.1)
 
 ##### Removed
 
