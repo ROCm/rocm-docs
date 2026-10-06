@@ -534,6 +534,11 @@ As a workaround, avoid running `amd-smi event` on WSL. If the command is run acc
 ```bash
 kill -9 <pid>
 ```
+See [GitHub issue #8787](https://github.com/ROCm/TheRock/issues/8787).
+
+### Some GPU workloads on WSL2 might stop responding for certain device-side executions
+
+Some GPU workloads running on WSL2 might stop responding when they encounter certain device-side execution conditions, such as HIP device-side assertions or OpenCL device-side enqueues. In these situations, the GPU workload stops making progress, but the host application might remain active while waiting for completion, causing the application to become unresponsive until it is manually terminated. This issue may be observed on AMD Radeon GPUs, such as the Radeon RX 7900 XTX, when running under WSL2. Most HIP and OpenCL workloads are not affected. The issue is limited to workloads that trigger the affected execution paths. As a workaround, you can manually terminate the affected process and restart the application. For OpenCL workloads, avoid using device-side enqueue on WSL2 when possible. See [GitHub issue #8791](https://github.com/ROCm/TheRock/issues/8791).
 
 ### RCCL allreduce operations using the LL protocol might produce incorrect results on AMD Instinct MI350 Series GPUs
 
@@ -545,13 +550,17 @@ As a workaround, set the following environment variable to restrict RCCL to prot
 export NCCL_PROTO=LL128,Simple
 ```
 
+See [GitHub issue #8792](https://github.com/ROCm/TheRock/issues/8792).
+
 ### Valgrind workloads might stop responding on WSL2 with high system RAM
 
-Running workloads under Valgrind on WSL2 might stop responding during ROCm runtime initialization on AMD Radeon GPUs, such as the AMD Radeon RX 9060, on systems with a large amount of system RAM. This happens because WSL reserves GPU address space upfront in a way that can collide with Valgrind's reserved memory range as system RAM grows. As a workaround, if Valgrind must be used on WSL2, limit the RAM available to the WSL instance to below approximately 36 GB (for example, using the `.wslconfig` `memory=` setting). Try lowering it more if the issue persists. Workloads that don't use Valgrind are unaffected.
+Running workloads under Valgrind on WSL2 might stop responding during ROCm runtime initialization on AMD Radeon GPUs, such as the AMD Radeon RX 9060, on systems with a large amount of system RAM. This happens because WSL reserves GPU address space upfront in a way that can collide with Valgrind's reserved memory range as system RAM grows. As a workaround, if Valgrind must be used on WSL2, limit the RAM available to the WSL instance to below approximately 36 GB (for example, using the `.wslconfig` `memory=` setting). Try lowering it more if the issue persists. Workloads that don't use Valgrind are unaffected. See [GitHub issue #8793](https://github.com/ROCm/TheRock/issues/8793).
 
 ### RAS error injection and query are unavailable on AMD Instinct MI350P GPUs
 
 On AMD Instinct MI350P GPUs, the RAS error injection and query interfaces (used to validate error-handling paths, for example with the amdgpuras tool) are not supported in ROCm 10.1.0. Injection commands fail, and query commands report that the block doesn't support querying. This affects only manual RAS error injection and query tooling. Normal GPU reliability features such as ECC detection and error recovery during regular operation are not affected.
+
+See [GitHub issue #8794](https://github.com/ROCm/TheRock/issues/8794).
 
 ## ROCm resolved issues
 
