@@ -113,7 +113,7 @@ documentation.
       - Manage logging, debugging, offline tuning, and stream-K configuration
         for hipBLASLt.
 
-    * - :doc:`hipFile <hipfile:reference\hipFile-environment-variables>`
+    * - :doc:`hipFile <hipfile:reference/hipFile-environment-variables>`
       - Control compatibility modes, supported file systems, and statistics collection.
 
     * - :doc:`hipSPARSELt <hipsparselt:reference/env-variables>`
@@ -123,7 +123,7 @@ documentation.
       - Performance tuning, kernel selection, logging, and debugging for BLAS
         operations.
 
-    * - :doc:`rocSHMEM <rocshmem:api/env_variables>`
+    * - :doc:`rocSHMEM <rocshmem:env_variables>`
       - Control the behavior of rocSHMEM.
 
     * - :doc:`rocSOLVER <rocsolver:reference/env_variables>`
