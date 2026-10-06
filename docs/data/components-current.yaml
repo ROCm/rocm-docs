@@ -122,7 +122,7 @@ rocm_core_sdk:
       version: 1.0.40
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocJPEG:
-      version: 1.9.0
+      version: 1.10.0
       support:
         linux:
           instinct: true
