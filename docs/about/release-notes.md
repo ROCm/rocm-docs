@@ -316,9 +316,9 @@ ROCm 10.1.0 introduces libhipcxx to the ROCm Core SDK, joining rocPRIM, rocThrus
 
 ROCm 10.1.0 introduces RPP (ROCm Performance Primitives) to the ROCm Core SDK, joining rocDecode and rocJPEG in the ROCm media and vision libraries. RPP is a high-performance computer vision library that provides GPU-accelerated 2D image and 3D image (voxel) augmentations, as well as other miscellaneous augmentations and primitives, for AI training and inference data pipelines. RPP is supported on Linux with AMD Instinct and Radeon GPUs. See the [RPP documentation](https://rocm.docs.amd.com/projects/rpp/en/docs-10.1.0/) to get started.
 
-#### hipFFT feature highlights
+#### hipFFT and rocFFT feature highlights
 
-The following are notable enhancements to hipFFT:
+The following are notable enhancements to hipFFT and rocFFT:
 
 ##### hipFFT expands single-process multi-device support
 
@@ -330,11 +330,11 @@ hipFFT's single-process, multi-device plans now behave consistently across all s
 
 Multi-device, unbatched one-dimensional transforms are not yet supported.
 
-##### hipFFT adds JIT callbacks
+##### hipFFT and rocFFT add JIT callbacks
 
-hipFFT now compiles load/store callbacks just-in-time (JIT) into its own kernels, letting the FFT library optimize the combined callback and transform code — something the previous function-pointer callback APIs prevented.
-* **`hipfft` API:** Call `hipfftXtSetJITCallback` after `hipfftCreate` and before initializing the plan with a `MakePlan` function. This deprecates `hipfftXtSetCallback` and `hipfftXtClearCallback`, and isn't yet compatible with multi-GPU transforms.
-* **`rocfft` API:** Configure callbacks with `rocfft_plan_description_set_load_callback` / `_store_callback` during plan creation, and supply per-execution data pointers with `rocfft_execution_info_set_load_callback_data` / `_store_callback_data`. This deprecates `rocfft_execution_info_set_load_callback` / `_store_callback`, and isn't yet compatible with transforms that also specify fields or bricks.
+hipFFT and rocFFT now compile load/store callbacks just-in-time (JIT) into their own kernels, letting the FFT library optimize the combined callback and transform code — something the previous function-pointer callback APIs prevented.
+* **hipFFT:** Call `hipfftXtSetJITCallback` after `hipfftCreate` and before initializing the plan with a `MakePlan` function. This deprecates `hipfftXtSetCallback` and `hipfftXtClearCallback`, and isn't yet compatible with multi-GPU transforms.
+* **rocFFT:** Configure callbacks with `rocfft_plan_description_set_load_callback` / `_store_callback` during plan creation, and supply per-execution data pointers with `rocfft_execution_info_set_load_callback_data` / `_store_callback_data`. This deprecates `rocfft_execution_info_set_load_callback` / `_store_callback`, and isn't yet compatible with transforms that also specify fields or bricks.
 
 #### hipFile adds async fastpath, batch I/O, and stats APIs
 
@@ -346,17 +346,17 @@ hipFile adds three capabilities for AMD Infinity Storage:
 
 * **Stats API:** `hipFileGetStatsL1/L2/L3()` return progressively detailed I/O statistics. L1 gives basic I/O and operation counts, L2 adds I/O size histograms, L3 adds per-GPU breakdowns, giving ROCprofiler-SDK and other tools visibility into hipFile I/O behavior.
 
-#### hipSPARSE feature highlights
+#### hipSPARSE and rocSPARSE feature highlights
 
-The following are notable enhancements to the hipSPARSE library, available through the `hipsparse` and `rocsparse` APIs:
+The following are notable enhancements to hipSPARSE and rocSPARSE:
 
-##### hipSPARSE adds batched SDDMM support
+##### rocSPARSE and hipSPARSE add batched SDDMM support
 
-hipSPARSE now supports batched SDDMM (sampled dense-dense matrix multiplication), computing many independent SDDMM problems in a single call instead of one at a time, reducing per-call overhead for workloads that process many small problems together.
+rocSPARSE and hipSPARSE now support batched SDDMM (sampled dense-dense matrix multiplication), computing many independent SDDMM problems in a single call instead of one at a time, reducing per-call overhead for workloads that process many small problems together.
 
-* **Broadcast modes:** Four batching patterns are supported, letting either or both dense operands (A, B) be shared across the batch or vary per batch index — configured with `hipsparseDnMatSetStridedBatch` (`hipsparse` API) or `rocsparse_dnmat_set_strided_batch` (`rocsparse` API).
+* **Broadcast modes:** Four batching patterns are supported, letting either or both dense operands (A, B) be shared across the batch or vary per batch index — configured with `hipsparseDnMatSetStridedBatch` (hipSPARSE) or `rocsparse_dnmat_set_strided_batch` (rocSPARSE).
 
-* **Format coverage:** The `rocsparse` API supports CSR, CSC, COO, COO AoS, and ELL formats (via `rocsparse_csr_set_strided_batch` and equivalents); the `hipsparse` API currently supports CSR only (via `hipsparseCsrSetStridedBatch`).
+* **Format coverage:** rocSPARSE supports CSR, CSC, COO, COO AoS, and ELL formats (via `rocsparse_csr_set_strided_batch` and equivalents); hipSPARSE currently supports CSR only (via `hipsparseCsrSetStridedBatch`).
 
 ##### hipSPARSE adds generic SpGEAM API
 
@@ -369,36 +369,35 @@ hipSPARSE now provides a generic API for sparse matrix-matrix addition, computin
 * **Supported types:** `HIP_R_32F`, `HIP_R_64F`, `HIP_C_32F`, and `HIP_C_64F` compute types, with 32-bit and 64-bit index types (A, B, and C must share the same index type).
 * **Constraints and error handling:** Only CSR format and non-transpose operations are supported — transpose operations and non-CSR formats now return a well-defined error (`HIPSPARSE_STATUS_NOT_SUPPORTED`) instead of the silently-accepted-but-incorrect transpose behavior on the ROCm backend in prior releases. A zero alpha or beta collapses C's sparsity pattern to that of the other operand; both zero produce an empty C.
 
-##### SpMM non-zero split batching
+##### SpMM non-zero split batching in rocSPARSE
 
-The `rocsparse_spmm` routine now supports batched computation with the non-zero split algorithm (`rocsparse_spmm_alg_csr_nnz_split`), letting workloads that select this algorithm batch multiple independent SpMM operations into a single call instead of launching them individually. Previously, only the default row split algorithm supported batched computation.
+rocSPARSE SpMM now supports batched computation with the non-zero split algorithm (`rocsparse_spmm_alg_csr_nnz_split`), letting workloads that select this algorithm batch multiple independent SpMM operations into a single call instead of launching them individually. Previously, only the default row split algorithm supported batched computation.
 
-##### Level 2/3 sparse routines optimized for RDNA4
+##### rocSPARSE optimizes Level 2/3 routines for RDNA4
 
-The `rocsparse` API's Level 2 (SpMV) and Level 3 (SpMM) routines now use wave32-aware launch and geometry tuning on RDNA4 (gfx1201) GPUs, improving throughput with no change to numerical results and no change to wave64 (CDNA) behavior.
+rocSPARSE Level 2 (SpMV) and Level 3 (SpMM) routines now use wave32-aware launch and geometry tuning on RDNA4 (gfx1201) GPUs, improving throughput with no change to numerical results and no change to wave64 (CDNA) behavior.
 
 **Tuned routines:** CSR SpMV (adaptive, nnz-split, and long-row-balanced paths), COO and ELL SpMV, BSR/BSRX SpMV, `gemvi`, `gemmi`, and blocked-ELL SpMM (`bellmm`).
 
-##### ELL format triangular solve support
+##### rocSPARSE ELL format triangular solve support
 
-The `rocsparse_spsv` and `rocsparse_sptrsv` triangular solve routines now support the ELL (ELLPACK) sparse matrix format, joining the existing CSR and CSC support. Matrices already stored in ELL format can run triangular solve directly, without first converting to CSR or CSC. Transposed and conjugate-transposed operations are not yet supported for the ELL format.
+rocSPARSE now supports the ELL (ELLPACK) sparse matrix format in its triangular solve routines (`rocsparse_spsv` and `rocsparse_sptrsv`), joining the existing CSR and CSC support. Matrices already stored in ELL format can run triangular solve directly, without first converting to CSR or CSC. Transposed and conjugate-transposed operations are not yet supported for the ELL format.
 
-#### hipSOLVER feature highlights
+#### hipSOLVER and rocSOLVER feature highlights
 
-The following are notable enhancements to the hipSOLVER library, available through the `hipsolver` and `rocsolver` APIs:
+The following are notable enhancements to hipSOLVER and rocSOLVER:
 
 ##### hipSOLVER fixes and extends 64-bit APIs
 
-hipSOLVER adds a 64-bit-compatible `hipsolverDnXlarft` function (with a corresponding `hipsolverDnXlarft_bufferSize` buffer-size query), backed by a new `LARFT_64` routine in the `rocsolver` API. Separately, `hipsolverDnXpotrs` is fixed to call its 64-bit `potrs` implementation instead of silently falling back to the 32-bit routine, correcting results for calls made through the 64-bit API on large matrices.
+hipSOLVER adds a 64-bit-compatible `hipsolverDnXlarft` function (with a corresponding `hipsolverDnXlarft_bufferSize` buffer-size query), backed by a new `LARFT_64` routine in rocSOLVER. Separately, `hipsolverDnXpotrs` is fixed to call its 64-bit `potrs` implementation instead of silently falling back to the 32-bit routine, correcting results for calls made through the 64-bit API on large matrices.
 
-##### Hermitian eigensolver performance improved
+##### rocSOLVER improves Hermitian eigensolver performance
 
-The `rocsolver` API now offers a 2-stage reduction to tridiagonal form for the Hermitian and symmetric eigensolvers (HEEVD/SYEVD) and their generalized counterparts (HEGVD/SYGVD), moving more of the computation to Level 3 BLAS operations. Improved performance compared to the previous SYEVD implementation was observed for large matrices (n > 11,000) on AMD Instinct MI300X GPUs.
+rocSOLVER now offers a 2-stage reduction to tridiagonal form for the Hermitian and symmetric eigensolvers (HEEVD/SYEVD) and their generalized counterparts (HEGVD/SYGVD), moving more of the computation to Level 3 BLAS operations. Improved performance compared to the previous SYEVD implementation was observed for large matrices (n > 11,000) on AMD Instinct MI300X GPUs.
 
-##### Cholesky QR factorization added
+##### rocSOLVER adds Cholesky QR factorization
 
-The `rocsolver` API now offers Cholesky QR (CHOLQR) as an alternative to Householder-based QR factorization (GEQRF), offering a faster path to computing the QR decomposition of a matrix. CHOLQR and its 64-bit counterpart CHOLQR_64 are available in standard, batched, and strided_batched forms, with selectable algorithm variants that trade some speed for improved numerical stability on ill-conditioned matrices.
-
+rocSOLVER now offers Cholesky QR (CHOLQR) as an alternative to Householder-based QR factorization (GEQRF), offering a faster path to computing the QR decomposition of a matrix. CHOLQR and its 64-bit counterpart CHOLQR_64 are available in standard, batched, and strided_batched forms, with selectable algorithm variants that trade some speed for improved numerical stability on ill-conditioned matrices.
 
 (release-supported-hw)=
 
