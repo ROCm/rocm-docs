@@ -866,7 +866,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 16
           - 32
           - 768
-          - 2
+          - 32
           - 11
           - 5
         *
@@ -885,7 +885,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 16
           - 32
           - 768
-          - 2
+          - 32
           - 11
           - 5
         *
@@ -904,7 +904,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 16
           - 32
           - 768
-          - 2
+          - 32
           - 11
           - 5
         *
@@ -1189,7 +1189,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 16
           - 32
           - 512
-          - 2
+          - 32
           - 11
           - 5
         *
@@ -1208,7 +1208,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 16
           - 32
           - 512
-          - 2
+          - 32
           - 11
           - 5
         *
@@ -1227,7 +1227,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 16
           - 32
           - 512
-          - 2
+          - 32
           - 11
           - 5
         *
@@ -1303,7 +1303,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 16
           - 32
           - 512
-          - 2
+          - 32
           - 11
           - 5
         *
