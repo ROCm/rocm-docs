@@ -213,15 +213,15 @@ subtrees:
                 - file: reference/gpu-arch/rdna.rst
                   title: RDNA architecture
                   entries:
-                      - url: https://docs.amd.com/v/u/en-US/rdna4-instruction-set-architecture
+                      - url: https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf
                         title: RDNA 4 ISA reference
-                      - url: https://docs.amd.com/v/u/en-US/rdna35_instruction_set_architecture
+                      - url: https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf
                         title: RDNA 3.5 ISA reference
-                      - url: https://docs.amd.com/v/u/en-US/rdna3-shader-instruction-set-architecture-feb-2023_0
+                      - url: https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf
                         title: RDNA 3 ISA reference
-                      - url: https://docs.amd.com/v/u/en-US/rdna2-shader-instruction-set-architecture
+                      - url: https://gpuopen.com/download/rdna2-shader-instruction-set-architecture.pdf
                         title: RDNA 2 ISA reference
-                      - url: https://docs.amd.com/v/u/en-US/rdna-shader-instruction-set-architecture
+                      - url: https://gpuopen.com/download/RDNA_Shader_ISA_25September2020.pdf
                         title: RDNA ISA reference
                 - file: reference/gpu-arch/gcn-vega.rst
                   title: GCN and Vega architectures
