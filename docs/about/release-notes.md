@@ -563,7 +563,11 @@ ComfyUI-based AI workloads running on Radeon Pro W7900 GPUs might experience low
 
 ### Device-to-device hipMemcpyAsync might fail on AMD Instinct MI200 Series GPUs
 
-On AMD Instinct MI200 Series GPUs, device-to-device `hipMemcpyAsync` copies that use the DMA engine path (for example, with the `hipMemcpyDeviceToDeviceNoCU` flag) might fail without changing the destination buffer and reporting an error. This happens because the copy path selects an SDMA engine without properly validating which engines are actually usable for that GPU pair, so the transfer can target an engine that never completes the write. Although this issue was validated on PCIe-connected systems, the root cause is topology-agnostic and might also affect xGMI-linked systems. As a workaround, use hipMemcpyDeviceToDevice (without NoCU), which copies through compute units instead of DMA and is not affected.
+On AMD Instinct MI200 Series GPUs, device-to-device `hipMemcpyAsync` copies that use the DMA engine path (for example, with the `hipMemcpyDeviceToDeviceNoCU` flag) might fail without changing the destination buffer and reporting an error. This happens because the copy path selects an SDMA engine without properly validating which engines are actually usable for that GPU pair, so the transfer can target an engine that never completes the write. Although this issue was validated on PCIe-connected systems, the root cause is topology-agnostic and might also affect xGMI-linked systems. As a workaround, use `hipMemcpyDeviceToDevice` (without `NoCU`), which copies through compute units instead of DMA and is not affected.
+
+### Multi-application workloads might experience an intermittent GPU page fault on some Instinct GPUs
+
+Running multiple concurrent applications with high GPU memory-transfer activity might intermittently trigger a GPU page fault after several hours of runtime on some Instinct GPUs. When this happens, the affected job stops responding and must be restarted. The issue is more likely to occur when GPU memory is already under pressure from a recently run workload.
 
 ## ROCm resolved issues
 
