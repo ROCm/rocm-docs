@@ -15,8 +15,8 @@ for each RDNA generation.
 ISA references
 ==============
 
-* `AMD RDNA 4 ISA reference <https://docs.amd.com/v/u/en-US/rdna4-instruction-set-architecture>`_
-* `AMD RDNA 3.5 ISA reference <https://docs.amd.com/v/u/en-US/rdna35_instruction_set_architecture>`_
-* `AMD RDNA 3 ISA reference <https://docs.amd.com/v/u/en-US/rdna3-shader-instruction-set-architecture-feb-2023_0>`_
-* `AMD RDNA 2 ISA reference <https://docs.amd.com/v/u/en-US/rdna2-shader-instruction-set-architecture>`_
-* `AMD RDNA ISA reference <https://docs.amd.com/v/u/en-US/rdna-shader-instruction-set-architecture>`_
+* `AMD RDNA 4 ISA reference <https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf>`_
+* `AMD RDNA 3.5 ISA reference <https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf>`_
+* `AMD RDNA 3 ISA reference <https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf>`_
+* `AMD RDNA 2 ISA reference <https://gpuopen.com/download/rdna2-shader-instruction-set-architecture.pdf>`_
+* `AMD RDNA ISA reference <https://gpuopen.com/download/RDNA_Shader_ISA_25September2020.pdf>`_
