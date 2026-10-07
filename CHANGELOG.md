@@ -6864,15 +6864,6 @@ typedef enum hipDeviceAttribute_t {
 
 ### Known issues
 
-#### Incorrect dGPU behavior when using AMDVBFlash tool
-
-The AMDVBFlash tool, used for flashing the VBIOS image to dGPU, does not communicate with the
-ROM Controller specifically when the driver is present. This is because the driver, as part of its runtime
-power management feature, puts the dGPU to a sleep state.
-
-As a workaround, users can run amdgpu.runpm=0, which temporarily disables the runtime power
-management feature from the driver and dynamically changes some power control-related sysfs files.
-
 #### Issue with START timestamp in ROCProfiler
 
 Users may encounter an issue with the enabled timestamp functionality for monitoring one or multiple
