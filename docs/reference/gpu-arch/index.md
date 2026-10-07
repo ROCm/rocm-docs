@@ -61,11 +61,11 @@ architectural behavior.
 :::{grid-item-card}
 **RDNA™** (Radeon and Ryzen)
 
-* [AMD RDNA 4 ISA reference](https://docs.amd.com/v/u/en-US/rdna4-instruction-set-architecture)
-* [AMD RDNA 3.5 ISA reference](https://docs.amd.com/v/u/en-US/rdna35_instruction_set_architecture)
-* [AMD RDNA 3 ISA reference](https://docs.amd.com/v/u/en-US/rdna3-shader-instruction-set-architecture-feb-2023_0)
-* [AMD RDNA 2 ISA reference](https://docs.amd.com/v/u/en-US/rdna2-shader-instruction-set-architecture)
-* [AMD RDNA ISA reference](https://docs.amd.com/v/u/en-US/rdna-shader-instruction-set-architecture)
+* [AMD RDNA 4 ISA reference](https://gpuopen.com/download/rdna4-instruction-set-architecture.pdf)
+* [AMD RDNA 3.5 ISA reference](https://gpuopen.com/download/rdna35_instruction_set_architecture.pdf)
+* [AMD RDNA 3 ISA reference](https://gpuopen.com/download/rdna3-shader-instruction-set-architecture-feb-2023.pdf)
+* [AMD RDNA 2 ISA reference](https://gpuopen.com/download/rdna2-shader-instruction-set-architecture.pdf)
+* [AMD RDNA ISA reference](https://gpuopen.com/download/RDNA_Shader_ISA_25September2020.pdf)
 
 :::
 
