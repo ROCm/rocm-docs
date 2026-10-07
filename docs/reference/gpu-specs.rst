@@ -851,6 +851,63 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - GFXIP Major version
           - GFXIP Minor version
         *
+          - AMD Ryzen AI Max+ PRO 495
+          - Radeon 8065S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 40
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 2
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max PRO 490
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 2
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI Max PRO 485
+          - Radeon 8050S
+          - RDNA3.5
+          - gfx1151
+          - Dynamic + carveout
+          - 32
+          - 32 or 64
+          - 128
+          - 32
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 2
+          - 11
+          - 5
+        *
           - AMD Ryzen AI Max PRO 390
           - Radeon 8050S
           - RDNA3.5
@@ -1117,6 +1174,63 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 11
           - 5
         *
+          - AMD Ryzen AI 5 PRO 435
+          - Radeon 840M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - 0
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 2
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 5 435
+          - Radeon 840M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - 0
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 2
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 5 430
+          - Radeon 840M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - 0
+          - 1
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 2
+          - 11
+          - 5
+        *
           - AMD Ryzen AI 9 HX 475
           - Radeon 890M
           - RDNA3.5
@@ -1171,6 +1285,25 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 32
           - 512
           - 32
+          - 11
+          - 5
+        *
+          - AMD Ryzen AI 7 445
+          - Radeon 840M
+          - RDNA3.5
+          - gfx1152
+          - Dynamic + carveout
+          - 4
+          - 32 or 64
+          - 128
+          - 0
+          - 2
+          - 256
+          - 32
+          - 16
+          - 32
+          - 512
+          - 2
           - 11
           - 5
         *
