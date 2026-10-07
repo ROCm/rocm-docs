@@ -557,6 +557,14 @@ On AMD Instinct MI350P GPUs, the RAS error injection and query interfaces (used 
 
 See [GitHub issue #8794](https://github.com/ROCm/TheRock/issues/8794).
 
+### ComfyUI workloads might show lower performance on Radeon Pro W7900 GPUs
+
+ComfyUI-based AI workloads running on Radeon Pro W7900 GPUs might experience lower performance compared to previous ROCm releases. Impacted workloads include image and video generation models such as Stable Diffusion, Wan, and LTX.
+
+### Device-to-device hipMemcpyAsync might fail on AMD Instinct MI200 Series GPUs
+
+On AMD Instinct MI200 Series GPUs, device-to-device `hipMemcpyAsync` copies that use the DMA engine path (for example, with the `hipMemcpyDeviceToDeviceNoCU` flag) might fail without changing the destination buffer and reporting an error. This happens because the copy path selects an SDMA engine without properly validating which engines are actually usable for that GPU pair, so the transfer can target an engine that never completes the write. Although this issue was validated on PCIe-connected systems, the root cause is topology-agnostic and might also affect xGMI-linked systems. As a workaround, use hipMemcpyDeviceToDevice (without NoCU), which copies through compute units instead of DMA and is not affected.
+
 ## ROCm resolved issues
 
 The following notable issues have been fixed in ROCm 10.1.0.
