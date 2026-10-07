@@ -161,7 +161,7 @@
 * Fixed an unspecified minimum blocks per compute unit value being passed to the compiler.
 * Fixed the CK Tile dispatcher code generator and its ctypes bindings failing to build.
 
-#### **HIP** (10.1.0)
+#### **HIP** (7.16.0)
 
 ##### Added
 * New HIP APIs:
