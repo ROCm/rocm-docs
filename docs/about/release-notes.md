@@ -553,21 +553,19 @@ Running workloads under Valgrind on WSL2 might stop responding during ROCm runti
 
 ### RAS error injection and query are unavailable on AMD Instinct MI350P GPUs
 
-On AMD Instinct MI350P GPUs, the RAS error injection and query interfaces (used to validate error-handling paths, for example with the amdgpuras tool) are not supported in ROCm 10.1.0. Injection commands fail, and query commands report that the block doesn't support querying. This affects only manual RAS error injection and query tooling. Normal GPU reliability features such as ECC detection and error recovery during regular operation are not affected.
-
-See [GitHub issue #8794](https://github.com/ROCm/TheRock/issues/8794).
+On AMD Instinct MI350P GPUs, the RAS error injection and query interfaces (used to validate error-handling paths, for example with the amdgpuras tool) are not supported in ROCm 10.1.0. Injection commands fail, and query commands report that the block doesn't support querying. This affects only manual RAS error injection and query tooling. Normal GPU reliability features such as ECC detection and error recovery during regular operation are not affected. See [GitHub issue #8794](https://github.com/ROCm/TheRock/issues/8794).
 
 ### ComfyUI workloads might show lower performance on Radeon Pro W7900 GPUs
 
-ComfyUI-based AI workloads running on Radeon Pro W7900 GPUs might experience lower performance compared to previous ROCm releases. Impacted workloads include image and video generation models such as Stable Diffusion, Wan, and LTX.
+ComfyUI-based AI workloads running on Radeon Pro W7900 GPUs might experience lower performance compared to previous ROCm releases. Impacted workloads include image and video generation models such as Stable Diffusion, Wan, and LTX. See [GitHub issue #8842](https://github.com/ROCm/TheRock/issues/8842).
 
 ### Device-to-device hipMemcpyAsync might fail on AMD Instinct MI200 Series GPUs
 
-On AMD Instinct MI200 Series GPUs, device-to-device `hipMemcpyAsync` copies that use the DMA engine path (for example, with the `hipMemcpyDeviceToDeviceNoCU` flag) might fail without changing the destination buffer and reporting an error. This happens because the copy path selects an SDMA engine without properly validating which engines are actually usable for that GPU pair, so the transfer can target an engine that never completes the write. Although this issue was validated on PCIe-connected systems, the root cause is topology-agnostic and might also affect xGMI-linked systems. As a workaround, use `hipMemcpyDeviceToDevice` (without `NoCU`), which copies through compute units instead of DMA and is not affected.
+On AMD Instinct MI200 Series GPUs, device-to-device `hipMemcpyAsync` copies that use the DMA engine path (for example, with the `hipMemcpyDeviceToDeviceNoCU` flag) might fail without changing the destination buffer and reporting an error. This happens because the copy path selects an SDMA engine without properly validating which engines are actually usable for that GPU pair, so the transfer can target an engine that never completes the write. Although this issue was validated on PCIe-connected systems, the root cause is topology-agnostic and might also affect xGMI-linked systems. As a workaround, use `hipMemcpyDeviceToDevice` (without `NoCU`), which copies through compute units instead of DMA and is not affected. See [GitHub issue #8843](https://github.com/ROCm/TheRock/issues/8843).
 
 ### Multi-application workloads might experience an intermittent GPU page fault on some Instinct GPUs
 
-Running multiple concurrent applications with high GPU memory-transfer activity might intermittently trigger a GPU page fault after several hours of runtime on some Instinct GPUs. When this happens, the affected job stops responding and must be restarted. The issue is more likely to occur when GPU memory is already under pressure from a recently run workload.
+Running multiple concurrent applications with high GPU memory-transfer activity, including SDMA-driven copies and SDMA engine stalls, might intermittently trigger a GPU page fault on some Instinct GPUs. When this happens, the affected job stops responding and must be restarted. In some cases, the GPU queue does not recover until a timeout of about 15 minutes expires, and the kernel log reports a retry page fault. The issue is more likely to occur when GPU memory is already under pressure from a recently run workload. See [GitHub issue #8844](https://github.com/ROCm/TheRock/issues/8844).
 
 ## ROCm resolved issues
 
