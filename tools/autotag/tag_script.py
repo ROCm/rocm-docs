@@ -5,8 +5,9 @@ from dataclasses import dataclass
 import dbm
 import sys
 from typing import Dict, List, Optional, TextIO, Tuple, Union
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 import urllib.request
+from urllib.parse import urlparse
 import argparse
 from github import Github, NamedUser
 from packaging.version import Version
@@ -194,7 +195,9 @@ def run_tagging():
         )
     else:
         manifest_url = args.manifest_url
-        manifest_path, _ = urllib.request.urlretrieve(manifest_url, "manifest.xml")
+        if urlparse(manifest_url).scheme not in ("http", "https"):
+            sys.exit(f"Refusing manifest URL with unsupported scheme: {manifest_url}")
+        manifest_path, _ = urllib.request.urlretrieve(manifest_url, "manifest.xml")  # noqa: S310  # nosec B310 - scheme checked above
     manifest_tree = ET.parse(manifest_path).getroot()
 
     # Fallback as unauthenticated user for accessing the GitHub API.
