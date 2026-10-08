@@ -5,7 +5,7 @@ Precision support delta check. Arguments: $ARGUMENTS = "previous_version current
 ## Step 1 — Fetch source files
 
 ```bash
-cd ~/projects/ROCm-internal/tools/precision-support && python3 precision_fetch.py -t "$GITHUB_TOKEN" --previous PREVIOUS --current CURRENT
+cd ~/projects/ROCm/tools/precision-support && python3 precision_fetch.py -t "$GITHUB_TOKEN" --previous PREVIOUS --current CURRENT
 ```
 
 Replace PREVIOUS and CURRENT from $ARGUMENTS. Record the `Output directory:`
@@ -59,9 +59,9 @@ For each finding, decide **auto-update** or **flag**:
 - Source contains only typedef declarations with no support table or ✅ indicators of any kind.
 - Type is explicitly marked AMD ❌ in an AMD/NVIDIA split table.
 
-For auto-update findings, add the missing types to `~/projects/ROCm-internal/docs/data/reference/precision-support/precision-support.yaml`. Match the existing format exactly (type + support fields).
+For auto-update findings, add the missing types to `~/projects/ROCm/docs/data/reference/precision-support/precision-support.yaml`. Match the existing format exactly (type + support fields).
 
-Then write a log to `~/projects/ROCm-internal/tools/precision-support/precision-update-log/PREVIOUS-CURRENT-YYYYMMDD-HHMMSS.md` (replace PREVIOUS/CURRENT from $ARGUMENTS, timestamp from `date +%Y%m%d-%H%M%S`). Always create a new file — never read or overwrite an existing log. Log format:
+Then write a log to `~/projects/ROCm/tools/precision-support/precision-update-log/PREVIOUS-CURRENT-YYYYMMDD-HHMMSS.md` (replace PREVIOUS/CURRENT from $ARGUMENTS, timestamp from `date +%Y%m%d-%H%M%S`). Always create a new file — never read or overwrite an existing log. Log format:
 
 ```markdown
 # Precision support audit: ROCm PREVIOUS → CURRENT

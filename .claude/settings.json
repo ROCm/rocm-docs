@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cd ~/projects/ROCm-internal/tools/precision-support && python3 precision_fetch.py*)",
+      "Bash(cd ~/projects/ROCm/tools/precision-support && python3 precision_fetch.py*)",
       "Read(//tmp/rocm-precision-*/**)",
       "Edit(docs/data/reference/precision-support/precision-support.yaml)",
       "Write(tools/precision-support/precision-update-log/*)",
