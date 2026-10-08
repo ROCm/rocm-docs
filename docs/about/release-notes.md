@@ -583,13 +583,9 @@ The following notable issues have been fixed in ROCm 10.1.0.
 
 Previously, PyTorch training and fine-tuning workloads using Llama-Factory or Unsloth could experience GPU resets or application crashes on some AMD Radeon graphics products, such as the Radeon RX 9070 Series and Radeon AI PRO R9700. See [GitHub issue #7699](https://github.com/ROCm/TheRock/issues/7699).
 
-### Hugging Face model training throughput might regress on AMD Instinct MI350X
-
-A performance regression that caused 9–25% lower training throughput for HuggingFace model training workloads on AMD Instinct MI350X (gfx950) GPUs has been resolved. Affected models included BART, GPT-2, DiT (Diffusion Transformers), BERT, Llama 2 70B Chat, and RoBERTa-large. The regression was caused by AOTriton 0.13b selecting a suboptimal flash-attention backward kernel instead of the faster 3-kernel split implementation used in AOTriton 0.11.2b.
-
 ### Hugging Face model training throughput for specific models is restored on AMD Instinct MI350X
 
-ROCm 10.1.0 restores Hugging Face model training throughput to previous levels for BART, DiT (Diffusion Transformers), GPT-2, and Llama 2 70B Chat workloads on AMD Instinct MI350X (gfx950) GPUs, recovering the 9–25% throughput loss reported in the ROCm 10.0.0 known issues. The regression was caused by AOTriton 0.13b selecting a suboptimal flash-attention backward kernel instead of the faster 3-kernel split. This kernel selection is corrected for these models in ROCm 10.1.0. See [GitHub issue #7696](https://github.com/ROCm/TheRock/issues/7696).
+ROCm 10.1.0 restores Hugging Face model training throughput to previous levels for BART, DiT (Diffusion Transformers), GPT-2, and Llama 2 70B Chat workloads on AMD Instinct MI350X (gfx950) GPUs, recovering the 9–25% throughput loss reported in the ROCm 10.0.0 known issues. The regression was caused by AOTriton 0.13b selecting a suboptimal flash-attention backward kernel instead of the faster 3-kernel split implementation used in AOTriton 0.11.2b. This kernel selection is corrected for these models in ROCm 10.1.0. See [GitHub issue #7696](https://github.com/ROCm/TheRock/issues/7696).
 
 ```{note}
 BERT and DistilBERT-base training continue to be affected in ROCm 10.1.0 with or without DeepSpeed, along with GPT-2 and RoBERTa-large training that use DeepSpeed ZeRO stage 0. See the ROCm 10.1.0 known issues for current status and workarounds.
