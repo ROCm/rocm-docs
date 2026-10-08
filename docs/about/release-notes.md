@@ -111,7 +111,7 @@ HIP virtual memory management APIs now support `hipMemLocationTypeHostNuma` and 
 
 ROCr Runtime virtual memory management APIs (`hsa_amd_vmem_handle_create`, `hsa_amd_vmem_map`, and `hsa_amd_vmem_set_access`) now support CPU memory pools in addition to GPU agents, enabling the full create, reserve, map, set-access, and teardown lifecycle for host-pool virtual memory handles. This includes inter-process sharing of both host-pool and device-pool handles, letting multiple processes map the same GPU-accessible host memory without falling back to workarounds like `/dev/shm`.
 
-For more information, see the [HIP section](#hip-10-1-0) in the ROCm component changelogs.
+For more information, see the [HIP section](#hip-7-16-0) in the ROCm component changelogs.
 
 ### Profiling and debugging tools
 
