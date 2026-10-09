@@ -522,7 +522,7 @@ ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/Th
 
 ### Hugging Face model training throughput might regress for specific models on AMD Instinct MI350X
 
-When you run Hugging Face BERT, RoBERTa-large, DistilBERT-base, or GPT-2 training workloads on AMD Instinct MI350X (gfx950) GPUs,  you might observe 6–22% longer training wall-clock time than expected. BERT and DistilBERT-base training are affected whether or not  DeepSpeed ZeRO stage 0 is used. RoBERTa-large and GPT-2 training are affected only when using DeepSpeed ZeRO stage 0. See [GitHub issue #8878](https://github.com/ROCm/TheRock/issues/8878).
+When you run Hugging Face BERT, RoBERTa-large, DistilBERT-base, or GPT-2 training workloads on AMD Instinct MI350X (gfx950) GPUs,  you might observe 6–22% longer training wall-clock time than expected. BERT and DistilBERT-base training are affected whether or not DeepSpeed ZeRO stage 0 is used. RoBERTa-large and GPT-2 training are affected only when using DeepSpeed ZeRO stage 0. See [GitHub issue #8878](https://github.com/ROCm/TheRock/issues/8878).
 
 ```{note}
 The impact of this issue was initially reported in ROCm 10.0.0 and is partially addressed in ROCm 10.1.0 for other Hugging Face model configurations. See the [ROCm 10.1.0 resolved issues](hugging-face-model-training-throughput-for-specific-models-is-restored-on-amd-instinct-mi350x) entry for details.
