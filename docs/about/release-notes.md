@@ -520,6 +520,14 @@ ROCm SMI (rocm-smi-lib) is deprecated and, starting with this release, is no lon
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
 
+### Hugging Face model training throughput might regress for specific models on AMD Instinct MI350X
+
+When you run Hugging Face BERT, RoBERTa-large, DistilBERT-base, or GPT-2 training workloads on AMD Instinct MI350X (gfx950) GPUs,  you might observe 6–22% longer training wall-clock time than expected. BERT and DistilBERT-base training are affected whether or not DeepSpeed ZeRO stage 0 is used. RoBERTa-large and GPT-2 training are affected only when using DeepSpeed ZeRO stage 0. See [GitHub issue #8878](https://github.com/ROCm/TheRock/issues/8878).
+
+```{note}
+The impact of this issue was initially reported in ROCm 10.0.0 and is partially addressed in ROCm 10.1.0 for other Hugging Face model configurations. See the [ROCm 10.1.0 resolved issues](hugging-face-model-training-throughput-for-specific-models-is-restored-on-amd-instinct-mi350x) entry for details.
+```
+
 ### amd-smi event command might stop responding indefinitely on WSL
 
 Running the `amd-smi event` subcommand on Windows Subsystem for Linux (WSL) might cause the process to stop responding, requiring manual intervention to terminate it. Note that the event subcommand is not supported on WSL.
@@ -575,6 +583,10 @@ The following notable issues have been fixed in ROCm 10.1.0.
 
 Previously, PyTorch training and fine-tuning workloads using Llama-Factory or Unsloth could experience GPU resets or application crashes on some AMD Radeon graphics products, such as the Radeon RX 9070 Series and Radeon AI PRO R9700. See [GitHub issue #7699](https://github.com/ROCm/TheRock/issues/7699).
 
-### Hugging Face model training throughput might regress on AMD Instinct MI350X
+### Hugging Face model training throughput for specific models is restored on AMD Instinct MI350X
 
-A performance regression that caused 9–25% lower training throughput for HuggingFace model training workloads on AMD Instinct MI350X (gfx950) GPUs has been resolved. Affected models included BART, GPT-2, DiT (Diffusion Transformers), BERT, Llama 2 70B Chat, and RoBERTa-large. The regression was caused by AOTriton 0.13b selecting a suboptimal flash-attention backward kernel instead of the faster 3-kernel split implementation used in AOTriton 0.11.2b. See [GitHub issue #7696](https://github.com/ROCm/TheRock/issues/7696).
+ROCm 10.1.0 restores Hugging Face model training throughput to previous levels for BART, DiT (Diffusion Transformers), GPT-2, and Llama 2 70B Chat workloads on AMD Instinct MI350X (gfx950) GPUs, recovering the 9–25% throughput loss reported in the ROCm 10.0.0 known issues. The regression was caused by AOTriton 0.13b selecting a suboptimal flash-attention backward kernel instead of the faster 3-kernel split implementation used in AOTriton 0.11.2b. This kernel selection is corrected for these models in ROCm 10.1.0. See [GitHub issue #7696](https://github.com/ROCm/TheRock/issues/7696).
+
+```{note}
+BERT and DistilBERT-base training continue to be affected in ROCm 10.1.0 with or without DeepSpeed, along with GPT-2 and RoBERTa-large training that use DeepSpeed ZeRO stage 0. See the [ROCm 10.1.0 known issues](hugging-face-model-training-throughput-might-regress-for-specific-models-on-amd-instinct-mi350x) for current status and workarounds.
+```
