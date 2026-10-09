@@ -225,17 +225,17 @@ provide different support levels.
      - Other distributions >= 6.18.4
      - Other distributions < 6.18.4
 
-   * - 7.11.0 or 7.12.0
+   * - 10.0.0
      - ✅
      - ✅
      - ⚠️
 
-   * - 7.9.0 or 7.10.0
-     - ❌
-     - ❌
+   * - 7.14.0 or 7.14.1
+     - ✅
+     - ✅
      - ⚠️
 
-   * - 7.2.1, 7.2.2 or 7.2.3
+   * - 7.2.1, 7.2.2, 7.2.3 or 7.2.4
      - ✅
      - ✅
      - ⚠️
