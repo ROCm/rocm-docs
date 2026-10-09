@@ -52,7 +52,7 @@
 
 * Improved performance of row-column quantized a8w8 GEMM through better instruction scheduling in the eight-waves pipeline, wider epilogue stores, and nontemporal C/D memory access.
 
-#### **HIP** (10.0.0)
+#### **HIP** (7.14.0)
 
 ##### Added
 * New HIP APIs

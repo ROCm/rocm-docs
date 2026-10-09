@@ -12,10 +12,10 @@ rocm_core_sdk:
       version: 1.2.0
       support: {linux: {instinct: true, radeon: true}, windows: {radeon: true}}
     HIP:
-      version: 7.14
+      version: 7.14.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     HIPIFY:
-      version: 7.14
+      version: 7.14.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     LLVM:
       version: 23.0.0
