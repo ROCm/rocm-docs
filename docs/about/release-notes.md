@@ -575,6 +575,19 @@ On AMD Instinct MI200 Series GPUs, device-to-device `hipMemcpyAsync` copies that
 
 Running multiple concurrent applications with high GPU memory-transfer activity, including SDMA-driven copies and SDMA engine stalls, might intermittently trigger a GPU page fault on some Instinct GPUs. When this happens, the affected job stops responding and must be restarted. In some cases, the GPU queue does not recover until a timeout of about 15 minutes expires, and the kernel log reports a retry page fault. The issue is more likely to occur when GPU memory is already under pressure from a recently run workload. See [GitHub issue #8844](https://github.com/ROCm/TheRock/issues/8844).
 
+### vLLM server restarts might fail with out-of-memory errors on AMD Instinct MI350X and MI300X GPUs
+
+When you restart a vLLM server for a large, distributed model using tensor parallelism (for example, `-tp 8`) on AMD Instinct MI350 Series GPUs, the new server might fail to start with an out-of-memory error:
+
+```bash
+ValueError: Free memory on device cuda:N is less than desired GPU memory utilization
+Exception: Server failed to start
+```
+
+This happens when the GPU driver fails or delays in fully releasing memory from the previous server process. If the next server starts before that memory is released, it finds less free GPU memory than it requires and fails to start. Smaller tensor-parallel configurations and single-server runs are generally not affected. The issue is identified with larger, distributed models that use most of the available GPU memory.
+
+As a workaround, confirm that the previous process has fully released GPU memory before starting the next server. For example, you can use `rocm-smi --showmeminfo vram` or `amd-smi` to check the process release status. If `ps` still shows `VLLM::Worker_TP` processes from the earlier server, terminate them before starting the next one. See [GitHub issue #9052](https://github.com/ROCm/TheRock/issues/9052).
+
 ## ROCm resolved issues
 
 The following notable issues have been fixed in ROCm 10.1.0.
