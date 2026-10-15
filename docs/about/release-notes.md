@@ -577,7 +577,7 @@ Running multiple concurrent applications with high GPU memory-transfer activity,
 
 ### vLLM server restarts might fail with out-of-memory errors on AMD Instinct MI350X and MI300X GPUs
 
-When you restart a vLLM server for a large, distributed model using tensor parallelism (for example, `-tp 8`) on AMD Instinct MI350 Series GPUs, the new server might fail to start with an out-of-memory error:
+When you restart a vLLM server for a large, distributed model using tensor parallelism (for example, `-tp 8`) on AMD Instinct MI350X and MI300X GPUs, the new server might fail to start with an out-of-memory error:
 
 ```bash
 ValueError: Free memory on device cuda:N is less than desired GPU memory utilization
