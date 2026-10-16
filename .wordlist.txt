@@ -296,7 +296,6 @@ HLO
 HPC
 HPCG
 HPCToolkit
-HPCToolkit
 HPE
 HPL
 HSA
