@@ -1089,7 +1089,7 @@ Uninstall ROCm ASAN
 
       .. code-block:: bash
 
-         rm -rf ~/therock-tarball-asan
+         rm -rf therock-tarball-asan
 
 ----
 
