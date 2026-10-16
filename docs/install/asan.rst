@@ -1019,6 +1019,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
+            # Remove ROCm repositories
             sudo rm -f /etc/apt/sources.list.d/amdrocm-stable-asan.sources
 
             # Clear the cache and clean the system
@@ -1030,6 +1031,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
+            # Remove ROCm repositories
             sudo rm -f /etc/yum.repos.d/amdrocm-stable-asan.repo*
 
             # Clear the cache and clean the system
@@ -1040,6 +1042,7 @@ Uninstall ROCm ASAN
 
          .. code-block:: bash
 
+            # Remove ROCm repositories
             sudo zypper removerepo "amdrocm-stable-asan"
 
             # Clear the cache and clean the system
