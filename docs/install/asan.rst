@@ -942,7 +942,30 @@ Uninstall ROCm ASAN
    :heading: Uninstall ROCm ASAN packages
    :heading-level: 3
 
-   1. Use your package manager to remove the installed packages.
+   1. Disable the ROCm ASAN environment.
+
+      .. code-block:: bash
+
+         unset ROCM_ASAN_PATH HSA_XNACK LD_PRELOAD ASAN_LIB_PATH ASAN_LIB_NAME LD_LIBRARY_PATH
+
+   2. Remove the ROCm environment variables from your configuration.
+
+      .. tab-set::
+
+         .. tab-item:: System-wide setup
+            :sync: system-wide
+
+            .. code-block:: bash
+
+               sudo rm -f /etc/profile.d/set-rocm-asan-env.sh
+
+         .. tab-item:: User setup
+            :sync: user-setup
+
+            Remove the ROCm environment configuration block from your shell
+            configuration file (``~/.bashrc`` or ``~/.profile``).
+
+   3. Use your package manager to remove the installed packages.
 
       .. selected:: os=ubuntu os=debian
 
@@ -990,7 +1013,7 @@ Uninstall ROCm ASAN
 
             sudo zypper remove amdrocm-*-asan10.1*
 
-   2. Remove ROCm repositories.
+   4. Remove ROCm repositories.
 
       .. selected:: os=ubuntu os=debian
 
@@ -1023,41 +1046,17 @@ Uninstall ROCm ASAN
             sudo zypper clean --all
             sudo zypper refresh
 
-   3. Remove the ROCm environment variables from your configuration.
-
-      .. tab-set::
-
-         .. tab-item:: System-wide setup
-            :sync: system-wide
-
-            .. code-block:: bash
-
-               sudo rm -f /etc/profile.d/set-rocm-asan-env.sh
-
-         .. tab-item:: User setup
-            :sync: user-setup
-
-            Remove the ROCm environment configuration block from your shell
-            configuration file (``~/.bashrc`` or ``~/.profile``).
-
 .. ================================================================== TARBALL ==
 
 .. selected:: i=tar
    :heading: Uninstall the ROCm ASAN tarball
    :heading-level: 3
 
-   1. Remove the directory containing the ROCm ASAN installation:
-
-      .. important::
-
-         The following command assumes you're working with the
-         ``therock-tarball-asan`` directory. If you chose a different directory
-         name when :ref:`installing ROCm <rocm-asan-install-rocm>`, adjust the
-         command accordingly.
+   1. Disable the ROCm ASAN environment.
 
       .. code-block:: bash
 
-         rm -rf therock-tarball-asan
+         unset ROCM_ASAN_PATH HSA_XNACK LD_PRELOAD ASAN_LIB_PATH ASAN_LIB_NAME LD_LIBRARY_PATH
 
    2. Remove the ROCm environment variables from your configuration.
 
@@ -1075,6 +1074,19 @@ Uninstall ROCm ASAN
 
             Remove the ROCm environment configuration block from your shell
             configuration file (``~/.bashrc`` or ``~/.profile``).
+
+   3. Remove the directory containing the ROCm ASAN installation:
+
+      .. important::
+
+         The following command assumes you're working with the
+         ``therock-tarball-asan`` directory. If you chose a different directory
+         name when :ref:`installing ROCm <rocm-asan-install-rocm>`, adjust the
+         command accordingly.
+
+      .. code-block:: bash
+
+         rm -rf ~/therock-tarball-asan
 
 ----
 
