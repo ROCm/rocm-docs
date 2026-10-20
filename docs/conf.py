@@ -11,8 +11,8 @@ import sys
 from pathlib import Path
 from subprocess import run
 
-ROCM_VERSION = "10.1.0"
-GA_DATE = "2026-10-05"
+ROCM_VERSION = "10.2.0"
+GA_DATE = "2026-11-18"
 
 DOCS_DIR = Path(__file__).parent.resolve()
 ROOT_DIR = DOCS_DIR.parent
