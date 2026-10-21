@@ -52,9 +52,9 @@ parsers. The fetcher prints the generated output directory at the end of each ru
 
 ### Commands
 
-| Command | When to use |
-|---------|-------------|
-| `/precision-check PREV CURR` | Full audit — checks all libraries that changed in the manifest |
+| Command                            | When to use                                                           |
+| ---------------------------------- | --------------------------------------------------------------------- |
+| `/precision-check PREV CURR`       | Full audit — checks all libraries that changed in the manifest        |
 | `/precision-check-delta PREV CURR` | SHA-filtered — only checks libraries whose source file itself changed |
 
 Use `/precision-check-delta` for routine release-to-release audits. Use
