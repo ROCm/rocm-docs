@@ -84,7 +84,7 @@ ROCm Core SDK is available in the following distribution formats. For step-by-st
 ### Choosing a format
 
 | If you need… | Use |
-|---|---|
+| --- | --- |
 | Automatic updates and dependency tracking on bare metal | **DEB / RPM packages** |
 | A non-root install or multiple ROCm versions side by side | **Tarball** |
 | Only the Python interface to GPU-accelerated libraries in a virtual environment | **Wheel** |

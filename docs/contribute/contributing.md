@@ -15,7 +15,7 @@ To provide feedback on the ROCm documentation without contributing to it, see [P
 The documentation for ROCm and for all ROCm components is under their respective `docs` folders. The `docs` folders for all components across ROCm have the same structure:
 
 | Sub-folder name | Documentation type |
-|-------|----------|
+| ------- | ---------- |
 | `install` | Installation instructions, build instructions, and prerequisites |
 | `conceptual` | Important concepts |
 | `how-to` | How to implement specific use cases |

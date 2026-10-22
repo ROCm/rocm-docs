@@ -84,9 +84,9 @@ Write your response now. Start with: "X of N libraries need verification."
 
 Then the summary table. **This MUST be a markdown table — no lists, no separators, no other format.** One row per library, all libraries included:
 
-| Library | Finding | Action | Source |
-|---------|---------|--------|--------|
-| ... | ... | ... | filename.ext |
+| Library | Finding | Action | Source       |
+| ------- | ------- | ------ | ------------ |
+| ...     | ...     | ...    | filename.ext |
 
 Use the URL from `OUTPUT_DIR/precision_{lib}_url.txt`. In the Source column, write only the filename (last path segment, plain text — no markdown link). For skipped libraries, leave Source blank.
 
