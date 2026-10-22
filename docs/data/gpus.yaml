@@ -519,7 +519,7 @@ AMD Ryzen:
     codename: Krackan Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-5-340.html
   AMD Ryzen AI 5 330:
-    gfx: gfx1152
+    gfx: gfx1153
     series: *ryzen_ai_300_series
     igpu: Radeon 820M
     arch: *arch_rdna_3_5
