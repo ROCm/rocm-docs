@@ -6,11 +6,6 @@
 # Local scan: bandit --recursive . --configfile .github/scan_tools_configs/bandit.yml
 #
 # Bandit configuration for this repository's security scans.
-<<<<<<< CURRENT (rocm-docs)
-#
-# This file defines the complete scanner policy;
-# Keep repository-specific suppressions and tuning here.
-=======
 #
 # This file defines the complete scanner policy;
 # Keep repository-specific suppressions and tuning here.
@@ -24,7 +19,6 @@
 #          skips: [B101]
 #
 #   3. `exclude_dirs:` below for paths Bandit should not scan.
->>>>>>> TEMPLATE (new)
 
 # Environment and generated-output exclusions support local scans; these
 # paths are absent from clean CI checkouts.

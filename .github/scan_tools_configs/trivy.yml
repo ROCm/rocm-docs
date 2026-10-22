@@ -6,14 +6,6 @@
 # Local scan: trivy fs --config .github/scan_tools_configs/trivy.yml .
 #
 # Trivy configuration for this repository's security scans.
-<<<<<<< CURRENT (rocm-docs)
-#
-# This file defines the complete scanner policy;
-# Keep repository-specific suppressions and tuning here.
-=======
-#
-# This file defines the complete scanner policy;
-# Keep repository-specific suppressions and tuning here.
 #
 # Ways to suppress a finding, narrowest first:
 #
@@ -29,7 +21,6 @@
 #   2. `scan.skip-dirs` / `scan.skip-files` below -- paths trivy never
 #      reads, for vendored trees and generated output. Anything found only
 #      there is not scanned at all, so keep entries narrow.
->>>>>>> TEMPLATE (new)
 
 # Environment and generated-output exclusions support local scans; these
 # paths are absent from clean CI checkouts.

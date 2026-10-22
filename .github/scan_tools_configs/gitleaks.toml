@@ -9,14 +9,6 @@
 #
 # This file defines the repository's complete Gitleaks policy. Recurring
 # exclusions belong in this file.
-<<<<<<< CURRENT (rocm-docs)
-#
-# The `[extend]` section inherits Gitleaks' built-in rules, and the
-# `[[allowlists]]` below apply to every rule.
-#
-# Use `.gitleaksignore` for one-off finding fingerprints. Add recurring path
-# or regex exclusions to `[[allowlists]]` in this file.
-=======
 #
 # The `[extend]` section inherits Gitleaks' built-in rules, and the
 # `[[allowlists]]` below apply to every rule.
@@ -34,7 +26,6 @@
 #      The `.gitleaksignore` here is a commented placeholder.
 #
 #   3. `[[allowlists]]` below for recurring paths, regexes or stopwords.
->>>>>>> TEMPLATE (new)
 
 title = "gitleaks config"
 

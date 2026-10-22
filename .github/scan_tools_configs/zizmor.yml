@@ -9,12 +9,6 @@
 #
 # This file defines the complete scanner policy;
 # Keep repository-specific suppressions and tuning here.
-<<<<<<< CURRENT (rocm-docs)
-#
-# Add rule-specific settings and suppressions under `rules:`.
-
-rules: {}
-=======
 #
 # Zizmor has no ignore file. Suppress a finding with:
 #
@@ -37,4 +31,3 @@ rules:
       policies:
         # Security owns this workflow and moves the v1 tag.
         ROCm/rocm-security-gh/.github/workflows/security-baseline.yml: ref-pin
->>>>>>> TEMPLATE (new)
