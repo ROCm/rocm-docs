@@ -43,6 +43,7 @@ AllGatherV
 AllReduce
 AllToAll
 Andrej
+AoS
 Arb
 Async
 Autocast
@@ -56,6 +57,7 @@ BMC
 BNXT
 BRCM
 BSR
+BSRX
 BUF
 BabelStream
 Backported
@@ -73,6 +75,7 @@ CCD
 CDI
 CDNA
 CGUI
+CHOLQR
 CHTML
 CIFAR
 CLI
@@ -124,6 +127,7 @@ Conv
 ConvNeXt
 CountOnes
 Cron
+Ctrl
 CuPy
 DBRX
 DCGM
@@ -168,11 +172,13 @@ DeviceMerge
 DiT
 DirectX
 Disaggregated
+DistilBERT
 Dockerfile
 Dockerized
 Doxygen
 Dyninst
 ECC
+ELLPACK
 ELMo
 ENDPGM
 ENODEV
@@ -226,6 +232,7 @@ GDS
 GEMM
 GEMMs
 GEMV
+GEQRF
 GERC
 GERU
 GETF
@@ -276,6 +283,7 @@ HBM
 HCA
 HEEV
 HEEVD
+HEGVD
 HEVC
 HGX
 HIPCC
@@ -286,7 +294,6 @@ HIPification
 HIPify
 HLO
 HPC
-HPCToolkit
 HPCG
 HPCToolkit
 HPE
@@ -316,7 +323,6 @@ ILDLT
 ILP
 ILU
 IMDb
-integrators
 IOD
 IODs
 IOMMU
@@ -373,6 +379,7 @@ LLMs
 LLVM
 LLaMA
 LM
+LMCache
 LOCALRANKID
 LPDDR
 LRU
@@ -382,6 +389,7 @@ LSE
 LSTMs
 LSan
 LTS
+LTX
 LVM
 LanguageCrossEntropy
 LoRA
@@ -452,6 +460,7 @@ NCS
 NFS
 NIC
 NICs
+NIXL
 NLI
 NLP
 NN
@@ -518,6 +527,7 @@ PLDM
 PMCs
 PMI
 PMU
+PMU
 POPs
 POR
 POSIX
@@ -542,7 +552,6 @@ PerfDb
 Perfetto
 PipelineParallel
 Pipelining
-PMU
 PnP
 Pollara
 PowerEdge
@@ -624,6 +633,7 @@ Ryzen
 SALU
 SBIOS
 SCA
+SDDMM
 SDK
 SDKs
 SDMA
@@ -645,9 +655,11 @@ SLURM
 SMEM
 SMFMA
 SMI
+SMI's
 SMT
 SOCCLK
 SONAME
+SONAMEs
 SPARSELt
 SPI
 SPIR
@@ -662,6 +674,7 @@ SVM
 SWE
 SYEV
 SYEVD
+SYGVD
 SYTF
 SYTRF
 SYTRS
@@ -729,6 +742,7 @@ TorchElastic
 TorchMIGraphX
 TorchScript
 TorchServe
+TorchTitan
 TorchVision
 TransferBench
 TrapStatus
@@ -754,6 +768,7 @@ UTIL
 UUID
 UX
 UltraChat
+Unbatched
 Uncached
 Unhandled
 Unittests
@@ -777,6 +792,8 @@ VOPD
 VRAM
 VSIX
 VSkipped
+Valgrind
+Valgrind's
 Vanhoucke
 Vulkan
 WDAG
@@ -824,11 +841,13 @@ alloc
 allocatable
 allocator
 allocators
+allreduce
 alltoall
 alltoallv
 amd
 amdclang
 amdgpu
+amdgpuras
 amdrocm
 amdsmi
 api
@@ -1061,7 +1080,9 @@ hipBLASLt's
 hipCUB
 hipDNN
 hipDataType
+hipExtHostRegisterCoarseGrained
 hipFFT
+hipFFT's
 hipFFTW
 hipFILE
 hipFORT
@@ -1069,18 +1090,21 @@ hipFile
 hipGraph
 hipLIB
 hipMemGetAddressRange
+hipMemcpyAsync
 hipModules
 hipRAND
 hipSOLVER
 hipSPARSE
 hipSPARSELt
 hipTensor
+hipThreads
 hipamd
 hipblas
 hipblaslt
 hipcc
 hipcub
 hipfft
+hipfile
 hipfort
 hipification
 hipify
@@ -1114,8 +1138,10 @@ init
 initializer
 initramfs
 inlining
+inode
 installable
 instrSize
+integrators
 integrators
 interop
 interpolators
@@ -1148,6 +1174,7 @@ libnuma
 librocdxg
 libs
 libva
+lifecycle
 linalg
 linearized
 linter
@@ -1318,6 +1345,7 @@ rocFFT
 rocFFT's
 rocHPCG
 rocJPEG
+rocJpeg
 rocLIB
 rocMLIR
 rocPRIM
@@ -1356,6 +1384,7 @@ roctx
 roctxMark
 rocwmma
 roofline
+rpp
 rst
 rtd
 runfile
@@ -1399,6 +1428,7 @@ statx
 stdout
 stochastically
 strided
+stringification
 subcommand
 subdirectory
 subexpression
@@ -1465,6 +1495,7 @@ ubuntu
 uclk
 ud
 udev
+unbatched
 uncacheable
 uncached
 uncorrectable
@@ -1474,6 +1505,7 @@ unhandled
 unicast
 uninstallation
 unittest
+unkillable
 unmap
 unmapped
 unmapping
