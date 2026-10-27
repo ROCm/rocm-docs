@@ -99,19 +99,23 @@ For details, see [AI ecosystem support](#ai-ecosystem-support).
 
 The following are notable enhancements to HIP:
 
-##### HIP supports hipExtHostRegisterCoarseGrained on Windows
+##### HIP preserves location of imported virtual memory handles
 
-HIP now honors the `hipExtHostRegisterCoarseGrained` flag passed to `hipHostRegister` on Windows for APUs with unified memory, giving device kernels correct results for atomic operations on host-pinned memory. Previously, host-registered memory on Windows was always treated as coarse-grain regardless of the flag; fine-grain (uncached) is now the correct default, with coarse-grain available only when explicitly requested.
+`hipMemGetAllocationPropertiesFromHandle` now correctly reports `hipMemLocationTypeHost` for host-backed allocations imported with `hipMemImportFromShareableHandle`, so applications can reliably identify whether an imported allocation resides in host or device memory. For device-backed allocations, the API reports the owning device.
 
-##### HIP adds host-NUMA virtual memory support
+##### HIP adds module and library management APIs
 
-HIP virtual memory management APIs now support `hipMemLocationTypeHostNuma` and `hipMemLocationTypeHostNumaCurrent` in `hipMemCreate`, allocating pinned memory backed by real host memory on a specified NUMA node instead of a GPU-pool substitute. This benefits NUMA-aware workloads, including collective-communication libraries such as RCCL, that need pinned host memory to stay local to a specific NUMA node. The full VMM lifecycle (create, reserve, map, set access, and teardown) is supported for these allocations on Linux systems with NUMA-capable, VMM-capable GPUs.
+HIP adds APIs for working with loaded modules and libraries. `hipModuleEnumerateFunctions` returns the function handles defined in a loaded module, so applications no longer need to know kernel names ahead of time. `hipLibraryGetModule` returns the module handle associated with a library, and `hipKernelSetAttributeForDevice` sets a device-wide attribute for a kernel on a specific device.
 
-##### ROCr Runtime extends virtual memory management to host memory
+##### HIP adds HIP_TARGET_API_VERSION for source compatibility
 
-ROCr Runtime virtual memory management APIs (`hsa_amd_vmem_handle_create`, `hsa_amd_vmem_map`, and `hsa_amd_vmem_set_access`) now support CPU memory pools in addition to GPU agents, enabling the full create, reserve, map, set-access, and teardown lifecycle for host-pool virtual memory handles. This includes inter-process sharing of both host-pool and device-pool handles, letting multiple processes map the same GPU-accessible host memory without falling back to workarounds like `/dev/shm`.
+The new `HIP_TARGET_API_VERSION` macro lets you select the HIP API version at compile time, which helps maintain source compatibility with applications built against older HIP API versions. For example, `hipMemAdvise` now aliases `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID, so applications that use the legacy signature might require source updates. To keep the previous signature, define `HIP_TARGET_API_VERSION` to a nonzero value less than 800 at compile time, such as `700` for HIP 7.0 or `717` for HIP 7.17.
 
-For more information, see the [HIP section](#hip-10-1-0) in the ROCm component changelogs.
+##### HIP reports device-side faults on WSL 2
+
+HIP on WSL 2 now prevents indefinite application hangs and reports errors for device-side faults, including out-of-bounds writes, null pointer dereferences, and device asserts.
+
+For more information, see the [HIP section](#hip-10-2-0) in the ROCm component changelogs.
 
 ### Profiling and debugging tools
 
