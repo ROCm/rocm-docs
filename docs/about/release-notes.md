@@ -239,9 +239,7 @@ The following are notable enhancements to the ROCm Compute Profiler (`rocprofile
 
 ##### Command-line options update
 
-Profile mode options now match `rocprofv3`, so the same commands work in both tools. Select dispatches with `--kernel-iteration-range`, and set the output directory with `-d`. Dispatch IDs now start at 1, so they line up with the IDs `rocprofv3` reports. Scripts that use the old `-d` or `--dispatch` option need updating.
-
-For details, see [Kernel iteration filtering](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#profiling-kernel-iteration-range).
+Profile mode options now match `rocprofv3`, so the same commands work in both tools. Select dispatches with `--kernel-iteration-range`, and set the output directory with `-d`. Dispatch IDs now start at 1, so they line up with the IDs `rocprofv3` reports. Scripts that use the old `-d` or `--dispatch` option need updating. For details, see [Kernel iteration filtering](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#profiling-kernel-iteration-range).
 
 ##### Installation improvements
 
@@ -261,9 +259,7 @@ For details, see [Analyzing with the CLI](https://rocm.docs.amd.com/projects/roc
 
 ##### Memory bandwidth analysis (experimental)
 
-On AMD Instinct MI350 Series GPUs, memory bandwidth analysis now shows where memory traffic stalls: at the L1 cache, the L2 cache, or the memory fabric interface. It marks each bottleneck on the memory chart and adds a guidance panel below the chart that explains what was measured and how it affects performance. Collect the data with `--experimental --membw-analysis` at profile time. Analyze mode picks it up automatically.
-
-For details, see [Using memory bandwidth analysis](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/membw_analysis.html).
+On AMD Instinct MI350 Series GPUs, memory bandwidth analysis now shows where memory traffic stalls: at the L1 cache, the L2 cache, or the memory fabric interface. It marks each bottleneck on the memory chart and adds a guidance panel below the chart that explains what was measured and how it affects performance. Collect the data with `--experimental --membw-analysis` at profile time. Analyze mode picks it up automatically. For details, see [Using memory bandwidth analysis](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/membw_analysis.html).
 
 ##### PC sampling improvements
 
@@ -291,15 +287,11 @@ For details, see [Standalone roofline](https://rocm.docs.amd.com/projects/rocpro
 
 ##### Agent Skills for AI coding assistants
 
-ROCm Compute Profiler now ships Agent Skills for AI coding assistants such as Claude Code, Codex, and Cursor. With the skills installed, your assistant can profile your application, find the slow kernels, and explain why, using speed-of-light, roofline, memory, PC sampling, and Torch trace analysis. Run the included `install-skills.sh` script to add them to your assistant.
-
-For details, see [Agent Skills](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocprofiler-compute/skills/README.md).
+ROCm Compute Profiler now ships Agent Skills for AI coding assistants such as Claude Code, Codex, and Cursor. With the skills installed, your assistant can profile your application, find the slow kernels, and explain why, using speed-of-light, roofline, memory, PC sampling, and Torch trace analysis. Run the included `install-skills.sh` script to add them to your assistant. For details, see [Agent Skills](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocprofiler-compute/skills/README.md).
 
 ##### Analyze mode improvements
 
-Analyze mode uses less disk space because it reads the profiling output directly instead of writing a merged copy of all counter data. It prints fewer repeated warnings, so the messages that matter stand out. It also stops right away when profiling data is unreadable, instead of reporting results from incomplete data.
-
-For details, see [Analyze mode](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/mode.html).
+Analyze mode uses less disk space because it reads the profiling output directly instead of writing a merged copy of all counter data. It prints fewer repeated warnings, so the messages that matter stand out. It also stops right away when profiling data is unreadable, instead of reporting results from incomplete data. For details, see [Analyze mode](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/mode.html).
 
 ##### Deprecations
 
@@ -315,21 +307,15 @@ The following are notable enhancements to ROCm Systems Profiler:
 
 ##### Unified `rocsys` command-line entry point
 
-The `rocsys` command is a unified command-line entry point. Running `rocsys -- ./app` or `rocsys profile -- ./app` produces a full trace profile, and `rocsys rewrite` runs `rocprof-sys-instrument` in binary-rewrite mode (`-o`). The other subcommands (`instrument`, `causal`, `avail`, `python`, and `attach`) forward to the existing tools. The `rocprof-sys-*` binaries are unchanged.
-
-For details, see [Using rocsys](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/using-rocsys.html).
+The `rocsys` command is a unified command-line entry point. Running `rocsys -- ./app` or `rocsys profile -- ./app` produces a full trace profile, and `rocsys rewrite` runs `rocprof-sys-instrument` in binary-rewrite mode (`-o`). The other subcommands (`instrument`, `causal`, `avail`, `python`, and `attach`) forward to the existing tools. The `rocprof-sys-*` binaries are unchanged. For details, see [Using rocsys](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/using-rocsys.html).
 
 ##### AMD Infinity Storage I/O telemetry
 
-ROCm Systems Profiler supports AMD Infinity Storage™ technology I/O telemetry. Per-GPU I/O counters are sampled into the profiler output. Enable collection with `ROCPROFSYS_USE_HIPFILE`, and select the metrics to collect with `ROCPROFSYS_HIPFILE_METRICS`.
-
-For details, see [hipFile telemetry](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/hipfile-telemetry.html).
+ROCm Systems Profiler supports AMD Infinity Storage™ technology I/O telemetry. Per-GPU I/O counters are sampled into the profiler output. Enable collection with `ROCPROFSYS_USE_HIPFILE`, and select the metrics to collect with `ROCPROFSYS_HIPFILE_METRICS`. For details, see [hipFile telemetry](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/hipfile-telemetry.html).
 
 ##### Attaching to processes in containerized environments
 
-`rocprof-sys-attach` can now attach to a process running in a containerized environment.
-
-For details, see [Attaching to a running process](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/attaching-to-running-process.html).
+`rocprof-sys-attach` can now attach to a process running in a containerized environment. For details, see [Attaching to a running process](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/attaching-to-running-process.html).
 
 For more information, see the ROCm Systems Profiler section in the ROCm component changelogs.
 
