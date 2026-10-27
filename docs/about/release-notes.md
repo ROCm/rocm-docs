@@ -235,32 +235,79 @@ For more information, see the [ROCprofiler-SDK section](#rocprofiler-sdk-1-4-1) 
 
 #### ROCm Compute Profiler feature highlights
 
-The following are notable enhancements to the ROCm Compute Profiler (rocprofiler-compute):
+The following are notable enhancements to the ROCm Compute Profiler (`rocprofiler-compute`) 3.10.0 in ROCm 10.2.0.
 
-##### Roofline enhancement
+##### Command-line options update
 
-* The standalone roofline report is now a fully interactive HTML page. You can isolate a single kernel or a single roof, select several kernels at once, and switch the arithmetic intensity axis between cache levels, instead of reading one static plot where every kernel shares the same marker.
+* Profile mode options now match `rocprofv3`, so the same commands work in both tools. Select dispatches with `--kernel-iteration-range`, and set the output directory with `-d`. Dispatch IDs now start at 1, so they line up with the IDs `rocprofv3` reports. Scripts that use the old `-d` or `--dispatch` option need updating.
 
-* Roofline benchmarking and analysis are supported on AMD Ryzen AI APUs with Gorgon Point (gfx1153) integrated graphics. Peak values are now measured on this hardware instead of reported as N/A.
+For details, see [Kernel iteration filtering](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#profiling-kernel-iteration-range).
 
-For details, see [Analyzing with the CLI](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/latest/how-to/analyze/cli.html) and [Supported accelerators](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/latest/reference/compatible-accelerators.html).
+##### Installation improvements
 
-##### PC sampling improvement
+* Analyze mode dependencies now install with a single command, `pip install "rocm-profiler[compute-analyze]"`. Installing them into their own virtual environment keeps them from conflicting with packages your application uses, such as `torch` or `numpy`. Run `rocprof-compute analyze --verify-deps` to check that nothing is missing.
 
-* PC sampling analysis now reports results per kernel. Running `rocprof-compute analyze --output-format csv` writes each kernel's disassembly to its own folder, with the sample and stall counts on every instruction and the source file the kernel was compiled from saved beside it. The same data is available from the analysis database.
-* PC sampling supports workloads that span several processes. Each process writes its own results file, so processes no longer overwrite each other, and a single analysis run reports all of them together with the owning process identified.
-For details, see [Using PC sampling in ROCm Compute Profiler](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/latest/how-to/pc_sampling.html).
+* Python 3.14 is supported for both profiling and analysis.
 
-##### Profiling output update
+For details, see [Install the analyze mode dependencies](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/install/core-install.html#analyze-deps).
 
-* Profiling always writes the `rocpd` output format, which was already the default. The CSV output backend and the `--format-rocprof-output` option have been removed. Workloads captured with the CSV backend by an earlier release must be profiled again before they can be analyzed.
-* Profiling artifacts are considerably smaller. Counter data is highly redundant and is now compressed as it is written. Profile mode also streams counter data to disk instead of holding it in memory, which lowers peak memory use on large workloads.
-For details, see [Profile mode](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/latest/how-to/profile/mode.html).
+##### Memory chart improvements
 
-##### Profiler documentation update
-Added a guide for profiling vLLM workloads, including the caveats that apply to inference servers. For details, see [Profile vLLM workloads](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.1.0/how-to/profile/mode.html#profile-vllm-workloads).
+* The memory chart for AMD Instinct™ GPUs has a new layout that is easier to read in the terminal. It breaks down read, write, and atomic requests, shows bandwidth between the L2 cache and the memory fabric, and reports how much traffic goes to high-bandwidth memory (HBM) and to remote memory. On AMD Instinct MI350 Series GPUs, it also shows Local Data Share (LDS) activity and per-channel bandwidth for HBM, xGMI, and PCIe.
 
-For more information, see the [ROCm Compute Profiler section](#rocm-compute-profiler-3-9-0) in the ROCm component changelogs.
+* The memory chart for AMD Ryzen™ APUs now reports the traffic measured at each interface, adds LDS utilization, and uses clearer labels, arrows, and legend. Missing counter data appears as N/A instead of a misleading 0.
+
+For details, see [Analyzing with the CLI](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html#cli-memory-chart-viewing).
+
+##### Memory bandwidth analysis (experimental)
+
+* On AMD Instinct MI350 Series GPUs, memory bandwidth analysis now shows where memory traffic stalls: at the L1 cache, the L2 cache, or the memory fabric interface. It marks each bottleneck on the memory chart and adds a guidance panel below the chart that explains what was measured and how it affects performance. Collect the data with `--experimental --membw-analysis` at profile time. Analyze mode picks it up automatically.
+
+For details, see [Using memory bandwidth analysis](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/membw_analysis.html).
+
+##### PC sampling improvements
+
+* PC sampling reports two new metrics for each instruction. Active thread percent shows how many threads in a wave were active, so a low value points to branch divergence. Wave occupancy shows how full the GPU was with waves when the sample was taken, and requires stochastic sampling. Both appear in the terminal output, the per-kernel CSV files, and the analysis database.
+
+* Each kernel's results folder is now named after the kernel, so you can find a kernel's results without looking up its ID.
+
+For details, see [PC sampling](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/pc_sampling.html).
+
+##### PyTorch profiling improvements
+
+* Torch trace (experimental) now ships a prebuilt operator collector for PyTorch 2.13 and 2.14, so it no longer needs to build a tracing library on your machine. The collector records operators on every thread, including those that run during the backward pass. Other PyTorch versions use a reduced trace that misses backward-pass operators.
+
+* If PyTorch and the profiler load different ROCm installations, profiling now stops with a clear message that points to the PyTorch and ROCm installation instructions.
+
+For details, see [Torch trace](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#torch-operator-mapping).
+
+##### Roofline enhancements
+
+* Roofline now supports the MXFP8 datatype on AMD Instinct MI350 Series GPUs, both when measuring peak performance and when analyzing kernels.
+
+* The standalone roofline HTML report includes every datatype the GPU supports, with a switch to move between them, so you no longer need a separate report for each precision. The chart axes are fixed for each GPU, so you can compare reports from two runs side by side.
+
+For details, see [Standalone roofline](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#standalone-roofline) and [Roofline HTML generation](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html#roofline-html-generation).
+
+##### Agent Skills for AI coding assistants
+
+* ROCm Compute Profiler now ships Agent Skills for AI coding assistants such as Claude Code, Codex, and Cursor. With the skills installed, your assistant can profile your application, find the slow kernels, and explain why, using speed-of-light, roofline, memory, PC sampling, and Torch trace analysis. Run the included `install-skills.sh` script to add them to your assistant.
+
+For details, see [Agent Skills](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocprofiler-compute/skills/README.md).
+
+##### Analyze mode improvements
+
+* Analyze mode uses less disk space because it reads the profiling output directly instead of writing a merged copy of all counter data. It prints fewer repeated warnings, so the messages that matter stand out. It also stops right away when profiling data is unreadable, instead of reporting results from incomplete data.
+
+For details, see [Analyze mode](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/mode.html).
+
+##### Deprecations
+
+* The analyze mode `--gui` and `--tui` options are deprecated and will be removed in a future release. Use command-line analysis instead, which prints results to the terminal, saves them as text, CSV files, or an analysis database with `--output-format`, and generates interactive roofline charts as HTML.
+
+For details, see [Analysis output formats](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html#analysis-output-format) and [Roofline HTML generation](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html#roofline-html-generation).
+
+For more information, see the [ROCm Compute Profiler section](#rocm-compute-profiler-3-10-0) in the ROCm component changelogs.
 
 #### ROCm Systems Profiler feature highlights
 
