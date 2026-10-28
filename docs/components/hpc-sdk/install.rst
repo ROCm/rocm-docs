@@ -42,15 +42,6 @@ OpenMPI, UCX, and Ubuntu.
 .. datatemplate:yaml:: /data/gpus.yaml
    :template: misc/os-selector-no-windows.rst.jinja
 
-.. selector:: ROCm version
-   :key: rocm-ver
-
-   .. selector-option:: 10.0.0
-      :value: 10.0.0
-
-   .. selector-option:: 7.14.0
-      :value: 7.14.0
-
 .. selector:: Installation method
    :show-cond: os=ubuntu os=debian
    :key: i
@@ -99,13 +90,251 @@ HPC SDK includes `hipTensor <https://github.com/ROCm/rocm-libraries/tree/develop
 Install HPC SDK
 ---------------
 
-.. include:: ./include/rocm10.0.0-install.rst
+.. selected:: i=tar
 
-.. include:: ./include/rocm7.14.0-install.rst
+   The standard ROCm tarball installation includes the HPC SDK. No
+   additional steps are required. For details on ROCm tarball installation,
+   refer to `Install AMD ROCm 10.0.0
+   <https://rocm.docs.amd.com/en/docs-10.0.0/install/rocm.html>`__ and
+   select **Tarball** installation method from installation environment
+   selector.
+
+.. selected:: i=pkgman
+
+   1. :doc:`Install ROCm </install/rocm>`. Remember to complete the :ref:`ROCm
+      installation prerequisites <rocm-prerequisites>` to install dependencies
+      and configure GPU access permissions.
+
+   .. selected:: fam=all
+
+      2. Use the following command to install HPC SDK for all GPU architectures:
+
+         .. selected:: os=ubuntu os=debian
+
+            .. code-block:: bash
+
+                sudo apt install amdrocm-hpc10.0 amdrocm-hpc-sdk10.0
+
+         .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+            .. code-block:: bash
+
+                sudo dnf install amdrocm-hpc10.0 amdrocm-hpc-sdk10.0
+
+         .. selected:: os=sles
+
+            .. code-block:: bash
+
+                sudo zypper install amdrocm-hpc10.0 amdrocm-hpc-sdk10.0
+
+   .. selected:: gfx=gfx950
+
+      2. Use the following command to install HPC SDK for your ``gfx950`` GPU:
+
+         .. selected:: os=ubuntu os=debian
+
+            .. code-block:: bash
+
+                sudo apt install amdrocm-hpc10.0-gfx950 amdrocm-hpc-sdk10.0-gfx950
+
+         .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+            .. code-block:: bash
+
+                sudo dnf install amdrocm-hpc10.0-gfx950 amdrocm-hpc-sdk10.0-gfx950
+
+         .. selected:: os=sles
+
+            .. code-block:: bash
+
+                sudo zypper install amdrocm-hpc10.0-gfx950 amdrocm-hpc-sdk10.0-gfx950
+
+   .. selected:: gfx=gfx942
+
+      2. Use the following command to install HPC SDK for your ``gfx942`` GPU:
+
+         .. selected:: os=ubuntu os=debian
+
+            .. code-block:: bash
+
+                sudo apt install amdrocm-hpc10.0-gfx942 amdrocm-hpc-sdk10.0-gfx942
+
+         .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+            .. code-block:: bash
+
+                sudo dnf install amdrocm-hpc10.0-gfx942 amdrocm-hpc-sdk10.0-gfx942
+
+         .. selected:: os=sles
+
+            .. code-block:: bash
+
+                sudo zypper install amdrocm-hpc10.0-gfx942 amdrocm-hpc-sdk10.0-gfx942
+
+   .. selected:: gfx=gfx90a
+
+      2. Use the following command to install HPC SDK for your ``gfx90a`` GPU:
+
+         .. selected:: os=ubuntu os=debian
+
+            .. code-block:: bash
+
+                sudo apt install amdrocm-hpc10.0-gfx90a amdrocm-hpc-sdk10.0-gfx90a
+
+         .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+            .. code-block:: bash
+
+                sudo dnf install amdrocm-hpc10.0-gfx90a amdrocm-hpc-sdk10.0-gfx90a
+
+         .. selected:: os=sles
+
+            .. code-block:: bash
+
+                sudo zypper install amdrocm-hpc10.0-gfx90a amdrocm-hpc-sdk10.0-gfx90a
+
+   .. selected:: gfx=gfx908
+
+      2. Use the following command to install HPC SDK for your ``gfx908`` GPU:
+
+         .. selected:: os=ubuntu os=debian
+
+            .. code-block:: bash
+
+                sudo apt install amdrocm-hpc10.0-gfx908 amdrocm-hpc-sdk10.0-gfx908
+
+         .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+            .. code-block:: bash
+
+                sudo dnf install amdrocm-hpc10.0-gfx908 amdrocm-hpc-sdk10.0-gfx908
+
+         .. selected:: os=sles
+
+            .. code-block:: bash
+
+                sudo zypper install amdrocm-hpc10.0-gfx908 amdrocm-hpc-sdk10.0-gfx908
 
 Uninstall HPC SDK
 ----------------------
 
-.. include:: ./include/rocm10.0.0-uninstall.rst
+.. selected:: i=tar
 
-.. include:: ./include/rocm7.14.0-uninstall.rst
+   The standard ROCm uninstallation process can be followed to uninstall HPC
+   SDK. No additional steps are required to remove the HPC SDK separately.
+   Refer to `Uninstalling ROCm 10.0.0
+   <https://rocm.docs.amd.com/en/docs-10.0.0/install/rocm.html#uninstalling>`__
+   section and select **Tarball** from the installation environment
+   selector.
+
+.. selected:: i=pkgman
+
+   .. selected:: fam=all
+
+      Use the following command to uninstall HPC SDK for all GPU architectures:
+
+      .. selected:: os=ubuntu os=debian
+
+         .. code-block:: bash
+
+             sudo apt autoremove amdrocm-hpc10.0 amdrocm-hpc-sdk10.0
+
+      .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+         .. code-block:: bash
+
+             sudo dnf remove amdrocm-hpc10.0 amdrocm-hpc-sdk10.0
+
+      .. selected:: os=sles
+
+         .. code-block:: bash
+
+             sudo zypper remove amdrocm-hpc10.0 amdrocm-hpc-sdk10.0
+
+   .. selected:: gfx=gfx950
+
+      Use the following command to uninstall HPC SDK for your ``gfx950`` GPU:
+
+      .. selected:: os=ubuntu os=debian
+
+         .. code-block:: bash
+
+             sudo apt autoremove amdrocm-hpc10.0-gfx950 amdrocm-hpc-sdk10.0-gfx950
+
+      .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+         .. code-block:: bash
+
+             sudo dnf remove amdrocm-hpc10.0-gfx950 amdrocm-hpc-sdk10.0-gfx950
+
+      .. selected:: os=sles
+
+         .. code-block:: bash
+
+             sudo zypper remove amdrocm-hpc10.0-gfx950 amdrocm-hpc-sdk10.0-gfx950
+
+   .. selected:: gfx=gfx942
+
+      Use the following command to uninstall HPC SDK for your ``gfx942`` GPU:
+
+      .. selected:: os=ubuntu os=debian
+
+         .. code-block:: bash
+
+             sudo apt autoremove amdrocm-hpc10.0-gfx942 amdrocm-hpc-sdk10.0-gfx942
+
+      .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+         .. code-block:: bash
+
+             sudo dnf remove amdrocm-hpc10.0-gfx942 amdrocm-hpc-sdk10.0-gfx942
+
+      .. selected:: os=sles
+
+         .. code-block:: bash
+
+             sudo zypper remove amdrocm-hpc10.0-gfx942 amdrocm-hpc-sdk10.0-gfx942
+
+   .. selected:: gfx=gfx90a
+
+      Use the following command to uninstall HPC SDK for your ``gfx90a`` GPU:
+
+      .. selected:: os=ubuntu os=debian
+
+         .. code-block:: bash
+
+             sudo apt autoremove amdrocm-hpc10.0-gfx90a amdrocm-hpc-sdk10.0-gfx90a
+
+      .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+         .. code-block:: bash
+
+             sudo dnf remove amdrocm-hpc10.0-gfx90a amdrocm-hpc-sdk10.0-gfx90a
+
+      .. selected:: os=sles
+
+         .. code-block:: bash
+
+             sudo zypper remove amdrocm-hpc10.0-gfx90a amdrocm-hpc-sdk10.0-gfx90a
+
+   .. selected:: gfx=gfx908
+
+      Use the following command to uninstall HPC SDK for your ``gfx908`` GPU:
+
+      .. selected:: os=ubuntu os=debian
+
+         .. code-block:: bash
+
+             sudo apt autoremove amdrocm-hpc10.0-gfx908 amdrocm-hpc-sdk10.0-gfx908
+
+      .. selected:: os=rhel os=rocky-linux os=oracle-linux
+
+         .. code-block:: bash
+
+             sudo dnf remove amdrocm-hpc10.0-gfx908 amdrocm-hpc-sdk10.0-gfx908
+
+      .. selected:: os=sles
+
+         .. code-block:: bash
+
+             sudo zypper remove amdrocm-hpc10.0-gfx908 amdrocm-hpc-sdk10.0-gfx908
