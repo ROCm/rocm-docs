@@ -1,1 +1,5 @@
 -r https://raw.githubusercontent.com/ROCm/rocm-docs-core/new_data/env/sphinx/requirements.txt
+# Temporary override: install rocm-docs-core from develop to pick up the
+# selector maxOptions fix (https://github.com/ROCm/rocm-docs-core/commit/5bdc1daed71858fdc5b77b1ae5d638535151a4c3).
+# Remove this line once a new rocm-docs-core release is cut and new_data pins it.
+rocm-docs-core[api_reference,llms] @ git+https://github.com/ROCm/rocm-docs-core.git@develop

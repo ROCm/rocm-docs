@@ -3,6 +3,9 @@
 
 # Anchors {{{
 _amdgpu_drivers:
+  - &amdgpu_31_70_0
+    version: "31.70.0"
+    url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-31.70.0/documentation/release-notes.html
   - &amdgpu_31_60_0
     version: "31.60.0"
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-31.60.0/documentation/release-notes.html
@@ -42,9 +45,6 @@ _amdgpu_drivers:
   - &amdgpu_30_20_0
     version: "30.20.0"
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-30.20.0/documentation/release-notes.html
-  - &amdgpu_30_10_2
-    version: "30.10.2"
-    url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-30.10.2/documentation/release-notes.html
 
 _windows_drivers:
   - &adrenalin_26_10_41_05
@@ -64,66 +64,66 @@ AMD Instinct:
       - "01.26.01.03 (or later)"
       - "01.26.00.02"
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI350X:
     firmware:
       - "01.26.01.03 (or later)"
       - "01.26.00.02"
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI350P:
     firmware:
       - "BKC12.0 (IFWI PRD1000A) or later"
       - "IFWI 00189939"
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI325X:
     firmware:
       - "01.26.01.03 (or later)"
       - "01.25.06.08"
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI300X:
     firmware:
       - "01.26.00.04 (or later)"
       - "01.25.06.05"
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI300A:
     firmware:
       - "PI100D"
       - "PI100C"
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI250X:
     firmware: ["Maintenance update (MU) 5 with IFWI 75 (or later)"]
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI250:
     firmware: ["Maintenance update (MU) 5 with IFWI 75 (or later)"]
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI210:
     firmware: ["Maintenance update (MU) 5 with IFWI 75 (or later)"]
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
   AMD Instinct MI100:
     firmware: ["VBIOS D3430401-037"]
     linux:
-      amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0, *amdgpu_30_10_2]
+      amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1, *amdgpu_31_40_0, *amdgpu_31_30_0, *amdgpu_31_20_0, *amdgpu_31_10_0, *amdgpu_30_30_3, *amdgpu_30_30_2, *amdgpu_30_30_1, *amdgpu_30_30_0, *amdgpu_30_20_1, *amdgpu_30_20_0]
 
 AMD Radeon:
   linux:
-    amdgpu: [*amdgpu_31_60_0, *amdgpu_31_50_0]
+    amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0]
   windows: [*adrenalin_26_10_41_05, *windows_oem_26_10_48]
 
 AMD Ryzen:
