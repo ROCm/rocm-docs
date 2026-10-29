@@ -14,6 +14,9 @@ ROCm release history
    * - Version
      - Release date
 
+   * - `10.2.0 <https://rocm.docs.amd.com/en/docs-10.2.0>`__
+     - November 18, 2026
+
    * - `10.1.0 <https://rocm.docs.amd.com/en/docs-10.1.0>`__
      - October 5, 2026
 
