@@ -29,7 +29,7 @@ This release expands GPU, operating system, and virtualization support.
 
 #### Expanded AMD GPU support
 
-ROCm {{ ROCM_VERSION }} adds support for the following AMD Ryzen APUs:
+ROCm {{ ROCM_VERSION }} adds support for the following AMD Ryzen GPUs:
 
 - [AMD Ryzen 7 PRO 253](https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-253.html)
 - [AMD Ryzen 7 PRO 249](https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-249.html)
@@ -54,7 +54,13 @@ For the complete list of supported AMD hardware, see [AMD hardware support](#amd
 
 #### Operating system support update
 
-Virtualization support remains unchanged in this release. For the full list of supported Linux distributions, see [Operating system support](#operating-system-support).
+ROCm {{ ROCM_VERSION }} adds support for:
+
+* RHEL 10.3 (kernel: 6.12.0-211) for AMD Instinct and Radeon GPUs.
+* RHEL 9.9 (kernel: 5.14.0-687) for AMD Instinct and Radeon GPUs.
+* SLES 16.1 (kernel: 6.12) for AMD Instinct GPUs.
+
+For the full list of supported Linux distributions, see [Operating system support](#operating-system-support).
 
 #### Expanded GPU virtualization support for Instinct and Radeon GPUs
 
