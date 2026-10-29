@@ -868,97 +868,97 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1
+            sudo apt install amdrocm10.2
 
       .. selected:: gfx=gfx950
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx950
+            sudo apt install amdrocm10.2-gfx950
 
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx942
+            sudo apt install amdrocm10.2-gfx942
 
       .. selected:: gfx=gfx90a
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx90a
+            sudo apt install amdrocm10.2-gfx90a
 
       .. selected:: gfx=gfx908
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx908
+            sudo apt install amdrocm10.2-gfx908
 
       .. selected:: gfx=gfx1201
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1201
+            sudo apt install amdrocm10.2-gfx1201
 
       .. selected:: gfx=gfx1200
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1200
+            sudo apt install amdrocm10.2-gfx1200
 
       .. selected:: gfx=gfx1100
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1100
+            sudo apt install amdrocm10.2-gfx1100
 
       .. selected:: gfx=gfx1101
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1101
+            sudo apt install amdrocm10.2-gfx1101
 
       .. selected:: gfx=gfx1102
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1102
+            sudo apt install amdrocm10.2-gfx1102
 
       .. selected:: gfx=gfx1103
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1103
+            sudo apt install amdrocm10.2-gfx1103
 
       .. selected:: gfx=gfx1030
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1030
+            sudo apt install amdrocm10.2-gfx1030
 
       .. selected:: gfx=gfx1151
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1151
+            sudo apt install amdrocm10.2-gfx1151
 
       .. selected:: gfx=gfx1150
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1150
+            sudo apt install amdrocm10.2-gfx1150
 
       .. selected:: gfx=gfx1152
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1152
+            sudo apt install amdrocm10.2-gfx1152
 
       .. selected:: gfx=gfx1153
 
          .. code-block:: bash
 
-            sudo apt install amdrocm10.1-gfx1153
+            sudo apt install amdrocm10.2-gfx1153
 
    .. selected:: os=rhel os=oracle-linux os=rocky-linux
 
@@ -970,97 +970,97 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1
+            sudo dnf install amdrocm10.2
 
       .. selected:: gfx=gfx950
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx950
+            sudo dnf install amdrocm10.2-gfx950
 
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx942
+            sudo dnf install amdrocm10.2-gfx942
 
       .. selected:: gfx=gfx90a
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx90a
+            sudo dnf install amdrocm10.2-gfx90a
 
       .. selected:: gfx=gfx908
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx908
+            sudo dnf install amdrocm10.2-gfx908
 
       .. selected:: gfx=gfx1201
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1201
+            sudo dnf install amdrocm10.2-gfx1201
 
       .. selected:: gfx=gfx1200
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1200
+            sudo dnf install amdrocm10.2-gfx1200
 
       .. selected:: gfx=gfx1100
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1100
+            sudo dnf install amdrocm10.2-gfx1100
 
       .. selected:: gfx=gfx1101
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1101
+            sudo dnf install amdrocm10.2-gfx1101
 
       .. selected:: gfx=gfx1102
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1102
+            sudo dnf install amdrocm10.2-gfx1102
 
       .. selected:: gfx=gfx1103
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1103
+            sudo dnf install amdrocm10.2-gfx1103
 
       .. selected:: gfx=gfx1030
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1030
+            sudo dnf install amdrocm10.2-gfx1030
 
       .. selected:: gfx=gfx1151
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1151
+            sudo dnf install amdrocm10.2-gfx1151
 
       .. selected:: gfx=gfx1150
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1150
+            sudo dnf install amdrocm10.2-gfx1150
 
       .. selected:: gfx=gfx1152
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1152
+            sudo dnf install amdrocm10.2-gfx1152
 
       .. selected:: gfx=gfx1153
 
          .. code-block:: bash
 
-            sudo dnf install amdrocm10.1-gfx1153
+            sudo dnf install amdrocm10.2-gfx1153
 
    .. selected:: os=sles
 
@@ -1072,31 +1072,31 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            sudo zypper install amdrocm10.1
+            sudo zypper install amdrocm10.2
 
       .. selected:: gfx=gfx950
 
          .. code-block:: bash
 
-            sudo zypper install amdrocm10.1-gfx950
+            sudo zypper install amdrocm10.2-gfx950
 
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
 
-            sudo zypper install amdrocm10.1-gfx942
+            sudo zypper install amdrocm10.2-gfx942
 
       .. selected:: gfx=gfx90a
 
          .. code-block:: bash
 
-            sudo zypper install amdrocm10.1-gfx90a
+            sudo zypper install amdrocm10.2-gfx90a
 
       .. selected:: gfx=gfx908
 
          .. code-block:: bash
 
-            sudo zypper install amdrocm10.1-gfx908
+            sudo zypper install amdrocm10.2-gfx908
 
 .. ============================================================ META PACKAGES ==
 
@@ -1129,82 +1129,82 @@ Use the following instructions to install ROCm packages on your system.
          .. matrix-cell::
             :show-cond: gfx=gfx950
 
-            ``amdrocm10.1-gfx950``
+            ``amdrocm10.2-gfx950``
 
          .. matrix-cell::
             :show-cond: gfx=gfx942
 
-            ``amdrocm10.1-gfx942``
+            ``amdrocm10.2-gfx942``
 
          .. matrix-cell::
             :show-cond: gfx=gfx90a
 
-            ``amdrocm10.1-gfx90a``
+            ``amdrocm10.2-gfx90a``
 
          .. matrix-cell::
             :show-cond: gfx=gfx908
 
-            ``amdrocm10.1-gfx908``
+            ``amdrocm10.2-gfx908``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1201
 
-            ``amdrocm10.1-gfx1201``
+            ``amdrocm10.2-gfx1201``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1200
 
-            ``amdrocm10.1-gfx1200``
+            ``amdrocm10.2-gfx1200``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1100
 
-            ``amdrocm10.1-gfx1100``
+            ``amdrocm10.2-gfx1100``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1101
 
-            ``amdrocm10.1-gfx1101``
+            ``amdrocm10.2-gfx1101``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1102
 
-            ``amdrocm10.1-gfx1102``
+            ``amdrocm10.2-gfx1102``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1103
 
-            ``amdrocm10.1-gfx1103``
+            ``amdrocm10.2-gfx1103``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1030
 
-            ``amdrocm10.1-gfx1030``
+            ``amdrocm10.2-gfx1030``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1151
 
-            ``amdrocm10.1-gfx1151``
+            ``amdrocm10.2-gfx1151``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1150
 
-            ``amdrocm10.1-gfx1150``
+            ``amdrocm10.2-gfx1150``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1152
 
-            ``amdrocm10.1-gfx1152``
+            ``amdrocm10.2-gfx1152``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1153
 
-            ``amdrocm10.1-gfx1153``
+            ``amdrocm10.2-gfx1153``
 
          .. matrix-cell::
             :show-cond: fam=all
 
-            ``amdrocm10.1``
+            ``amdrocm10.2``
 
          .. matrix-cell:: ROCm Base
 
@@ -1222,134 +1222,134 @@ Use the following instructions to install ROCm packages on your system.
 
             .. selected:: gfx=gfx950
 
-               ``amdrocm-core-dev10.1-gfx950``
+               ``amdrocm-core-dev10.2-gfx950``
 
             .. selected:: gfx=gfx942
 
-               ``amdrocm-core-dev10.1-gfx942``
+               ``amdrocm-core-dev10.2-gfx942``
 
             .. selected:: gfx=gfx90a
 
-               ``amdrocm-core-dev10.1-gfx90a``
+               ``amdrocm-core-dev10.2-gfx90a``
 
             .. selected:: gfx=gfx908
 
-               ``amdrocm-core-dev10.1-gfx908``
+               ``amdrocm-core-dev10.2-gfx908``
 
             .. selected:: gfx=gfx1201
 
-               ``amdrocm-core-dev10.1-gfx1201``
+               ``amdrocm-core-dev10.2-gfx1201``
 
             .. selected:: gfx=gfx1200
 
-               ``amdrocm-core-dev10.1-gfx1200``
+               ``amdrocm-core-dev10.2-gfx1200``
 
             .. selected:: gfx=gfx1100
 
-               ``amdrocm-core-dev10.1-gfx1100``
+               ``amdrocm-core-dev10.2-gfx1100``
 
             .. selected:: gfx=gfx1101
 
-               ``amdrocm-core-dev10.1-gfx1101``
+               ``amdrocm-core-dev10.2-gfx1101``
 
             .. selected:: gfx=gfx1102
 
-               ``amdrocm-core-dev10.1-gfx1102``
+               ``amdrocm-core-dev10.2-gfx1102``
 
             .. selected:: gfx=gfx1103
 
-               ``amdrocm-core-dev10.1-gfx1103``
+               ``amdrocm-core-dev10.2-gfx1103``
 
             .. selected:: gfx=gfx1030
 
-               ``amdrocm-core-dev10.1-gfx1030``
+               ``amdrocm-core-dev10.2-gfx1030``
 
             .. selected:: gfx=gfx1151
 
-               ``amdrocm-core-dev10.1-gfx1151``
+               ``amdrocm-core-dev10.2-gfx1151``
 
             .. selected:: gfx=gfx1150
 
-               ``amdrocm-core-dev10.1-gfx1150``
+               ``amdrocm-core-dev10.2-gfx1150``
 
             .. selected:: gfx=gfx1152
 
-               ``amdrocm-core-dev10.1-gfx1152``
+               ``amdrocm-core-dev10.2-gfx1152``
 
             .. selected:: gfx=gfx1153
 
-               ``amdrocm-core-dev10.1-gfx1153``
+               ``amdrocm-core-dev10.2-gfx1153``
 
             .. selected:: fam=all
 
-               ``amdrocm-core-dev10.1``
+               ``amdrocm-core-dev10.2``
 
          .. matrix-cell::
             :show-cond: os=rhel os=oracle-linux os=rocky-linux os=sles
 
             .. selected:: gfx=gfx950
 
-               ``amdrocm-core-devel10.1-gfx950``
+               ``amdrocm-core-devel10.2-gfx950``
 
             .. selected:: gfx=gfx942
 
-               ``amdrocm-core-devel10.1-gfx942``
+               ``amdrocm-core-devel10.2-gfx942``
 
             .. selected:: gfx=gfx90a
 
-               ``amdrocm-core-devel10.1-gfx90a``
+               ``amdrocm-core-devel10.2-gfx90a``
 
             .. selected:: gfx=gfx908
 
-               ``amdrocm-core-devel10.1-gfx908``
+               ``amdrocm-core-devel10.2-gfx908``
 
             .. selected:: gfx=gfx1201
 
-               ``amdrocm-core-devel10.1-gfx1201``
+               ``amdrocm-core-devel10.2-gfx1201``
 
             .. selected:: gfx=gfx1200
 
-               ``amdrocm-core-devel10.1-gfx1200``
+               ``amdrocm-core-devel10.2-gfx1200``
 
             .. selected:: gfx=gfx1100
 
-               ``amdrocm-core-devel10.1-gfx1100``
+               ``amdrocm-core-devel10.2-gfx1100``
 
             .. selected:: gfx=gfx1101
 
-               ``amdrocm-core-devel10.1-gfx1101``
+               ``amdrocm-core-devel10.2-gfx1101``
 
             .. selected:: gfx=gfx1102
 
-               ``amdrocm-core-devel10.1-gfx1102``
+               ``amdrocm-core-devel10.2-gfx1102``
 
             .. selected:: gfx=gfx1103
 
-               ``amdrocm-core-devel10.1-gfx1103``
+               ``amdrocm-core-devel10.2-gfx1103``
 
             .. selected:: gfx=gfx1030
 
-               ``amdrocm-core-devel10.1-gfx1030``
+               ``amdrocm-core-devel10.2-gfx1030``
 
             .. selected:: gfx=gfx1151
 
-               ``amdrocm-core-devel10.1-gfx1151``
+               ``amdrocm-core-devel10.2-gfx1151``
 
             .. selected:: gfx=gfx1150
 
-               ``amdrocm-core-devel10.1-gfx1150``
+               ``amdrocm-core-devel10.2-gfx1150``
 
             .. selected:: gfx=gfx1152
 
-               ``amdrocm-core-devel10.1-gfx1152``
+               ``amdrocm-core-devel10.2-gfx1152``
 
             .. selected:: gfx=gfx1153
 
-               ``amdrocm-core-devel10.1-gfx1153``
+               ``amdrocm-core-devel10.2-gfx1153``
 
             .. selected:: fam=all
 
-               ``amdrocm-core-devel10.1``
+               ``amdrocm-core-devel10.2``
 
          .. matrix-cell:: ROCm Developer Essentials
 
@@ -1361,88 +1361,88 @@ Use the following instructions to install ROCm packages on your system.
          .. matrix-cell::
             :show-cond: gfx=gfx950
 
-            ``amdrocm10.1-gfx950`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx950`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx942
 
-            ``amdrocm10.1-gfx942`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx942`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx90a
 
-            ``amdrocm10.1-gfx90a`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx90a`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx908
 
-            ``amdrocm10.1-gfx908`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx908`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1201
 
-            ``amdrocm10.1-gfx1201`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1201`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1200
 
-            ``amdrocm10.1-gfx1200`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1200`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1100
 
-            ``amdrocm10.1-gfx1100`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1100`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1101
 
-            ``amdrocm10.1-gfx1101`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1101`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1102
 
-            ``amdrocm10.1-gfx1102`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1102`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1103
 
-            ``amdrocm10.1-gfx1103`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1103`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1030
 
-            ``amdrocm10.1-gfx1030`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1030`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1151
 
-            ``amdrocm10.1-gfx1151`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1151`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1150
 
-            ``amdrocm10.1-gfx1150`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1150`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1152
 
-            ``amdrocm10.1-gfx1152`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1152`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: gfx=gfx1153
 
-            ``amdrocm10.1-gfx1153`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2-gfx1153`` plus compilers, CMake configurations, static library files, and headers.
 
          .. matrix-cell::
             :show-cond: fam=all
 
-            ``amdrocm10.1`` plus compilers, CMake configurations, static library files, and headers.
+            ``amdrocm10.2`` plus compilers, CMake configurations, static library files, and headers.
 
       .. matrix-row::
 
          .. matrix-cell::
 
-            ``amdrocm-developer-tools10.1``
+            ``amdrocm-developer-tools10.2``
 
          .. matrix-cell:: ROCm Profiler
 
@@ -1454,7 +1454,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. matrix-cell::
 
-            ``amdrocm-opencl10.1``
+            ``amdrocm-opencl10.2``
 
          .. matrix-cell:: ROCm OpenCL
 
@@ -1467,82 +1467,82 @@ Use the following instructions to install ROCm packages on your system.
          .. matrix-cell::
             :show-cond: gfx=gfx950
 
-            ``amdrocm-core-sdk10.1-gfx950``
+            ``amdrocm-core-sdk10.2-gfx950``
 
          .. matrix-cell::
             :show-cond: gfx=gfx942
 
-            ``amdrocm-core-sdk10.1-gfx942``
+            ``amdrocm-core-sdk10.2-gfx942``
 
          .. matrix-cell::
             :show-cond: gfx=gfx90a
 
-            ``amdrocm-core-sdk10.1-gfx90a``
+            ``amdrocm-core-sdk10.2-gfx90a``
 
          .. matrix-cell::
             :show-cond: gfx=gfx908
 
-            ``amdrocm-core-sdk10.1-gfx908``
+            ``amdrocm-core-sdk10.2-gfx908``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1201
 
-            ``amdrocm-core-sdk10.1-gfx1201``
+            ``amdrocm-core-sdk10.2-gfx1201``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1200
 
-            ``amdrocm-core-sdk10.1-gfx1200``
+            ``amdrocm-core-sdk10.2-gfx1200``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1100
 
-            ``amdrocm-core-sdk10.1-gfx1100``
+            ``amdrocm-core-sdk10.2-gfx1100``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1101
 
-            ``amdrocm-core-sdk10.1-gfx1101``
+            ``amdrocm-core-sdk10.2-gfx1101``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1102
 
-            ``amdrocm-core-sdk10.1-gfx1102``
+            ``amdrocm-core-sdk10.2-gfx1102``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1103
 
-            ``amdrocm-core-sdk10.1-gfx1103``
+            ``amdrocm-core-sdk10.2-gfx1103``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1030
 
-            ``amdrocm-core-sdk10.1-gfx1030``
+            ``amdrocm-core-sdk10.2-gfx1030``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1151
 
-            ``amdrocm-core-sdk10.1-gfx1151``
+            ``amdrocm-core-sdk10.2-gfx1151``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1150
 
-            ``amdrocm-core-sdk10.1-gfx1150``
+            ``amdrocm-core-sdk10.2-gfx1150``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1152
 
-            ``amdrocm-core-sdk10.1-gfx1152``
+            ``amdrocm-core-sdk10.2-gfx1152``
 
          .. matrix-cell::
             :show-cond: gfx=gfx1153
 
-            ``amdrocm-core-sdk10.1-gfx1153``
+            ``amdrocm-core-sdk10.2-gfx1153``
 
          .. matrix-cell::
             :show-cond: fam=all
 
-            ``amdrocm-core-sdk10.1``
+            ``amdrocm-core-sdk10.2``
 
          .. matrix-cell:: ROCm Full Suite
 
@@ -1556,7 +1556,7 @@ Use the following instructions to install ROCm packages on your system.
 
          The following are not supported on WSL2 in ROCm |ROCM_VERSION|:
 
-         - **Profiling**, including the tools in ``amdrocm-developer-tools10.1``
+         - **Profiling**, including the tools in ``amdrocm-developer-tools10.2``
          - **GPU debugging** -- ``rocgdb`` and ``rocm-debug-agent`` require the
            KFD debug interface, which WSL2 does not provide
          - **KFD-dependent tooling** -- tools that rely on ``/dev/kfd`` or amdgpu

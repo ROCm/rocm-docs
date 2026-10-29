@@ -103,7 +103,7 @@ Substitute the installer ``.run`` filename for the following placeholder:
 
    <installer-file>  = The installer .run file
 
-For example, to download the ROCm 10.1 Runfile Installer:
+For example, to download the ROCm 10.2 Runfile Installer:
 
 .. code-block:: shell
 
