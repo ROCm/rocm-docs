@@ -321,4 +321,14 @@ ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/Th
 
 ## ROCm resolved issues
 
-The following notable issues have been fixed in ROCm 10.1.0.
+The following notable issues have been fixed in ROCm {{ ROCM_VERSION }}.
+
+## ROCm upcoming changes
+
+### LLVM symbolic links
+
+The compiler is enabling `-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=On`. This option moves LLVM runtime libraries one level deeper, from `lib/llvm/lib` to `lib/llvm/lib/x86_64-unknown-linux-gnu`, and adds an `x86_64-unknown-linux-gnu` directory to the Clang resource directory containing `compiler_rt` and sanitizer libraries.
+
+To maintain backwards compatibility with older 10.x releases, symbolic links are installed in `lib/llvm/lib` for libraries that moved into `lib/llvm/lib/x86_64-unknown-linux-gnu`. A symbolic link `x86_64-pc-linux-gnu -> x86_64-unknown-linux-gnu` is also added to the Clang resource directory so that projects hardcoding `-target x86_64-pc-linux-gnu` continue to function.
+
+These symbolic links will be removed in the next major version of ROCm.
