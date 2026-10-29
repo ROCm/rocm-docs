@@ -192,6 +192,11 @@ The following are notable changes to AMD SMI:
 
 ### Libraries
 
+#### rocPRIM improves device scan throughput (ROCM-28668)
+
+rocPRIM device-wide scan operations run faster on AMD Instinct MI325X and MI300X GPUs, increasing throughput particularly for 1-, 2-, and 4-byte integer types.
+
+
 (release-supported-hw)=
 
 ## AMD hardware support
