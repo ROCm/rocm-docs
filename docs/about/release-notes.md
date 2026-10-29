@@ -72,7 +72,16 @@ GPU partitioning support remains unchanged in this release. For details, see [GP
 
 ### AI inference and frameworks
 
-Framework support remains unchanged in this release. For details, see [AI ecosystem support](#ai-ecosystem-support).
+This release enables support for the following frameworks:
+
+* PyTorch 2.15.0
+* JAX 0.11.2
+* vLLM 0.32.0
+* SGLang 0.5.21
+
+The updated framework support replaces the previous PyTorch 2.12.0, JAX 0.11.0, vLLM 0.29.0, and SGLang 0.5.18 support.
+
+For details, see [AI ecosystem support](#ai-ecosystem-support).
 
 ### Runtime and compilers
 
