@@ -89,21 +89,17 @@ For details, see [AI ecosystem support](#ai-ecosystem-support).
 
 The following are notable enhancements to HIP:
 
-##### HIP preserves location of imported virtual memory handles
+##### Select the target HIP API version with `HIP_TARGET_API_VERSION`
 
-`hipMemGetAllocationPropertiesFromHandle` now correctly reports `hipMemLocationTypeHost` for host-backed allocations imported with `hipMemImportFromShareableHandle`, so applications can reliably identify whether an imported allocation resides in host or device memory. For device-backed allocations, the API reports the owning device.
+The new `HIP_TARGET_API_VERSION` macro lets you select the target HIP API version at compile time, which helps maintain source compatibility for applications written against older API versions. For example, when targeting HIP API version `800` or later, `hipMemAdvise` aliases `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID. Applications using the legacy signature might need source updates. To keep the previous signature, define `HIP_TARGET_API_VERSION` to a nonzero value less than 800 at compile time, such as `700` for HIP 7.0 or `717` for HIP 7.17.
 
-##### HIP adds module and library management APIs
+##### New module, library, and kernel APIs
 
-HIP adds APIs for working with loaded modules and libraries. `hipModuleEnumerateFunctions` returns the function handles defined in a loaded module, so applications no longer need to know kernel names ahead of time. `hipLibraryGetModule` returns the module handle associated with a library, and `hipKernelSetAttributeForDevice` sets a device-wide attribute for a kernel on a specific device.
+New APIs provide more control over modules, libraries, and kernels. `hipModuleEnumerateFunctions` returns the function handles defined in a loaded module, so applications no longer need to know kernel names ahead of time. `hipLibraryGetModule` returns the module handle associated with a library, and `hipKernelSetAttributeForDevice` sets a device-wide attribute for a kernel on a specific device.
 
-##### HIP adds HIP_TARGET_API_VERSION for source compatibility
+##### Device-side fault reporting on WSL 2
 
-The new `HIP_TARGET_API_VERSION` macro lets you select the HIP API version at compile time, which helps maintain source compatibility with applications built against older HIP API versions. For example, `hipMemAdvise` now aliases `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID, so applications that use the legacy signature might require source updates. To keep the previous signature, define `HIP_TARGET_API_VERSION` to a nonzero value less than 800 at compile time, such as `700` for HIP 7.0 or `717` for HIP 7.17.
-
-##### HIP reports device-side faults on WSL 2
-
-HIP on WSL 2 now prevents indefinite application hangs and reports errors for device-side faults, including out-of-bounds writes, null pointer dereferences, and device asserts.
+HIP now reports errors for device-side out-of-bounds writes, null pointer dereferences, and asserts on WSL 2, rather than leaving affected applications hanging.
 
 For more information, see the [HIP section](#hip-10-2-0) in the ROCm component changelogs.
 
@@ -201,7 +197,17 @@ ROCm Systems Profiler supports AMD Infinity Storage™ technology I/O telemetry.
 
 `rocprof-sys-attach` can now attach to a process running in a containerized environment. For details, see [Attaching to a running process](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/attaching-to-running-process.html).
 
-For more information, see the ROCm Systems Profiler section in the ROCm component changelogs.
+##### Agent Skills for AI coding assistants
+
+ROCm Systems Profiler skills are now available in the [AMD Skills](https://github.com/amd/skills) repository. With the skills installed, your AI coding assistant can help you:
+
+* Choose a profiling preset (`choosing-a-profiling-preset`): pick the built-in preset that fits your workload, such as an AI training job, an MPI or HPC application, or a low-overhead production run, and get the exact command to run.
+
+* Discover profiling options (`discovering-profiling-options`): find out which hardware counters or ROCm APIs are available on your machine and which command to use.
+
+* Instrument binaries (`instrumenting-binaries`): instrument an application at runtime or by rewriting the binary, include or exclude functions and modules, preview with a dry run, and balance detail against overhead.
+
+For more information, see the [ROCm Systems Profiler section](#rocm-systems-profiler-1-10-0) in the ROCm component changelogs.
 
 ### Control and monitoring tools
 
@@ -209,9 +215,133 @@ For more information, see the ROCm Systems Profiler section in the ROCm componen
 
 The following are notable changes to AMD SMI:
 
+##### Node power management
+
+Node power management (NPM) now lets you set a node-wide power limit in watts, read the node's current power draw, and choose the node's balancing mode, so you can keep an AMD Instinct MI455X GPU node within its power budget without setting a separate limit for each GPU. This is available on bare-metal Linux through the C API and the `amd-smi` CLI.
+
+- **Set the limit and read node power:** Use `amdsmi_set_npm_limit()` or `amd-smi set --node-power-limit` to apply a limit across the whole node. Setting the limit requires root or `CAP_SYS_ADMIN` privileges. `amdsmi_get_npm_info()` and `amd-smi node -p` report the node's current power, queried once per node rather than once per GPU.
+- **Choose a balancing mode:** Use `amdsmi_set_npm_balancing_mode()` or `amd-smi set --node-balancing-mode` to switch between power balancing (the default) and frequency balancing. Setting the mode requires elevated privileges and NPM to be enabled.
+
+##### Power profile management
+
+You can now discover, activate, and configure the driver's predefined power and performance profiles (AMPP, the AMD SMI power profile) from both the C API and the CLI. Profiles, fields, and units are enumerated at runtime, so your tools pick up whatever the driver exposes without hard-coded profile lists.
+
+- **Inspect:** `amd-smi static --ampp` shows each profile's state and fields.
+- **Activate and configure:** `amd-smi set --ampp-activate` activates a profile, and `amd-smi set --ampp-configure` sets its field values.
+- **Restore:** `amd-smi set --ampp-configure @<path>` reapplies the settings recorded in a saved `amd-smi static --ampp --json` file. It applies only what the file contains.
+
+The existing `amdsmi_*_gpu_power_profile*` preset-mask API is unchanged.
+
+##### Link topology API on bare metal
+
+The new `amdsmi_get_link_topology()` API on bare-metal systems lets you query the link between two GPUs with one call. It returns link weight, status, type, hop count, and framebuffer-sharing data, and matches the existing host interface. Python and Rust bindings are included.
+
+##### Fabric link events in RAS reporting
+
+`amd-smi ras --cper` now reports fabric link events (link down, link up, and fatal) alongside GPU errors, so you can see fabric faults and GPU errors in the same Common Platform Error Record (CPER) output. The new `amdsmi_get_fabric_cper_entries()` API retrieves the fabric reliability, availability, and serviceability (RAS) CPER records programmatically.
+
+##### Energy counter API now available on AMD Radeon GPUs
+
+`amdsmi_get_energy_count` now returns valid data on supported AMD Radeon GPUs in bare-metal and pass-through environments, so you can track cumulative energy use and calculate average power draw between readings on Radeon platforms. Previously, the API was available only on AMD Instinct GPUs.
+
+The API now reports:
+
+- `energy_accumulator`: the cumulative energy counter, sourced from GPU metrics.
+- `counter_resolution`: the unit of the counter, so you can convert raw counts to joules.
+- `timestamp`: the time of each reading. Divide the change in energy by the change in time between two calls to get power.
+
+##### CLI exit codes and output changes (breaking changes)
+
+The `amd-smi` CLI now returns more specific exit codes, a structured error format, and less N/A output, which can affect scripts that parse its output or check `$?`:
+
+- **Exit codes:** Exit codes now identify the failure type more precisely and match the `code` printed in the error message. `amd-smi ras` also exits non-zero when a CPER file fails to decode, where it previously exited `0`. `set` and `reset` commands continue past a per-device failure instead of stopping.
+- **Error messages:** Messages now read `[AMDSMI_STATUS_<name>] <message>`, and `--json` and `--csv` errors gain new fields.
+- **Metric output:** `amd-smi metric` omits fields that show N/A in human-readable output. Use `--show-unsupported` to restore them. JSON and CSV output are unchanged.
+
+For more information, see the AMD SMI section in the ROCm component changelogs.
+
 ### Libraries
 
-#### rocPRIM improves device scan throughput (ROCM-28668)
+#### hipBLASLt feature highlights
+
+The following are notable enhancements to hipBLASLt:
+
+##### Complex GEMM support
+
+Scientific and engineering applications can now run single-precision (CGEMM) and double-precision (ZGEMM) complex matrix multiplications on AMD Instinct MI350 Series and MI300 Series GPUs (gfx950 and gfx942). Support covers the `HIP_C_32F` and `HIP_C_64F` data types and transpose and conjugate-transpose combinations of the A and B matrices. Complex GEMM solutions are also available through rocBLAS. Performance tuning for specific shapes is ongoing.
+
+##### Smaller installed package size
+
+Solution selection catalogs are zlib-compressed and installed as `.dat.zlib` files in Debian and RPM packages. hipSPARSELt also loads catalogs in this format. Catalogs are decompressed on first use, which can add initial overhead; subsequent calls are unaffected.
+
+##### Sub-matrix offsets for batched GEMM
+
+General batched GEMM accepts 64-bit element offsets into sub-matrices, so you can run a batched GEMM on a sub-matrix of a larger pre-allocated buffer without copying data. This is available on gfx942, gfx950, and gfx1250.
+
+- **Matrix layout attribute:** To apply an offset, set `HIPBLASLT_MATRIX_LAYOUT_OFFSET` on the matrix layout.
+- **Requirements:** Nonzero offsets require `HIPBLASLT_BATCH_MODE_POINTER_ARRAY`. For strided batched GEMM, use the stride instead. A nonzero offset with the sub-byte MX types `HIP_R_6F_E2M3`, `HIP_R_6F_E3M2`, or `HIP_R_4F_E2M1` returns `HIPBLAS_STATUS_NOT_SUPPORTED`.
+- **Benchmarking:** `hipblaslt-bench` supports the new `batch_offset_a`, `batch_offset_b`, `batch_offset_c`, and `batch_offset_d` arguments.
+
+For more information, see the hipBLASLt section in the ROCm component changelogs.
+
+#### rocFFT feature highlights
+
+The following are notable enhancements to rocFFT:
+
+##### Just-in-time (JIT) callbacks work with multi-GPU transforms
+
+JIT load and store callbacks, set with `rocfft_plan_description_set_load_callback` and `rocfft_plan_description_set_store_callback`, can be used on multi-GPU transforms that use fields, removing the earlier restriction. Function pointer callbacks set with the deprecated `rocfft_execution_info_set_load_callback` and `rocfft_execution_info_set_store_callback` APIs remain unsupported with fields, so use the JIT callback APIs instead.
+
+##### Very large transforms run with 64-bit indexing only where needed
+
+64-bit index arithmetic is now selected automatically for transforms large enough to overflow 32-bit addressing, so very large transforms, including lengths greater than 2^32, can run. Smaller transforms continue to use 32-bit arithmetic.
+
+For more information, see the rocFFT section in the ROCm component changelogs.
+
+#### rocALUTION feature highlights
+
+The following are notable enhancements to rocALUTION:
+
+##### Interpolation operators and truncation for Ruge-Stueben algebraic multigrid
+
+Select the new matrix-matrix based interpolation operators `MMExtPI` and `MMExtPE` for Ruge-Stueben algebraic multigrid (AMG) through `RugeStuebenAMG::SetInterpolationType()`. To truncate the interpolation operator, use `RugeStuebenAMG::SetInterpolationTruncationFactor()` to drop entries that are small relative to the largest entry in their row, and `RugeStuebenAMG::SetInterpolationMaxElmts()` to cap the number of entries per row.
+
+##### Depth limit for AMG hierarchies
+
+`BaseAMG::SetMaxLevels()` limits the number of levels in an AMG hierarchy. Combine it with another AMG solver as the coarse grid solver to build hybrid hierarchies, such as unsmoothed aggregation on the finest levels followed by Ruge-Stueben AMG on the coarser levels. The new `cg-uaamg-rsamg` sample demonstrates this configuration.
+
+For more information, see the rocALUTION section in the ROCm component changelogs.
+
+#### rocSPARSE feature highlights
+
+The following are notable enhancements to rocSPARSE:
+
+##### Strided batched sparse triangular solve
+
+`rocsparse_sptrsm` now supports strided batched execution, so you can solve independent sparse triangular systems with a single call instead of looping over the batch on the host.
+
+- **Formats:** Batched solves support CSR, CSC, and COO matrices.
+- **Broadcast inputs:** A zero batch stride lets you share the sparse matrix or the dense matrices across the batch.
+- **Diagonal solves:** Batched execution also supports diagonal-only solves.
+
+##### Generic sort routine
+
+The new `rocsparse_spsort` generic API sorts COO, CSR, and CSC matrices through one routine instead of the format-specific `rocsparse_csrsort`, `rocsparse_cscsort`, and `rocsparse_coosort_by_*` routines. You can sort in place or into a separate target matrix. The routine also supports uniform strided batches, including broadcasting one source matrix across the target batch.
+
+##### Triangular solve and factorization optimizations
+
+rocSPARSE reduces analysis-phase and solve-phase time for sparse triangular solves and incomplete factorizations on AMD Instinct MI300 Series and MI350 Series GPUs (gfx942 and gfx950). This covers `rocsparse_spsv`, `rocsparse_sptrsv`, `rocsparse_spsm`, `rocsparse_sptrsm`, `rocsparse_spilu0`, `rocsparse_spic0`, and `rocsparse_spildlt0`, as well as affected CSR and BSR routines.
+
+- **BSR block sizes:** Solve-phase improvements apply up to block size 32 for `rocsparse_Xbsrsv_solve`, 8 for `rocsparse_Xbsrilu0`, and 16 for `rocsparse_Xbsric0` with at most 128 blocks per block row. Larger block sizes and `rocsparse_Xbsrsm_solve` are unchanged in the solve phase.
+- **Smaller gains:** Matrices with fewer than about 1,000 rows per level, such as those with long dependency chains, see smaller gains.
+
+##### SpGEMM optimization for large output rows
+
+rocSPARSE improves sparse matrix-matrix multiplication (SpGEMM) performance for output rows too large for the shared-memory hash tables. Workloads that produce long, wide output rows, such as algebraic multigrid (AMG) setup in rocALUTION, can particularly benefit. This applies to `rocsparse_spgemm` for CSR and BSR matrices and to `rocsparse_Xcsrgemm` and `rocsparse_Xbsrgemm`, including their stage routines such as `rocsparse_csrgemm_nnz`. For BSR matrices with a block dimension greater than 1, only `rocsparse_bsrgemm_nnzb` is affected.
+
+For more information, see the rocSPARSE section in the ROCm component changelogs.
+
+#### rocPRIM improves device scan throughput
 
 rocPRIM device-wide scan operations run faster on AMD Instinct MI325X and MI300X GPUs, increasing throughput particularly for 1-, 2-, and 4-byte integer types.
 
