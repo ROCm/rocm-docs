@@ -109,6 +109,10 @@ For more information, see the [HIP section](#hip-10-2-0) in the ROCm component c
 
 ### Profiling and debugging tools
 
+```{note}
+ROCm Compute Profiler and ROCm Systems Profiler don't support WSL 2, although the ROCm Core SDK supports WSL 2 for other components. To profile an application, use a native Linux system.
+```
+
 #### ROCprofiler-SDK feature highlights
 
 The following are notable enhancements to ROCprofiler-SDK:
