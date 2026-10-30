@@ -1,6 +1,6 @@
 matrix:
 - name: Markdown
-  # _merge_mode: overwrite
+  _merge_mode: overwrite
   sources:
   - ['docs/**/*.md', '!docs/about/include/core-sdk-components-aggregated-changelog.md']
   - ['tools/autotag/templates/**/*.md', '!tools/autotag/templates/**/5*.md', '!tools/autotag/templates/**/6.0*.md', '!tools/autotag/templates/**/6.1*.md']
