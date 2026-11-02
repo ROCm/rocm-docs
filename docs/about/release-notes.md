@@ -29,7 +29,7 @@ This release expands GPU, operating system, and virtualization support.
 
 #### Expanded AMD GPU support
 
-ROCm {{ ROCM_VERSION }} adds support for the following AMD Ryzen GPUs:
+ROCm {{ ROCM_VERSION }} adds support for the following AMD APUs:
 
 - [AMD Ryzen 7 PRO 253](https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-253.html)
 - [AMD Ryzen 7 PRO 249](https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-249.html)
