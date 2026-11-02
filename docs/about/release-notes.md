@@ -64,7 +64,19 @@ For the full list of supported Linux distributions, see [Operating system suppor
 
 #### Expanded GPU virtualization support for Instinct and Radeon GPUs
 
-Virtualization support remains unchanged in this release. For details, see [GPU virtualization support](#gpu-virtualization-support).
+ROCm {{ ROCM_VERSION }} adds support for the following virtualization configurations on AMD Instinct and Radeon GPUs:
+
+**Instinct**
+
+* On AMD Instinct MI350P:
+  * KVM SR-IOV with Ubuntu 24.04 host OS and Ubuntu 24.04 guest OS.
+
+**Radeon**
+
+* On AMD Radeon PRO W7800, W7900, and W7900DS:
+  * KVM Passthrough with Ubuntu 24.04 or Ubuntu 26.04 host OS and Ubuntu 24.04 or Ubuntu 26.04 guest OS.
+
+Supported Single Root I/O Virtualization (SR-IOV) configurations require the [AMD GPU Virtualization Driver (GIM) 9.4.0.K](https://mkmartifactory.amd.com:8443/artifactory/sw-virt-prod-local/KVM_OpenSource_Releases/9.4.0.K/). For details, see [GPU virtualization support](#gpu-virtualization-support).
 
 #### GPU partitioning support update
 
@@ -391,7 +403,7 @@ ROCm requires a coordinated stack of compatible firmware, driver, and user-space
 
 ## GPU virtualization support
 
-AMD Instinct and Radeon GPUs support virtualization in the following configurations. Supported SR-IOV configurations require the AMD GPU Virtualization Driver (GIM) 9.3.0.K—see the [AMD Instinct Virtualization Driver documentation](https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.3.0.k/) for more information.
+AMD Instinct and Radeon GPUs support virtualization in the following configurations. Supported SR-IOV configurations require the AMD GPU Virtualization Driver (GIM) 9.4.0.K. See the [AMD Instinct Virtualization Driver documentation](https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.4.0.k/) for more information.
 
 ```{datatemplate:yaml} /data/virtualization-support.yaml
 :template: virtualization-support-table.md.jinja
