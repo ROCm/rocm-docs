@@ -2000,7 +2000,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-multiarch-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-multiarch-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2011,7 +2011,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx950-dcgpu-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx950-dcgpu-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2022,7 +2022,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx94X-dcgpu-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx94X-dcgpu-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2032,7 +2032,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx90a-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx90a-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2042,7 +2042,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx908-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx908-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2052,7 +2052,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx120X-all-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx120X-all-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2062,7 +2062,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx110X-all-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx110X-all-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2072,7 +2072,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx103X-all-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx103X-all-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2083,7 +2083,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1151-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1151-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2094,7 +2094,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1150-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1150-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2105,7 +2105,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1152-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1152-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2116,7 +2116,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1153-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1153-10.2.0rc1.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2130,88 +2130,88 @@ Use the following instructions to install ROCm packages on your system.
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-multiarch-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-multiarch-10.2.0.tar.gz
-            tar -xzf therock-dist-windows-multiarch-10.2.0.tar.gz -C build --strip-components=1
+            curl -o therock-dist-windows-multiarch-10.2.0rc1.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-multiarch-10.2.0rc1.tar.gz
+            tar -xzf therock-dist-windows-multiarch-10.2.0rc1.tar.gz -C build --strip-components=1
 
-         - Download link: `therock-dist-windows-multiarch-10.2.0.tar.gz
-           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-multiarch-10.2.0.tar.gz>`__
+         - Download link: `therock-dist-windows-multiarch-10.2.0rc1.tar.gz
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-multiarch-10.2.0rc1.tar.gz>`__
 
       .. selected:: gfx=gfx1201 gfx=gfx1200
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx120X-all-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx120X-all-10.2.0.tar.gz
-            tar -xzf therock-dist-windows-gfx120X-all-10.2.0.tar.gz -C build --strip-components=1
+            curl -o therock-dist-windows-gfx120X-all-10.2.0rc1.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx120X-all-10.2.0rc1.tar.gz
+            tar -xzf therock-dist-windows-gfx120X-all-10.2.0rc1.tar.gz -C build --strip-components=1
 
-         - Download link: `therock-dist-windows-gfx120X-all-10.2.0.tar.gz
-           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx120X-all-10.2.0.tar.gz>`__
+         - Download link: `therock-dist-windows-gfx120X-all-10.2.0rc1.tar.gz
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx120X-all-10.2.0rc1.tar.gz>`__
 
       .. selected:: gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx110X-all-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx110X-all-10.2.0.tar.gz
-            tar -xzf therock-dist-windows-gfx110X-all-10.2.0.tar.gz -C build --strip-components=1
+            curl -o therock-dist-windows-gfx110X-all-10.2.0rc1.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx110X-all-10.2.0rc1.tar.gz
+            tar -xzf therock-dist-windows-gfx110X-all-10.2.0rc1.tar.gz -C build --strip-components=1
 
-         - Download link: `therock-dist-windows-gfx110X-all-10.2.0.tar.gz
-           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx110X-all-10.2.0.tar.gz>`__
+         - Download link: `therock-dist-windows-gfx110X-all-10.2.0rc1.tar.gz
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx110X-all-10.2.0rc1.tar.gz>`__
 
       .. selected:: gfx=gfx1030
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx103X-all-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx103X-all-10.2.0.tar.gz
-            tar -xzf therock-dist-windows-gfx103X-all-10.2.0.tar.gz -C build --strip-components=1
+            curl -o therock-dist-windows-gfx103X-all-10.2.0rc1.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx103X-all-10.2.0rc1.tar.gz
+            tar -xzf therock-dist-windows-gfx103X-all-10.2.0rc1.tar.gz -C build --strip-components=1
 
-         - Download link: `therock-dist-windows-gfx103X-all-10.2.0.tar.gz
-           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx103X-all-10.2.0.tar.gz>`__
+         - Download link: `therock-dist-windows-gfx103X-all-10.2.0rc1.tar.gz
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx103X-all-10.2.0rc1.tar.gz>`__
 
       .. selected:: gfx=gfx1151
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx1151-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1151-10.2.0.tar.gz
-            tar -xzf therock-dist-windows-gfx1151-10.2.0.tar.gz -C build --strip-components=1
+            curl -o therock-dist-windows-gfx1151-10.2.0rc1.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1151-10.2.0rc1.tar.gz
+            tar -xzf therock-dist-windows-gfx1151-10.2.0rc1.tar.gz -C build --strip-components=1
 
-         - Download link: `therock-dist-windows-gfx1151-10.2.0.tar.gz
-           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1151-10.2.0.tar.gz>`__
+         - Download link: `therock-dist-windows-gfx1151-10.2.0rc1.tar.gz
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1151-10.2.0rc1.tar.gz>`__
 
       .. selected:: gfx=gfx1150
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx1150-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1150-10.2.0.tar.gz
-            tar -xzf therock-dist-windows-gfx1150-10.2.0.tar.gz -C build --strip-components=1
+            curl -o therock-dist-windows-gfx1150-10.2.0rc1.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1150-10.2.0rc1.tar.gz
+            tar -xzf therock-dist-windows-gfx1150-10.2.0rc1.tar.gz -C build --strip-components=1
 
-         - Download link: `therock-dist-windows-gfx1150-10.2.0.tar.gz
-           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1150-10.2.0.tar.gz>`__
+         - Download link: `therock-dist-windows-gfx1150-10.2.0rc1.tar.gz
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1150-10.2.0rc1.tar.gz>`__
 
       .. selected:: gfx=gfx1152
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx1152-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1152-10.2.0.tar.gz
-            tar -xzf therock-dist-windows-gfx1152-10.2.0.tar.gz -C build --strip-components=1
+            curl -o therock-dist-windows-gfx1152-10.2.0rc1.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1152-10.2.0rc1.tar.gz
+            tar -xzf therock-dist-windows-gfx1152-10.2.0rc1.tar.gz -C build --strip-components=1
 
-         - Download link: `therock-dist-windows-gfx1152-10.2.0.tar.gz
-           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1152-10.2.0.tar.gz>`__
+         - Download link: `therock-dist-windows-gfx1152-10.2.0rc1.tar.gz
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1152-10.2.0rc1.tar.gz>`__
 
       .. selected:: gfx=gfx1153
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx1153-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1153-10.2.0.tar.gz
-            tar -xzf therock-dist-windows-gfx1153-10.2.0.tar.gz -C build --strip-components=1
+            curl -o therock-dist-windows-gfx1153-10.2.0rc1.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1153-10.2.0rc1.tar.gz
+            tar -xzf therock-dist-windows-gfx1153-10.2.0rc1.tar.gz -C build --strip-components=1
 
-         - Download link: `therock-dist-windows-gfx1153-10.2.0.tar.gz
-           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1153-10.2.0.tar.gz>`__
+         - Download link: `therock-dist-windows-gfx1153-10.2.0rc1.tar.gz
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1153-10.2.0rc1.tar.gz>`__
 
 .. ================================================================== RUNFILE ==
 
