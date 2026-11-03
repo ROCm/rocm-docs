@@ -1761,7 +1761,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-all]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-all]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1774,7 +1774,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx950]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx950]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1787,7 +1787,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx942]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx942]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1799,7 +1799,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx90a]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx90a]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1811,7 +1811,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx908]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx908]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1824,7 +1824,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1201]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1201]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1837,7 +1837,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1200]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1200]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1849,7 +1849,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1100]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1100]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1861,7 +1861,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1101]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1101]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1873,7 +1873,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1102]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1102]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1885,7 +1885,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1103]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1103]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1897,7 +1897,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1030]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1030]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1910,7 +1910,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1151]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1151]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1923,7 +1923,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1150]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1150]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1936,7 +1936,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1152]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1152]==10.2.0rc1"
 
    .. selected:: gfx=gfx1153
 
@@ -1947,7 +1947,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1153]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1153]==10.2.0rc1"
 
       .. include:: include/pip-packages-table.rst
 
