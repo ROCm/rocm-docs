@@ -473,8 +473,12 @@ The following notable issues have been fixed in ROCm {{ ROCM_VERSION }}.
 
 ### LLVM symbolic links
 
-The compiler is enabling `-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=On`. This option moves LLVM runtime libraries one level deeper, from `lib/llvm/lib` to `lib/llvm/lib/x86_64-unknown-linux-gnu`, and adds an `x86_64-unknown-linux-gnu` directory to the Clang resource directory containing `compiler_rt` and sanitizer libraries.
+The compiler enables `-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=On`, which moves LLVM runtime libraries one level deeper, from `lib/llvm/lib` to `lib/llvm/lib/x86_64-unknown-linux-gnu`, and adds an `x86_64-unknown-linux-gnu` directory to the Clang resource directory containing `compiler_rt` and sanitizer libraries.
 
-To maintain backwards compatibility with older 10.x releases, symbolic links are installed in `lib/llvm/lib` for libraries that moved into `lib/llvm/lib/x86_64-unknown-linux-gnu`. A symbolic link `x86_64-pc-linux-gnu -> x86_64-unknown-linux-gnu` is also added to the Clang resource directory so that projects hardcoding `-target x86_64-pc-linux-gnu` continue to function.
+To maintain backwards compatibility with older 10.x releases, the following symbolic links are installed:
+
+* Symbolic links in `lib/llvm/lib` for libraries that moved into `lib/llvm/lib/x86_64-unknown-linux-gnu`.
+* `x86_64-pc-linux-gnu -> x86_64-unknown-linux-gnu` in the Clang resource directory, so that projects hardcoding `-target x86_64-pc-linux-gnu` continue to function.
+* `libclang_rt*` in `lib/llvm/lib/clang/24/lib/linux`, pointing into the `x86_64-unknown-linux-gnu` directory one level up.
 
 These symbolic links will be removed in the next major version of ROCm.
