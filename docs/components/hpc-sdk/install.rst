@@ -105,8 +105,7 @@ Install HPC SDK
 
    The standard ROCm tarball installation includes the HPC SDK. No
    additional steps are required. For details on ROCm tarball installation,
-   refer to `Install AMD ROCm 10.2.0
-   <https://rocm.docs.amd.com/en/docs-10.2.0/install/rocm.html>`__ and
+   refer to :doc:`Install AMD ROCm 10.2.0 </install/rocm>` and
    select **Tarball** installation method from installation environment
    selector.
 
