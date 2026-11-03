@@ -7,13 +7,13 @@ Installation
 
       If you have ROCm 7.2.4 or older installed, please uninstall it before proceeding.
 
-.. selected:: os=rhel rhel-ver=10.0 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10 rhel-ver=10.2 rhel-ver=10.3 rhel-ver=9.8 rhel-ver=9.9 i=pkgman i=runfile
+.. selected:: os=rhel rhel-ver=10.0 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10 rhel-ver=10.2 rhel-ver=9.8 i=pkgman i=runfile
 
    .. note::
 
       If you have ROCm 7.2.4 or older installed, please uninstall it before proceeding.
 
-.. selected:: os=sles sles-ver=15.7 sles-ver=16.0 sles-ver=16.1 i=pkgman i=runfile
+.. selected:: os=sles sles-ver=15.7 sles-ver=16.0 i=pkgman i=runfile
 
    .. note::
 
@@ -44,7 +44,7 @@ Installation
 
    .. code-block:: bash
 
-      wget https://stable.repo.amd.com/rocm/core/linux-installers/rocm-installer-10.2.0-5.run
+      wget https://rc.repo.amd.com/rocm/core/linux-installers/rocm-installer-10.2.0-5.run
 
 .. selected:: i=amdgpu-install
 
@@ -82,13 +82,6 @@ Installation
 
       .. selected:: os=rhel
 
-         .. selected:: rhel-ver=10.3
-
-            .. code-block:: bash
-
-               wget https://repo.radeon.com/amdgpu-install/31.70/rhel/10.3/amdgpu-install-31.70.317000-1.el10.noarch.rpm
-               sudo dnf install ./amdgpu-install-31.70.317000-1.el10.noarch.rpm
-
          .. selected:: rhel-ver=10.2
 
             .. code-block:: bash
@@ -102,13 +95,6 @@ Installation
 
                wget https://repo.radeon.com/amdgpu-install/31.70/rhel/10.0/amdgpu-install-31.70.317000-1.el10.noarch.rpm
                sudo dnf install ./amdgpu-install-31.70.317000-1.el10.noarch.rpm
-
-         .. selected:: rhel-ver=9.9
-
-            .. code-block:: bash
-
-               wget https://repo.radeon.com/amdgpu-install/31.70/rhel/9.9/amdgpu-install-31.70.317000-1.el9.noarch.rpm
-               sudo dnf install ./amdgpu-install-31.70.317000-1.el9.noarch.rpm
 
          .. selected:: rhel-ver=9.8
 
@@ -166,7 +152,7 @@ Installation
             .. selected:: ubuntu-ver=24.04.5
 
                Supported Ryzen APUs require the inbox kernel driver included with
-               Ubuntu 24.04.4.
+               Ubuntu 24.04.5.
 
          .. selected:: os=debian
 
@@ -266,7 +252,7 @@ Installation
             .. selected:: ubuntu-ver=24.04.5
 
                   Supported Ryzen APUs require the inbox kernel driver included with
-                  Ubuntu 24.04.4.
+                  Ubuntu 24.04.5.
 
    .. selected:: i=runfile
       :heading: Install the kernel driver
@@ -315,13 +301,13 @@ Use the following instructions to install ROCm packages on your system.
 
                # Download and install GPG key
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/ubuntu2604/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/ubuntu2604/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -339,13 +325,13 @@ Use the following instructions to install ROCm packages on your system.
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
 
                # ROCm release signing key
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/ubuntu2604/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/ubuntu2604/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -363,13 +349,13 @@ Use the following instructions to install ROCm packages on your system.
 
                # Download and install GPG key
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/ubuntu2404/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/ubuntu2404/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -387,13 +373,13 @@ Use the following instructions to install ROCm packages on your system.
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
 
                # ROCm release signing key
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/ubuntu2404/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/ubuntu2404/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -411,13 +397,13 @@ Use the following instructions to install ROCm packages on your system.
 
                # Download and install GPG key
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/ubuntu2204/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/ubuntu2204/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -435,13 +421,13 @@ Use the following instructions to install ROCm packages on your system.
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
 
                # ROCm release signing key
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/ubuntu2204/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/ubuntu2204/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -464,13 +450,13 @@ Use the following instructions to install ROCm packages on your system.
 
                # Download and install GPG key
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/debian13/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/debian13/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -486,13 +472,13 @@ Use the following instructions to install ROCm packages on your system.
 
                # Download and install GPG key
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/debian13/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/debian13/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -510,13 +496,13 @@ Use the following instructions to install ROCm packages on your system.
 
                # Download and install GPG key
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/debian12/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/debian12/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -532,13 +518,13 @@ Use the following instructions to install ROCm packages on your system.
 
                # Download and install GPG key
                sudo mkdir --parents --mode=0755 /etc/apt/keyrings
-               wget https://stable.repo.amd.com/rocm/gpg/packages.gpg -O - | \
+               wget https://rc.repo.amd.com/rocm/gpg/packages.gpg -O - | \
                    gpg --dearmor | sudo tee /etc/apt/keyrings/amdrocm.gpg > /dev/null
 
                sudo tee /etc/apt/sources.list.d/amdrocm-stable.sources << EOF
                X-Repo-Id: amdrocm-stable
                Types: deb
-               URIs: https://stable.repo.amd.com/rocm/core/packages/debian12/
+               URIs: https://rc.repo.amd.com/rocm/core/packages/debian12/
                Suites: stable
                Components: main
                Architectures: amd64
@@ -553,7 +539,7 @@ Use the following instructions to install ROCm packages on your system.
       Register the ROCm repository with your system's package manager. This enables
       you to install and update ROCm packages using ``dnf``.
 
-      .. selected:: rhel-ver=10.3 rhel-ver=10.2 rhel-ver=10.0
+      .. selected:: rhel-ver=10.2 rhel-ver=10.0
 
          .. selected:: fam=all
 
@@ -562,10 +548,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel10/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel10/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -577,15 +563,15 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel10/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel10/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
 
-      .. selected:: rhel-ver=9.9 rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4
+      .. selected:: rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4
 
          .. selected:: fam=all
 
@@ -594,10 +580,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel9/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel9/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -609,10 +595,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel9/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel9/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -626,10 +612,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel8/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel8/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -641,10 +627,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel8/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel8/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -663,10 +649,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel10/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel10/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -678,10 +664,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel10/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel10/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -695,10 +681,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel9/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel9/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -710,10 +696,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel9/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel9/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -727,10 +713,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel8/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel8/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -742,10 +728,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel8/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel8/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo dnf clean all
@@ -762,10 +748,10 @@ Use the following instructions to install ROCm packages on your system.
             sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
             [amdrocm-stable]
             name=ROCm 10.2.0
-            baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel9/x86_64
+            baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel9/x86_64
             enabled=1
             gpgcheck=1
-            gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+            gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
             EOF
 
             sudo dnf clean all
@@ -777,10 +763,10 @@ Use the following instructions to install ROCm packages on your system.
             sudo tee /etc/yum.repos.d/amdrocm-stable.repo <<EOF
             [amdrocm-stable]
             name=ROCm 10.2.0
-            baseurl=https://stable.repo.amd.com/rocm/core/packages/rhel9/x86_64
+            baseurl=https://rc.repo.amd.com/rocm/core/packages/rhel9/x86_64
             enabled=1
             gpgcheck=1
-            gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+            gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
             EOF
 
             sudo dnf clean all
@@ -790,7 +776,7 @@ Use the following instructions to install ROCm packages on your system.
       Register the ROCm repository with your system's package manager. This enables
       you to install and update ROCm packages using ``zypper``.
 
-      .. selected:: sles-ver=16.1 sles-ver=16.0
+      .. selected:: sles-ver=16.0
 
          .. selected:: fam=all
 
@@ -799,10 +785,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/zypp/repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/sles16/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/sles16/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo zypper --gpg-auto-import-keys refresh
@@ -814,10 +800,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/zypp/repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/sles16/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/sles16/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo zypper --gpg-auto-import-keys refresh
@@ -831,10 +817,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/zypp/repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/sles15/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/sles15/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo zypper --gpg-auto-import-keys refresh
@@ -846,10 +832,10 @@ Use the following instructions to install ROCm packages on your system.
                sudo tee /etc/zypp/repos.d/amdrocm-stable.repo <<EOF
                [amdrocm-stable]
                name=ROCm 10.2.0
-               baseurl=https://stable.repo.amd.com/rocm/core/packages/sles15/x86_64
+               baseurl=https://rc.repo.amd.com/rocm/core/packages/sles15/x86_64
                enabled=1
                gpgcheck=1
-               gpgkey=https://stable.repo.amd.com/rocm/gpg/packages.gpg
+               gpgkey=https://rc.repo.amd.com/rocm/gpg/packages.gpg
                EOF
 
                sudo zypper --gpg-auto-import-keys refresh
@@ -1669,7 +1655,7 @@ Use the following instructions to install ROCm packages on your system.
 
    .. selected:: os=rhel
 
-      .. selected:: rhel-ver=10.3 rhel-ver=10.2 rhel-ver=10.0
+      .. selected:: rhel-ver=10.2 rhel-ver=10.0
 
          For example, to create and activate a Python 3.12 virtual environment,
          run the following command:
@@ -1679,7 +1665,7 @@ Use the following instructions to install ROCm packages on your system.
             python3.12 -m venv .venv
             source .venv/bin/activate
 
-      .. selected:: rhel-ver=9.9 rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10
+      .. selected:: rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10
 
          For example, to create and activate a Python 3.11 virtual environment,
          run the following command:
@@ -1733,7 +1719,7 @@ Use the following instructions to install ROCm packages on your system.
 
    .. selected:: os=sles
 
-      .. selected:: sles-ver=16.1 sles-ver=16.0
+      .. selected:: sles-ver=16.0
 
          For example, to create and activate a Python 3.13 virtual environment,
          run the following command:
@@ -1775,7 +1761,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-all]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-all]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1788,7 +1774,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx950]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx950]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1801,7 +1787,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx942]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx942]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1813,7 +1799,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx90a]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx90a]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1825,7 +1811,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx908]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx908]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1838,7 +1824,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1201]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1201]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1851,7 +1837,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1200]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1200]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1863,7 +1849,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1100]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1100]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1875,7 +1861,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1101]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1101]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1887,7 +1873,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1102]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1102]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1899,7 +1885,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1103]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1103]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1911,7 +1897,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1030]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1030]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1924,7 +1910,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1151]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1151]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1937,7 +1923,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1150]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1150]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -1950,7 +1936,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1152]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1152]==10.2.0"
 
    .. selected:: gfx=gfx1153
 
@@ -1961,7 +1947,7 @@ Use the following instructions to install ROCm packages on your system.
 
       .. code-block:: bash
 
-         python -m pip install --index-url https://stable.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1153]==10.2.0"
+         python -m pip install --index-url https://rc.repo.amd.com/rocm/whl-next/ "rocm[libraries,device-gfx1153]==10.2.0"
 
       .. include:: include/pip-packages-table.rst
 
@@ -2014,7 +2000,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-multiarch-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-multiarch-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2025,7 +2011,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx950-dcgpu-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx950-dcgpu-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2036,7 +2022,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx94X-dcgpu-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx94X-dcgpu-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2046,7 +2032,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx90a-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx90a-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2056,7 +2042,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx908-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx908-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2066,7 +2052,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx120X-all-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx120X-all-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2076,7 +2062,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx110X-all-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx110X-all-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2086,7 +2072,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx103X-all-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx103X-all-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2097,7 +2083,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1151-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1151-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2108,7 +2094,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1150-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1150-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2119,7 +2105,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1152-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1152-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2130,7 +2116,7 @@ Use the following instructions to install ROCm packages on your system.
 
          .. code-block:: bash
 
-            wget https://stable.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1153-10.2.0.tar.gz
+            wget https://rc.repo.amd.com/rocm/core/tarball/therock-dist-linux-gfx1153-10.2.0.tar.gz
             mkdir install
             tar -xf *.tar.gz -C install
 
@@ -2144,88 +2130,88 @@ Use the following instructions to install ROCm packages on your system.
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-multiarch-10.2.0.tar.gz https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-multiarch-10.2.0.tar.gz
+            curl -o therock-dist-windows-multiarch-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-multiarch-10.2.0.tar.gz
             tar -xzf therock-dist-windows-multiarch-10.2.0.tar.gz -C build --strip-components=1
 
          - Download link: `therock-dist-windows-multiarch-10.2.0.tar.gz
-           <https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-multiarch-10.2.0.tar.gz>`__
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-multiarch-10.2.0.tar.gz>`__
 
       .. selected:: gfx=gfx1201 gfx=gfx1200
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx120X-all-10.2.0.tar.gz https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx120X-all-10.2.0.tar.gz
+            curl -o therock-dist-windows-gfx120X-all-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx120X-all-10.2.0.tar.gz
             tar -xzf therock-dist-windows-gfx120X-all-10.2.0.tar.gz -C build --strip-components=1
 
          - Download link: `therock-dist-windows-gfx120X-all-10.2.0.tar.gz
-           <https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx120X-all-10.2.0.tar.gz>`__
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx120X-all-10.2.0.tar.gz>`__
 
       .. selected:: gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx110X-all-10.2.0.tar.gz https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx110X-all-10.2.0.tar.gz
+            curl -o therock-dist-windows-gfx110X-all-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx110X-all-10.2.0.tar.gz
             tar -xzf therock-dist-windows-gfx110X-all-10.2.0.tar.gz -C build --strip-components=1
 
          - Download link: `therock-dist-windows-gfx110X-all-10.2.0.tar.gz
-           <https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx110X-all-10.2.0.tar.gz>`__
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx110X-all-10.2.0.tar.gz>`__
 
       .. selected:: gfx=gfx1030
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx103X-all-10.2.0.tar.gz https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx103X-all-10.2.0.tar.gz
+            curl -o therock-dist-windows-gfx103X-all-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx103X-all-10.2.0.tar.gz
             tar -xzf therock-dist-windows-gfx103X-all-10.2.0.tar.gz -C build --strip-components=1
 
          - Download link: `therock-dist-windows-gfx103X-all-10.2.0.tar.gz
-           <https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx103X-all-10.2.0.tar.gz>`__
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx103X-all-10.2.0.tar.gz>`__
 
       .. selected:: gfx=gfx1151
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx1151-10.2.0.tar.gz https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1151-10.2.0.tar.gz
+            curl -o therock-dist-windows-gfx1151-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1151-10.2.0.tar.gz
             tar -xzf therock-dist-windows-gfx1151-10.2.0.tar.gz -C build --strip-components=1
 
          - Download link: `therock-dist-windows-gfx1151-10.2.0.tar.gz
-           <https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1151-10.2.0.tar.gz>`__
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1151-10.2.0.tar.gz>`__
 
       .. selected:: gfx=gfx1150
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx1150-10.2.0.tar.gz https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1150-10.2.0.tar.gz
+            curl -o therock-dist-windows-gfx1150-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1150-10.2.0.tar.gz
             tar -xzf therock-dist-windows-gfx1150-10.2.0.tar.gz -C build --strip-components=1
 
          - Download link: `therock-dist-windows-gfx1150-10.2.0.tar.gz
-           <https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1150-10.2.0.tar.gz>`__
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1150-10.2.0.tar.gz>`__
 
       .. selected:: gfx=gfx1152
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx1152-10.2.0.tar.gz https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1152-10.2.0.tar.gz
+            curl -o therock-dist-windows-gfx1152-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1152-10.2.0.tar.gz
             tar -xzf therock-dist-windows-gfx1152-10.2.0.tar.gz -C build --strip-components=1
 
          - Download link: `therock-dist-windows-gfx1152-10.2.0.tar.gz
-           <https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1152-10.2.0.tar.gz>`__
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1152-10.2.0.tar.gz>`__
 
       .. selected:: gfx=gfx1153
 
          .. code-block:: bat
 
             cd C:\TheRock
-            curl -o therock-dist-windows-gfx1153-10.2.0.tar.gz https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1153-10.2.0.tar.gz
+            curl -o therock-dist-windows-gfx1153-10.2.0.tar.gz https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1153-10.2.0.tar.gz
             tar -xzf therock-dist-windows-gfx1153-10.2.0.tar.gz -C build --strip-components=1
 
          - Download link: `therock-dist-windows-gfx1153-10.2.0.tar.gz
-           <https://stable.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1153-10.2.0.tar.gz>`__
+           <https://rc.repo.amd.com/rocm/core/tarball/therock-dist-windows-gfx1153-10.2.0.tar.gz>`__
 
 .. ================================================================== RUNFILE ==
 

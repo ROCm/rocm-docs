@@ -105,8 +105,8 @@ Install HPC SDK
 
    The standard ROCm tarball installation includes the HPC SDK. No
    additional steps are required. For details on ROCm tarball installation,
-   refer to `Install AMD ROCm 10.1.0
-   <https://rocm.docs.amd.com/en/docs-10.1.0/install/rocm.html>`__ and
+   refer to `Install AMD ROCm 10.2.0
+   <https://rocm.docs.amd.com/en/docs-10.2.0/install/rocm.html>`__ and
    select **Tarball** installation method from installation environment
    selector.
 
@@ -124,19 +124,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
+                sudo apt install amdrocm-hpc10.2 amdrocm-hpc-sdk10.2
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
+                sudo dnf install amdrocm-hpc10.2 amdrocm-hpc-sdk10.2
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
+                sudo zypper install amdrocm-hpc10.2 amdrocm-hpc-sdk10.2
 
    .. selected:: gfx=gfx950
 
@@ -146,19 +146,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
+                sudo apt install amdrocm-hpc10.2-gfx950 amdrocm-hpc-sdk10.2-gfx950
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
+                sudo dnf install amdrocm-hpc10.2-gfx950 amdrocm-hpc-sdk10.2-gfx950
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
+                sudo zypper install amdrocm-hpc10.2-gfx950 amdrocm-hpc-sdk10.2-gfx950
 
    .. selected:: gfx=gfx942
 
@@ -168,19 +168,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
+                sudo apt install amdrocm-hpc10.2-gfx942 amdrocm-hpc-sdk10.2-gfx942
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
+                sudo dnf install amdrocm-hpc10.2-gfx942 amdrocm-hpc-sdk10.2-gfx942
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
+                sudo zypper install amdrocm-hpc10.2-gfx942 amdrocm-hpc-sdk10.2-gfx942
 
    .. selected:: gfx=gfx90a
 
@@ -190,19 +190,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
+                sudo apt install amdrocm-hpc10.2-gfx90a amdrocm-hpc-sdk10.2-gfx90a
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
+                sudo dnf install amdrocm-hpc10.2-gfx90a amdrocm-hpc-sdk10.2-gfx90a
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
+                sudo zypper install amdrocm-hpc10.2-gfx90a amdrocm-hpc-sdk10.2-gfx90a
 
    .. selected:: gfx=gfx908
 
@@ -212,19 +212,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
+                sudo apt install amdrocm-hpc10.2-gfx908 amdrocm-hpc-sdk10.2-gfx908
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
+                sudo dnf install amdrocm-hpc10.2-gfx908 amdrocm-hpc-sdk10.2-gfx908
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
+                sudo zypper install amdrocm-hpc10.2-gfx908 amdrocm-hpc-sdk10.2-gfx908
 
    .. selected:: gfx=gfx1200
 
@@ -234,19 +234,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
+                sudo apt install amdrocm-hpc10.2-gfx1200 amdrocm-hpc-sdk10.2-gfx1200
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
+                sudo dnf install amdrocm-hpc10.2-gfx1200 amdrocm-hpc-sdk10.2-gfx1200
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
+                sudo zypper install amdrocm-hpc10.2-gfx1200 amdrocm-hpc-sdk10.2-gfx1200
 
    .. selected:: gfx=gfx1201
 
@@ -256,19 +256,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
+                sudo apt install amdrocm-hpc10.2-gfx1201 amdrocm-hpc-sdk10.2-gfx1201
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
+                sudo dnf install amdrocm-hpc10.2-gfx1201 amdrocm-hpc-sdk10.2-gfx1201
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
+                sudo zypper install amdrocm-hpc10.2-gfx1201 amdrocm-hpc-sdk10.2-gfx1201
 
    .. selected:: gfx=gfx1100
 
@@ -278,19 +278,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
+                sudo apt install amdrocm-hpc10.2-gfx1100 amdrocm-hpc-sdk10.2-gfx1100
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
+                sudo dnf install amdrocm-hpc10.2-gfx1100 amdrocm-hpc-sdk10.2-gfx1100
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
+                sudo zypper install amdrocm-hpc10.2-gfx1100 amdrocm-hpc-sdk10.2-gfx1100
 
    .. selected:: gfx=gfx1101
 
@@ -300,19 +300,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
+                sudo apt install amdrocm-hpc10.2-gfx1101 amdrocm-hpc-sdk10.2-gfx1101
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
+                sudo dnf install amdrocm-hpc10.2-gfx1101 amdrocm-hpc-sdk10.2-gfx1101
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
+                sudo zypper install amdrocm-hpc10.2-gfx1101 amdrocm-hpc-sdk10.2-gfx1101
 
    .. selected:: gfx=gfx1102
 
@@ -322,19 +322,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
+                sudo apt install amdrocm-hpc10.2-gfx1102 amdrocm-hpc-sdk10.2-gfx1102
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
+                sudo dnf install amdrocm-hpc10.2-gfx1102 amdrocm-hpc-sdk10.2-gfx1102
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
+                sudo zypper install amdrocm-hpc10.2-gfx1102 amdrocm-hpc-sdk10.2-gfx1102
 
    .. selected:: gfx=gfx1103
 
@@ -344,19 +344,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
+                sudo apt install amdrocm-hpc10.2-gfx1103 amdrocm-hpc-sdk10.2-gfx1103
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
+                sudo dnf install amdrocm-hpc10.2-gfx1103 amdrocm-hpc-sdk10.2-gfx1103
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
+                sudo zypper install amdrocm-hpc10.2-gfx1103 amdrocm-hpc-sdk10.2-gfx1103
 
    .. selected:: gfx=gfx1151
 
@@ -366,19 +366,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
+                sudo apt install amdrocm-hpc10.2-gfx1151 amdrocm-hpc-sdk10.2-gfx1151
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
+                sudo dnf install amdrocm-hpc10.2-gfx1151 amdrocm-hpc-sdk10.2-gfx1151
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
+                sudo zypper install amdrocm-hpc10.2-gfx1151 amdrocm-hpc-sdk10.2-gfx1151
 
    .. selected:: gfx=gfx1150
 
@@ -388,19 +388,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
+                sudo apt install amdrocm-hpc10.2-gfx1150 amdrocm-hpc-sdk10.2-gfx1150
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
+                sudo dnf install amdrocm-hpc10.2-gfx1150 amdrocm-hpc-sdk10.2-gfx1150
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
+                sudo zypper install amdrocm-hpc10.2-gfx1150 amdrocm-hpc-sdk10.2-gfx1150
 
    .. selected:: gfx=gfx1152
 
@@ -410,19 +410,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
+                sudo apt install amdrocm-hpc10.2-gfx1152 amdrocm-hpc-sdk10.2-gfx1152
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
+                sudo dnf install amdrocm-hpc10.2-gfx1152 amdrocm-hpc-sdk10.2-gfx1152
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
+                sudo zypper install amdrocm-hpc10.2-gfx1152 amdrocm-hpc-sdk10.2-gfx1152
 
    .. selected:: gfx=gfx1153
 
@@ -432,19 +432,19 @@ Install HPC SDK
 
             .. code-block:: bash
 
-                sudo apt install amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
+                sudo apt install amdrocm-hpc10.2-gfx1153 amdrocm-hpc-sdk10.2-gfx1153
 
          .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
             .. code-block:: bash
 
-                sudo dnf install amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
+                sudo dnf install amdrocm-hpc10.2-gfx1153 amdrocm-hpc-sdk10.2-gfx1153
 
          .. selected:: os=sles
 
             .. code-block:: bash
 
-                sudo zypper install amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
+                sudo zypper install amdrocm-hpc10.2-gfx1153 amdrocm-hpc-sdk10.2-gfx1153
 
 Uninstall HPC SDK
 ----------------------
@@ -453,8 +453,8 @@ Uninstall HPC SDK
 
    The standard ROCm uninstallation process can be followed to uninstall HPC
    SDK. No additional steps are required to remove the HPC SDK separately.
-   Refer to `Uninstalling ROCm 10.1.0
-   <https://rocm.docs.amd.com/en/docs-10.1.0/install/rocm.html#uninstalling>`__
+   Refer to `Uninstalling ROCm 10.2.0
+   <https://rocm.docs.amd.com/en/docs-10.2.0/install/rocm.html#uninstalling>`__
    section and select **Tarball** from the installation environment
    selector.
 
@@ -468,19 +468,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
+             sudo apt autoremove amdrocm-hpc10.2 amdrocm-hpc-sdk10.2
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
+             sudo dnf remove amdrocm-hpc10.2 amdrocm-hpc-sdk10.2
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1 amdrocm-hpc-sdk10.1
+             sudo zypper remove amdrocm-hpc10.2 amdrocm-hpc-sdk10.2
 
    .. selected:: gfx=gfx950
 
@@ -490,19 +490,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
+             sudo apt autoremove amdrocm-hpc10.2-gfx950 amdrocm-hpc-sdk10.2-gfx950
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
+             sudo dnf remove amdrocm-hpc10.2-gfx950 amdrocm-hpc-sdk10.2-gfx950
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx950 amdrocm-hpc-sdk10.1-gfx950
+             sudo zypper remove amdrocm-hpc10.2-gfx950 amdrocm-hpc-sdk10.2-gfx950
 
    .. selected:: gfx=gfx942
 
@@ -512,19 +512,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
+             sudo apt autoremove amdrocm-hpc10.2-gfx942 amdrocm-hpc-sdk10.2-gfx942
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
+             sudo dnf remove amdrocm-hpc10.2-gfx942 amdrocm-hpc-sdk10.2-gfx942
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx942 amdrocm-hpc-sdk10.1-gfx942
+             sudo zypper remove amdrocm-hpc10.2-gfx942 amdrocm-hpc-sdk10.2-gfx942
 
    .. selected:: gfx=gfx90a
 
@@ -534,19 +534,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
+             sudo apt autoremove amdrocm-hpc10.2-gfx90a amdrocm-hpc-sdk10.2-gfx90a
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
+             sudo dnf remove amdrocm-hpc10.2-gfx90a amdrocm-hpc-sdk10.2-gfx90a
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx90a amdrocm-hpc-sdk10.1-gfx90a
+             sudo zypper remove amdrocm-hpc10.2-gfx90a amdrocm-hpc-sdk10.2-gfx90a
 
    .. selected:: gfx=gfx908
 
@@ -556,19 +556,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
+             sudo apt autoremove amdrocm-hpc10.2-gfx908 amdrocm-hpc-sdk10.2-gfx908
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
+             sudo dnf remove amdrocm-hpc10.2-gfx908 amdrocm-hpc-sdk10.2-gfx908
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx908 amdrocm-hpc-sdk10.1-gfx908
+             sudo zypper remove amdrocm-hpc10.2-gfx908 amdrocm-hpc-sdk10.2-gfx908
 
    .. selected:: gfx=gfx1200
 
@@ -578,19 +578,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
+             sudo apt autoremove amdrocm-hpc10.2-gfx1200 amdrocm-hpc-sdk10.2-gfx1200
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
+             sudo dnf remove amdrocm-hpc10.2-gfx1200 amdrocm-hpc-sdk10.2-gfx1200
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1200 amdrocm-hpc-sdk10.1-gfx1200
+             sudo zypper remove amdrocm-hpc10.2-gfx1200 amdrocm-hpc-sdk10.2-gfx1200
 
    .. selected:: gfx=gfx1201
 
@@ -600,19 +600,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
+             sudo apt autoremove amdrocm-hpc10.2-gfx1201 amdrocm-hpc-sdk10.2-gfx1201
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
+             sudo dnf remove amdrocm-hpc10.2-gfx1201 amdrocm-hpc-sdk10.2-gfx1201
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1201 amdrocm-hpc-sdk10.1-gfx1201
+             sudo zypper remove amdrocm-hpc10.2-gfx1201 amdrocm-hpc-sdk10.2-gfx1201
 
    .. selected:: gfx=gfx1100
 
@@ -622,19 +622,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
+             sudo apt autoremove amdrocm-hpc10.2-gfx1100 amdrocm-hpc-sdk10.2-gfx1100
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
+             sudo dnf remove amdrocm-hpc10.2-gfx1100 amdrocm-hpc-sdk10.2-gfx1100
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1100 amdrocm-hpc-sdk10.1-gfx1100
+             sudo zypper remove amdrocm-hpc10.2-gfx1100 amdrocm-hpc-sdk10.2-gfx1100
 
    .. selected:: gfx=gfx1101
 
@@ -644,19 +644,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
+             sudo apt autoremove amdrocm-hpc10.2-gfx1101 amdrocm-hpc-sdk10.2-gfx1101
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
+             sudo dnf remove amdrocm-hpc10.2-gfx1101 amdrocm-hpc-sdk10.2-gfx1101
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1101 amdrocm-hpc-sdk10.1-gfx1101
+             sudo zypper remove amdrocm-hpc10.2-gfx1101 amdrocm-hpc-sdk10.2-gfx1101
 
    .. selected:: gfx=gfx1102
 
@@ -666,19 +666,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
+             sudo apt autoremove amdrocm-hpc10.2-gfx1102 amdrocm-hpc-sdk10.2-gfx1102
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
+             sudo dnf remove amdrocm-hpc10.2-gfx1102 amdrocm-hpc-sdk10.2-gfx1102
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1102 amdrocm-hpc-sdk10.1-gfx1102
+             sudo zypper remove amdrocm-hpc10.2-gfx1102 amdrocm-hpc-sdk10.2-gfx1102
 
    .. selected:: gfx=gfx1103
 
@@ -688,19 +688,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
+             sudo apt autoremove amdrocm-hpc10.2-gfx1103 amdrocm-hpc-sdk10.2-gfx1103
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
+             sudo dnf remove amdrocm-hpc10.2-gfx1103 amdrocm-hpc-sdk10.2-gfx1103
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1103 amdrocm-hpc-sdk10.1-gfx1103
+             sudo zypper remove amdrocm-hpc10.2-gfx1103 amdrocm-hpc-sdk10.2-gfx1103
 
    .. selected:: gfx=gfx1151
 
@@ -710,19 +710,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
+             sudo apt autoremove amdrocm-hpc10.2-gfx1151 amdrocm-hpc-sdk10.2-gfx1151
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
+             sudo dnf remove amdrocm-hpc10.2-gfx1151 amdrocm-hpc-sdk10.2-gfx1151
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1151 amdrocm-hpc-sdk10.1-gfx1151
+             sudo zypper remove amdrocm-hpc10.2-gfx1151 amdrocm-hpc-sdk10.2-gfx1151
 
    .. selected:: gfx=gfx1150
 
@@ -732,19 +732,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
+             sudo apt autoremove amdrocm-hpc10.2-gfx1150 amdrocm-hpc-sdk10.2-gfx1150
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
+             sudo dnf remove amdrocm-hpc10.2-gfx1150 amdrocm-hpc-sdk10.2-gfx1150
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1150 amdrocm-hpc-sdk10.1-gfx1150
+             sudo zypper remove amdrocm-hpc10.2-gfx1150 amdrocm-hpc-sdk10.2-gfx1150
 
    .. selected:: gfx=gfx1152
 
@@ -754,19 +754,19 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
+             sudo apt autoremove amdrocm-hpc10.2-gfx1152 amdrocm-hpc-sdk10.2-gfx1152
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
+             sudo dnf remove amdrocm-hpc10.2-gfx1152 amdrocm-hpc-sdk10.2-gfx1152
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1152 amdrocm-hpc-sdk10.1-gfx1152
+             sudo zypper remove amdrocm-hpc10.2-gfx1152 amdrocm-hpc-sdk10.2-gfx1152
 
    .. selected:: gfx=gfx1153
 
@@ -776,16 +776,16 @@ Uninstall HPC SDK
 
          .. code-block:: bash
 
-             sudo apt autoremove amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
+             sudo apt autoremove amdrocm-hpc10.2-gfx1153 amdrocm-hpc-sdk10.2-gfx1153
 
       .. selected:: os=rhel os=rocky-linux os=oracle-linux
 
          .. code-block:: bash
 
-             sudo dnf remove amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
+             sudo dnf remove amdrocm-hpc10.2-gfx1153 amdrocm-hpc-sdk10.2-gfx1153
 
       .. selected:: os=sles
 
          .. code-block:: bash
 
-             sudo zypper remove amdrocm-hpc10.1-gfx1153 amdrocm-hpc-sdk10.1-gfx1153
+             sudo zypper remove amdrocm-hpc10.2-gfx1153 amdrocm-hpc-sdk10.2-gfx1153

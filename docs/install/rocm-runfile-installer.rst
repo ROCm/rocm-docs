@@ -91,11 +91,11 @@ To install ROCm, launch the installer from any directory on the system.
 Downloading the ROCm Runfile Installer
 --------------------------------------
 
-Download the ROCm Runfile Installer from `stable.repo.amd.com <https://stable.repo.amd.com/rocm/core/linux-installers/>`_ using the following command:
+Download the ROCm Runfile Installer from `rc.repo.amd.com <https://rc.repo.amd.com/rocm/core/linux-installers/>`_ using the following command:
 
 .. code-block:: shell
 
-   wget https://stable.repo.amd.com/rocm/core/linux-installers/<installer-file>
+   wget https://rc.repo.amd.com/rocm/core/linux-installers/<installer-file>
 
 Substitute the installer ``.run`` filename for the following placeholder:
 
@@ -107,7 +107,7 @@ For example, to download the ROCm 10.2 Runfile Installer:
 
 .. code-block:: shell
 
-   wget https://stable.repo.amd.com/rocm/core/linux-installers/rocm-installer-10.2.0-5.run
+   wget https://rc.repo.amd.com/rocm/core/linux-installers/rocm-installer-10.2.0-5.run
 
 Running the ROCm Runfile Installer
 ----------------------------------

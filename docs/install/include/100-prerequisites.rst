@@ -91,7 +91,7 @@ Prerequisites
 
                         dnf install sudo wget perl python3
 
-                  .. selected:: rhel-ver=9.4 rhel-ver=9.6 rhel-ver=9.8 rhel-ver=9.9 rhel-ver=10.0 rhel-ver=10.2 rhel-ver=10.3
+                  .. selected:: rhel-ver=9.4 rhel-ver=9.6 rhel-ver=9.8 rhel-ver=10.0 rhel-ver=10.2
 
                      .. code-block:: bash
 
@@ -271,13 +271,13 @@ Prerequisites
 
    Run the following command to register your system:
 
-   .. selected:: rhel-ver=10.3 rhel-ver=10.2 rhel-ver=10.0
+   .. selected:: rhel-ver=10.2 rhel-ver=10.0
 
       .. code-block:: bash
 
          subscription-manager register --username <username> --password <password>
 
-   .. selected:: rhel-ver=9.9 rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10
+   .. selected:: rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10
 
       .. code-block:: bash
 
@@ -308,12 +308,6 @@ Prerequisites
 
    Run the following command to update your system:
 
-   .. selected:: rhel-ver=10.3
-
-      .. code-block:: bash
-
-         sudo dnf update --releasever=10.3 --exclude=\*release\*
-
    .. selected:: rhel-ver=10.2
 
       .. code-block:: bash
@@ -325,12 +319,6 @@ Prerequisites
       .. code-block:: bash
 
          sudo dnf update --releasever=10.0 --exclude=\*release\*
-
-   .. selected:: rhel-ver=9.9
-
-      .. code-block:: bash
-
-         sudo dnf update --releasever=9.9 --exclude=\*release\*
 
    .. selected:: rhel-ver=9.8
 
@@ -379,7 +367,7 @@ Prerequisites
       the default package repositories. Use the following command to add the
       necessary repositories.
 
-      .. selected:: rhel-ver=10.3 rhel-ver=10.2 rhel-ver=10.0
+      .. selected:: rhel-ver=10.2 rhel-ver=10.0
 
          .. code-block:: bash
 
@@ -387,7 +375,7 @@ Prerequisites
             sudo rpm -ivh epel-release-latest-10.noarch.rpm
             sudo dnf config-manager --enable codeready-builder-for-rhel-10-x86_64-rpms
 
-      .. selected:: rhel-ver=9.9 rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4
+      .. selected:: rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4
 
          .. code-block:: bash
 
@@ -434,7 +422,7 @@ Prerequisites
       the default package repositories. Use the following command to add the
       necessary repositories.
 
-      .. selected:: rhel-ver=10.3 rhel-ver=10.2 rhel-ver=10.0
+      .. selected:: rhel-ver=10.2 rhel-ver=10.0
 
          .. code-block:: bash
 
@@ -442,7 +430,7 @@ Prerequisites
             sudo rpm -ivh epel-release-latest-10.noarch.rpm
             sudo dnf config-manager --enable codeready-builder-for-rhel-10-x86_64-rpms
 
-      .. selected:: rhel-ver=9.9 rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4
+      .. selected:: rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4
 
          .. code-block:: bash
 
@@ -653,7 +641,7 @@ Prerequisites
 
    .. selected:: os=rhel
 
-      .. selected:: rhel-ver=10.3 rhel-ver=10.2 rhel-ver=10.0
+      .. selected:: rhel-ver=10.2 rhel-ver=10.0
          :heading: Install Python
          :heading-level: 3
 
@@ -664,7 +652,7 @@ Prerequisites
 
             sudo dnf install python3.12 python3.12-pip
 
-      .. selected:: rhel-ver=9.9 rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=9 rhel-ver=8.10
+      .. selected:: rhel-ver=9.8 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10
          :heading: Install Python
          :heading-level: 3
 
@@ -714,7 +702,7 @@ Prerequisites
       :heading: Install Python
       :heading-level: 3
 
-      .. selected:: sles-ver=16.1 sles-ver=16.0
+      .. selected:: sles-ver=16.0
 
          Install a supported Python version. For example, to install Python 3.13,
          run the following command:

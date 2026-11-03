@@ -21,11 +21,11 @@ Since ROCm 7.14, ROCm uses [TheRock](https://github.com/ROCm/TheRock) as its bui
 
 ## Release highlights
 
-This release focuses on AI inference, developer tooling, and profiling across AMD Instinct™, Radeon™, and Ryzen™ AI platforms. Highlights include expanded GPU, OS, and virtualization support, new AI framework versions, the addition of new components, new HIP APIs and performance improvements, profiler usability and performance improvements, and updates to math, sparse, and storage libraries.
+This release focuses on AI inference, developer tooling, and profiling across AMD Instinct™, Radeon™, and Ryzen™ AI platforms. Highlights include expanded GPU and virtualization support, new AI framework versions, the addition of new components, new HIP APIs and performance improvements, profiler usability and performance improvements, and updates to math, sparse, and storage libraries.
 
 ### Platform and hardware support
 
-This release expands GPU, operating system, and virtualization support.
+This release expands GPU and virtualization support.
 
 #### Expanded AMD GPU support
 
@@ -54,13 +54,7 @@ For the complete list of supported AMD hardware, see [AMD hardware support](#amd
 
 #### Operating system support update
 
-ROCm {{ ROCM_VERSION }} adds support for:
-
-* RHEL 10.3 for AMD Instinct and Radeon GPUs.
-* RHEL 9.9 for AMD Instinct and Radeon GPUs.
-* SLES 16.1 for AMD Instinct GPUs.
-
-For the full list of supported Linux distributions, see [Operating system support](#operating-system-support).
+Operating system support remains unchanged in this release. For the full list of supported Linux distributions, see [Operating system support](#operating-system-support).
 
 #### Expanded GPU virtualization support for Instinct and Radeon GPUs
 
