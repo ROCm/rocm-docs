@@ -23,4 +23,8 @@ including those for astrophysics, climate and weather, computational chemistry,
 computational fluid dynamics, earth science, genomics, geophysics, molecular dynamics,
 and physics computing.
 
-HPC SDK includes `hipTensor <https://github.com/ROCm/rocm-libraries/tree/develop/projects/hiptensor>`_ and `rocALUTION <https://github.com/ROCm/rocm-libraries/tree/develop/projects/rocalution>`_ packaged as part of the installation.
+HPC SDK includes `hipTensor
+<https://rocm.docs.amd.com/projects/hipTensor/en/users-peterjunpark-hpc-sdk-10.2-preview/install/installation.html>`_
+and `rocALUTION
+<https://rocm.docs.amd.com/projects/rocALUTION/en/users-peterjunpark-rocalution-gpus/install/rocALUTION-install.html>`_
+packaged as part of the installation.
