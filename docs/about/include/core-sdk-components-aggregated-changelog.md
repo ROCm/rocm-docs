@@ -219,25 +219,48 @@
 * Improved FMHA backward performance on gfx1250 by moving the operand transfers to TDM and the transposed reads to ds_load_tr, keeping the dK and dV accumulators in registers, pairing mirrored tiles under a causal mask, and coalescing the dQ atomic onto a single cache line.
 
 #### **HIP** (7.17.0)
-
 ##### Added
 * New HIP APIs
-    * Module Management: support for API parity with corresponding CUDA API.
+    - Module Management: support for API parity with corresponding CUDA API.
       * `hipModuleEnumerateFunctions` returns the function handles defined in a loaded module.
-    * Library Management: support for API parity with corresponding CUDA API.
+    - Library Management: support for API parity with corresponding CUDA API.
       * `hipLibraryGetModule` returns the module handle associated with a library.
-* Disable HRR capture feature
-* Support for recovering the allocation properties of an imported virtual memory handle. `hipMemGetAllocationPropertiesFromHandle()` now reports `hipMemLocationTypeHost` for a host-backed allocation obtained from `hipMemImportFromShareableHandle()`, instead of always reporting device memory. For a device-backed allocation it reports the owning device rather than whichever device was current when the handle was imported.
+      * `hipKernelSetAttributeForDevice` sets a device-wide attribute for a kernel on a specific device.
+* Support for the `hipMemRangeFlagDmaBufMappingTypePcie` flag in `hipMemGetHandleForAddressRange`, providing parity with CUDA behavior.
+* Support for recovering allocation properties from imported virtual memory handles. `hipMemGetAllocationPropertiesFromHandle` now correctly reports `hipMemLocationTypeHost` for host-backed allocations imported via `hipMemImportFromShareableHandle`, instead of always reporting device memory. For device-backed allocations, it reports the owning device rather than the device that was current when the handle was imported.
+* Support in WSL 2 to prevent indefinite application hangs and to report errors for device-side faults, including out-of-bounds writes, null pointer dereferences, and device asserts.
+* Added `HIP_TARGET_API_VERSION` to enable compile-time API version selection, helping maintain source compatibility with applications built against older HIP API versions.
 
 ##### Resolved issues
 
-* Fixed a regression where HIP applications on MI300A and other APUs failed at the first stream creation, `hipMemcpy`, `hipMemset`, or kernel launch with out-of-memory or invalid-argument errors after device-memory AQL rings were enabled by default (`DEBUG_CLR_AQL_DEV_QUEUE=1`). Large BAR now requires a real CPU link and a discrete agent, so APUs keep system-memory rings. WSL/Windows still uses CPU access to the GPU pool for discrete GPUs, because that path does not report link hops the way KFD does. Workaround before the fix: `DEBUG_CLR_AQL_DEV_QUEUE=0`.
+* Resolved a regression on MI300A and other APUs that could cause the first stream creation, `hipMemcpy`, `hipMemset`, or kernel launch to fail with out-of-memory or invalid-argument errors. The runtime now correctly uses system-memory AQL rings on APUs, which share memory with the host and do not provide a discrete device-memory path.
+* Resolved a memory leak in `VirtualGPU::ManagedBuffer` that could occur during stream creation when signal initialization failed. The runtime now properly cleans up partially created resources on error paths.
+* Resolved an issue in `hipLaunchKernel` where invalid or unloaded kernel handles could cause a segmentation fault. Invalid handles are now properly validated and return an appropriate error.
 * A registered `__device__` global that is absent from the loaded code object no longer aborts the process. Symbol lookup now returns `hipErrorInvalidSymbol` from the runtime's variable materialization path (`hipGetSymbolAddress`, `hipLibraryGetGlobal`, and related entry points). `hipModuleGetGlobal` still reports `hipErrorNotFound` for a missing name.
 * Fixed `__hip_bfloat162` comparisons that ignored or misread the high lane. `__hbneu2` now returns true only when both lanes are unordered-not-equal, `__hgt2` and `__hisnan2` now return the per-lane result in `.y` instead of always 1.0, and the `<`, `<=`, `>`, `>=` operators now compare `.y` with `.y`. Code that relied on the previous results may see different values.
+* Fixed an issue that could cause peer-to-peer (P2P) `hipMemcpyAsync()` transfers using the `hipMemcpyDeviceToDeviceNoCU` memcpy kind to fail on certain multi-GPU systems. SDMA engine selection has been improved to ensure reliable P2P transfer operation.
+* Resolved a performance issue affecting large host-to-device (H2D) transfers on integrated (unified-memory) GPUs, where HMM-based KFD userptr pinning could significantly reduce transfer throughput and appear to stall workloads. Large transfers are now routed through the existing staging-copy fallback, improving transfer performance.
+* Fixed a host-blocking issue in `hipMemcpyBatchAsync` that could occur when the API was repeatedly issued on a stream containing a long-running kernel. The implementation now reserves only the total descriptor space required for each dispatch in the kernel argument pool, preventing pool exhaustion and eliminating unnecessary host waits for kernel completion.
+* Resolved a segmentation fault in `hipStreamEndCapture` during multi-stream capture caused by a bookkeeping cycle among capture participants. The fix tracks capture participants in a single origin-stream-owned set, eliminating recursive traversal of forked streams during capture finalization and improving stream capture stability.
+* Resolved a potential deadlock between `hipMallocAsync` and `hipEventSynchronize` during concurrent multi-threaded execution.
+* Fixed incorrect calculations when using the type `bool` for `cooperative_groups::exclusive_scan`. The implementation now correctly handles the identity value for the first active lane and prevents unintended type conversions from `bool` to `int`.
+
+##### Optimized
+
+* Enhanced graph execution update performance and scalability by reducing update overhead and eliminating quadratic scaling behavior in certain graph update scenarios.
+* Optimized memory allocation capacity on Windows by increasing the maximum aperture size to 4 TiB, enabling larger memory allocations and improving support for memory-intensive workloads.
+* Optimized the performance of `hipMemcpy3DBatchAsync` by reducing SDMA submission overhead. Previously, the runtime issued a separate SDMA submission for each operand, resulting in significant overhead for small transfers. For 4 KB copy operations, latency was approximately 9 µs per operand, with about 94% of the time attributable to submission overhead. This optimization improves the efficiency and performance of batched 3D memory copy operations.
 
 ##### Changed
 
 * Stream priority is now disabled to avoid known queue-priority-related issues. Priority streams are currently not supported.
+* HRR capture feature is now disabled.
+* `hipMemAdvise` now aliases `hipMemAdvise_v2`, which uses a `hipMemLocation` parameter instead of a device ID. Applications using the legacy `hipMemAdvise` signature may require source updates to pass a `hipMemLocation` structure. To maintain compatibility with the previous API signature, define `HIP_TARGET_API_VERSION` to a nonzero value less than 800 (for example, 700 for HIP 7.0 or 717 for HIP 7.17) at compile time. By default, `hipMemAdvise` alias to the `hipMemAdvise_v2` interface.
+* The `HIPRTC_USE_RUNTIME_UNBUNDLER` environment variable and its associated functionality have been removed from the HIP runtime. The runtime unbundler path is now always used; setting this variable no longer has any effect.
+
+##### Known issues
+
+* A GPU Timeout Detection and Recovery (TDR) event may occur on ROCm 10.2 running under WSL 2 (Windows Subsystem for Linux 2) when executing the `vllm_rocm_gpt-oss-20b_default_inf_fp4` `vLLM` inference workload.
 
 #### **hipBLAS** (3.8.0)
 
@@ -288,17 +311,27 @@
 #### **hipFile** (0.6.0)
 
 ##### Added
-* `ais-check` now reports whether an LVM logical volume supports fastpath.
+* `hipFileGetStatsL3()` now populates the `uuid` field of each `hipFilePerGpuStats` entry with the raw 16-byte GPU UUID, zero-filled when the device cannot report one.
+* Added a batch API example, `batch-roundtrip`.
+* Added reference documentation for the Stats API.
+* Added a documentation page listing frameworks and applications that use hipFile, including LMCache, fastsafetensors, rocAL, PyTorch, fio, and IOR.
 
 ##### Changed
 
 * The hipFile CMake options have been renamed from `AIS_*` to `HIPFILE_*` (e.g., `AIS_CXX_STANDARD` is now `HIPFILE_CXX_STANDARD`). The old `AIS_*` names still work but are deprecated and emit a CMake deprecation warning.
 * The `HIPFILE_WARN_UNSAFE_BUFFER_OPS` CMake option now defaults to `OFF` .
+* Documented that Linux kernels built with `CONFIG_PCI_P2PDMA=y` are required for fastpath.
 
 ##### Resolved issues
 
 * The `HIPFILE_WARN_UNSAFE_BUFFER_OPS` CMake option now applies the clang `-Wunsafe-buffer-usage` and `-fsafe-buffer-usage-suggestions` flags to C++ sources. Previously, the flags were never passed to the compiler.
 * hipFile now returns `hipFileGetNewFDFailed` instead of `hipFileInternalError` when the process or system runs out of file descriptors. API calls that need a new file descriptor, such as `hipFileHandleRegister()`, can return this error.
+* Asynchronous fastpath operations now fail over to the fallback backend on `ENODEV` or `EREMOTEIO`, matching the synchronous and batch paths.
+
+##### Known issues
+
+* The bandwidth reported by `ais-stats` and the Stats API is derived from the sum of the per-operation latencies instead of the elapsed wall-clock time, so when several threads issue I/O concurrently, the reported bandwidth is understated by roughly the number of concurrent threads. See [issue #11919](https://github.com/ROCm/rocm-systems/issues/11919).
+* Asynchronous fastpath I/O, added in hipFile 0.5.0 for ROCm 10.1.0, performs poorly. The ROCm runtime serializes all stream host functions onto a single thread, so asynchronous fastpath operations cannot run concurrently.
 
 #### **hipSOLVER** (3.8.0)
 
@@ -418,6 +451,7 @@
 #### **RCCL** (2.32.3)
 
 ##### Added
+
 * Compatibility with NCCL 2.32.3.
 * `ncclSetEncryption()` and `ncclEncryptionConfig_t` (initialize with `NCCL_ENCRYPTION_CONFIG_INITIALIZER`) to encrypt NCCL-owned TCP socket traffic with TLS using a pre-shared key of at least 32 bytes. Requires a build configured with `-DTLS_BACKEND=OPENSSL3`; `libssl.so.3` is loaded at run time. Encryption is off by default and covers only traffic sent through RCCL's TCP sockets, not RDMA or GPU-to-GPU transfers.
 * `launchCompletionEvent` in the per-collective config (`ncclCollConfig_t`, now `ncclCollConfig_v23200`): a caller-owned event that RCCL records for the collective's kernel launch. Every rank must pass an event, or every rank must pass `NULL`. HIP has no launch-completion launch attribute, so on ROCm the event is recorded on the stream immediately before the kernel launch.
@@ -430,32 +464,20 @@
 * An IB write-bandwidth check in the communicator init diagnostics (`NCCL_RUN_DIAGNOSTICS`). It runs perftest's `ib_write_bw` between hosts of multi-node communicators, with a per-run timeout set by `NCCL_DIAGNOSTICS_IB_BW_TIMEOUT` (default 5 seconds). It measures from GPU memory only when the installed `ib_write_bw` supports `--use_cuda`; otherwise it measures from host memory.
 * Communicator initialization reports, at the `ATTN` level, ranks that run RCCL builds from different git revisions.
 * Inspector plugin ring-buffer drop counters: a single warning per process when events are dropped, a `dump_stats` record with operation and drop counts in JSON output, and `NCCL_INSPECTOR_PROM_DUMP_STATS` (default `0`) to add the same counters to Prometheus output.
-* `RCCL_BCM_LINKS_PATH`: fallback directory path for Broadcom PEX890xx multi-host switch inter-switch-link topology. On systems where a single physical PEX switch is partitioned across multiple CPU domains (upstream ports), RCCL needs to know which ports share the same switch so it can classify cross-partition PCIe paths as `PXB` instead of `PHB` and enable GDR across them. The `switch_discovery` kernel module exposes this via sysfs (`/sys/kernel/pci_switch_link/virtual_switch_links`); when that path is not available, RCCL reads the same directory layout from `RCCL_BCM_LINKS_PATH`. The companion userspace tool `rccl_bcm_isl_discover.sh` discovers the switch groups by reading the PCIe Device Serial Number (DSN) from extended config space (vendor `1000`, device `c030`) and populates this directory.
 * `NCCL_CE_CHUNK_SIZE` (default 8 MiB): chunk size for the round-robin chunking that host RMA Copy Engine batches use when per-peer transfer sizes differ.
 * `NCCL_CE_INTRA_GPU_MEMCPY_ENABLE` (default `1`): controls whether batched Copy Engine collective copies pass `hipMemcpyFlagPreferOverlapWithCompute`. RCCL previously always set this flag, so the default keeps the previous behavior; set `0` to omit it.
-* `NCCL_GIN_MLOPART`: allows GIN on MLO/CPX partitions. A partition reaches xGMI and the network over the physical device's paths, so GIN is as available to a partition as to the whole GPU. By default a single-node partitioned communicator keeps GIN, and one spanning several nodes does not, because past one node admitting a partition also reaches the hierarchical Copy Engine path. Set `1` to allow GIN on partitions on any number of nodes, or `0` to restore the previous partition exclusion.
 * `NCCL_HIER_CE_COLL_AG_RAIL_RING_ENABLE` (default `-1`): a positive value selects a ring for the inter-node rail phase of hierarchical Copy Engine `ncclAllGather`. The default keeps the direct path.
-* `NCCL_TREE_COMPACT` (default `0`): builds the inter-node trees with a half-interleave node remapping, for jobs whose nodes are ordered by network domain. Both trees keep cross-domain hops at the leaves only when the nodes split evenly into two domains; with an uneven split, the first tree does so when the first domain holds at least half of the nodes, and the second tree still crosses domains. All ranks in a communicator must use the same value; initialization fails with `ncclInvalidUsage` otherwise.
 * `NCCL_IB_SORT_MERGE_NICS`: sorts the sub-devices of a merged IB device by plane ID. RCCL defaults it to `0` (NCCL defaults to `1`), so merged-device order and names are unchanged.
-* `RCCL_FABRIC_TELEMETRY_ENABLE` (default `0`): samples every amd-smi fabric telemetry category for the GPUs this process opens communicators on and logs the counters that moved, plus a closing report over the whole sampled span when a device's last communicator is destroyed. Diagnostic only, and off by default. Also needs `RCCL_USE_AMD_SMI_LIB=1` and `render`-group access to the IFoE config character device; without either, RCCL logs why telemetry was skipped and initialization continues.
-* `RCCL_FABRIC_TELEMETRY_INTERVAL_MS` (default `1000`): sampling period for `RCCL_FABRIC_TELEMETRY_ENABLE`, clamped to a 100 ms floor and a one-hour ceiling. A non-positive value disables telemetry entirely.
-* Hierarchical symmetric `ncclAllGather` for multi-node using GIN and LSA (`AllGather_RailRing_LsaST`): a GIN ring over the rails team moves data between nodes and LSA stores broadcast it to the other GPUs in each node.
 * nccl4py: per-call collective configuration (`NCCLCollConfig`, `VendorOption`) including the launch completion event, communicator properties (`NCCLCommProperties`), and the `GIN_ONLY` window flag. On ROCm, the HIP `Event` shim provides only an event handle; `record()`, `sync()` and `query` are not implemented.
 * `RCCL_TUNER_EMBEDDED_CONFIG` (default `1`): the built-in CSV tuner configurations in `tuner/*.csv` are now compiled into `librccl.so` and used as the stock tuning defaults, so a cluster no longer has to stage the CSV on every node or on NFS. Set `0` to ignore the embedded configurations. `NCCL_TUNER_CONFIG_FILE` and the on-disk tuner directories still take precedence, and `NCCL_TUNER_PLUGIN=none` still disables the tuner entirely.
-* `RCCL_TUNING_PARTITION_MODE` (`auto`, `SPX` or `DPX`; default `auto`): selects the gfx1250 tuning table for the GPU's compute-partition mode. `auto` uses the DPX table when the GPU reports DPX, and the SPX table otherwise. A communicator uses the DPX table only when every rank selects it. The DPX table is currently a copy of the SPX table, so tuning is unchanged.
-* `RCCL_CE_AR_2SHOT_MAX_BYTES` (default `-1`): overrides the 2-shot AllReduce size cap from the arch table. Set to a positive value to override `ceNonRegMax[AR]`. Renamed from `RCCL_CE_AR_MAX_MSG_BYTES`.
-* `RCCL_CE_AR_2SHOT_MIN_BYTES` (default `-1`): overrides the minimum message size for the CE 2-shot AllReduce path. When `-1`, resolved from `ceNonRegMin[AllReduce]` in the per-arch table.
+* `RCCL_CE_AR_MAX_MSG_BYTES` (default `-1`): overrides the 2-shot AllReduce size cap from the arch table. Set to a positive value to override `ceNonRegMax[AR]`.
 * `RCCL_CE_AR_REG_MAX_MSG_BYTES` (default `-1`): overrides the registered CE AllReduce size cap from the arch table.
-* `RCCL_CE_AR_STAGING_BYTES` (default `-1`): overrides the CE AllReduce staging buffer allocation size; when unset, `NCCL_CE_AR_STAGING_BYTES` is used. CE ReduceScatter shares this buffer.
-* `RCCL_CE_REDUCESCATTER` (default `0`): opt-in Copy Engine ReduceScatter on a single-node symmetric communicator with `CTA_POLICY_ZERO`. Always stages through `ceARTmpBuf`; user-buffer registration is not required. No message-size cap (large messages are pipelined).
-* `RCCL_CE_COLL_MAX_BYTES` (default `-1`): overrides the CE registered-window and 2-shot size cap for all non-AllReduce collectives (AllGather, AlltoAll, etc.). When `-1`, resolved from `ceRegMax[func]` or `ceNonRegMax[func]` in the per-arch table.
-* `RCCL_CE_COLL_MIN_BYTES` (default `-1`): overrides the minimum message size for CE non-AllReduce paths (both registered-window and scratch). When `-1`, resolved from `ceNonRegMin[func]` in the per-arch table.
-* `RCCL_SYM_K_MAX_BYTES` (default `-1`): overrides the symmetric-kernel upper bound for all collectives. When `-1`, resolved from `symMaxR2[func]` (eager) or `symMaxR2Graph[func]` (graph-capture) in the per-arch table. `kThreshUnlimited` (SIZE_MAX) in the table means no suppression.
-* `RCCL_SYM_K_MIN_BYTES` (default `-1`): overrides the symmetric-kernel lower bound for all collectives. When `-1`, resolved from `symMinR2[func]` in the per-arch table. Below this size, DDA is preferred over symk.
+* `RCCL_CE_AR_STAGING_BYTES` (default `-1`): overrides the CE AllReduce staging buffer allocation size; when unset, `NCCL_CE_AR_STAGING_BYTES` is used.
 * Per-architecture dispatch table (`rcclArchThresholds`) centralizing algo/proto selection for DDA protocol, CE, and symmetric kernel per collective, replacing scattered hardcoded defaults. Tables are defined for gfx1250, gfx950, and gfx942; the lookup `rcclGetArchThresholds()` maps GCN arch strings to the appropriate entry. The `symMinR2[func]` field sets a per-collective lower bound for registered buffers.
 * `RCCL_IGNORE_ARCH_TABLE` (default `0`): when set to `1`, bypasses the `rcclArchThresholds` dispatch table and falls back to compile-time constants for all DDA, CE, and symmetric-kernel thresholds. Has no effect on gfx942 and gfx950, which always use the arch table.
 * New `rcclAddonAlgos_t` values: `RCCL_CE_SCRATCH` (CE via DDA scratch, distinct from `RCCL_CE_REGISTERED`), `RCCL_A2A_PIVOT`, `RCCL_A2A_GDA`, `RCCL_A2A_GIN_SDMA`, and `RCCL_DIRECT_ALLTOALL`, with corresponding `rcclGetAlgoName()` labels.
 * rccl-tests: AlltoAll now reports algo/protocol in VERSION output, consistent with other collectives.
+* Compatibility with NCCL 2.31.2.
 * `net_ib_cast` refreshes local GIDs after `IBV_EVENT_GID_CHANGE` and applies them to data, flush, probing and port recovery QPs during IB port recovery, matching `net_ib` in NCCL 2.31.2.
 * Per-collective configuration APIs (`ncclCollConfig_t` / `nccl*Config()` entry points) and the `ncclConfigExt_t` vendor extension list. Initialize configs with `NCCL_COLLCONFIG_INITIALIZER`.
 * Communicator config (`ncclConfig_v23100`) fields for implicit launch ordering (`launchOrderImplicit`), RMA signal count (`numRmaSig`), eager RMA init (`rmaEagerInit`), and host collective fault tolerance (`hostCftMode`).
@@ -465,20 +487,11 @@
 * Multiple GIN proxy progress threads via `NCCL_GIN_PROXY_NTHREADS`.
 * Enabled hierarchical Copy Engine `ncclAllGather`, `ncclAlltoAll`, and `ncclAlltoAllv` on multi-node communicators: the intra-node phase runs over SDMA/CE across the LSA team and the inter-node phase over one-sided RMA through the CPU (GIN) proxy. The path is off by default and takes two opt-ins: `NCCL_CTA_POLICY=2` (equivalently `config.CTAPolicy = NCCL_CTA_POLICY_ZERO`), and symmetric registration of both the send and the receive buffer through `ncclCommWindowRegister`. On architectures other than gfx1250 (MI450) a third is needed, `NCCL_CUMEM_ENABLE=1`, because symmetric memory depends on cuMem and cuMem auto-detection enables itself only on gfx1250. `NCCL_GIN_ENABLE`, `NCCL_NUM_RMA_CTX`, `NCCL_WIN_ENABLE` and `NCCL_DMABUF_ENABLE` need no change, since their defaults already qualify; the inter-node rail draws from the internal RMA context pool (`NCCL_NUM_RMA_INT_CTX`, default 4) rather than the user-addressable contexts, so `numRmaCtx` only has to stay above zero. Selection also requires an available GIN backend and the same number of ranks on every node; communicators that do not qualify keep using the kernel path. `ncclAlltoAllv` walks the gathered per-peer size matrix, skips zero-length peers, and chunks each inter-node put; single-node AlltoAllv stays on the existing CE path. Validated for correctness and path selection from 1 to 32 nodes.
 * Added `ncclGinFenceLevel` barrier semantics on the Anvil SDMA GIN backend (`NCCL_GIN_TYPE=7`). `gin.get`, `flushAsync` and `wait` are implemented instead of trapping, and a barrier's signal is now ordered behind the payload on the peer's SDMA queue, so `Put`, `Get` and the default `Put | Get` fences drain what they promise. `Put` covers a rank's puts to itself, and `ncclGinAllContexts` fences every GIN context. Single-node validated on gfx950.
-* Added gfx1250 (MI450) Tensor Data Mover staging to the symmetric AllGather, AllReduce and ReduceScatter kernels, where NCCL uses NVIDIA's TMA. Their deep loops move each tile through the warp's shared-memory scratch with the DMA engine instead of per-lane vector loads; on ROCm that path previously compiled out entirely, so the `Tma` kernels were never generated. Launch tuning was also corrected so these kernels can use up to a quarter of a GPU's WGPs, where only 14 were reached before, which is where most of the large-message gain comes from. Reached only when the application opts into symmetric memory; `NCCL_SYM_TMA_ENABLE` now defaults to `1` (see Changed in RCCL 2.32.3). `NCCL_SYM_TMA_ENABLE=2` additionally forces these kernels wherever the collective has one, skipping both the tuner's cost comparison and the deep-loop size bar, which is intended for A/B measurement rather than production. The new kernels are generated only when gfx1250 is in `GPU_TARGETS`, and every other architecture keeps the vector path unchanged.
+* Added gfx1250 (MI450) Tensor Data Mover staging to the symmetric AllGather, AllReduce and ReduceScatter kernels, where NCCL uses NVIDIA's TMA. Their deep loops move each tile through the warp's shared-memory scratch with the DMA engine instead of per-lane vector loads; on ROCm that path previously compiled out entirely, so the `Tma` kernels were never generated. Launch tuning was also corrected so these kernels can use up to a quarter of a GPU's WGPs, where only 14 were reached before, which is where most of the large-message gain comes from. Opt-in via `NCCL_SYM_TMA_ENABLE=1`, and reached only when the application opts into symmetric memory. `NCCL_SYM_TMA_ENABLE=2` additionally forces these kernels wherever the collective has one, skipping both the tuner's cost comparison and the deep-loop size bar, which is intended for A/B measurement rather than production. The new kernels are generated only when gfx1250 is in `GPU_TARGETS`, and every other architecture keeps the vector path unchanged.
 * Removed GIN rocSHMEM GDA dependency on rocSHMEM GDA bitcode: GIN rocSHMEM GDA is now header-only. The CMake `roc::rccl` target provides the required include directories in its `INSTALL_INTERFACE` property.
-* `RCCL_IB_GDR_FLUSH_FLAG` (default `0`): replaces the GPUDirect RDMA flush of Simple-protocol receives in the `IB` network transport. Instead of the proxy fencing each receive with an RDMA read and waiting for it, the sender writes a per-QP flag into GPU memory after the payload without relaxed ordering, and the GPU waits for it. A communicator uses it only when every rank enables it and can use it (gfx942 or gfx950, the `IB` transport, and no adaptive routing, out-of-order receive queues, ID-based receive matching (`NCCL_IB_RECEIVER_SIDE_MATCHING_SCHEME=1`) or port-failover resiliency (`NCCL_IB_RESILIENCY_PORT_FAILOVER`)); otherwise every rank keeps the RDMA read flush. Connections over a fused NIC (NIC Fusion, including a fused vNIC chosen by subnet-aware routing), with more than 8 QPs per request, or that cannot register the flag memory also keep it. On gfx950 with 2 to 8 nodes of 8 GPUs, such a communicator also selects Ring/LL128 from 16 MB per node, Tree/Simple from 32 MB per node and Ring/Simple from 64 MB per node for `ncclAllReduce`, and switches `ncclReduceScatter` from LL128 to Simple above 6 MB per rank instead of 8 MB, unless `NCCL_ALGO` or `NCCL_PROTO` is set. On MI355X it raises large `ncclAllReduce` and `ncclReduceScatter` bandwidth by 10 to 22% and 1 to 8 MB `ncclAlltoAll` by 4 to 12%.
-* `RCCL_IB_GDR_FLUSH_FLAG_TUNE` (default `0`): additional tuning for communicators that use `RCCL_IB_GDR_FLUSH_FLAG` on gfx950 with 8 GPUs per node on 2 to 8 or 16 nodes. Ring and tree connections get a 4x LL128 buffer (send/recv keeps the default, and `NCCL_LL128_BUFFSIZE` disables it); `ncclAllReduce` selects Ring/LL128 from 12 MB per node up to what one ring loop carries, then Tree/Simple up to 64 MB per node and Ring/Simple on 48 channels up to 128 MB per node, and Tree/Simple from 8 to 64 MB per node on 16 nodes; `ncclReduceScatter` keeps LL128 up to 7 MB per rank, then Simple, on 16 nodes too. All ranks must use the same value.
-* `RCCL_PCIE_ORDERED_RING` (default `1`, also accepted as `NCCL_PCIE_ORDERED_RING`): pins the ring graph search to the order GPUs appear in the topology array, so every channel uses the same ring. Without it the search picks a different permutation per channel, so a device exchanges with many different peers; pinning the order reduces fan-out to one peer per direction per device across all rings, which cuts the connections, FIFO buffers and setup work each device carries. On gfx1250 partitioned (DPX) GPUs the unpinned search also mixes scale-up and scale-in hops between channels; pinning keeps the two partitions of a die adjacent, though ring throughput is bounded by its slowest hop either way. This constrains GPU visitation order only: path validation, bandwidth constraints and backtracking are unchanged. It applies to gfx1250 ring graphs on a single host where every rank is a GPU of that topology, so trees, CollNet, other architectures and multi-host communicators are unaffected, and `NCCL_GRAPH_FILE` and `NCCL_RINGS` still take precedence. Set `0` to restore the unconstrained search, or `2` to fail communicator initialization instead of falling back when no ordered ring passes validation.
-* Added `RCCL_TDM_LL128_ENABLE` (default `0`): an experimental gfx1250 (MI450) Tensor Data Mover path for the LL128 protocol's user destination buffer, staging each warp slice in LDS and pushing it out as one bulk transfer instead of per-lane vector stores. Excluded from the default build: it requires `--enable-tdm-prim-ll128` at build time and `RCCL_TDM_LL128_ENABLE=1` at runtime, and compiles only on gfx1250 with an SDK providing the tensor data mover builtins. The runtime flag is captured once in the primitive's constructor rather than read from `ncclShmem` per slice, so the disabled case costs one register test per slice. Only the destination leg is staged: an async source load through the same per-warp window corrupted one slice in roughly 2% of 2-node ReduceScatter runs at 4 GiB and measured no faster, so it was removed rather than fixed. The receive and send FIFO legs are not eligible either, because both interleave protocol flag words into the payload. Measured on gfx1250 under forced RING/LL128 (out-of-place bus bandwidth, median of 3, 4 and 8 ranks): AllGather gains 5-10% above 256 MiB, AllReduce 3-5%, ReduceScatter 1-2%, while messages below roughly 32 MiB lose 2-5% to the staging overhead. With the tuner left to choose algorithm and protocol the path is not selected and throughput is unchanged, because LL128 is not the winning protocol in the size range where the staging pays off. The accumulator load is deliberately kept off this path because it has no spin to overlap; the accumulator-reduced store still goes through it.
-* Added host-side and device-side tests for the LL128 Tensor Data Mover store leg (`Ll128TdmStoreTest`): the build flag reaching the device pass, the slot indices tiling the staged window exactly once, and the staged store compared byte-for-byte against the scalar path it replaces. These require one GPU rather than the eight the existing LL128 suites need.
-* Added a reduction path to the experimental gfx1250 (MI450) Tensor Data Mover support for the SIMPLE protocol. Slices that carry a reduction, or a pre-op or post-op that is not the identity, now move whole 8 KiB tiles of each source into the warp's LDS staging window with the TDM, reduce them there, and write the result to every destination with the TDM; the rest of each slice stays on the vector path. Only the SIMPLE primitives' main reduce-copy calls can reach it, every source and destination must be 256-byte aligned, and the bias, pipelined and multimem variants are excluded. Like the copy path it requires `--enable-tdm-simple` at build time, and it has its own runtime switch, `RCCL_TDM_SIMPLE_REDUCE_ENABLE=1`, independent of `RCCL_TDM_SIMPLE_ENABLE`. Double buffering is not implemented.
 
 ##### Changed
-* `NCCL_MULTI_SEGMENT_REGISTER` default changed `1` -> `0` on HIP and stays `1` on other builds. On HIP, multi-segment registration stays off until a job sets the variable. Set `1` to register one DMA-BUF memory region per physical segment where the transport supports it.
-* NET registration counts physical segments over the whole registered buffer, not only the range a collective touches. With `NCCL_MULTI_SEGMENT_REGISTER=0`, a collective on any part of a multi-segment registration skips NET registration and stages, instead of retrying a single-region registration on every collective.
-* GIN window registration on HIP fails with `ncclInvalidUsage` when the window spans several device-memory segments, instead of registering a memory region that covers only the first segment, and when it contains host VMM memory and `NCCL_DMABUF_ENABLE=0`.
-* `install.sh --all_unrolls` (`-DBUILD_ALL_UNROLLS=ON`) now adds the unroll factors the multi-arch default skips (8 and 16) on top of each architecture's existing set. It no longer replaces that set or clears the gfx1250 pin on unroll 32. The flag stays off by default, so a normal build does not compile unroll 8 or 16.
+
 * Host-side device API declarations (`ncclDevCommCreate`, `ncclDevCommDestroy`, `ncclCommQueryProperties`, `ncclGetPeerDevicePointer`, the `*CreateRequirement` helpers, the `ncclDevCommRequirements` and `ncclCommProperties` structs and their initializers) moved to `nccl_device/host.h`. `nccl_device.h` still includes it; code that includes individual `nccl_device/*.h` headers directly must also include `nccl_device/host.h`.
 * Profiler `ncclProfileKernelPhase` events are emitted only by symmetric kernels, matching NCCL 2.32. Regular and P2P kernels report only `ncclProfileKernelCh` start and stop.
 * Updated the RMA plugin interface to v16, which adds a per-communicator `getRmaProperties` query. Plugins built against v13, v14 or v15 still load.
@@ -487,9 +500,8 @@
 * Communicator initialization at large scale is faster because the proxy no longer scans inactive poll descriptors.
 * Network devices for each GPU are now chosen by rail and plane assignment, replacing the previous start-device scattering.
 * `NCCL_MLOPART_RDMA_ENABLE` (default `0`) is kept. NCCL 2.32 removed it and treats buffers on partitioned GPUs as RDMA-capable on all non-ARM hosts; RCCL keeps network buffer registration for partitioned (CPX/DPX) GPUs opt-in.
-* Enabled the single-node one-slice optimization for gfx1250, which was previously limited to gfx942 and gfx950. Ring Simple AllGather, AllReduce and ReduceScatter now use one slice per chunk instead of two, halving the per-chunk peer handshakes. The gain is largest below about 128 MB and tapers to a few percent at multi-GB sizes, where the ring is already near the link bandwidth. LL, LL128 and non-ring algorithms are unaffected.
 * The CSV tuner configurations are no longer installed to `${ROCM_PATH}/share/rccl/tuner/` or copied into the build tree; they ship inside `librccl.so`. A CSV placed in that directory, or in `<librccl.so dir>/tuner/`, still overrides the built-in defaults. A copy left behind by an earlier build or by `cmake --install` over an existing prefix also still takes precedence, so delete it to pick up the embedded defaults; package upgrades remove it automatically.
-* Retuned the symmetric AllReduce, ReduceScatter and AllGather kernels for gfx950. The block width is now selected per collective and message size instead of a fixed 256 threads, and the work partitioning and unroll factors in the load-direct kernels and the AllGather store kernel were refitted to the 64-lane wavefront. AllGather also switches from LL to the store kernel from 1 MB instead of 16 MB. The multi-node GIN kernels and all other architectures are unchanged. To fit the wider LL blocks, the shared LL scratch buffer on gfx950 grows from 4 MiB to 8 MiB per 8-rank communicator.
+* Retuned the symmetric AllReduce, ReduceScatter and AllGather kernels for gfx950. The block width is now selected per collective and message size instead of a fixed 256 threads, and the work partitioning and unroll factors in the load-direct kernels and the AllGather store kernel were refitted to the 64-lane wavefront. AllGather also switches from LL to the store kernel from 4 MB instead of 16 MB. The multi-node GIN kernels and all other architectures are unchanged. To fit the wider LL blocks, the shared LL scratch buffer on gfx950 grows from 4 MiB to 8 MiB per 8-rank communicator.
 * gfx1250 no longer forces unregistered `ncclAllGather`, `ncclAlltoAll`, `ncclGather` and `ncclScatter` through the Copy Engine scratch path (CE-Scratch), because it was slower than the kernel paths it replaced. Whether CE-Scratch is forced by default now comes from the per-architecture table: gfx942 and gfx950 still force it. A communicator-level `NCCL_CTA_POLICY_ZERO` still forces it on every architecture; an explicit `RCCL_FORCE_CE=1` still forces it and `RCCL_FORCE_CE=0` still turns it off. gfx1250 `ncclAllGather` now uses DDA LL128 up to 128 MiB.
 * gfx1250 `ncclAllReduce` on single-node communicators keeps the LL128 protocol at larger sizes: Tree at every size, Ring up to nRanks x 32 MiB, and the DDA LL128 tier up to 256 MiB. The DDA LL128 two-shot ceiling now follows that tier ceiling (`RCCL_DDA_LL128_TWOSHOT_THRESHOLD` still overrides it); the DDA scratch slot lets two-shot reach 256 MiB from 32 ranks, about 240 MiB at 16 and 128 MiB at 2 to 8. On gfx1250 communicators of 2 to 8 ranks, the DDA fabric scratch buffer grows to about 546 MiB.
 * On gfx1250 single-node communicators of 8 or more ranks, the DDA tier, algorithm and protocol crossovers now scale with the rank count. Communicators below 8 ranks keep the previous thresholds.
@@ -497,22 +509,13 @@
   * `ncclAllGather`: DDA LL up to nRanks x 16 KiB, DDA LL128 up to 256 MiB from 16 ranks, and Ring LL128 up to 64 MiB per rank.
   * `ncclReduceScatter`: DDA LL up to nRanks x 256 KiB, DDA LL128 up to nRanks x 512 KiB, then DDA VMM up to nRanks x 2 MiB; Ring LL up to 512 KiB per rank and LL128 up to 8 MiB per rank (32 MiB for 1-byte types); Ring Simple on at most 128 channels between 8 and 32 MiB per rank unless `NCCL_MIN_NCHANNELS` or `NCCL_MAX_NCHANNELS` is set.
   * DDA VMM `ncclAllReduce` and `ncclReduceScatter` launch 2048 / nRanks blocks, clamped to 32 to 128 and never more than before.
-* `fp8_e4m3` and `fp8_e5m2` sum reductions on gfx1250 convert eight elements per instruction using the packed conversion instructions, instead of two. Results are unchanged. Other architectures and reduction operators are unaffected.
-* The rocSHMEM GDA GIN backend (`NCCL_GIN_TYPE=6`) now sets the RoCE traffic class of its queue pairs from `NCCL_GIN_IB_TC`, then `NCCL_IB_TC`, then the communicator traffic class, matching the IB proxy backend. It previously read `ROCSHMEM_GDA_TRAFFIC_CLASS`, which no longer affects these queue pairs. The default remains traffic class 0 when none of these is set.
-* `NCCL_SYM_TMA_ENABLE` now defaults to `1`, matching NCCL 2.31.2, so on gfx1250 (MI450) the Tensor Data Mover symmetric kernels (`AllGather_TmaST`, `AllReduce_RSxTmaLD_AGxTmaST`, `ReduceScatter_TmaLD`) are offered to the symmetric cost model whenever an application uses symmetric registered memory. The cost model selects them only where their deep loop engages, and launches them at the widest allowed block count. They require 16-byte aligned buffers and a build with gfx1250 in `GPU_TARGETS` and a ROCm SDK that ships the TDM descriptor header. For in-place AllGather and ReduceScatter the per-rank slice must also be a multiple of 16 bytes, so that every rank selects the same kernel. Other architectures are unaffected. Set `NCCL_SYM_TMA_ENABLE=0` to restore the previous behavior.
-* rccl-tests `-A 1` (and `rcclGetCollImplInfo` / `rcclSymKGetInfo`) now report a symmetric collective that selects a Tensor Data Mover kernel as `SymTDM` instead of `SYM`. The symmetric reporting query also accounts for buffer alignment, so it no longer omits the TDM kernels that the live dispatch would pick.
-* The AMD Pensando 'ionic' RDMA provider for the rocSHMEM GDA GIN backend (`NCCL_GIN_TYPE=6`) now properly enforces the required support for creation of 'collapsed' single-entry completion queues. If network driver and firmware support for this feature is unavailable, an initialization failure will occur rather than a silent fallback to plain completion queues.
 * Vendored `{fmt}` 10.2.1 as a header-only tree under `external/fmt`. RCCL, its tests, and the `topo_expl` tool now always build against this copy instead of looking for a system `fmt` package or downloading one through `FetchContent` or `git clone`.
 * `rcclSelectAllGather` signature changed — it now takes a `cudaStream_t stream` parameter (for live dispatch) and a `bool query` mode that uses `graphCapturingHint` instead of probing the stream. The comment block was updated too.
 * `RCCL_DDA_THRESHOLD`, `RCCL_DDA_LL_THRESHOLD`, and `RCCL_DDA_LL128_THRESHOLD` now default to `-1` (unset), resolved at runtime from the arch dispatch table instead of being hardcoded to 128 MiB and 64 KiB respectively (RCCL_DDA_LL128_THRESHOLD had no pre-table default; the LL128 tier was off by default). Setting these env vars explicitly still takes precedence over the table.
 * `RCCL_DDA_LL128` now defaults to `-1` (auto): the LL128 tier is enabled only for architectures whose arch-table row has a non-zero `ddaLL128Max` for the collective (currently gfx1250 only).
-* DDA LL128 eligibility functions (`ddaLL128ArOneShotEligible`, `ddaLL128ArTwoShotEligible`) no longer check `RCCL_DDA_LL`. LL and LL128 are now independently gated: `RCCL_DDA_LL=0` disables only the LL tier; `RCCL_DDA_LL128=0` disables only the LL128 tier. Both checks are enforced via `rcclDdaLLThresholdTab` / `rcclDdaLL128ThresholdTab` at the selector level, which return 0 when the respective param is disabled.
-* DDA LL128 is disabled for ReduceScatter and AlltoAll on gfx1250: `ddaLL128Max[RS]` and `ddaLL128Max[A2A]` are 0 in the gfx1250 arch table.
 * `RCCL_CE_ALLREDUCE` now defaults to `-1` (auto/enabled) instead of `0` (disabled). CE AllReduce is therefore on by default for gfx1250 communicators that meet all other eligibility criteria.
 * CE-2-Shot AllReduce size cap is now resolved at runtime via `rcclCeAr2ShotMax()` (env var wins, then arch table `ceNonRegMax[AR]`, then the 256 MiB `NCCL_CE_AR_TMPBUF_DEFAULT_BYTES` fallback) rather than from a compile-time constant.
 * `RCCL_FORCE_CE_ALLREDUCE=1` no longer overrides the CE AllReduce 2-shot selector cap. It bypasses the `CTA_POLICY_ZERO` check only; the selector cap is enforced regardless.
-* With `NCCL_CTA_POLICY=2` (`NCCL_CTA_POLICY_ZERO`), AllReduce on registered symmetric windows now takes the registered CE path whenever it is available, even when the symmetric kernel is eligible, matching AllGather and upstream NCCL. A non-zero arch-table `ceRegMax[AllReduce]` no longer caps it under this policy; a zero entry and an explicit `RCCL_CE_AR_REG_MAX_MSG_BYTES` still apply.
-* `RCCL_FORCE_CE` (default `1`): acts as a prerequisite gate for CE-scratch selection. When `RCCL_FORCE_CE=0`, CE-scratch is disabled entirely for all collectives regardless of other flags. When non-zero, CE-scratch fires if `CTA_POLICY_ZERO` (`-x 2`) is set (bypassing the size window) or if the message size falls within the arch-table `ceNonRegMax` window. AlltoAll CE-scratch now has a size window (`ceNonRegMax[AlltoAll]` in the per-arch table, currently 0 on all arches).
 * `tuning_model_11` registered for gfx1250 single-node; gfx1250 added to the AINIC tuning index map.
 * Extended `ncclFunc_t` enum in rccl-tests `common.h` to match the librccl internal ABI: renumbered existing values and added `ncclFuncAlltoAll` (8), `ncclFuncScatter` (9), `ncclFuncGather` (10), `ncclFuncAllToAllPivot` (11), `ncclFuncAlltoAllGda` (12), `ncclFuncAlltoAllvGda` (13), `ncclFuncAllGatherV` (14), `ncclFuncPutSignal` (15), `ncclFuncSignal` (16), `ncclFuncWaitSignal` (17), `ncclFuncAlltoAllv` (18); `ncclNumFuncs` updated to 19.
 * AlltoAll index variables in `alltoall_dda.h` and `alltoall_dda_fabric.h` widened from `int` to `size_t` to prevent overflow on large message sizes.
@@ -524,27 +527,13 @@
 * Updated the RMA plugin interface to v15.
 * Reduced communicator host memory by allocating topology path link arrays to their actual length.
 * Widened the LL128 per-thread shared-memory slice from 8 to 32 elements on gfx1250 (MI450/MI455); other architectures are unchanged. Forced Ring/LL128 bandwidth roughly doubles at 16 MB and above. Per-block LDS rises from 36448 to 85472 bytes, and because the scratch region is shared across protocols this applies to every kernel launch, not only LL128 ones. The tuner's protocol selection is unchanged, so the gain is only visible when LL128 is selected explicitly.
-* Registered-window CE AllReduce is now eligible without requiring ``NCCL_CTA_POLICY=2``
-  (``CTA_POLICY_ZERO``); it is gated only by the per-arch table window and ``RCCL_CE_ALLREDUCE``.
-  ``RCCL_FORCE_CE_ALLREDUCE`` now applies exclusively to the non-registered (2-shot/staged) CE
-  AllReduce path.
-* `RCCL_FORCE_SYMMETRIC` (default `0`): when set to a non-zero value, biases the `ncclAllReduce`
-  backend selector to prefer the symmetric kernel path over all other candidates. The selector
-  still requires the operand buffers to be registered symmetric windows; if the symmetric
-  path is ineligible the selector falls back normally.
-* `RCCL_FORCE_DDA` (default `0`): when set to a non-zero value, biases the `ncclAllReduce`
-  backend selector to prefer DDA (Direct Data Access) paths over all other candidates,
-  including symmetric and Copy Engine. If no DDA path is eligible for the given message
-  size and communicator the selector falls back normally.
 
 ##### Removed
+
 * `NCCL_TOPO_SCATTER_START_NET`, which selected how the first network device was scattered across GPUs. Rail and plane assignment replaces it.
-* `RCCL_DDA_LL128_RS_THREADS` removed (was default `1024`): reduce-scatter LL128 now launches a fixed 512-thread block, one warp per slice, so the thread count is no longer a tuning knob.
 
 ##### Resolved issues
-* Fixed topology GPU indices that followed the HIP device order instead of the PCI order. This reordered rings and NIC selection, causing an `ncclGather` performance regression on multi-node MI355X systems, and made communicator initialization fail when each rank sees only its own GPU.
-* Anvil SDMA (`NCCL_GIN_TYPE=7`) honours strong GIN signals. A strong signal drains every SDMA queue to that peer before it is sent, including puts that are no longer marked dirty. When the signal is fused with its SDMA put (gfx950), the drain covers only the earlier queue entries and the caller does not wait for the fused put itself. Legacy `ncclGin_SignalInc` is strong by default, so a caller that only needs to order the put it just issued should use `ncclGin_WeakSignalInc`. A barrier on this backend still flushes once and sends weak signals.
-* Fixed VA GIN signals (`ncclGin_VASignalInc`, `ncclGin_VASignalAdd` and their strong and weak forms) on Anvil SDMA (`NCCL_GIN_TYPE=7`). The backend read the VA descriptor as an indexed signal ID and incremented an unrelated signal cell, so the VA signal never arrived. VA signals now update the window cell on the peer, follow the same strong, weak and fused-signal rules as indexed signals, and `ncclGin::resetSignal` on a VA signal clears the local cell.
+
 * Fixed profiler overhead when no profiler plugin is loaded or only kernel-channel events are enabled.
 * Fixed profiler API events reporting rank 0 instead of the originating communicator rank.
 * Fixed P2P IPC registration reuse producing out-of-bounds remote addresses when a registered allocation spans multiple cuMem segments.
@@ -554,28 +543,18 @@
 * Fixed virtual address space exhaustion when symmetric windows backed by the same physical allocation are registered repeatedly.
 * Fixed Copy Engine `ncclAlltoAllv` hanging on intra-node communicators of more than 8 ranks with uneven send sizes. Each rank decided from its own send sizes whether to add intra-batch barriers, so ranks could issue different barrier counts. The decision now uses the full send-size matrix, which every rank shares.
 * Fixed `NCCL_P2P_DISABLE` and `NCCL_P2P_LEVEL` being ignored on Intel, ARM and Zhaoxin hosts, where the CPU-based default P2P level overwrote the user setting. On such hosts `NCCL_P2P_DISABLE=1` now falls back to SHM as documented, and `NCCL_P2P_LEVEL` is honored.
-* Fixed `NCCL_P2P_DISABLE=1` selecting the P2P transport between ranks that share a topology device node, such as MI300X CPX partitions with `NCCL_TOPO_SPLIT_MLOPART=0`. Transport selection now falls back to SHM while preserving zero-hop GPU self paths.
-* Fixed LL-protocol latency on gfx950 when RCCL is built against a ROCm older than 7.0.2 without the 128-bit global load/store builtins (for example ROCm 7.0.1, or `-DDWORDX4_INTRINSICS=OFF`). Every store to the user output buffer was followed by a release fence and an L2 writeback, which made 4 KB to 64 KB `ncclBroadcast` about 30% slower on MI355X. Builds against ROCm 7.0.2 or later were not affected and are unchanged.
-* Fixed a 15 to 30% `ncclScatter` bandwidth loss from 16 MB upward on multi-node AINIC jobs, caused by the move to two network channels per peer (for example on 4 nodes of 8 GPUs). Scatter now uses and connects the most channels per peer whose flows still fit the P2P channel pool. Point-to-point operations and the other collectives keep their channel count.
 * Fixed intermittent data corruption in multi-node collectives, seen as out-of-bounds values in 8-node AllToAll, on hosts that use GPU Direct RDMA through peermem. Since RCCL 2.30.4 the GDR flush scratchpad was registered only through dma-buf, so on peermem hosts the flush degraded to a single RDMA read of the receive buffer, which does not order earlier relaxed-ordering writes. The scratchpad is now also registered through peermem, restoring the strictly ordered RDMA write that precedes the flush read.
-* Fixed `ncclCommAbort` and `ncclCommRevoke` hanging when a DDA collective (IPC on gfx942/gfx950, fabric LL/LL128/VMM on gfx1250) was waiting on a peer that never joined. DDA kernels now observe the communicator abort flag while waiting. A parent communicator shrunk with `NCCL_SHRINK_ABORT` no longer uses DDA for later collectives.
-* Fixed wrong results and hangs in application kernels that use the GIN device API, such as the `07_kernel_fusion` GIN and hybrid RMSNorm examples. `nccl_device/coop.h` selected `__syncwarp` from `ROCM_VERSION`, which only RCCL's own build defines, so in application code the thread and warp cooperative groups synchronized the whole block with `__syncthreads()`. The GIN barrier calls them from a subset of threads, which left the block's waves out of step. The headers now fall back to the HIP version when `ROCM_VERSION` is not defined.
 * Fixed FP8 E4M3 and E5M2 `ncclAvg` returning wrong values for every element of every reduction collective on gfx942, and on architectures that use the software FP8 fallback. The `1/nRanks` scale was packed as an FP8 value in the host's OCP encoding, which those devices decode as FNUZ, so every result came out half as large. The scale is now carried as `float` on all architectures, which also keeps it exact at rank counts FP8 cannot represent: in OCP E4M3, `1/384` was off by 25% and `1/1024` rounded to zero. Single-rank FP8 reductions on gfx942 no longer fail to launch the `oneRankReduce` kernel, and rccl-tests no longer skips FP8 `avg` for `all_reduce`, `all_reduce_bias` and `reduce`.
-* Fixed the GIN plugin never being finalized for a communicator that had connected a GIN backend, leaking the plugin's per-communicator context and leaving its reference count one too high after every `ncclCommDestroy`. `ncclGinHostFinalize` closed the GIN connections and then zeroed the whole `ncclGinState`, so the `ncclGinFinalize` that follows it in `commFree` saw no active backend and skipped the plugin `finalize()` call. Host finalize now clears only the per-connection state and hands the backend records to `ncclGinFinalize`, which finalizes each one on the last shared-resource reference. `commFree` returns the first of a `closeColl` or plugin-finalize error after those frees; if both fail, the `closeColl` error is the one reported. An `ncclRmaProxyFinalize` error still aborts the rest of teardown immediately. On the Anvil SDMA backend (`NCCL_GIN_TYPE=7`) this was one leaked init context per connected communicator.
 * Restored topo tuning-model init (`ncclTopoTuneModel`) after the 2.31 `ncclTuningInit` switch so multi-node kernels do not launch with `blockDim.x=0`.
 * Grouped multi-rank finalize to match the v2.31 teardown barrier.
-* Fixed a crash (`HSA_STATUS_ERROR_MEMORY_APERTURE_VIOLATION`) on gfx110x and gfx120x when the Tree algorithm runs over shared memory with more channels than the Tree graph search found, for example with `NCCL_ALGO=Tree` and `NCCL_P2P_DISABLE=1`. Channels added after `ncclTopoPreset` had no intra-node tree links; `ncclTopoPostset` now sets the tree and CollNet chain links on every channel, as it already did for rings.
 * Fixed Copy Engine `ncclAllGather`, `ncclAlltoAll`, `ncclScatter` and `ncclGather` returning incorrect data, and no error, when `NCCL_LSA_TEAM_SIZE` was set below the number of ranks on the node. These routines index both their peer list and their buffer offsets by LSA rank, so a communicator wider than its LSA team exchanged data only within that team and placed it at LSA rather than communicator offsets, leaving the slices owned by every other rank unwritten. Copy Engine selection now requires the LSA team to cover the whole communicator on the scratch (`RCCL_FORCE_CE`) path as well as the registered-window path, so such communicators use the kernel path instead. Runs that leave `NCCL_LSA_TEAM_SIZE` unset are unaffected, because the LSA team then spans every rank on the node.
-* Fixed the host one-sided RMA API being unavailable on multi-node communicators whose ranks had fused NICs. NIC fusion merges devices for the regular transport only; GIN and RMA select from their own topology node types and never receive a fused device.
 * Fixed hierarchical Copy Engine collectives dereferencing a NULL RMA proxy context when `NCCL_RMA_DISABLE=1` was combined with the hierarchical opt-ins. `NCCL_RMA_DISABLE` suppresses the window registration that creates those contexts, but the hierarchical availability check did not consult it, so a multi-node communicator with `NCCL_CTA_POLICY=2` and symmetric send and receive windows admitted the path and then crashed at launch. The internal RMA context predicate now defers to `ncclRmaProxyEnabled`, so such a communicator declines the hierarchical path and uses the kernel path instead.
 * Fixed Copy Engine `ncclAllReduce` hanging when one thread drives several GPUs, as in rccl-tests `-g 4`. The staging buffer was set up on first launch, and that setup is a collective window registration, so the first rank waited for peers the same thread had not launched yet. The setup is now queued when the collective is enqueued and runs in each communicator's own group job at `ncclGroupEnd`.
-* Fixed Anvil SDMA GIN small-message AllToAll latency after `ncclGinFenceLevel` support. A sub-threshold `gin.put`, a `gin.putValue`, or a standalone `gin.signal` emitted two system-scope fences per peer: one in `fenceBeforeSignal` and one in `signalPeer`. `signalPeer` now emits a single system-scope release immediately before the remote atomic, rather than an agent-scope release before it and a system-scope fence after it, which also stops payload stores from passing the signal cell. A clean-queue IPC `SignalInc` skips `fenceBeforeSignal` entirely, since it would only repeat that release. The SDMA `quiet()` before a signal now runs only when the call itself issued SDMA; previously any call carrying a signal or counter quieted the peer queue, including an IPC put after an earlier SDMA put to the same peer, which now relies on `Flush` to drain that queue. The `NCCL_GIN_ANVIL_SDMA_IPC_AGENT_FENCE` debug knob is removed. Each `Flush` thread drains the peers it owns and then clears exactly the bits it drained, over a mask disjoint from every other thread's. Previously `Flush` loaded a snapshot, quieted it, and cleared the whole word on the coop's leading thread, on every rank, which could drop a concurrent mark whose doorbell had not yet fired and then skip the quiet that mark needed. Clearing after the drain also keeps the invariant that a clear bit means a drained queue, so a second coop flushing the same context cannot return from `Flush` while the first is still inside `quiet()`.
-* Fixed queue evictions on every GPU at process exit: RCCL took a ROCr reference with `hsa_init()` when it checked DMA-BUF support and never released it, so ROCr was not torn down before its GPU-mapped buffers were unmapped.
-* Fixed multi-receive `irecv` failing with a fatal network error in the `IB` transport when `NCCL_IB_USE_INLINE=1`.
-* Fixed Anvil SDMA (`NCCL_GIN_TYPE=7`) GIN contexts sharing signal cells across logical contexts on a connection, which let a consecutive `ncclGinAllContexts` barrier return early on a stale count. Each logical context now has its own signals.
-* Fixed GIN signal shadows being sized for the requested context count instead of the rounded-up `ginContextCount`, which let the last contexts write past the shadow region when the GIN connection count does not divide the requested context count.
+* Fixed `ncclCommWindowRegister` after `ncclDevCommCreate` aborting on the GIN Anvil SDMA backend (`NCCL_GIN_TYPE=7`) with `could not resolve LSA flat addr`. Symmetric-window memory is now linked onto the device-runtime list before GIN/RMA registration so plugins that resolve the user VA through that list can see the in-flight window.
+* Fixed the DDA, Copy-Engine 2-shot, GIN SDMA and hierarchical AllGather/ReduceScatter backends not making the communicator's device current and not ordering a new stream against the previous collective. A collective issued while another device was current failed with `ncclUnhandledCudaError`, and consecutive collectives on different streams could overlap.
 
 ##### Known issues
+
 * The FP8 ReduceSum and ReduceCopy device APIs are not exported in the LLVM bitcode library.
 * On the Anvil SDMA (`NCCL_GIN_TYPE=7`) and rocSHMEM GDA (`NCCL_GIN_TYPE=6`) GIN backends, `ncclGinFlushTimeout` ignores the timeout and blocks until the flush completes; `ncclGinWaitTimeout` does the same on Anvil SDMA. rocSHMEM GDA does not support `ncclGinFlushAsync` or waiting on a GIN request, and those calls trap on the device. The signal and counter wait timeouts work on all backends.
 * The following NCCL 2.31 features are NVIDIA-specific and are not available in RCCL: Compute Fabric Transport, the GDAKI and EFA GDA GIN backends, PAT combined with NVLS, NVLink-multicast AllGather, and the CuTeDSL and `nccl4rust` bindings.
@@ -622,43 +601,11 @@
 
 #### **RDC** (1.4.0)
 
-##### Changed
-
-* **`rdc_health_get()` returns `RDC_ST_GROUP_NOT_FOUND` for a GPU group that does not exist**.
-  * It returned `RDC_ST_OK` with no health watches, so `rdci health -f` showed every watch as Off and exited successfully, and `rdci health -c` failed asking for watches to be enabled. Both commands now fail with a message that the group does not exist.
-
 ##### Resolved Issues
-
-* `rdci health -s` on a GPU group that does not exist no longer leaves an unused field group in rdcd. Repeated failures filled the field group table, and commands that need a new field group, such as `rdci dmon`, then failed until rdcd was restarted.
-
-* `rdc_status_string()` now describes `RDC_ST_DISABLED_MODULE`. It returned "Unknown", so the rdcd log reported a disabled module as an unknown error.
-
-* `RDC_FI_POWER_USAGE` now reports the socket power of AMD Instinct MI300 and newer GPUs. It reported 4294967295000000 µW, so power policies on these GPUs triggered on every check.
-  * Partitions that have no socket power reading of their own now report N/A instead.
-
-* `rdci topo` without `-i` now always reports that the GPU index is missing. It could instead skip that check and print the topology of an arbitrary GPU or an unrelated error.
-
-* RDC no longer reports another GPU's XGMI link states, or garbage values that could crash `rdcd`, for a GPU whose link status AMD SMI cannot read. That GPU now reports no links.
-  * `rdci link` now prints an error and exits with a nonzero status when it cannot get the link status, instead of printing nothing and exiting with 0.
 
 * The `RDC_FI_GPU_MEMORY_CUR_BANDWIDTH` fix for zero readings under DMA or copy-only memory traffic is now included.
 
-* `rdci topo` and `rdc_device_topology_get()` now report the links of the requested GPU. They reported links between other GPU pairs, which showed the wrong link types on systems where GPU pairs are not all linked the same way, such as XGMI hives joined by PCIe.
-  * `rdci topo` now exits with an error code when the GPU index is out of range or the topology query fails, instead of exiting 0, and `rdc_device_topology_get()` reports link types RDC does not define as `RDC_IOLINK_TYPE_UNDEFINED`.
-
-* Opening or stopping an RDC handle no longer crashes the process when another handle is in use, and concurrent `rdc_connect()` calls no longer fail at random.
-
-* Certificates signed with the RDC certificate authority setup in `authentication/openssl.cnf` can no longer sign other certificates. A certificate request could ask to become a signing certificate, and its holder could then create client and server certificates that `rdcd` and `rdci` trust.
-  * If you signed requests that other people created, check the certificates in the `newcerts` directory of your CA for `CA:TRUE`. If you find one, create a new root certificate and reissue all certificates.
-
-* `rdci discovery` now reports an error instead of exiting successfully with an incomplete GPU list when `rdcd` cannot read a GPU's attributes. Failed `rdc_device_get_attributes()` calls now return zeroed attributes, and `rdcd` replies to failed requests no longer contain garbage values.
-
 * `rdci dmon` and `rdci health -s` name the missing group again, for example `Cannot find the group 4242`. Since ROCm 7.12 they printed only `Group not found` (or `Fieldgroup not found` for a missing field group in `rdci dmon`).
-
-* `RDC_FI_GPU_PARTITION_COUNT` now reports how many compute partitions the GPU is split into, for example 1 in SPX mode. It reported 65535 or N/A in every partition mode on most GPUs.
-  * A GPU that cannot be partitioned now reports 1.
-
-* Stopping `rdcd`, or embedded RDC with `rdc_stop_embedded()`, no longer hangs. Rarely, the stop never returned and the process had to be killed.
 
 
 #### **rocDecode** (1.12.0)
@@ -932,16 +879,70 @@
 
 ##### Added
 
-- HSA API tracing support for `hsa_amd_enable_high_precision_timestamps`.
+- Device counting mode for the Streaming Performance Monitor (SPM) service (experimental):
+  - New `rocprofiler_configure_spm_device_counting_service` samples SPM counters on an agent for as long as the context is active, without tying samples to individual kernel dispatches.
+  - Samples are delivered to a buffer as `rocprofiler_spm_counter_record_t` records with no dispatch information.
+- SPM support for gfx12 and gfx1250:
+  - gfx1250 SPM samples report the shader array and WGP. Both are encoded in the counter instance ID together with XCC, shader engine, and instance.
+  - New `ROCPROFILER_SPM_PARAMETER_TYPE_SAMPLE_INTERVAL_REFCLK_CYCLES` parameter sets the SPM sample interval in reference-clock cycles. Only gfx1200, gfx1201, and gfx1250 support it; other agents return `ROCPROFILER_STATUS_ERROR_INVALID_ARGUMENT`. Agent configuration queries report shader-clock and reference-clock intervals separately.
+- Thread trace shader data now has timestamps. `rocprofiler_thread_trace_shader_data_t` has new `start_timestamp` and `end_timestamp` fields of type `rocprofiler_thread_trace_timestamp_t`, each holding a GPU clock value and a system clock value, so thread trace data can be lined up with API traces.
+- Memory copy tracing for `hsa_amd_memory_async_batch_copy`. Each copy in a batch is reported as its own memory copy record through the existing callback and buffer tracing kinds.
+- New `rocprofiler::sdk::pc_sampling::verify_sample` in the header-only `rocprofiler-sdk/cxx/pc_sampling.hpp`. It checks that a stochastic PC sample is consistent with the instruction at its PC.
+- Compute and profiling support on WSL2 for RDNA 3 (gfx11) GPUs, including `rocprofv3` counter collection and thread trace (`--att`). Agent topology is read through `librocdxg`, so `rocprofiler_query_available_agents` returns the same results whether or not HSA has been initialized.
+- CPU agents are now detected on ppc64le (POWER) systems. The `/proc/cpuinfo` parser previously handled only x86 fields.
+- `--spm-sample-interval-unit` accepts the new `refclk_cycles` value, which sets `--spm-sample-interval` in reference-clock cycles. It works only on gfx1200, gfx1201, and gfx1250.
+- New `ROCPROF_FINALIZE_WAIT_TIMEOUT_SECONDS` environment variable (default: 10) sets how long finalization waits for child processes or an abort to finish.
+- New `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE` thread trace parameter and `rocprofiler_thread_trace_resource_mode_t` enum, which control when thread trace resources are allocated:
+  - `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_CODE_OBJECT` creates the thread trace queue for a GPU only when the first code object is loaded on that GPU, so GPUs the application never uses get no queue. This is the default.
+  - `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA` allocates resources at HSA initialization, as in previous releases.
+  - The `HIP`, `ALL`, and `DISPATCH` modes are reserved and return `ROCPROFILER_STATUS_ERROR_NOT_IMPLEMENTED`.
+- HIP API tracing for `hipKernelSetAttributeForDevice`, `hipLibraryGetModule`, `hipModuleEnumerateFunctions`, and `hipDeviceFlushGPUDirectRDMAWrites`.
+- HSA API tracing for `hsa_amd_enable_high_precision_timestamps`, `hsa_amd_agent_set_attribute`, `hsa_amd_vmem_get_vmem_info`, and `hsa_amd_svm_discard_and_prefetch_batch_async`.
+- New `--att-resource-mode` option (`default`, `hsa`, or `code-object`) sets when thread trace resources are allocated. The default is `code-object`.
 
 ##### Changed
 
 - rocPD schema 3.0.5 stores SPM counter location on `rocpd_info_pmc`. Each agent and combination of counter, XCC, shader engine, shader array, WGP, and instance has its own pmc id. Location dimensions not provided for a counter are stored as `NULL` and left blank in CSV output. The instance index is always stored. `rocpd_pmc_event` keeps the sample value and points at that id.
 - Request ROCr high-precision timestamp correlation during HSA registration when GPU timestamp collection is configured and the runtime provides the tools API. Older runtimes and tools that only trace CPU APIs or markers retain the existing behavior.
+- Dispatch counter collection, Advanced Thread Trace (ATT), SPM, and PC sampling no longer register with the HSA queue controller's per-queue callback registry. The write interceptor and async completion path call each service's dispatch hooks explicitly, with agent-scoped active checks so a service configured on one GPU does not pull other GPUs off the fast path (#11967, #11968, #11969, #11970).
+- Experimental `rocprofiler_spm_dispatch_counting_service_set_agents()` scopes dispatch SPM to selected GPU agents; two SPM contexts may be active together when their agent sets are disjoint (#11968).
+- Thread trace now allocates its memory and signals through KFD and copies data with SDMA. If an SDMA copy isn't possible, it falls back to HSA and prints a warning. This fixes several crashes and hangs that occurred when thread trace ran after `main()` returned.
+- ROCprofiler-SDK takes the OpenMP tools (OMPT) interface only when a registered client subscribes to OMPT tracing. Otherwise it passes the interface to the next OMPT tool, so a user's own OMPT tool can run alongside ROCprofiler-SDK.
+- Signal-less KFD dispatch-log mode (`ROCPROFILER_KFD_DISPATCH_LOG_SIGNAL_LESS`) now uses version 4 of the KFD dispatch-log stream ABI (profiler ABI version 6).
+- `rocprofv3` checks each stochastic PC sample against the instruction at its PC. Samples that fail the check are dropped and counted as invalid. Samples from unknown code objects are kept as is.
+- `rocprofv3` now rejects multi-pass counter collection from an input file when combined with `--pid` or `--collection-period`. This already applied to multiple `--pmc` flags. The error message names what made the run multi-pass.
+- Extra counter YAML files passed with `-E`/`--extra-counters` are now validated before they are loaded. If a definition is malformed, `rocprofv3` reports the field that is wrong and exits with an error. It previously crashed or hung.
+- Environment variables whose names contain sensitive keywords, such as `password`, `secret`, `token`, or `key`, are no longer written to the rocPD database.
+- When collecting PMC counters on GPUs from gfx1100 up to but not including gfx1250, ROCprofiler-SDK warns if `power_dpm_force_performance_level` is not `profile_standard` or can't be read. Dynamic power and clock scaling can skew counter values. Set the level to `profile_standard` (for example, with `amd-smi set --perf-level STABLE_STD`) for stable results.
+- Queue interposition now issues a memory fence when writing packets to the ring buffer to protect against packets being read reordered or half-written.
+- Increased the PC sampling buffer size on MI300, MI350, and MI400 series GPUs. Many samples were dropped or invalid at reasonable sampling rates with the smaller buffer.
+- The thread trace decoder now tries the versioned library names (`librocprof-trace-decoder.so.<major>`, then `.so.<major>.<minor>`, then `.so.<major>.<minor>.<patch>`) before falling back to the unversioned name. This lets `rocprofv3 --att` work on installs that ship only the versioned library, such as TheRock runtime wheels.
+- Tool lifecycle messages are now logged at info level instead of warning. Processes that load a rocprofiler-sdk tool with logging disabled no longer write these messages to stderr.
+- By default, thread trace now creates its queue on each GPU when the first code object is loaded there, not at HSA initialization. To keep the old behavior, use `--att-resource-mode hsa` or `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA`.
 
 ##### Resolved issues
 
 - When a context that needs packet interception replaces a queue created by `hsa_amd_queue_create` with a system-memory intercept queue, the device-memory placement flags are now cleared in the caller's descriptor. HIP reads these flags back and previously assumed a device-memory ring buffer that profiling had silently replaced.
+- Fixed kernel replay dropping later `--pmc` groups when used with `--kernel-iteration-range`: the range is evaluated once per logical dispatch (pass 0), and later replay passes reuse that decision instead of consuming another iteration each pass (#11335).
+- Fixed a deadlock in queue interposition that occurred when more kernels were linked by barriers than `ROCPROFILER_ASYNC_SIGNAL_HANDLER_THREADS` allowed, for example in a HIP graph fork/join or an all-reduce. A single thread now waits for any completion signal. This also works with older ROCr versions.
+- Fixed `rocprofv3` hanging at normal exit when the application left a long-running child process. Child processes are now waited for only when exiting on a signal, and that wait has a time limit.
+- Fixed `roctxProfilerPause` and `roctxProfilerResume` with `rocprofv3` process attachment. A pause issued before attaching no longer affects the attached session. With `--selected-regions`, collection starts at the first `roctxProfilerResume` after attaching.
+- Fixed two process attachment issues. Reusing a pooled HSA signal leaked the signal's previous handle. Attach callbacks could also be associated with the wrong tool when `rocprofiler_configure` and `rocprofiler_configure_attach` came from different shared objects, for example when PyTorch exports `rocprofiler_configure`.
+- Fixed output path formatting hanging when a placeholder's value contains that same placeholder, for example `-o '%argt%'` with an application argument of `%argt%`, or an environment variable that refers to itself. Such placeholders are now left as written and a warning is printed.
+- Fixed `%q{NAME}` not expanding in output paths. Names such as `results_%q{MPI_RANK}` became `results_` on every rank.
+- Fixed a second copy of rocprofiler-sdk bundled with an application such as PyTorch initializing itself under `rocprofv3`, even though all calls go to the globally preloaded library.
+- Fixed the TCP counter instance count on MI450 series GPUs, where the two SIMD pairs now share one TCP.
+- Fixed `SQ_WAVES` overcounting on gfx1152 when a desktop session is active. On gfx11, SQ counters now count only VMIDs 8 to 15, which excludes graphics work from the desktop.
+- Fixed the gfxip family label for agents whose name includes an ISA variant suffix, such as `gfx1250-strict`.
+- Fixed `rocprofv3 --pmc` aborting on WSL2, where `/dev/kfd` doesn't exist. PC sampling and KFD-only controls are now reported as unavailable instead.
+- Fixed a build failure with newer HSA headers that define `HSA_ACCESS_PERMISSION_EX`. Execute permissions are now formatted correctly.
+- Fixed internal singletons being constructed in storage that wasn't aligned for their type, which is undefined behavior and could cause split-lock accesses on x86.
+- Fixed `ROCPROFILER_KFD_DISPATCH_LOG_SIGNAL_LESS=true` writing log messages in processes where no tool is registered.
+- Fixed the synchronous device counting sample crashing at exit.
+- Fixed time-based (microsecond) PC sampling intervals being limited by the maximum meant for cycle-based intervals.
+- Fixed a possible crash when a traced HIP API call had a string (`const char*`) argument that was read after the call returned. String arguments are now copied when the call is traced.
+- Fixed `rocprofv3 --att` ignoring `ROCPROF_ATT_LIBRARY_PATH`. It searched the whole filesystem from `/` and used the first trace decoder it found.
+- Fixed `rocprofiler-sdk-rocattach` failing to find symbols such as `rocprofiler_register_detach` in the target process when the library's memory mappings didn't line up one-to-one, in address order, with its loadable segments.
 
 #### **rocRAND** (5.2.0)
 
@@ -1030,14 +1031,6 @@
 ##### Changed
 
 * Replaced the soon-to-be-deprecated `__hip_atomic_*` builtins with the equivalent `__scoped_atomic_*` builtins.
-* ROCmCMakeBuildTools 0.11.0 or later is now required. By default, CMake configuration fails when it isn't found instead of downloading rocm-cmake from GitHub. Configure with `-DALLOW_FETCH_DEPS=ON` to download rocm-cmake 0.14.0 from ROCm 7.2.4 instead. The deprecated `ROCM` package fallback was removed.
-* GoogleTest 1.11.0 or later must be installed before building the client tests (`BUILD_CLIENTS_TESTS`). Alternatively, set `FETCHCONTENT_SOURCE_DIR_GOOGLETEST` to a googletest source tree, or configure with `-DALLOW_FETCH_DEPS=ON` to download GoogleTest 1.15.2. Both build GoogleTest statically and don't install it.
-* `install.sh -d` no longer builds and installs GoogleTest from source.
-* The 24 SuiteSparse test matrices are now stored with DVC in `clients/matrices`. Run `dvc pull -R projects/rocsparse/clients/matrices` before building the tests. In a sparse checkout, add the repository-root `.dvc` directory first with `git sparse-checkout add .dvc`. By default, CMake configuration fails when matrices are missing instead of downloading them from SuiteSparse. Configure with `-DALLOW_FETCH_DEPS=ON` to download them instead, which also applies to `ROCSPARSE_TEST_MIRROR`. The `--matrices-dir` and `--matrices-dir-install` options of `install.sh` and the `--matrices-dir` option of `rmake.py` still download missing matrices.
-
-##### Removed
-
-* Removed the GoogleTest superbuild in `deps/CMakeLists.txt`, together with `deps/external-gtest.cmake` and `cmake/get-cli-arguments.cmake`.
 
 ##### Optimized
 
@@ -1059,12 +1052,7 @@
 * Fixed kernel launches whose `grid.x * blockDim.x` exceeded the 32-bit work-item dispatch limit. CDNA rejects those launches (`hipErrorInvalidConfiguration` / `rocsparse_status_internal_error`). `rocsparse_axpby` (both the `beta` scaling of `y` and the `axpyi` update), `rocsparse_axpyi`, `rocsparse_roti` and `rocsparse_rot`, `rocsparse_scatter`, ELL SpMV (non-transposed and transposed), and COO AoS SpMV (atomic and transposed) now clamp `grid.x` to `(2^32 - 1) / blockDim.x` and cover the remainder with a grid-stride loop.
 * Fixed an integer overflow in the binary search that maps nonzeros to rows in the nnz-split algorithms of `rocsparse_spmv` (CSR) and `rocsparse_spmm` (CSR and CSC). With 32-bit indices and matrices with more than `2^30` rows, the search midpoint `(left + right) / 2` could overflow, causing out-of-bounds reads or incorrect row assignments. The midpoint is now computed as `left + (right - left) / 2`.
 * Fixed an invalid kernel launch in legacy `rocsparse_Xbsr2csr` and the 64-bit BSR-to-CSR conversion, where the 1024-thread kernels overflowed the 32-bit work-item grid limit at about 4.2 million block rows because the grid was not clamped.
-* Fixed an integer overflow in the SELL SpMV kernels used by `rocsparse_v2_spmv`. With 32-bit indices, the row index of each thread was computed in 32-bit arithmetic, so for matrices with close to `2^31` rows the threads past the last row wrapped to a negative row index that passed the `row < m` check. Those threads could read past the end of the slice offsets, and the non-transposed kernel could write `y` at a negative index. The row index is now computed in 64-bit arithmetic. The transposed kernel for slice sizes up to 128 also no longer reads `x` for threads past the last row.
 * Fixed an overflow issue in the COO atomic SpMV kernels used by `rocsparse_spmv` and `rocsparse_v2_spmv` for COO and COO AoS matrices. When using 64-bit indices and `nnz` >= `2^32`, a 32-bit element-ID calculation could overflow and prevent some nonzeros from being accumulated. The kernels now compute element IDs in 64-bit arithmetic.
-* Fixed `install.sh --matrices-dir-install` and `--matrices-dir`, which reported success when a test matrix couldn't be extracted, downloaded or converted.
-* Fixed the test matrix conversion with `ROCSPARSE_MTX_DIR`, which moved the `.mtx` files out of that directory and deleted them after conversion. They are now copied, and matrices missing from that directory are taken from the DVC archives.
-* Fixed the test matrix conversion in address sanitizer builds, where the converter failed to load the shared address sanitizer runtime.
-* Fixed the test matrix converter, which accepted a `.mtx` file with fewer entries than its header declares.
 
 #### **rocThrust** (5.0.0)
 
@@ -1104,6 +1092,9 @@
 - `RPP_ERROR_HIP_LAUNCH` error type for reporting HIP kernel launch errors
 - `rppGetStatusString()` to convert an `RppStatus` value into its enumerator name
 - `rpp_BACKEND_TYPE` and `rpp_AUDIO_AUGMENTATIONS_SUPPORT` variables to RPP CMake package config
+- Support for building RPP on non-x86 architectures using the SIMDE (SIMD Everywhere) library for portable SIMD intrinsics; x86 builds are unchanged.
+- Support for the `gfx1250-strict` GPU target in HIP builds.
+- `RPP_RETURN_IF_ERROR` macro in `rppdefs.h` for propagating nested `RppStatus` failures from the enclosing function.
 
 ##### Changed
 
@@ -1115,6 +1106,7 @@
 - CMakeLists.txt updated to remove batch PD references
 - Updated test suite to use `rpp_BACKEND_TYPE` and `rpp_AUDIO_AUGMENTATIONS_SUPPORT` variables from RPP CMake package config instead of header parsing
 - `find_package(rpp)` now automatically passes on public include directories to the target link interface
+- On non-x86 architectures, `simde` (found via `pkg-config`) is now a required RPP build dependency and is propagated to consumers of the `rpp` CMake package.
 
 ##### Removed
 
@@ -1122,3 +1114,8 @@
 - LEGACY_SUPPORT compilation flag and all code enclosed within it
 - OpenCL backend support
 - Batch PD test suite and installation
+
+##### Resolved issues
+
+- Corrected `rppt_log` to return `RPP_ERROR_INVALID_SRC_DATATYPE` instead of the misleading `RPP_ERROR_INVALID_DST_DATATYPE` for unsupported source datatypes.
+- Fixed error propagation through the HIP kernel dispatcher: kernel launch failures now return `RPP_ERROR_HIP_LAUNCH` instead of `RPP_SUCCESS`, which previously masked launch errors as pixel mismatches on GPUs with no matching kernel binary.
