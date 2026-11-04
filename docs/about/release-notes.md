@@ -67,7 +67,7 @@ ROCm {{ ROCM_VERSION }} adds support for the following virtualization configurat
 
 **Radeon**
 
-* On AMD Radeon PRO W7800, W7900, and W7900DS:
+* On AMD Radeon PRO W7800, W7900, and W7900 Dual Slot:
   * KVM Passthrough with Ubuntu 24.04 or Ubuntu 26.04 host OS and Ubuntu 24.04 or Ubuntu 26.04 guest OS.
 
 Supported Single Root I/O Virtualization (SR-IOV) configurations require the [AMD GPU Virtualization Driver (GIM) 9.4.0.K](https://mkmartifactory.amd.com:8443/artifactory/sw-virt-prod-local/KVM_OpenSource_Releases/9.4.0.K/). For details, see [GPU virtualization support](#gpu-virtualization-support).
