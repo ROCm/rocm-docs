@@ -97,7 +97,9 @@ The following are notable enhancements to HIP:
 
 ##### Select the target HIP API version with `HIP_TARGET_API_VERSION`
 
-The new `HIP_TARGET_API_VERSION` macro lets you select the target HIP API version at compile time, which helps maintain source compatibility for applications written against older API versions. For example, when targeting HIP API version `800` or later, `hipMemAdvise` aliases `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID. Applications using the legacy signature might need source updates. To keep the previous signature, define `HIP_TARGET_API_VERSION` to a nonzero value less than 800 at compile time, such as `700` for HIP 7.0 or `717` for HIP 7.17.
+The new `HIP_TARGET_API_VERSION` macro lets you select the target HIP API version at compile time, which helps maintain source compatibility for applications written against an earlier API version. The default is `700`, which matches the current HIP 7 API, and changes only at a major ROCm release. Although setting the macro has no effect today, define it explicitly so that applications that state their target API version continue to compile unchanged when the default moves.
+
+When the HIP 8 API is introduced in a future release, this macro will initially be the only way to access it: you opt in by defining `HIP_TARGET_API_VERSION` as `800`, while the default remains `700`. Because the macro is set per translation unit, you can preview the HIP 8 API side by side with HIP 7 in the same codebase. Build one target against `800` while the rest of your build stays on `700`. For example, in the HIP 8 API, `hipMemAdvise` maps to `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID.
 
 ##### New module, library, and kernel APIs
 
@@ -404,20 +406,17 @@ The following are notable changes to AMD SMI:
 
 ##### Power profile management
 
-You can now discover, activate, and configure the driver's predefined power and performance profiles (AMPP, the AMD SMI power profile) from both the C API and the CLI. The driver doesn't guarantee a fixed field set, profile count, or naming across SoC generations, so AMD SMI enumerates profiles, fields, and units at runtime. Your tools pick up whatever the driver exposes without hard-coded profile lists.
+You can now discover, activate, and configure the driver's predefined power and performance profiles (AMPP, the AMD SMI power profile) from both the C API and the CLI. Profiles, fields, and units are enumerated at runtime, so your tools pick up whatever the driver exposes without hard-coded profile lists.
 
-- **Inspect:** `amd-smi static --ampp` shows the profile ABI version, each profile's active, writable, and configured state, and each field's name, unit, value, minimum, and maximum.
-- **Activate and configure:** `amd-smi set --ampp-activate <profile_name>` activates a profile. `amd-smi set --ampp-configure <profile_name> KEY=VALUE...` stages one or more fields on a writable profile and commits them.
-- **Restore:** `amd-smi set --ampp-configure @<path>` restores every writable profile that has staged fields from a saved `amd-smi static --ampp --json` file in one call.
-- **Programmatic access:** the C API provides `amdsmi_get_ampp_profiles`, `amdsmi_get_ampp_fields`, `amdsmi_activate_ampp_profile`, and `amdsmi_configure_ampp_profile`.
+- **Inspect:** `amd-smi static --ampp` shows each profile's state and fields.
+- **Activate and configure:** `amd-smi set --ampp-activate` activates a profile, and `amd-smi set --ampp-configure` sets its field values.
+- **Restore:** `amd-smi set --ampp-configure @<path>` reapplies the settings recorded in a saved `amd-smi static --ampp --json` file. It applies only what the file contains.
 
 The existing `amdsmi_*_gpu_power_profile*` preset-mask API is unchanged.
 
 ##### Link topology API on bare metal
 
-The new `amdsmi_get_link_topology()` API on bare-metal systems lets you query the link between two GPUs with one call, instead of combining several component APIs. It returns link weight, status, type, hop count, and framebuffer-sharing data, and matches the existing host interface. Python and Rust bindings are included, along with `AmdSmiLinkStatus` in Python and `AmdsmiLinkStatusT` in Rust for interpreting the status.
-
-Querying a GPU against itself returns an `INTERNAL` link type, an `ENABLED` status, zero hops and weight, and framebuffer sharing set. If you migrate from the component APIs, note that on bare metal `amdsmi_topo_get_link_type(gpu, gpu)` reports PCIe and 2 hops, and `amdsmi_topo_get_link_weight(gpu, gpu)` reports twice the NUMA node weight (typically 40).
+The new `amdsmi_get_link_topology()` API on bare-metal systems lets you query the link between two GPUs with one call. It returns link weight, status, type, hop count, and framebuffer-sharing data, and matches the existing host interface. Python and Rust bindings are included.
 
 ##### Fabric link events in RAS reporting
 
@@ -437,12 +436,11 @@ The API now reports:
 
 The `amd-smi` CLI now returns more specific exit codes, a structured error format, and less N/A output, which can affect scripts that parse its output or check `$?`:
 
-- **Exit codes:** Library failures exit with the underlying `AMDSMI_STATUS_*` value (0-56), and CLI-only errors use dedicated codes in the reserved 193-253 band. When a run records more than one failure with different codes, the process exits `204`. `amd-smi ras` also exits non-zero when a CPER file fails to decode, where it previously exited `0`.
-- **Multi-device `set` and `reset`:** A per-device failure no longer stops the command. It continues to the remaining devices and sets the exit code once, after every device has been attempted. For example, `amd-smi set --power-cap` now validates each GPU against its own range, so an out-of-range value on one GPU doesn't block the others.
-- **Error messages:** Messages now read `[AMDSMI_STATUS_<name>] <message>`. `--json` and `--csv` errors gain an `error_type` field, and `--csv` gains a third column (`error,code,error_type`), so a reader that unpacks exactly two fields per row needs updating.
-- **Metric output:** `amd-smi metric` omits fields that show N/A in human-readable output because the GPU's metrics table version can't carry them. On a metrics v1.3 GPU, this removes 88 of the 110 N/A values in `amd-smi metric -g 0`. Use `--show-unsupported` to restore them. JSON and CSV output are unchanged.
+- **Exit codes:** Exit codes now identify the failure type more precisely and match the `code` printed in the error message. `amd-smi ras` also exits non-zero when a CPER file fails to decode, where it previously exited `0`. `set` and `reset` commands continue past a per-device failure instead of stopping.
+- **Error messages:** Messages now read `[AMDSMI_STATUS_<name>] <message>`. `--json` and `--csv` errors gain an `error_type` field, and `--csv` rows gain a third column, so parsers that expect two fields per row need updating.
+- **Metric output:** `amd-smi metric` omits fields that show N/A in human-readable output. Use `--show-unsupported` to restore them. JSON and CSV output are unchanged.
 
-For more information, see the [AMD SMI section](#amd-smi-27-2-0) in the ROCm component changelogs.
+For API names, CLI syntax, and exit code values, see the [AMD SMI section](#amd-smi-27-2-0) in the ROCm component changelogs.
 
 ### Libraries
 
