@@ -125,7 +125,7 @@ AMD Instinct:
 
 AMD Radeon:
   linux:
-    amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0, *amdgpu_31_50_0, *amdgpu_31_40_1]
+    amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0]
   windows: [*adrenalin_26_11_1, *windows_oem_26_20_xy]
 
 AMD Ryzen:
