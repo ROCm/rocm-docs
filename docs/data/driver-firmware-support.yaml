@@ -130,6 +130,6 @@ AMD Radeon:
 
 AMD Ryzen:
   linux:
-    - {os: "Ubuntu 26.04.1", driver: "GA 7.0 Kernel"}
-    - {os: "Ubuntu 24.04.5", driver: "HWE 7.0 Kernel"}
+    - {os: "Ubuntu 26.04.1", driver: "7.0.0 inbox kernel​"}
+    - {os: "Ubuntu 24.04.5", driver: "6.17.0-1032-oem or later OEM kernel​"}
   windows: [*adrenalin_26_11_1, *windows_oem_26_20_xy]
