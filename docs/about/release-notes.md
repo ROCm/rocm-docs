@@ -629,6 +629,10 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
 
+### HuggingFace model training throughput might regress on AMD Instinct MI350 Series GPUs
+
+HuggingFace model training workloads might see 6–22% lower training throughput on AMD Instinct MI355X and MI350X (gfx950) GPUs, compared to builds that use AOTriton 0.11.2b. Impacted models include BERT, DistilBERT, RoBERTa-large, and GPT-2. As a workaround, rebuild PyTorch and pin AOTriton to version 0.11.2b.
+
 ## ROCm resolved issues
 
 The following notable issues have been fixed in ROCm {{ ROCM_VERSION }}.
