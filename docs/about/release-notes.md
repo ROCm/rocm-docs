@@ -117,24 +117,6 @@ For more information, see the [HIP section](#hip-10-2-0) in the ROCm component c
 
 The following are notable enhancements to ROCprofiler-SDK:
 
-##### KFD dispatch log tracing (CP tracing) for kernel tracing
-
-ROCprofiler-SDK adds a new way to collect kernel tracing information, called KFD dispatch log tracing, also known as CP tracing. The GPU command processor firmware already writes an end-of-pipe record for every dispatch it retires. On supported hardware, KFD exposes those records to user space as a dispatch log stream, and ROCprofiler-SDK consumes them directly instead of deriving completion from HSA signals. This capability is enabled on gfx1250 systems running amdgpu driver 31.70 and ROCm 10.2.0.
-
-The SDK opens a dispatch log stream per supported GPU through the KFD profiler ioctl and maps the kernel-owned GTT backing read-only, so firmware records are consumed zero-copy with no intermediate buffer. A dispatch batch registers a pending entry before its packets are published, publishes those packets untouched, and is completed later when the reader confirms retirement from the corresponding firmware record. Dispatch batches that aren't eligible keep the existing signal-based path, so both mechanisms work in the same run.
-
-Signal-less dispatch completion is opt-in. It activates only when `ROCPROFILER_KFD_DISPATCH_LOG_SIGNAL_LESS` is explicitly set to a true value:
-
-```shell
-ROCPROFILER_KFD_DISPATCH_LOG_SIGNAL_LESS=true rocprofv3 --kernel-trace -- <application>
-```
-
-When the path is active, ROCprofiler-SDK logs that signal-less kernel dispatch completion is in effect. Unsetting the variable returns the process to signal-based completion.
-
-The SDK validates the GPU and the dispatch log ABI at startup (stream ABI version 4, profiler ioctl ABI version 6) and enables the path only on gfx1250 with amdgpu driver 31.70 or later. If that check fails, the path is skipped and dispatch timing falls back to the existing signal-based mechanism, so kernel tracing still works and the output is unchanged. The default ring size and in-flight dispatch budget suit most workloads. For graph-launch-heavy runs that lose dispatch records, set the ring size with `ROCPROFILER_KFD_DISPATCH_LOG_SIZE_KB` and the in-flight budget with `ROCPROFILER_KFD_DISPATCH_LOG_MAX_PENDING_PER_GPU` (default 2,000,000 per GPU).
-
-Signal-less completion changes dispatch completion semantics process-wide, which is why it's opt-in. Because records are recovered from firmware rather than from a signal the profiler owns, a dispatch whose record is lost, through a ring overrun or a queue torn down mid-flight, is counted and reported as a loss rather than given an incorrect timestamp.
-
 ##### Streaming Performance Monitor device counting mode and gfx12 support
 
 * Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect samples as `rocprofiler_spm_counter_record_t` records that carry no dispatch information, so you can observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
