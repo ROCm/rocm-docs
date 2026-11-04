@@ -21,11 +21,11 @@ Since ROCm 7.14, ROCm uses [TheRock](https://github.com/ROCm/TheRock) as its bui
 
 ## Release highlights
 
-This release focuses on AI inference, developer tooling, and profiling across AMD Instinct™, Radeon™, and Ryzen™ AI platforms. Highlights include expanded GPU and virtualization support, new AI framework versions, the addition of new components, new HIP APIs and performance improvements, profiler usability and performance improvements, and updates to math, sparse, and storage libraries.
+This release focuses on profiling, runtime enhancements, and AI-assisted developer workflows across AMD Instinct™, Radeon™, and Ryzen™ AI platforms. Highlights include support for additional AMD Ryzen APUs and new virtualization configurations, updated PyTorch, JAX, vLLM, and SGLang versions, and new HIP APIs. The profiling tools gain WSL 2 profiling and Agent Skills. AMD System Management Interface (AMD SMI) adds power profile management, and the libraries add complex GEMM in hipBLASLt and new sparse routines in rocSPARSE.
 
 ### Platform and hardware support
 
-This release expands GPU and virtualization support.
+This release adds support for additional AMD Ryzen APUs and new GPU virtualization configurations.
 
 #### Expanded AMD GPU support
 
@@ -135,23 +135,6 @@ The SDK validates the GPU and the dispatch log ABI at startup (stream ABI versio
 
 Signal-less completion changes dispatch completion semantics process-wide, which is why it's opt-in. Because records are recovered from firmware rather than from a signal the profiler owns, a dispatch whose record is lost, through a ring overrun or a queue torn down mid-flight, is counted and reported as a loss rather than given an incorrect timestamp.
 
-##### rocprofv3 doctor
-
-Most profiling failures are environmental rather than functional: a mismatched ROCm installation, a library that won't load, a missing kernel module, a container without the right device nodes, or a Python environment missing a required package. Diagnosing these from a single error message is slow, and the error usually names a symptom rather than a cause.
-
-`rocprofv3` adds `--doctor`, a self-diagnostic that inspects the ROCprofiler-SDK installation and the surrounding system and reports what would prevent profiling from working, with a fix for each problem found.
-
-```shell
-rocprofv3 --doctor
-rocprofv3 --doctor --output-format json
-```
-
-Doctor covers ten check groups: installation, driver and device, runtime stack, counter collection, environment variables, container and virtualization, Python environment, filesystem, companion tools, and optional live smoke tests. It verifies that the ROCm libraries actually load, catching missing dependencies, mixed ROCm versions, and an outdated `libstdc++`, rather than only confirming that files exist. It also explains failed or crashed commands by matching their output against known error signatures. Each diagnosis separates what the output shows from the candidate cause, and rates a cause `likely` only when facts on the machine corroborate it.
-
-Doctor declares the impact of every check as `passive`, `process`, or `gpu`. Child processes are time-limited and their entire process tree is killed on timeout, Python package imports run in a child process, and the only file written is an exclusively created temporary probe. A check that itself breaks is reported as a doctor bug, not a system failure.
-
-Output is available as human-readable grouped text with color-coded status and a remediation section, or as machine-readable JSON with a versioned schema for CI. Exit codes are 0 for warnings only, 1 when at least one check failed, and 2 for a tool error, including an `--only` pattern that matched no check or a broken check with no failures. Doctor works with every ROCm installation layout, not only `/opt/rocm`: legacy system packages, TheRock system packages under `/opt/rocm/core-X.Y`, TheRock Python packages, tarballs, and custom prefixes. It reports the root it inspected, how it found it, and the installation type, and adapts remediation commands accordingly.
-
 ##### Streaming Performance Monitor device counting mode and gfx12 support
 
 * Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect samples as `rocprofiler_spm_counter_record_t` records that carry no dispatch information, so you can observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
@@ -206,10 +189,6 @@ The PC sampling buffer size is also increased, from 4 MB to 64 MB, on the multi-
 
 ##### Process attachment improvements
 
-* Process attachment now prefers the tool library from the target process's ROCprofiler-SDK installation, improving compatibility when attaching across installations. `rocprof-attach` and `rocprofv3 --attach` profile the target with the tool library belonging to the installation the target is running, located through `/proc/<pid>/maps`. When that library can't be found, they fall back to the attaching installation's tool library and print a warning. With `--attach-children`, every process in the tree uses the selection made for the target PID. A warning is also printed when the target runs a different ROCprofiler-SDK installation, because options that installation doesn't support are ignored or skipped. Aggregate options such as `--sys-trace` enable only what the target's installation supports.
-
-* `rocprof-attach -t/--attach-tool-library` is now optional. A tool library given with `-t` or `ROCPROF_ATTACH_TOOL_LIBRARY` is used exactly as given and is interpreted in the target's filesystem. `rocprofv3 --attach` now honors a user-set `ROCPROF_ATTACH_TOOL_LIBRARY`. A user-set `ROCP_TOOL_LIBRARIES` is ignored in attach mode, with a warning; use `-t` or `ROCPROF_ATTACH_TOOL_LIBRARY` instead. `rocprof-attach` reports a clear error before touching the target when the target's attach library predates attachment through the `rocp-bg-attach` thread.
-
 * Two attach defects are fixed: an HSA signal handle leak when reusing pooled signals, and the incorrect association of attach callbacks with tools when `rocprofiler_configure` and `rocprofiler_configure_attach` resolve from different shared objects.
 
 ##### OMPT tool chaining
@@ -218,7 +197,7 @@ ROCprofiler-SDK now takes the OpenMP Tools (OMPT) interface only when a register
 
 ##### Agent Skills
 
-ROCprofiler-SDK ships a set of Agent Skills under `skills/`, packaging profiling workflows as instructions that AI coding assistants can follow: `rocprofv3` for general tracing, counter collection, and rocpd post-processing; `thread-trace` for ATT collection and interpretation; `pc-sampling` for stochastic and host-trap sampling including stall-reason analysis; and `rocprofv3-doctor` for summarizing doctor reports. Each skill ships with evaluation cases and tests.
+ROCprofiler-SDK ships a set of Agent Skills under `skills/`, packaging profiling workflows as instructions that AI coding assistants can follow: `rocprofv3` for general tracing, counter collection, and rocpd post-processing; `thread-trace` for ATT collection and interpretation; and `pc-sampling` for stochastic and host-trap sampling including stall-reason analysis. Each skill ships with evaluation cases and tests.
 
 ##### Expanded tracing coverage
 
@@ -264,17 +243,11 @@ This release includes a range of quality and stability improvements across ROCpr
 
 * Fixed attachment failing for framework workloads and Python wheels. Attachment libraries now load on runtime-only installs lacking unversioned symlinks, loading the same library through different paths is no longer treated as a conflict, and a compatible library next to `rocprofiler-register` is preferred over an unrelated installation.
 
-* Fixed attaching with a colon-delimited list in `-t`/`--attach-tool-library` or `ROCPROF_ATTACH_TOOL_LIBRARY`; every library is now checked and attachment fails if any is missing. Also fixed the last library of a colon-delimited `ROCP_TOOL_LIBRARIES` list not being loaded, and stopped the application aborting when a listed library couldn't be loaded.
-
-* `rocprofiler_attach` and `rocprofiler_detach` return the actual attach and detach status instead of always reporting success, an attach now fails when no tool accepted configuration, and `rocattach_attach_tree` reports success when any process in the tree attached.
-
 * Fixed output path formatting hanging when a placeholder's value contains that same placeholder, and fixed `%q{NAME}` not expanding, which turned names such as `results_%q{MPI_RANK}` into `results_` on every rank.
 
 * Fixed a second copy of ROCprofiler-SDK bundled with an application such as PyTorch initializing itself under `rocprofv3`, even though all calls go to the globally preloaded library.
 
 * Fixed time-based (microsecond) PC sampling intervals being limited by the maximum intended for cycle-based intervals.
-
-* `rocprofiler_configure_buffer_tracing_service` and `rocprofiler_configure_callback_tracing_service` now return `ROCPROFILER_STATUS_ERROR_KIND_NOT_FOUND` for an out-of-range tracing kind instead of throwing.
 
 * Fixed `rocprofv3 --att` ignoring `ROCPROF_ATT_LIBRARY_PATH` and searching the whole filesystem from `/`.
 
