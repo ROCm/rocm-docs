@@ -603,7 +603,7 @@ The following table is a general overview of supported frameworks and AI inferen
 
 ## ROCm Core SDK components
 
-The following table lists core tools and libraries included in the ROCm 10.1.0 release.
+The following table lists core tools and libraries included in the ROCm {{ ROCM_VERSION }} release.
 
 :::{important}
 The following table is a general overview of ROCm Core SDK components. Actual support for these libraries and tools can vary by GPU and OS. Use the {doc}`Compatibility matrix </compatibility/compatibility-matrix>` to verify support for your specific setup.
