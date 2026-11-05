@@ -605,9 +605,9 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
 
-## ComfyUI diffusion workloads might show lower performance on certain AMD Radeon GPUs and Ryzen APUs
- 
-ComfyUI diffusion workloads might show 11–78% lower throughput on AMD Radeon Pro W7900, Radeon RX 7900 XTX, and Radeon RX 7900 GRE GPUs (gfx1100) on Linux and Windows, as well as on Ryzen AI Max 300 Series and Ryzen AI Max PRO 300 Series APUs (gfx1151). Impacted models include Wan2.2 A14B t2v, LTX 2.3, SD 3.5 medium, Qwen-Image 2512, Hunyuan3D 2.1, Flux.2 Klein 9B, and Z-Image Turbo. As a workaround, switch to an alternative at tention backend: pass `--use-flash-attention` to use FlashAttention (may require `pip install flash-attn`), or pass `--use-ck-attention` to use the Comfy-Kitchen attention backend.
+### ComfyUI and PyTorch flash-attention workloads might show lower performance on some AMD Radeon GPUs and Ryzen AI APUs
+
+ComfyUI diffusion and PyTorch flash-attention workloads might show lower performance on some AMD Radeon GPUs and Ryzen AI APUs due to an AOTriton tuning regression (0.13b → 0.14b) that selects a slower attention kernel tile at longer sequence lengths. On Linux, ComfyUI workloads on AMD Radeon RX 7900 series GPUs run roughly 12–61% slower (up to 78% slower on the RX 7900 GRE) with 11–50% less throughput; on Ryzen AI Max 300 Series (gfx1151) APUs, most ComfyUI models run 17–35% slower and PyTorch models show roughly 2–12% lower throughput. Ryzen AI 300 Series (gfx1150) is expected to be affected by the same mechanism but has not been separately verified. As a workaround, ComfyUI users can switch to a different attention backend via `--use-flash-attention` (requires `pip install flash-attn`) or `--use-ck-attention`. PyTorch users can revert AOTriton to 0.13b and rebuild.
 
 ### Hugging Face model training throughput might regress on AMD Instinct MI350 Series GPUs
 
