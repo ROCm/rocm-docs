@@ -360,21 +360,15 @@ The following are notable changes to AMD SMI:
 
 ##### Power profile management
 
-You can now discover, activate, and configure the driver's predefined power and performance profiles (AMPP, the AMD SMI power profile) from both the C API and the CLI. Profiles, fields, and units are enumerated at runtime, so your tools pick up whatever the driver exposes without hard-coded profile lists.
-
-- **Inspect:** `amd-smi static --ampp` shows each profile's state and fields.
-- **Activate and configure:** `amd-smi set --ampp-activate` activates a profile, and `amd-smi set --ampp-configure` sets its field values.
-- **Restore:** `amd-smi set --ampp-configure @<path>` reapplies the settings recorded in a saved `amd-smi static --ampp --json` file. It applies only what the file contains.
-
-The existing `amdsmi_*_gpu_power_profile*` preset-mask API is unchanged.
+You can now discover, activate, and configure the driver's predefined power and performance profiles (AMPP, the AMD SMI power profile) from both the C API and the CLI. Profiles and fields are enumerated at runtime, so your tools pick up whatever the driver exposes without hard-coded profile lists. The existing `amdsmi_*_gpu_power_profile*` preset-mask API is unchanged.
 
 ##### Link topology API on bare metal
 
-The new `amdsmi_get_link_topology()` API on bare-metal systems lets you query the link between two GPUs with one call. It returns link weight, status, type, hop count, and framebuffer-sharing data, and matches the existing host interface. Python and Rust bindings are included.
+The new `amdsmi_get_link_topology()` API lets you query the link between two GPUs on bare-metal systems with one call, matching the existing host interface. Python and Rust bindings are included.
 
 ##### Fabric link events in RAS reporting
 
-`amd-smi ras --cper` now reports fabric link events (link down, link up, and fatal) alongside GPU errors, so you can see fabric faults and GPU errors in the same Common Platform Error Record (CPER) output. The new `amdsmi_get_fabric_cper_entries()` API retrieves the fabric reliability, availability, and serviceability (RAS) CPER records programmatically.
+`amd-smi ras --cper` now reports fabric link events alongside GPU errors, so you can see fabric faults and GPU errors in the same Common Platform Error Record (CPER) output. The new `amdsmi_get_fabric_cper_entries()` API retrieves the fabric reliability, availability, and serviceability (RAS) CPER records programmatically.
 
 ##### Energy counter API now available on AMD Radeon GPUs
 
@@ -391,7 +385,7 @@ The API now reports:
 The `amd-smi` CLI now returns more specific exit codes, a structured error format, and less N/A output, which can affect scripts that parse its output or check `$?`:
 
 - **Exit codes:** Exit codes now identify the failure type more precisely and match the `code` printed in the error message. `amd-smi ras` also exits non-zero when a CPER file fails to decode, where it previously exited `0`. `set` and `reset` commands continue past a per-device failure instead of stopping.
-- **Error messages:** Messages now read `[AMDSMI_STATUS_<name>] <message>`. `--json` and `--csv` errors gain an `error_type` field, and `--csv` rows gain a third column, so parsers that expect two fields per row need updating.
+- **Error messages:** Errors are now structured, and `--json` and `--csv` errors gain an `error_type` field. `--csv` rows gain a third column, so parsers that expect two fields per row need updating.
 - **Metric output:** `amd-smi metric` omits fields that show N/A in human-readable output. Use `--show-unsupported` to restore them. JSON and CSV output are unchanged.
 
 For API names, CLI syntax, and exit code values, see the [AMD SMI section](#amd-smi-27-2-0) in the ROCm component changelogs.
