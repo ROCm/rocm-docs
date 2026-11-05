@@ -438,6 +438,11 @@ ROCm packages in Spack
      - 5.7.0
      - 10.0.0
 
+   * - Tensile
+     - ``rocm-tensile``
+     - 5.6.0
+     - 10.0.0
+
    * - TransferBench
      - ``transferbench``
      - 6.3.0
@@ -467,11 +472,6 @@ ROCm packages in Spack
      - ``hsakmt-roct``
      - 5.6.0
      - 6.2.4 (final)
-
-   * - Tensile
-     - ``rocm-tensile``
-     - 5.6.0
-     - 10.0.0
 
 Installing ROCm components using Spack
 ===================================================
