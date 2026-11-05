@@ -161,6 +161,8 @@ html_theme_options = {
     "repository_url": "https://github.com/ROCm/rocm-docs",
     "use_repository_button": True,
     "use_issues_button": True,
+    # TEMPORARY: suppress the auto "not the latest version" banner until 10.2.0 is GA. Remove at GA.
+    "announcement": "",
 }
 html_title = f"AMD ROCm {ROCM_VERSION}"
 
