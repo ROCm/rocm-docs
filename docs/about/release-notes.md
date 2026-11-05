@@ -14,6 +14,7 @@ These release notes describe notable changes since the previous ROCm release.
 - [ROCm breaking changes](#rocm-breaking-changes)
 - [ROCm known issues](#rocm-known-issues)
 - [ROCm resolved issues](#rocm-resolved-issues)
+- [ROCm upcoming changes](#rocm-upcoming-changes)
 
 ```{note}
 Since ROCm 7.14, ROCm uses [TheRock](https://github.com/ROCm/TheRock) as its build and release system. For more information, see the [transition guide](/about/transition-guide-TheRock).
@@ -109,7 +110,7 @@ New APIs provide more control over modules, libraries, and kernels. `hipModuleEn
 
 HIP now reports errors for device-side out-of-bounds writes, null pointer dereferences, and asserts on WSL 2, rather than leaving affected applications hanging.
 
-For more information, see the [HIP section](#hip-10-2-0) in the ROCm component changelogs.
+For more information, see the [HIP section](#hip-7-17-0) in the ROCm component changelogs.
 
 ### Profiling and debugging tools
 
@@ -171,7 +172,7 @@ The PC sampling buffer size is also increased, from 4 MB to 64 MB, on the multi-
 
 ##### Process attachment improvements
 
-* Two attach defects are fixed: an HSA signal handle leak when reusing pooled signals, and the incorrect association of attach callbacks with tools when `rocprofiler_configure` and `rocprofiler_configure_attach` resolve from different shared objects.
+Two attach defects are fixed: an HSA signal handle leak when reusing pooled signals, and the incorrect association of attach callbacks with tools when `rocprofiler_configure` and `rocprofiler_configure_attach` resolve from different shared objects.
 
 ##### OMPT tool chaining
 
@@ -253,6 +254,8 @@ This release includes a range of quality and stability improvements across ROCpr
 
 The project also added `SECURITY.md` and `CONTRIBUTING.md`, adopted the shared ROCm security scanning workflows, and updated its documentation toolchain.
 
+For more information, see the [ROCprofiler-SDK section](#rocprofiler-sdk-1-4-2) in the ROCm component changelogs.
+
 #### ROCm Compute Profiler feature highlights
 
 The following are notable enhancements to the ROCm Compute Profiler (`rocprofiler-compute`):
@@ -271,9 +274,9 @@ For details, see [Install the analyze mode dependencies](https://rocm.docs.amd.c
 
 ##### Memory chart improvements
 
-* The memory chart for AMD Instinct™ GPUs has a new layout that is easier to read in the terminal. It breaks down read, write, and atomic requests, shows bandwidth between the L2 cache and the memory fabric, and reports how much traffic goes to high-bandwidth memory (HBM) and to remote memory. On AMD Instinct MI350 Series GPUs, it also shows Local Data Share (LDS) activity and per-channel bandwidth for HBM, xGMI, and PCIe.
+* The memory chart for AMD Instinct GPUs has a new layout that is easier to read in the terminal. It breaks down read, write, and atomic requests, shows bandwidth between the L2 cache and the memory fabric, and reports how much traffic goes to high-bandwidth memory (HBM) and to remote memory. On AMD Instinct MI350 Series GPUs, it also shows Local Data Share (LDS) activity and per-channel bandwidth for HBM, xGMI, and PCIe.
 
-* The memory chart for AMD Ryzen™ APUs now reports the traffic measured at each interface, adds LDS utilization, and uses clearer labels, arrows, and legend. Missing counter data appears as N/A instead of a misleading 0.
+* The memory chart for AMD Ryzen APUs now reports the traffic measured at each interface, adds LDS utilization, and uses clearer labels, arrows, and legend. Missing counter data appears as N/A instead of a misleading 0.
 
 For details, see [Analyzing with the CLI](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html#cli-memory-chart-viewing).
 
@@ -415,7 +418,29 @@ General batched GEMM accepts 64-bit element offsets into sub-matrices, so you ca
 - **Requirements:** Nonzero offsets require `HIPBLASLT_BATCH_MODE_POINTER_ARRAY`. For strided batched GEMM, use the stride instead. A nonzero offset with the sub-byte MX types `HIP_R_6F_E2M3`, `HIP_R_6F_E3M2`, or `HIP_R_4F_E2M1` returns `HIPBLAS_STATUS_NOT_SUPPORTED`.
 - **Benchmarking:** `hipblaslt-bench` supports the new `batch_offset_a`, `batch_offset_b`, `batch_offset_c`, and `batch_offset_d` arguments.
 
-For more information, see the hipBLASLt section in the ROCm component changelogs.
+For more information, see the [hipBLASLt section](#hipblaslt-1-5-0) in the ROCm component changelogs.
+
+#### hipFile feature highlights
+
+The following are notable enhancements to hipFile:
+
+##### Asynchronous I/O failover and new documentation
+
+hipFile adds failover for asynchronous fast path I/O, a batch I/O example, and Stats API documentation.
+
+- **Async fast path failover:** Asynchronous fast path I/O now fails over when the fast path reports a device error, instead of failing the request.
+- **Batch round-trip example:** A new `batch-roundtrip` example shows how to use the batch I/O API.
+- **Stats API documentation:** The new [Statistics API reference](https://rocm.docs.amd.com/projects/hipFile/en/develop/reference/api-stats.html) covers how to read I/O statistics.
+
+##### PyTorch adds AMD Infinity Storage hipFile support
+
+PyTorch for ROCm now supports the `torch.cuda.gds` file I/O APIs, including `GdsFile`, `gds_register_buffer`, and `gds_deregister_buffer`, through AMD Infinity Storage hipFile. On supported filesystems, data moves directly between storage and GPU memory instead of being staged through host memory. To check whether your PyTorch build includes this support, use `torch.cuda.gds.is_available()`.
+
+##### hipFile support in fio and IOR
+
+hipFile support is now available in [fio 3.43](https://github.com/axboe/fio/releases/tag/fio-3.43), the latest release, and in the main branch of [IOR](https://github.com/hpc/ior/pull/540). Both are open source, industry-standard storage benchmarking tools that you can use to evaluate storage performance.
+
+For more information, see the [hipFile section](#hipfile-0-6-0) in the ROCm component changelogs.
 
 #### rocFFT feature highlights
 
@@ -429,21 +454,7 @@ JIT load and store callbacks, set with `rocfft_plan_description_set_load_callbac
 
 64-bit index arithmetic is now selected automatically for transforms large enough to overflow 32-bit addressing, so very large transforms, including lengths greater than 2^32, can run. Smaller transforms continue to use 32-bit arithmetic.
 
-For more information, see the rocFFT section in the ROCm component changelogs.
-
-#### rocALUTION feature highlights
-
-The following are notable enhancements to rocALUTION:
-
-##### Interpolation operators and truncation for Ruge-Stueben algebraic multigrid
-
-Select the new matrix-matrix based interpolation operators `MMExtPI` and `MMExtPE` for Ruge-Stueben algebraic multigrid (AMG) through `RugeStuebenAMG::SetInterpolationType()`. To truncate the interpolation operator, use `RugeStuebenAMG::SetInterpolationTruncationFactor()` to drop entries that are small relative to the largest entry in their row, and `RugeStuebenAMG::SetInterpolationMaxElmts()` to cap the number of entries per row.
-
-##### Depth limit for AMG hierarchies
-
-`BaseAMG::SetMaxLevels()` limits the number of levels in an AMG hierarchy. Combine it with another AMG solver as the coarse grid solver to build hybrid hierarchies, such as unsmoothed aggregation on the finest levels followed by Ruge-Stueben AMG on the coarser levels. The new `cg-uaamg-rsamg` sample demonstrates this configuration.
-
-For more information, see the rocALUTION section in the ROCm component changelogs.
+For more information, see the [rocFFT section](#rocfft-1-0-41) in the ROCm component changelogs.
 
 #### rocSPARSE feature highlights
 
@@ -472,11 +483,25 @@ rocSPARSE reduces analysis-phase and solve-phase time for sparse triangular solv
 
 rocSPARSE improves sparse matrix-matrix multiplication (SpGEMM) performance for output rows too large for the shared-memory hash tables. Workloads that produce long, wide output rows, such as algebraic multigrid (AMG) setup in rocALUTION, can particularly benefit. This applies to `rocsparse_spgemm` for CSR and BSR matrices and to `rocsparse_Xcsrgemm` and `rocsparse_Xbsrgemm`, including their stage routines such as `rocsparse_csrgemm_nnz`. For BSR matrices with a block dimension greater than 1, only `rocsparse_bsrgemm_nnzb` is affected.
 
-For more information, see the rocSPARSE section in the ROCm component changelogs.
+For more information, see the [rocSPARSE section](#rocsparse-5-1-0) in the ROCm component changelogs.
 
 #### rocPRIM improves device scan throughput
 
-rocPRIM device-wide scan operations run faster on AMD Instinct MI325X and MI300X GPUs, increasing throughput particularly for 1-, 2-, and 4-byte integer types.
+rocPRIM device-wide scan operations run faster on AMD Instinct MI325X and MI300X GPUs, increasing throughput particularly for 1-, 2-, and 4-byte integer types. For more information, see the [rocPRIM section](#rocprim-5-0-0) in the ROCm component changelogs.
+
+### HPC SDK highlights
+
+#### rocALUTION feature highlights
+
+The following are notable enhancements to rocALUTION:
+
+##### Interpolation operators and truncation for Ruge-Stueben algebraic multigrid
+
+Select the new matrix-matrix based interpolation operators `MMExtPI` and `MMExtPE` for Ruge-Stueben algebraic multigrid (AMG) through `RugeStuebenAMG::SetInterpolationType()`. To truncate the interpolation operator, use `RugeStuebenAMG::SetInterpolationTruncationFactor()` to drop entries that are small relative to the largest entry in their row, and `RugeStuebenAMG::SetInterpolationMaxElmts()` to cap the number of entries per row.
+
+##### Depth limit for AMG hierarchies
+
+`BaseAMG::SetMaxLevels()` limits the number of levels in an AMG hierarchy. Combine it with another AMG solver as the coarse grid solver to build hybrid hierarchies, such as unsmoothed aggregation on the finest levels followed by Ruge-Stueben AMG on the coarser levels. The new `cg-uaamg-rsamg` sample demonstrates this configuration.
 
 
 (release-supported-hw)=
@@ -544,7 +569,7 @@ See the [AMD GPU partitioning](https://instinct.docs.amd.com/projects/amdgpu-doc
 
 ## AI ecosystem support
 
-ROCm 10.2.0 provides optimized support for popular deep learning frameworks and AI inference engines. The following table lists supported frameworks and libraries, their compatible operating systems, and validated versions.
+ROCm {{ ROCM_VERSION }} provides optimized support for popular deep learning frameworks and AI inference engines. The following table lists supported frameworks and libraries, their compatible operating systems, and validated versions.
 
 :::{important}
 The following table is a general overview of supported frameworks and AI inference engines. Actual support might vary by AMD GPU or APU. Use the {doc}`Compatibility matrix </compatibility/compatibility-matrix>` to verify support for your specific setup.
