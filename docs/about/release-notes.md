@@ -491,6 +491,8 @@ rocPRIM device-wide scan operations run faster on AMD Instinct MI325X and MI300X
 
 ### HPC SDK highlights
 
+For more information about the HPC SDK, see the {doc}`AMD ROCm HPC SDK </components/hpc-sdk/index>` documentation.
+
 #### rocALUTION feature highlights
 
 The following are notable enhancements to rocALUTION:
