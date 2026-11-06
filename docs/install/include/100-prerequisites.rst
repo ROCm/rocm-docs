@@ -702,7 +702,7 @@ Prerequisites
       :heading: Install Python
       :heading-level: 3
 
-      .. selected:: sles-ver=16.0
+      .. selected:: sles-ver=16.1 sles-ver=16.0
 
          Install a supported Python version. For example, to install Python 3.13,
          run the following command:

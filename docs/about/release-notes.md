@@ -55,7 +55,11 @@ For the complete list of supported AMD hardware, see [AMD hardware support](#amd
 
 #### Operating system support update
 
-Operating system support remains unchanged in this release. For the full list of supported Linux distributions, see [Operating system support](#operating-system-support).
+ROCm {{ ROCM_VERSION }} adds support for:
+
+* SLES 16.1 for AMD Instinct GPUs.
+
+For the full list of supported Linux distributions, see [Operating system support](#operating-system-support).
 
 #### Expanded GPU virtualization support for Instinct and Radeon GPUs
 

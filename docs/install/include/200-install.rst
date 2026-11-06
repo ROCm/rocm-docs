@@ -13,7 +13,7 @@ Installation
 
       If you have ROCm 7.2.4 or older installed, please uninstall it before proceeding.
 
-.. selected:: os=sles sles-ver=15.7 sles-ver=16.0 i=pkgman i=runfile
+.. selected:: os=sles sles-ver=15.7 sles-ver=16.0 sles-ver=16.1 i=pkgman i=runfile
 
    .. note::
 
@@ -776,7 +776,7 @@ Use the following instructions to install ROCm packages on your system.
       Register the ROCm repository with your system's package manager. This enables
       you to install and update ROCm packages using ``zypper``.
 
-      .. selected:: sles-ver=16.0
+      .. selected:: sles-ver=16.1 sles-ver=16.0
 
          .. selected:: fam=all
 
@@ -1719,7 +1719,7 @@ Use the following instructions to install ROCm packages on your system.
 
    .. selected:: os=sles
 
-      .. selected:: sles-ver=16.0
+      .. selected:: sles-ver=16.1 sles-ver=16.0
 
          For example, to create and activate a Python 3.13 virtual environment,
          run the following command:
