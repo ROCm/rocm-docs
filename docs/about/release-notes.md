@@ -21,7 +21,7 @@ Since ROCm 7.14, ROCm uses [TheRock](https://github.com/ROCm/TheRock) as its bui
 
 ## Release highlights
 
-This release focuses on profiling, runtime enhancements, and AI-assisted developer workflows across AMD Instinct™, Radeon™, and Ryzen™ AI platforms. Highlights include support for additional AMD Ryzen APUs and new virtualization configurations, updated PyTorch, JAX, vLLM, and SGLang versions, and new HIP APIs. The profiling tools gain WSL 2 profiling and Agent Skills. AMD System Management Interface (AMD SMI) adds power profile management, and the libraries add complex GEMM in hipBLASLt and new sparse routines in rocSPARSE.
+This release focuses on profiling, runtime enhancements, and AI-assisted developer workflows across AMD Instinct™, Radeon™, and Ryzen™ AI platforms. Highlights include support for additional AMD Ryzen APUs and new virtualization configurations, updated PyTorch, JAX, vLLM, and SGLang versions, and new HIP APIs. The profiling tools gain WSL2 profiling and Agent Skills. AMD System Management Interface (AMD SMI) adds power profile management, and the libraries add complex GEMM in hipBLASLt and new sparse routines in rocSPARSE.
 
 ### Platform and hardware support
 
@@ -109,9 +109,9 @@ When the next major API version is introduced in a future release, this macro wi
 
 New APIs provide more control over modules, libraries, and kernels. `hipModuleEnumerateFunctions` returns the function handles defined in a loaded module, so applications no longer need to know kernel names ahead of time. `hipLibraryGetModule` returns the module handle associated with a library, and `hipKernelSetAttributeForDevice` sets a device-wide attribute for a kernel on a specific device.
 
-##### Device-side fault reporting on WSL 2
+##### Device-side fault reporting on WSL2
 
-HIP now reports errors for device-side out-of-bounds writes, null pointer dereferences, and asserts on WSL 2, rather than leaving affected applications hanging.
+HIP now reports errors for device-side out-of-bounds writes, null pointer dereferences, and asserts on WSL2, rather than leaving affected applications hanging.
 
 For more information, see the [HIP section](#hip-7-17-0) in the ROCm component changelogs.
 
@@ -149,13 +149,13 @@ The following are notable enhancements to ROCprofiler-SDK:
 
 * The `rocprof-trace-decoder` Python API, introduced in ROCm 10.0.1, was previously available only from the `rocm-systems` sources. It now ships with ROCm, so decoding ATT/SQTT data from Python works against a standard installation.
 
-##### WSL 2 profiling support for RDNA 3.5
+##### WSL2 profiling support for RDNA 3.5
 
-ROCprofiler-SDK and `rocprofv3` can now profile HIP and HSA workloads on WSL 2, including counter collection and thread trace (`--att`). Compute support itself is provided by the ROCm runtime; these changes add the profiling path on top of it. Support is validated on RDNA 3.5 (gfx1150, Strix Point); other gfx115x SKUs weren't explicitly validated.
+ROCprofiler-SDK and `rocprofv3` can now profile HIP and HSA workloads on WSL2, including counter collection and thread trace (`--att`). Compute support itself is provided by the ROCm runtime; these changes add the profiling path on top of it. Support is validated on RDNA 3.5 (gfx1150, Strix Point); other gfx115x SKUs weren't explicitly validated.
 
 On WSL the KMT topology is read up front through `librocdxg`, using the same thunk interface as the HSA runtime, and an agent is published only once all of its required topology information has been collected. `rocprofiler_query_available_agents` therefore returns consistent agent information whether or not the HSA runtime has initialized, which `rocprofv3-avail` and counter metric lookup both require. Native Linux continues to use the existing KFD/sysfs path for agent enumeration, though a few shared error-handling fixes from this work apply to Linux as well.
 
-Because WSL 2 provides GPU access through `/dev/dxg` rather than `/dev/kfd`, paths that assume a native KFD device node now degrade cleanly: `rocprofv3 --pmc` no longer aborts when `/dev/kfd` is absent, and PC sampling and KFD-only controls are reported as unavailable. For thread trace, basic ATT capture and decoding are validated on gfx1150. Combining `--att` with `--selected-regions` isn't yet supported on WSL 2 and might produce an empty trace.
+Because WSL2 provides GPU access through `/dev/dxg` rather than `/dev/kfd`, paths that assume a native KFD device node now degrade cleanly: `rocprofv3 --pmc` no longer aborts when `/dev/kfd` is absent, and PC sampling and KFD-only controls are reported as unavailable. For thread trace, basic ATT capture and decoding are validated on gfx1150. Combining `--att` with `--selected-regions` isn't yet supported on WSL2 and might produce an empty trace.
 
 ##### Dispatch path optimization
 

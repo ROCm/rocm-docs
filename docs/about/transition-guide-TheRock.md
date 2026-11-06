@@ -1,6 +1,6 @@
 # Transition guide from legacy ROCm release stream
 
-The [ROCm Core SDK](https://rocm.docs.amd.com/en/latest/index.html#rocm-core-sdk) is built on TheRock, AMD's new build system. The transition from the legacy ROCm release stream began with [ROCm Core SDK 7.14.0](https://rocm.docs.amd.com/en/docs-7.14.0/about/release-notes.html), the first production release. [ROCm 10.1.0](https://rocm.docs.amd.com/en/latest/about/release-notes.html) is the latest production release. For more on the transition, see [ROCm 7.14: TheRock Goes Production and Expands AMD's AI Software Platform](https://rocm.blogs.amd.com/ecosystems-and-partners/rocm-7.14-blog/README.html).
+The [ROCm Core SDK](https://rocm.docs.amd.com/en/latest/index.html#rocm-core-sdk) is built on TheRock, AMD's new build system. The transition from the legacy ROCm release stream began with [ROCm Core SDK 7.14.0](https://rocm.docs.amd.com/en/docs-7.14.0/about/release-notes.html), the first production release. [ROCm 10.2.0](https://rocm.docs.amd.com/en/latest/about/release-notes.html) is the latest production release. For more on the transition, see [ROCm 7.14: TheRock Goes Production and Expands AMD's AI Software Platform](https://rocm.blogs.amd.com/ecosystems-and-partners/rocm-7.14-blog/README.html).
 
 ## Major changes
 
@@ -16,7 +16,7 @@ The [ROCm Core SDK](https://rocm.docs.amd.com/en/latest/index.html#rocm-core-sdk
   <tbody>
     <tr>
       <td>Installation directory</td>
-      <td><code class="docutils literal notranslate"><span class="pre">/opt/rocm/core-10.1</span></code></td>
+      <td><code class="docutils literal notranslate"><span class="pre">/opt/rocm/core-10.2</span></code></td>
       <td><code class="docutils literal notranslate"><span class="pre">/opt/rocm-7.2/</span></code></td>
       <td>To support additional release streams downstream of the ROCm Core SDK.</td>
     </tr>
@@ -61,7 +61,7 @@ ROCm Core SDK is available in the following distribution formats. For step-by-st
     <tr>
       <td><strong>Tarball archives</strong></td>
       <td>
-        Self-contained install that requires neither root nor a package manager, suited to HPC module systems and custom install locations. Archives follow the naming convention <code>therock-dist-linux-{FAMILY}-{VERSION}.tar.gz</code> (for example, <code>therock-dist-linux-gfx110X-all-{VERSION}.tar.gz</code>). For the <code>{FAMILY}</code> value for your GPU, see <a href="#architecture-specific-packages">Architecture-specific packages available in ROCm 10.1.0</a>.<br><br>
+        Self-contained install that requires neither root nor a package manager, suited to HPC module systems and custom install locations. Archives follow the naming convention <code>therock-dist-linux-{FAMILY}-{VERSION}.tar.gz</code> (for example, <code>therock-dist-linux-gfx110X-all-{VERSION}.tar.gz</code>). For the <code>{FAMILY}</code> value for your GPU, see <a href="#architecture-specific-packages">Architecture-specific packages available in ROCm 10.2.0</a>.<br><br>
         Extract to any directory, then set <code>PATH</code>, <code>LD_LIBRARY_PATH</code>, and <code>ROCM_PATH</code> to point to the extracted location (default: <code>/opt/rocm/core</code>). Tarballs don't create symlinks or resolve dependencies.<br><br>
         Available from <a href="https://repo.amd.com/">repo.amd.com</a>.
       </td>
@@ -97,9 +97,9 @@ stream. For example, hipBLAS and rocBLAS are now combined into one package,
 `amdrocm-blas`. The table below lists the packages, their contents, and the
 corresponding legacy packages.
 
-(linux-packages-available-in-rocm-10-1-0)=
+(linux-packages-available-in-rocm-10-2-0)=
 
-### Linux packages available in ROCm 10.1.0
+### Linux packages available in ROCm 10.2.0
 
 <table class="rocm-docs-table table">
   <thead>
@@ -148,7 +148,7 @@ corresponding legacy packages.
     <tr>
       <td>amdrocm-solver</td>
       <td>rocSOLVER, hipSOLVER</td>
-      <td>rocsolver, hipsolver, rocalution</td>
+      <td>rocsolver, hipsolver</td>
     </tr>
     <tr>
       <td>amdrocm-dnn</td>
@@ -245,8 +245,8 @@ corresponding legacy packages.
 
 Packages are offered in the following variants:
 
-- **For all supported GPUs:** Works across all GPUs supported by ROCm (for example, `apt install amdrocm-core-sdk10.1`).
-- **For a specific GPU architecture:** Smaller install size, but requires you to know the GPU installed in your system (for example, `apt install amdrocm-core-sdk10.1-gfx110x`).
+- **For all supported GPUs:** Works across all GPUs supported by ROCm (for example, `apt install amdrocm-core-sdk10.2`).
+- **For a specific GPU architecture:** Smaller install size, but requires you to know the GPU installed in your system (for example, `apt install amdrocm-core-sdk10.2-gfx110x`).
 
 Installing all GPU architectures is not required. You can install packages for a specific architecture, multiple architectures side by side, or all supported GPU architectures.
 
@@ -254,7 +254,7 @@ When redistributing software built on the ROCm Core SDK (for example, in contain
 
 (architecture-specific-packages)=
 
-### Architecture-specific packages available in ROCm 10.1.0
+### Architecture-specific packages available in ROCm 10.2.0
 
 Tarball archives use *family* names that differ from the deb/rpm package suffixes. The **Tarball family name** column maps each package suffix to its corresponding tarball family.
 
@@ -330,6 +330,14 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
 - ROCm Validation Suite
 - TransferBench
 - ROCm Optiq
+- Omnistat
+
+### Moved to HPC SDK
+
+- hipTensor (`amdrocm-hiptensor`)
+- rocALUTION (`amdrocm-rocalution`)
+
+For more information, see [AMD ROCm HPC SDK](../components/hpc-sdk/index.rst).
 
 ### Moved to Standalone/ONNX
 
@@ -365,7 +373,7 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
       <td rowspan="8" class="stub" style="vertical-align: middle"><strong>ROCm Core SDK</strong></td>
       <td>Math and compute libraries</td>
       <td>CK, hipBLAS, hipBLASLt, hipCUB, hipFFT, hipRAND, hipSOLVER, hipSPARSE/SPARSELt, libhipcxx, MIOpen, rocBLAS, rocFFT, rocRAND, rocSOLVER, rocSPARSE, rocPRIM, rocThrust, rocWMMA</td>
-      <td>hipfort, rocALUTION</td>
+      <td>hipfort, hipTensor (moved to HPC SDK), rocALUTION (moved to HPC SDK)</td>
     </tr>
     <tr>
       <td>Communication libraries</td>
@@ -405,7 +413,7 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
     <tr>
       <td class="stub" style="vertical-align: middle"><strong>ROCm Extras</strong></td>
       <td>—</td>
-      <td>ROCm Validation Suite, TransferBench, ROCm Optiq</td>
+      <td>ROCm Validation Suite, TransferBench, ROCm Optiq, Omnistat</td>
       <td>—</td>
     </tr>
     <tr>

@@ -230,7 +230,7 @@
     * `hipKernelSetAttributeForDevice` sets a device-wide attribute for a kernel on a specific device.
 * Support for the `hipMemRangeFlagDmaBufMappingTypePcie` flag in `hipMemGetHandleForAddressRange`, matching the CUDA behavior.
 * Support for recovering allocation properties from imported virtual memory handles. `hipMemGetAllocationPropertiesFromHandle` now correctly reports `hipMemLocationTypeHost` for host-backed allocations imported through `hipMemImportFromShareableHandle`, instead of always reporting device memory. For device-backed allocations, it reports the owning device rather than the device that was current when the handle was imported.
-* Support in WSL 2 to prevent indefinite application hangs and to report errors for device-side faults, including out-of-bounds writes, null pointer dereferences, and device asserts.
+* Support in WSL2 to prevent indefinite application hangs and to report errors for device-side faults, including out-of-bounds writes, null pointer dereferences, and device asserts.
 * Added `HIP_TARGET_API_VERSION` to enable compile-time API version selection, helping maintain source compatibility with applications built against older HIP API versions.
 
 ##### Changed
@@ -265,7 +265,7 @@
 
 ##### Known issues
 
-* A GPU Timeout Detection and Recovery (TDR) event can occur on ROCm 10.2 running under WSL 2 (Windows Subsystem for Linux 2) when executing the `vllm_rocm_gpt-oss-20b_default_inf_fp4` vLLM inference workload.
+* A GPU Timeout Detection and Recovery (TDR) event can occur on ROCm 10.2 running under WSL2 (Windows Subsystem for Linux 2) when executing the `vllm_rocm_gpt-oss-20b_default_inf_fp4` vLLM inference workload.
 
 #### **hipBLAS** (3.8.0)
 
