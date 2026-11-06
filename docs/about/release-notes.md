@@ -603,11 +603,11 @@ GPU fence timeout after 30000ms — possible device fault
 
 ### ComfyUI and PyTorch flash-attention workloads might show lower performance on some AMD Radeon GPUs and Ryzen APUs
 
-ComfyUI diffusion and PyTorch flash-attention workloads might show lower performance on some AMD Radeon GPUs and Ryzen APUs due to an AOTriton tuning regression (0.13b → 0.14b) that selects a slower attention kernel tile at longer sequence lengths. On Linux, ComfyUI workloads on AMD Radeon RX 7900 series GPUs run roughly 12–61% slower (up to 78% slower on the RX 7900 GRE) with 11–50% less throughput; on Ryzen AI Max 300 Series (gfx1151) APUs, most ComfyUI models run 17–35% slower and PyTorch models show roughly 2–12% lower throughput. Ryzen AI 300 Series (gfx1150) is expected to be affected by the same mechanism but has not been separately verified. As a workaround, ComfyUI users can switch to a different attention backend via `--use-flash-attention` (requires `pip install flash-attn`) or `--use-ck-attention`. PyTorch users can revert AOTriton to 0.13b and rebuild.
+ComfyUI diffusion and PyTorch flash-attention workloads might show lower performance on some AMD Radeon GPUs and Ryzen APUs due to an AOTriton tuning regression (0.13b → 0.14b) that selects a slower attention kernel tile at longer sequence lengths. On Linux, affected hardware includes AMD Radeon RX 7900 series GPUs and Ryzen AI Max 300 Series (gfx1151) APUs. Ryzen AI 300 Series (gfx1150) is expected to be affected by the same mechanism but has not been separately verified. As a workaround, ComfyUI users can switch to a different attention backend via `--use-flash-attention` (requires `pip install flash-attn`) or `--use-ck-attention`. PyTorch users can revert AOTriton to 0.13b and rebuild.
 
 ### Hugging Face model training throughput might regress on AMD Instinct MI350 Series GPUs
 
-Hugging Face model training workloads might see 6–22% lower training throughput on AMD Instinct MI355X and MI350X (gfx950) GPUs, compared to builds that use AOTriton 0.11.2b. Impacted models include BERT, DistilBERT, RoBERTa-large, and GPT-2. As a workaround, rebuild PyTorch and pin AOTriton to version 0.11.2b.
+Hugging Face model training workloads might see lower training throughput on AMD Instinct MI355X and MI350X (gfx950) GPUs, compared to builds that use AOTriton 0.11.2b. Impacted models include BERT, DistilBERT, RoBERTa-large, and GPT-2. As a workaround, rebuild PyTorch and pin AOTriton to version 0.11.2b.
 
 ```{note}
 This issue is partially addressed in ROCm 10.2.0 for some Hugging Face models. See the [ROCm 10.2.0 resolved issues](hugging-face-model-training-throughput-might-drop-on-amd-instinct-mi350-series-gpus) entry for details.
