@@ -125,9 +125,9 @@ For more information, see the [HIP section](#hip-7-17-0) in the ROCm component c
 
 The following are notable enhancements to ROCprofiler-SDK:
 
-##### Streaming Performance Monitor support for device counting mode and gfx12
+##### Device-wide counter sampling and gfx12 support added
 
-ROCprofiler-SDK adds a device counting mode for Streaming Performance Monitor (SPM) and SPM support for gfx12 and gfx1250. It also adds a reference-clock sample interval and agent scoping for dispatch SPM, and stores SPM counter locations in the rocpd schema.
+ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM), which samples counters on a GPU for as long as profiling is active, whether or not kernels are running. It also adds SPM support for gfx12 and gfx1250, lets you set the sample interval in reference-clock cycles, limits dispatch SPM to selected GPUs, and records where on the GPU each counter sample was measured in the rocpd database.
 
 * Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect the samples as `rocprofiler_spm_counter_record_t` records, which carry no dispatch information. This lets you observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
 
@@ -172,27 +172,27 @@ On WSL, `rocprofiler_query_available_agents` returns consistent agent informatio
 
 WSL2 provides GPU access through `/dev/dxg` rather than `/dev/kfd`, so paths that assume a native KFD device node now degrade cleanly. `rocprofv3 --pmc` no longer aborts when `/dev/kfd` is absent, and PC sampling and KFD-only controls are reported as unavailable. For thread trace, basic ATT capture and decoding are validated on gfx1150. Combining `--att` with `--selected-regions` isn't yet supported on WSL2 and might produce an empty trace. For details, see [Using rocprofv3 on WSL2](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/how-to/using-rocprofv3-on-wsl.html).
 
-##### Dispatch path optimized with direct hook calls
+##### Kernel dispatch handling optimized
 
-Counter collection, Advanced Thread Trace, SPM, and PC sampling no longer add themselves to a shared list of callbacks that the HSA queue controller walked on every kernel dispatch. Instead, each service's dispatch hooks are now called directly, and each call first checks whether that service is active on the GPU the dispatch is going to.
+Counter collection, Advanced Thread Trace, SPM, and PC sampling now run only on the GPUs where you enable them, so a service configured on one GPU doesn't affect dispatches on other GPUs. Previously, each service added itself to a shared list of callbacks that the HSA queue controller walked on every kernel dispatch. Now each service's dispatch hooks are called directly, after a check that the service is active on the GPU receiving the dispatch.
 
 Queue interposition now issues a memory fence when it writes packets to the ring buffer, so a packet can no longer be read out of order or half-written.
 
-This release also fixes a hang that occurred when more kernels were linked by barriers than `ROCPROFILER_ASYNC_SIGNAL_HANDLER_THREADS` allowed, such as a HIP graph fork/join or an all-reduce. A single thread now waits for any completion signal, which also works with older ROCr versions.
+`ROCPROFILER_ASYNC_SIGNAL_HANDLER_THREADS` allowed, such as a HIP graph fork/join or an all-reduce. A single thread now waits for any completion signal, which also works with older ROCr versions.
 
-##### High-precision timestamp correlation requested
+##### Closer GPU and CPU timestamp alignment
 
-ROCprofiler-SDK now requests high-precision GPU/CPU timestamp correlation from ROCr during HSA registration. It does this when GPU timestamp collection is configured and the runtime provides the tools API. This tightens the alignment between GPU-side and host-side timestamps on a shared timeline. Older runtimes, and tools that trace only CPU APIs or markers, retain the existing behavior.
+ROCprofiler-SDK now asks the ROCr runtime for more precise matching of GPU and CPU timestamps when it registers with the runtime. This makes GPU and host events line up more closely on a shared timeline. It applies when GPU timestamp collection is configured and the runtime provides the ROCr tools API. Older runtimes, and tools that trace only CPU APIs or markers, keep the existing behavior.
 
-##### Stochastic PC sample validation added
+##### Invalid stochastic PC samples filtered out
 
 `rocprofv3` now checks each stochastic PC sample against the instruction at its PC. Stochastic PC sampling can return a sample whose program counter doesn't correspond to a real instruction boundary. Samples that fail the check are dropped and counted as invalid. Samples from unknown code objects are kept as is. Tool authors can use the same check through `rocprofiler::sdk::pc_sampling::verify_sample` in the header-only `rocprofiler-sdk/cxx/pc_sampling.hpp`.
 
 The PC sampling buffer size is also increased, from 4 MB to 64 MB, on the multi-chiplet targets gfx94x, gfx95x, and gfx125x. ROCr allocates one PC sampling buffer per XCC, so these multi-XCC parts need a larger overall buffer. At the previous size, many samples were dropped or invalid at reasonable sampling rates. Single-XCC targets keep the 4 MB buffer.
 
-##### OMPT tool chaining enabled
+##### OpenMP tools now run alongside ROCprofiler-SDK
 
-ROCprofiler-SDK now takes the OpenMP Tools (OMPT) interface only when a registered client subscribes to OMPT tracing. Otherwise, it passes the interface on to the next OMPT tool in the chain. As a result, a user's own OMPT tool can run alongside ROCprofiler-SDK instead of being displaced by it.
+Your own OpenMP Tools (OMPT) tool can now run alongside ROCprofiler-SDK instead of being displaced by it. ROCprofiler-SDK takes the OMPT interface only when a registered client subscribes to OMPT tracing. Otherwise, it passes the interface on to the next OMPT tool.
 
 ##### ROCprofiler-SDK Agent Skills added
 
@@ -238,7 +238,7 @@ This release improves input validation, diagnostics, and logging in ROCprofiler-
 
 * A HIP event tracing sample was added.
 
-##### ROCm Compute Viewer ISA view and SPM parsing updated
+##### ROCm Compute Viewer disassembly view and gfx12 trace parsing updated
 
 ROCm Compute Viewer (`rocprof-compute-viewer`) is developed in its own repository and versioned separately from ROCprofiler-SDK. The following changes landed in the same timeframe as this release:
 
@@ -300,11 +300,11 @@ The following changes affect PC sampling output in ROCm Compute Profiler:
 
 For details, see [PC sampling](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/pc_sampling.html).
 
-##### Torch trace ships a prebuilt collector
+##### Torch trace ships prebuilt for PyTorch 2.13 and 2.14
 
 The following changes affect PyTorch profiling in ROCm Compute Profiler:
 
-* Torch trace (experimental) now ships a prebuilt operator collector for PyTorch 2.13 and 2.14, so it no longer needs to build a tracing library on your machine. The collector records operators on every thread, including those that run during the backward pass. Other PyTorch versions use a reduced trace that misses backward-pass operators.
+* Torch trace (experimental) now ships prebuilt for PyTorch 2.13 and 2.14, so it no longer needs to build a tracing library on your machine. It records PyTorch operators on every thread, including those that run during the backward pass. Other PyTorch versions use a reduced trace that misses backward-pass operators.
 
 * If PyTorch and the profiler load different ROCm installations, profiling now stops with a clear message that points to the PyTorch and ROCm installation instructions.
 
@@ -372,15 +372,15 @@ The following are notable changes to AMD SMI:
 
 ##### Power profile management added
 
-You can now discover, activate, and configure the driver's predefined power and performance profiles (AMPP, the AMD SMI power profile) from both the C API and the CLI. Profiles and fields are enumerated at runtime, so your tools pick up whatever the driver exposes without hard-coded profile lists. The existing `amdsmi_*_gpu_power_profile*` preset-mask API is unchanged.
+You can now discover, activate, and configure the driver's predefined power and performance profiles from both the C API and the CLI. AMD SMI calls them AMPP (AMD SMI power profile) and uses `ampp` in API and CLI names, for example `amd-smi static --ampp`. Profiles and fields are enumerated at runtime, so your tools pick up whatever the driver exposes without hard-coded profile lists. The existing `amdsmi_*_gpu_power_profile*` preset-mask API is unchanged.
 
 ##### Link topology API added for bare metal
 
 The new `amdsmi_get_link_topology()` API lets you query the link between two GPUs on bare-metal systems with one call, matching the existing host interface. Python and Rust bindings are included.
 
-##### Fabric link events added to RAS reporting
+##### Fabric link events added to error reports
 
-`amd-smi ras --cper` now reports fabric link events alongside GPU errors, so you can see fabric faults and GPU errors in the same Common Platform Error Record (CPER) output. The new `amdsmi_get_fabric_cper_entries()` API retrieves the fabric reliability, availability, and serviceability (RAS) CPER records programmatically.
+`amd-smi ras --cper` now reports fabric link events alongside GPU errors in the same Common Platform Error Record (CPER) output, so you can see fabric faults and GPU errors together. The new `amdsmi_get_fabric_cper_entries()` API retrieves the fabric reliability, availability, and serviceability (RAS) CPER records programmatically.
 
 ##### Energy counter API supports AMD Radeon GPUs
 
