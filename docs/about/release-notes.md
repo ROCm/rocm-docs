@@ -11,7 +11,6 @@ These release notes describe notable changes since the previous ROCm release.
 - [GPU partitioning support](#gpu-partitioning-support)
 - [AI ecosystem support](#ai-ecosystem-support)
 - [ROCm Core SDK components](#rocm-core-sdk-components)
-- [ROCm breaking changes](#rocm-breaking-changes)
 - [ROCm known issues](#rocm-known-issues)
 - [ROCm resolved issues](#rocm-resolved-issues)
 - [ROCm upcoming changes](#rocm-upcoming-changes)
@@ -94,7 +93,7 @@ The updated framework support replaces the previous PyTorch 2.12.0, JAX 0.11.0, 
 
 For details, see [AI ecosystem support](#ai-ecosystem-support).
 
-### Runtime and compilers
+### Runtimes and compilers
 
 #### HIP feature highlights
 
@@ -102,9 +101,9 @@ The following are notable enhancements to HIP:
 
 ##### Select the target HIP API version with `HIP_TARGET_API_VERSION`
 
-The new `HIP_TARGET_API_VERSION` macro lets you select the target HIP API version at compile time, which helps maintain source compatibility for applications written against an earlier API version. The default is `700`, which matches the current HIP 7 API, and changes only at a major ROCm release. Although setting the macro has no effect today, define it explicitly so that applications that state their target API version continue to compile unchanged when the default moves.
+The new `HIP_TARGET_API_VERSION` macro lets you select the target HIP API version at compile time, which helps maintain source compatibility for applications written against an earlier API version. The default is `700`, which matches the current HIP 7, and changes only at a major ROCm release. Although setting the macro has no effect today, define it explicitly so that applications that state their target API version continue to compile unchanged when the default moves.
 
-When the HIP 8 API is introduced in a future release, this macro will initially be the only way to access it: you opt in by defining `HIP_TARGET_API_VERSION` as `800`, while the default remains `700`. Because the macro is set per translation unit, you can preview the HIP 8 API side by side with HIP 7 in the same codebase. Build one target against `800` while the rest of your build stays on `700`. For example, in the HIP 8 API, `hipMemAdvise` maps to `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID.
+When the next major API version is introduced in a future release, this macro will initially be the only way to access it: you opt in by defining `HIP_TARGET_API_VERSION` as `800`, while the default remains `700`. Because the macro is set per translation unit, you can preview the new API version side by side with the current one in the same codebase. Build one target against `800` while the rest of your build stays on `700`. For example, in API version `800`, `hipMemAdvise` maps to `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID.
 
 ##### New module, library, and kernel APIs
 
@@ -126,7 +125,7 @@ The following are notable enhancements to ROCprofiler-SDK:
 
 * Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect samples as `rocprofiler_spm_counter_record_t` records that carry no dispatch information, so you can observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
 
-* SPM is now supported on gfx12 and gfx1250. On gfx1250, samples also report the shader array and WGP, encoded in the counter instance ID alongside XCC, shader engine, and instance.
+* SPM is now supported on gfx12 and gfx1250. On gfx1250, samples also report the shader array and workgroup processor (WGP), encoded in the counter instance ID alongside XCC, shader engine, and instance.
 
 * The new `ROCPROFILER_SPM_PARAMETER_TYPE_SAMPLE_INTERVAL_REFCLK_CYCLES` parameter sets the SPM sample interval in reference-clock cycles rather than shader-clock cycles, giving a sampling rate that doesn't move with the shader clock. It's supported on gfx1200, gfx1201, and gfx1250; other agents return `ROCPROFILER_STATUS_ERROR_INVALID_ARGUMENT`. Agent configuration queries now report shader-clock and reference-clock intervals separately, and `rocprofv3 --spm-sample-interval-unit` accepts the new `refclk_cycles` value.
 
@@ -202,7 +201,7 @@ ROCprofiler-SDK now supports the gfx117x, gfx1250-strict, and gfx1250 targets.
 
 * Extra counter YAML files passed with `-E`/`--extra-counters` are validated before they're loaded. A malformed definition now produces an error naming the field that's wrong, instead of a crash or a hang.
 
-* When collecting PMC counters on GPUs from gfx1100 up to but not including gfx1250, ROCprofiler-SDK warns if `power_dpm_force_performance_level` isn't `profile_standard` or can't be read, because dynamic power and clock scaling skew counter values. Set the level with, for example, `amd-smi set --perf-level STABLE_STD`.
+* When collecting hardware performance counters (PMCs) on GPUs from gfx1100 up to but not including gfx1250, ROCprofiler-SDK warns if `power_dpm_force_performance_level` isn't `profile_standard` or can't be read, because dynamic power and clock scaling skew counter values. Set the level with, for example, `amd-smi set --perf-level STABLE_STD`.
 
 * `rocprofv3` now rejects multi-pass counter collection from an input file when combined with `--pid` or `--collection-period`, matching the existing behavior for multiple `--pmc` flags. The error message names what made the run multi-pass.
 
@@ -214,33 +213,7 @@ ROCprofiler-SDK now supports the gfx117x, gfx1250-strict, and gfx1250 targets.
 
 * New documentation covers using `rocprofv3` with LLM inference frameworks.
 
-##### Quality and stability improvements
-
-This release includes a range of quality and stability improvements across ROCprofiler-SDK and `rocprofv3`.
-
-* When a context that needs packet interception replaces a queue created by `hsa_amd_queue_create` with a system-memory intercept queue, the device-memory placement flags are now cleared in the caller's descriptor. HIP reads these flags back and previously assumed a device-memory ring buffer that profiling had replaced.
-
-* Fixed `rocprofv3` hanging at normal exit when the application left a long-running child process. Child processes are now waited for only when exiting on a signal, and that wait is time-limited.
-
-* Fixed kernel replay dropping later `--pmc` groups when combined with `--kernel-iteration-range`. The range is evaluated once per logical dispatch and later replay passes reuse that decision.
-
-* Fixed `roctxProfilerPause` and `roctxProfilerResume` with `rocprofv3` process attachment. A pause issued before attaching no longer affects the attached session, and with `--selected-regions` collection starts at the first `roctxProfilerResume` after attaching.
-
-* Fixed `rocprofiler-sdk-rocattach` failing to find symbols such as `rocprofiler_register_detach` when the target library's memory mappings didn't line up one-to-one, in address order, with its loadable segments.
-
-* Fixed attachment failing for framework workloads and Python wheels. Attachment libraries now load on runtime-only installs lacking unversioned symlinks, loading the same library through different paths is no longer treated as a conflict, and a compatible library next to `rocprofiler-register` is preferred over an unrelated installation.
-
-* Fixed output path formatting hanging when a placeholder's value contains that same placeholder, and fixed `%q{NAME}` not expanding, which turned names such as `results_%q{MPI_RANK}` into `results_` on every rank.
-
-* Fixed a second copy of ROCprofiler-SDK bundled with an application such as PyTorch initializing itself under `rocprofv3`, even though all calls go to the globally preloaded library.
-
-* Fixed time-based (microsecond) PC sampling intervals being limited by the maximum intended for cycle-based intervals.
-
-* Fixed `rocprofv3 --att` ignoring `ROCPROF_ATT_LIBRARY_PATH` and searching the whole filesystem from `/`.
-
-* Replaced `__hip_atomic` builtins.
-
-* The synchronous device counting sample no longer crashes at exit, and a HIP event tracing sample was added.
+* A HIP event tracing sample was added.
 
 ##### ROCm Compute Viewer
 
@@ -266,7 +239,7 @@ The following are notable enhancements to the ROCm Compute Profiler (`rocprofile
 
 ##### Command-line options update
 
-Profile mode options now match `rocprofv3`, so the same commands work in both tools. Select dispatches with `--kernel-iteration-range`, and set the output directory with `-d`. Dispatch IDs now start at 1, so they line up with the IDs `rocprofv3` reports. Scripts that use the old `-d` or `--dispatch` option need updating. For details, see [Kernel iteration filtering](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#profiling-kernel-iteration-range).
+Profile mode options now match `rocprofv3`, so the same commands work in both tools. Select dispatches with `--kernel-iteration-range`, and set the output directory with `-d` or `--output-directory`. Dispatch IDs now start at 1, so they line up with the IDs `rocprofv3` reports. Scripts that use `-d` or `--dispatch` to select dispatches need updating. For details, see [Kernel iteration filtering](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#profiling-kernel-iteration-range).
 
 ##### Installation improvements
 
@@ -436,7 +409,7 @@ PyTorch for ROCm now supports the `torch.cuda.gds` file I/O APIs, including `Gds
 
 ##### hipFile support in fio and IOR
 
-hipFile support is now available in [fio 3.43](https://github.com/axboe/fio/releases/tag/fio-3.43), the latest release, and in the main branch of [IOR](https://github.com/hpc/ior/pull/540). Both are open source, industry-standard storage benchmarking tools that you can use to evaluate storage performance.
+hipFile support is now available in [fio 3.43](https://github.com/axboe/fio/releases/tag/fio-3.43) and in the main branch of [IOR](https://github.com/hpc/ior/pull/540). Both are open source storage benchmarking tools that you can use to evaluate storage performance.
 
 For more information, see the [hipFile section](#hipfile-0-6-0) in the ROCm component changelogs.
 
@@ -483,13 +456,16 @@ rocSPARSE improves sparse matrix-matrix multiplication (SpGEMM) performance for 
 
 For more information, see the [rocSPARSE section](#rocsparse-5-1-0) in the ROCm component changelogs.
 
-#### rocPRIM improves device scan throughput
-
-rocPRIM device-wide scan operations run faster on AMD Instinct MI325X and MI300X GPUs, increasing throughput particularly for 1-, 2-, and 4-byte integer types. For more information, see the [rocPRIM section](#rocprim-5-0-0) in the ROCm component changelogs.
-
 ### HPC SDK highlights
 
 For more information about the HPC SDK, see the {doc}`AMD ROCm HPC SDK </components/hpc-sdk/index>` documentation.
+
+#### New documentation
+
+hipTensor and rocALUTION now have dedicated documentation:
+
+- [hipTensor documentation](https://rocm.docs.amd.com/projects/hipTensor/en/latest/)
+- [rocALUTION documentation](https://rocm.docs.amd.com/projects/rocALUTION/en/latest/)
 
 #### rocALUTION feature highlights
 

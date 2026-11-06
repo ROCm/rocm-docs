@@ -233,6 +233,22 @@
 * Support in WSL 2 to prevent indefinite application hangs and to report errors for device-side faults, including out-of-bounds writes, null pointer dereferences, and device asserts.
 * Added `HIP_TARGET_API_VERSION` to enable compile-time API version selection, helping maintain source compatibility with applications built against older HIP API versions.
 
+##### Changed
+
+* Stream priority is now disabled to avoid known queue-priority-related issues. Priority streams are currently not supported.
+* The HRR capture feature is now disabled.
+* `hipMemAdvise` now aliases `hipMemAdvise_v2`, which uses a `hipMemLocation` parameter instead of a device ID. Applications using the legacy `hipMemAdvise` signature might require source updates to pass a `hipMemLocation` structure. To maintain compatibility with the previous API signature, define `HIP_TARGET_API_VERSION` to a nonzero value less than 800 (for example, 700 for HIP 7.0 or 717 for HIP 7.17) at compile time. By default, `hipMemAdvise` is an alias for the `hipMemAdvise_v2` interface.
+
+##### Removed
+
+* The `HIPRTC_USE_RUNTIME_UNBUNDLER` environment variable and its associated functionality have been removed from the HIP runtime. The runtime unbundler path is now always used; setting this variable no longer has any effect.
+
+##### Optimized
+
+* Enhanced graph execution update performance and scalability by reducing update overhead and eliminating quadratic scaling behavior in certain graph update scenarios.
+* Optimized memory allocation capacity on Windows by increasing the maximum aperture size to 4 TiB, enabling larger memory allocations and improving support for memory-intensive workloads.
+* Optimized the performance of `hipMemcpy3DBatchAsync` by reducing SDMA submission overhead. Previously, the runtime issued a separate SDMA submission for each operand, which added overhead for small transfers. The runtime now reduces this submission overhead for batched 3D memory copy operations.
+
 ##### Resolved issues
 
 * Resolved a regression on MI300A and other APUs that could cause the first stream creation, `hipMemcpy`, `hipMemset`, or kernel launch to fail with out-of-memory or invalid-argument errors. The runtime now correctly uses system-memory AQL rings on APUs, which share memory with the host and do not provide a discrete device-memory path.
@@ -246,19 +262,6 @@
 * Resolved a segmentation fault in `hipStreamEndCapture` during multi-stream capture caused by a bookkeeping cycle among capture participants. The fix tracks capture participants in a single origin-stream-owned set, eliminating recursive traversal of forked streams during capture finalization and improving stream capture stability.
 * Resolved a potential deadlock between `hipMallocAsync` and `hipEventSynchronize` during concurrent multi-threaded execution.
 * Fixed incorrect calculations when using the type `bool` for `cooperative_groups::exclusive_scan`. The implementation now correctly handles the identity value for the first active lane and prevents unintended type conversions from `bool` to `int`.
-
-##### Optimized
-
-* Enhanced graph execution update performance and scalability by reducing update overhead and eliminating quadratic scaling behavior in certain graph update scenarios.
-* Optimized memory allocation capacity on Windows by increasing the maximum aperture size to 4 TiB, enabling larger memory allocations and improving support for memory-intensive workloads.
-* Optimized the performance of `hipMemcpy3DBatchAsync` by reducing SDMA submission overhead. Previously, the runtime issued a separate SDMA submission for each operand, which added overhead for small transfers. The runtime now reduces this submission overhead for batched 3D memory copy operations.
-
-##### Changed
-
-* Stream priority is now disabled to avoid known queue-priority-related issues. Priority streams are currently not supported.
-* The HRR capture feature is now disabled.
-* `hipMemAdvise` now aliases `hipMemAdvise_v2`, which uses a `hipMemLocation` parameter instead of a device ID. Applications using the legacy `hipMemAdvise` signature might require source updates to pass a `hipMemLocation` structure. To maintain compatibility with the previous API signature, define `HIP_TARGET_API_VERSION` to a nonzero value less than 800 (for example, 700 for HIP 7.0 or 717 for HIP 7.17) at compile time. By default, `hipMemAdvise` is an alias for the `hipMemAdvise_v2` interface.
-* The `HIPRTC_USE_RUNTIME_UNBUNDLER` environment variable and its associated functionality have been removed from the HIP runtime. The runtime unbundler path is now always used; setting this variable no longer has any effect.
 
 ##### Known issues
 
@@ -369,9 +372,16 @@
 * Updated `WarpExchange` template parameters for CUB compatibility. The third argument, `ARCH`, has been removed.
 * The block merge sort and thread sort algorithms now perform optional loop unrolling via `_CCCL_SORT_MAYBE_UNROLL()`.
 
+##### Deprecated
+
+* The hipCUB migration to cccl3 has resulted in the following deprecations:
+  * Deprecated `hipcub::Swap`. Use `rocprim::swap` instead.
+  * Deprecated `HIPCUB_IS_INT128_ENABLED`. Use `_CCCL_HAS_INT128()` instead.
+  * Deprecated `hipcub::Equality`, `hipcub::Inequality`, `hipcub::InequalityWrapper`, `hipcub::Sum`, `hipcub::Difference`, `hipcub::Division`, `hipcub::Max`, and `hipcub::Min` operators. Use `hip::std::equal_to`, `hip::std::not_equal_to`, `hip::std::plus`, `hip::std::minus`, `hip::std::divides`, `hip::maximum`, and `hip::minimum` operators instead.
+
 ##### Removed
 
-* The hipCUB migration to cccl3 has resulted in the following removals and deprecations:
+* The hipCUB migration to cccl3 has resulted in the following removals:
   * Removed `hipcub::BaseTraits::CATEGORY`, `hipcub::BaseTraits::nullptr_TYPE` and `hipcub::BaseTraits::PRIMITIVE`.
   * Removed `ConstantInputIterator`, `CountingInputIterator`, `DiscardOutputIterator` and `TransformInputIterator`, which were deprecated in hipCUB-4.1.0.
   * Removed `DeviceSpmv`, which was removed from CUB after CCCL's 2.8.0 release. Use the hipSPARSE or rocSPARSE libraries instead.
@@ -379,9 +389,6 @@
   * Removed `HIPCUB_MIN`, `HIPCUB_MAX`, `HIPCUB_QUOTIENT_FLOOR`, `HIPCUB_QUOTIENT_CEILING`, `HIPCUB_ROUND_UP_NEAREST` and `HIPCUB_ROUND_DOWN_NEAREST`, which were deprecated in hipCUB-4.1.0.
   * Removed `LEGACY_PTX_ARCH`.
   * Removed `hipcub::max` and `hipcub::min`, which were deprecated. Use `hip::std::max` and `hip::std::min` instead.
-  * Deprecated `hipcub::Swap`. Use `rocprim::swap` instead.
-  * Deprecated `HIPCUB_IS_INT128_ENABLED`. Use `_CCCL_HAS_INT128()` instead.
-  * Deprecated `hipcub::Equality`, `hipcub::Inequality`, `hipcub::InequalityWrapper`, `hipcub::Sum`, `hipcub::Difference`, `hipcub::Division`, `hipcub::Max`, and `hipcub::Min` operators. Use `hip::std::equal_to`, `hip::std::not_equal_to`, `hip::std::plus`, `hip::std::minus`, `hip::std::divides`, `hip::maximum`, and `hip::minimum` operators instead.
 * hipCUB compatibility with PyTorch v2.9 and v2.10 has been removed in this release. Use PyTorch v2.11 or later.
 
 #### **hipFFT** (1.0.27)
@@ -452,40 +459,6 @@
 
 #### **MIOpen** (3.6.2)
 
-##### Resolved issues
-
-* [Reduce] Fixed `miopenReduceTensor` silently truncating tensor lengths, strides, element counts
-  and byte spans above `INT32_MAX`, and single reductions of about `2^30` or more fp16, bf16 or int8
-  elements, which produced incorrect results. Such tensors are now rejected with
-  `miopenStatusBadParm`.
-* [Conv] Fixed a `ConvHipConv` crash on gfx1250 for grouped convolutions with more than
-  65535 group-batch tiles, and an LDS race in its gfx1250 direct kernel
-  (hipconv v0.3.2).
-* [Conv] Fixed `ConvHipConv` losing its tuned config on a perf-db reload, which could fail
-  execution with "not enough workspace for direct kernel" after an exhaustive Find. Records
-  now carry the hipconv minor version, and records from another version are discarded.
-* [Conv] Fixed incorrect backward-weights results from the `ConvHipConv` gfx950 direct kernel
-  for configurations with `waves_q == 1`, where the LDS staging tile was reused across filter
-  positions without cross-lane ordering.
-* [Conv] Fixed slower-than-expected performance of the `ConvHipConv` `direct`, `direct_l1` and `direct_wgrad` kernels
-  under ROCm 10.1's full AMDGCN link-time optimization default by building the hipconv device
-  targets with `-fno-offload-lto`.
-* [Conv] Fixed a multi-node data-parallel training throughput regression on gfx942 by excluding
-  the backward-pass GEMM solvers for single-group 1x1 stride-1 pad-0 NHWC convolutions with a
-  batch size below 4.
-* [Conv] Fixed invalid Composable Kernel (CK) perf-config entries in the gfx1201 and gfx1100
-  system databases that MIOpen could not resolve, which caused a fallback to untuned defaults.
-* [BatchNorm] Fixed just-in-time compilation failures for the batch normalization kernels on
-  non-GFX9 targets by restricting the Welford reduction's DPP inline assembly to GFX9 instead
-  of a per-architecture denylist.
-* Fixed an out-of-bounds write in `miopenLoadSolution` when a serialized solution carries more
-  than three kernel work dimensions; such solutions are now rejected.
-* Fixed a `uint64_t` typedef conflict between `miopen_cstdint.hpp` and the system `<stdint.h>`
-  that broke runtime kernel compilation on LP64 Linux.
-* [Conv] Fixed `TransposedConvWinoRageRxS<2,3>` being unreachable: it was registered in the solver
-  registry and explicitly instantiated but missing from both Find solver lists, so it could never be
-  enumerated or selected for NHWC convolutions.
-
 ##### Added
 
 * [Conv] Added gfx950 depthwise backward-weights (fp16/bf16) and gfx1250 depthwise
@@ -521,6 +494,12 @@
   batch-split dimension (#11805). This restores 8,978 forward and backward-data entries across the
   six system find-databases that the guard's first revision removed.
 
+##### Removed
+
+* [Conv] Removed gfx803 convolution solver `ConvBinWinogradRxSFused` and its kernel sources.
+* [Conv] Removed the gfx803 code paths and kernel sources from `ConvBinWinograd3x3U` and `ConvBinWinogradRxS`.
+* [Conv] Removed the gfx803 find-database files.
+
 ##### Optimized
 
 * [Conv] Optimized the `ConvDirectNaiveConv` solver with per-direction kernel files, float
@@ -529,11 +508,39 @@
 * Optimized the kernel cache by reusing cached database connections instead of opening and
   closing SQLite on every binary load or store.
 
-##### Removed
+##### Resolved issues
 
-* [Conv] Removed gfx803 convolution solver `ConvBinWinogradRxSFused` and its kernel sources.
-* [Conv] Removed the gfx803 code paths and kernel sources from `ConvBinWinograd3x3U` and `ConvBinWinogradRxS`.
-* [Conv] Removed the gfx803 find-database files.
+* [Reduce] Fixed `miopenReduceTensor` silently truncating tensor lengths, strides, element counts
+  and byte spans above `INT32_MAX`, and single reductions of about `2^30` or more fp16, bf16 or int8
+  elements, which produced incorrect results. Such tensors are now rejected with
+  `miopenStatusBadParm`.
+* [Conv] Fixed a `ConvHipConv` crash on gfx1250 for grouped convolutions with more than
+  65535 group-batch tiles, and an LDS race in its gfx1250 direct kernel
+  (hipconv v0.3.2).
+* [Conv] Fixed `ConvHipConv` losing its tuned config on a perf-db reload, which could fail
+  execution with "not enough workspace for direct kernel" after an exhaustive Find. Records
+  now carry the hipconv minor version, and records from another version are discarded.
+* [Conv] Fixed incorrect backward-weights results from the `ConvHipConv` gfx950 direct kernel
+  for configurations with `waves_q == 1`, where the LDS staging tile was reused across filter
+  positions without cross-lane ordering.
+* [Conv] Fixed slower-than-expected performance of the `ConvHipConv` `direct`, `direct_l1` and `direct_wgrad` kernels
+  under ROCm 10.1's full AMDGCN link-time optimization default by building the hipconv device
+  targets with `-fno-offload-lto`.
+* [Conv] Fixed a multi-node data-parallel training throughput regression on gfx942 by excluding
+  the backward-pass GEMM solvers for single-group 1x1 stride-1 pad-0 NHWC convolutions with a
+  batch size below 4.
+* [Conv] Fixed invalid Composable Kernel (CK) perf-config entries in the gfx1201 and gfx1100
+  system databases that MIOpen could not resolve, which caused a fallback to untuned defaults.
+* [BatchNorm] Fixed just-in-time compilation failures for the batch normalization kernels on
+  non-GFX9 targets by restricting the Welford reduction's DPP inline assembly to GFX9 instead
+  of a per-architecture denylist.
+* Fixed an out-of-bounds write in `miopenLoadSolution` when a serialized solution carries more
+  than three kernel work dimensions; such solutions are now rejected.
+* Fixed a `uint64_t` typedef conflict between `miopen_cstdint.hpp` and the system `<stdint.h>`
+  that broke runtime kernel compilation on LP64 Linux.
+* [Conv] Fixed `TransposedConvWinoRageRxS<2,3>` being unreachable: it was registered in the solver
+  registry and explicitly instantiated but missing from both Find solver lists, so it could never be
+  enumerated or selected for NHWC convolutions.
 
 #### **RCCL** (2.32.3)
 
@@ -643,7 +650,7 @@
 
 * The FP8 ReduceSum and ReduceCopy device APIs are not exported in the LLVM bitcode library.
 * On the Anvil SDMA (`NCCL_GIN_TYPE=7`) and rocSHMEM GDA (`NCCL_GIN_TYPE=6`) GIN backends, `ncclGinFlushTimeout` ignores the timeout and blocks until the flush completes; `ncclGinWaitTimeout` does the same on Anvil SDMA. rocSHMEM GDA does not support `ncclGinFlushAsync` or waiting on a GIN request, and those calls trap on the device. The signal and counter wait timeouts work on all backends.
-* The following NCCL 2.31 features are NVIDIA-specific and are not available in RCCL: Compute Fabric Transport, the GDAKI and EFA GDA GIN backends, PAT combined with NVLS, NVLink-multicast AllGather, and the CuTeDSL and `nccl4rust` bindings.
+* The following NCCL 2.31 features are not available in RCCL: Compute Fabric Transport, the GDAKI and EFA GDA GIN backends, PAT combined with NVLS, NVLink-multicast AllGather, and the CuTeDSL and `nccl4rust` bindings.
 
 #### **rocBLAS** (5.8.0)
 
@@ -659,14 +666,14 @@
 * Batched GEMM now uses the same hipBLASLt selection as other GEMM while a stream is capturing. Previously, batched APIs were forced to the Tensile backend during stream capture.
 * If the new `ROCBLAS_VERBOSE_ERROR` environment variable is set, `trsm`, `trsm_batched`, and `trsm_strided_batched` print the required and available workspace sizes when they return `rocblas_status_memory_error` because a fixed-size handle workspace is too small. Previously this failure looked identical to running out of device memory.
 
+##### Removed
+
+* The `ROCBLAS_USE_HIPBLASLT_BATCHED` environment variable, deprecated in rocBLAS 5.6.0, is removed and is now ignored. Batched GEMM is controlled by the same environment variable as all other GEMM, so a batched-only override is no longer required. Use `ROCBLAS_USE_HIPBLASLT=0` to select the Tensile backend for all GEMM, including batched.
+
 ##### Optimized
 
 * Improved the performance of Level 2 `gemv` non-transposed (`TransA == N`) by selecting the n-split reduction from the launch shape rather than a fixed output-length crossover. The split applies when the output grid has at most 8 tiles and the column split produces at least 2 parallel blocks, or when the output length is at or below the crossover.
 * Improved the performance of Level 3 `gemm` and `gemm_ex` for transposed operands with a very large summation dimension. k-chunking, which keeps Tensile element offsets inside 32 bits, previously used `max(lda, ldb)` for every transpose combination, so a unit-stride summation was split into many small launches. The bound is now the k stride of each operand: the leading dimension when that operand is k-major, and 1 otherwise. k-major layouts that can overflow are still chunked.
-
-##### Removed
-
-* The `ROCBLAS_USE_HIPBLASLT_BATCHED` environment variable, deprecated in rocBLAS 5.6.0, is removed and is now ignored. Batched GEMM is controlled by the same environment variable as all other GEMM, so a batched-only override is no longer required. Use `ROCBLAS_USE_HIPBLASLT=0` to select the Tensile backend for all GEMM, including batched.
 
 ##### Resolved issues
 
@@ -686,7 +693,7 @@
   * `gfx1172`
   * `gfx11-7-generic`
 
-#### **RDC** (1.4.0)
+#### **ROCm Data Center Tool** (1.4.0)
 
 ##### Resolved issues
 
@@ -727,22 +734,6 @@
   `rocfft_execution_info_set_store_callback` APIs are now disallowed with transforms that have fields
   specified on the plan description.
 
-##### Resolved issues
-
-* Fixed possible failures of `rocfft_plan_create` for multi-device plans.
-* Fixed out-of-bounds memory access when executing a multi-device complex-to-complex plan whose
-  bricks used non-contiguous data layouts.
-* Fixed a memory leak when `rocfft_plan_create` fails.
-* Fixed `rocfft_plan_create` failures for large prime-length 1D complex transforms when a scale factor is set.
-* Fixed a potential write-after-free if plans are destroyed during process teardown.
-* Fixed a possible hang in `rocfft_cleanup` in builds with RCCL enabled, for single-process multi-device usage.
-* Fixed incorrect results for 1D complex transforms of lengths involving large prime factors
-  with large batch sizes, where 32-bit kernel indexing could overflow.
-* Fixed `rocfft_plan_create` failures for 1D complex transforms of lengths involving large prime
-  factors when the output data layout uses a batch distance larger than the transform length.
-* Fixed `rocfft_plan_create` failures and GPU memory access faults for 1D complex transforms of
-  lengths involving large prime factors when batches are interleaved (unit batch distance).
-
 ##### Optimized
 
 * Improved performance of unit-strided, interleaved, complex-to-real FFTs on gfx1201, gfx90a, gfx942, and gfx950 for the following lengths:
@@ -764,6 +755,22 @@
   * (224,104,104)
   * (224,108,104)
   * (224,108,108)
+
+##### Resolved issues
+
+* Fixed possible failures of `rocfft_plan_create` for multi-device plans.
+* Fixed out-of-bounds memory access when executing a multi-device complex-to-complex plan whose
+  bricks used non-contiguous data layouts.
+* Fixed a memory leak when `rocfft_plan_create` fails.
+* Fixed `rocfft_plan_create` failures for large prime-length 1D complex transforms when a scale factor is set.
+* Fixed a potential write-after-free if plans are destroyed during process teardown.
+* Fixed a possible hang in `rocfft_cleanup` in builds with RCCL enabled, for single-process multi-device usage.
+* Fixed incorrect results for 1D complex transforms of lengths involving large prime factors
+  with large batch sizes, where 32-bit kernel indexing could overflow.
+* Fixed `rocfft_plan_create` failures for 1D complex transforms of lengths involving large prime
+  factors when the output data layout uses a batch distance larger than the transform length.
+* Fixed `rocfft_plan_create` failures and GPU memory access faults for 1D complex transforms of
+  lengths involving large prime factors when batches are interleaved (unit batch distance).
 
 #### **rocJPEG** (1.13.0)
 
@@ -840,15 +847,15 @@
 * Fixed `profile -b 3 --experimental --membw-analysis` not collecting memory bandwidth analysis counters.
 * Fixed `analyze -b` crashing when only the gfx950 LDS bandwidth metrics are selected.
 
-##### Upcoming changes
-
-* The analyze-mode `--gui` and `--tui` options are deprecated and will be removed in a future release. Use the default CLI analysis instead.
-
 ##### Known issues
 
 * On gfx115x, `TCP_REQ*` counters and the `GL0` metrics derived from them can read zero because the perfmon clock is power-gated at the `AUTO` performance level.
 
-#### **ROCm Debugger (ROCgdb)** (16.3)
+##### Upcoming changes
+
+* The analyze-mode `--gui` and `--tui` options are deprecated and will be removed in a future release. Use the default CLI analysis instead.
+
+#### **ROCgdb** (16.3)
 
 ##### Added
 
@@ -871,12 +878,22 @@
 * AMD Infinity Storage I/O telemetry. Per-GPU I/O counters are sampled into
   the profiler output. Enable collection with `ROCPROFSYS_USE_HIPFILE` and select metrics with
   `ROCPROFSYS_HIPFILE_METRICS`. See
-  [hipFile Infinity Storage I/O telemetry](./docs/how-to/hipfile-telemetry.rst).
+  [hipFile Infinity Storage I/O telemetry](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/latest/how-to/hipfile-telemetry.html).
 * `--detach-after <seconds>` flag on `rocprof-sys-attach` for non-interactive use; the binary
   sleeps for the given duration after attach instead of waiting for `ENTER` on stdin.
 * `rocprof-sys-attach` finds the tool library in the target's own ROCm installation when the
   target cannot see this installation's library (for example, inside a container), so
   `ROCPROF_ATTACH_TOOL_LIBRARY` is no longer needed there.
+
+##### Removed
+
+* Legacy direct Perfetto tracing mode. Perfetto traces are now always generated from the
+  trace cache. `ROCPROFSYS_TRACE_LEGACY` and `--trace-legacy` / `-L` were removed (passing `-L` is
+  now an unknown-argument error); the `tracing.legacy` key was removed from JSON
+  configuration export.
+* Timemory component annotations (for example `thread_cpu_clock` and PAPI counter
+  values) are no longer attached to Perfetto slices. They will be available through the
+  timemory output formats.
 
 ##### Resolved issues
 
@@ -890,16 +907,6 @@
   running in a different mount namespace (for example, a container). The tool library
   path is now validated against the target's mount namespace before attaching, failing
   cleanly with a diagnostic instead.
-
-##### Removed
-
-* Legacy direct Perfetto tracing mode. Perfetto traces are now always generated from the
-  trace cache. `ROCPROFSYS_TRACE_LEGACY` and `--trace-legacy` / `-L` were removed (passing `-L` is
-  now an unknown-argument error); the `tracing.legacy` key was removed from JSON
-  configuration export.
-* Timemory component annotations (for example `thread_cpu_clock` and PAPI counter
-  values) are no longer attached to Perfetto slices. They will be available through the
-  timemory output formats.
 
 #### **rocPRIM** (5.0.0)
 
@@ -916,14 +923,14 @@
   * `is_compound_v`
 * gfx1250-strict support.
 
+##### Changed
+
+* Replaced the soon-to-be-deprecated `__hip_atomic_*` builtins with the equivalent `__scoped_atomic_*` builtins.
+
 ##### Optimized
 
 * Updated existing `ordered_block_id` and `lookback_scan` optimizations to include gfx1250/gfx1250-strict.
 * `lookback_scan` has improved data padding/alignment to reduce false sharing.
-
-##### Changed
-
-* Replaced the soon-to-be-deprecated `__hip_atomic_*` builtins with the equivalent `__scoped_atomic_*` builtins.
 
 ##### Resolved issues
 
@@ -1016,11 +1023,6 @@
 
 #### **rocSHMEM** (3.8.0)
 
-##### Resolved issues
-
-* Fixed tile RMA operations (`rocshmem_tile_put`, `rocshmem_tile_get`) to correctly apply non-zero `start_coord` values to both the source and destination tensors; previously only the remote tensor was offset, causing incorrect data movement when `start_coord != 0`.
-  Fully-packed column-major tiles are now also classified as `Contiguous`, enabling a single flat `memcpy` instead of per-column copies.
-
 ##### Added
 
 * GDA device code refactor (#7217).
@@ -1043,6 +1045,11 @@
 
 * Deprecated `rocshmem_signal_fetch_wg` and `rocshmem_signal_fetch_wave`.
   Use `rocshmem_signal_fetch` instead.
+
+##### Resolved issues
+
+* Fixed tile RMA operations (`rocshmem_tile_put`, `rocshmem_tile_get`) to correctly apply non-zero `start_coord` values to both the source and destination tensors; previously only the remote tensor was offset, causing incorrect data movement when `start_coord != 0`.
+  Fully-packed column-major tiles are now also classified as `Contiguous`, enabling a single flat `memcpy` instead of per-column copies.
 
 #### **rocSOLVER** (3.38.0)
 
