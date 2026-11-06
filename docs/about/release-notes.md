@@ -636,9 +636,9 @@ The agent attempted to access memory beyond the largest legal address.
 GPU fence timeout after 30000ms — possible device fault
 ```
 
-### ComfyUI and PyTorch flash-attention workloads might show lower performance on some AMD Radeon GPUs and Ryzen APUs
+### ComfyUI workloads might show lower performance on some AMD Radeon GPUs and Ryzen APUs
 
-ComfyUI diffusion and PyTorch flash-attention workloads might show lower performance on some AMD Radeon GPUs and Ryzen APUs due to an AOTriton tuning regression (0.13b → 0.14b) that selects a slower attention kernel tile at longer sequence lengths. On Linux, affected hardware includes AMD Radeon RX 7900 series GPUs and Ryzen AI Max 300 Series (gfx1151) APUs. Ryzen AI 300 Series (gfx1150) is expected to be affected by the same mechanism but has not been separately verified. As a workaround, ComfyUI users can switch to a different attention backend via `--use-flash-attention` (requires `pip install flash-attn`) or `--use-ck-attention`. PyTorch users can revert AOTriton to 0.13b and rebuild.
+ComfyUI-based AI workloads using the AOTriton backend might show lower performance on some AMD Radeon GPUs and Ryzen APUs, such as AMD Radeon RX 7900 series GPUs and Ryzen AI Max 300 Series (gfx1151) APUs. As a workaround, ComfyUI users can use an alternative attention backend, for example `--use-flash-attention`. For more details on choosing the best attention backends for ComfyUI image and video generation workloads, see [Understanding Attention Algorithms and Their Backends for Image and Video Generation](https://rocm.blogs.amd.com/software-tools-optimization/comfyui-fa-backends/README.html).
 
 ### Hugging Face model training throughput might regress on AMD Instinct MI350 Series GPUs
 
