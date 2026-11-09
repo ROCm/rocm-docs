@@ -330,7 +330,6 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
 - ROCm Validation Suite
 - TransferBench
 - ROCm Optiq
-- Omnistat
 
 ### Moved to HPC SDK
 
@@ -413,7 +412,7 @@ For more information, see [AMD ROCm HPC SDK](../components/hpc-sdk/index.rst).
     <tr>
       <td class="stub" style="vertical-align: middle"><strong>ROCm Extras</strong></td>
       <td>—</td>
-      <td>ROCm Validation Suite, TransferBench, ROCm Optiq, Omnistat</td>
+      <td>ROCm Validation Suite, TransferBench, ROCm Optiq</td>
       <td>—</td>
     </tr>
     <tr>
