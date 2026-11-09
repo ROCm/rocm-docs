@@ -21,7 +21,7 @@ Since ROCm 7.14, ROCm uses [TheRock](https://github.com/ROCm/TheRock) as its bui
 
 ## Release highlights
 
-This release adds platform, framework, runtime, profiling, and library enhancements across AMD Instinct™, Radeon™, and Ryzen™ platforms. It expands support for AMD Ryzen processors with integrated Radeon graphics and selected GPU virtualization configurations, and updates support for PyTorch, JAX, vLLM, and SGLang. Profiling tools add workflow and diagnostic improvements, and Agent Skills that help AI coding assistants select, run, and interpret profiling workflows. HIP adds new APIs and API-version targeting. Library updates include complex GEMM support in hipBLASLt and new sparse routines in rocSPARSE.
+This release adds platform, framework, runtime, profiling, and library enhancements across AMD Instinct™, Radeon™, and Ryzen™ platforms. It expands support for AMD Ryzen processors with integrated Radeon graphics and selected GPU virtualization configurations, and updates support for PyTorch, JAX, vLLM, and SGLang. Profiling tools add workflow and diagnostic improvements, plus Agent Skills that help AI coding assistants select, run, and interpret profiling workflows. HIP adds new APIs and API-version targeting. Library updates include complex GEMM support in hipBLASLt and new and improved sparse routines in rocSPARSE.
 
 ### Platform and hardware support
 
@@ -123,13 +123,17 @@ For more information, see the [HIP section](#hip-7-17-0) in the ROCm component c
 
 #### ROCprofiler-SDK feature highlights
 
-ROCprofiler-SDK improves profiling across the toolchain. This release adds experimental WSL2 profiling for validated RDNA 3.5 systems, expands SPM and counter collection on gfx12, increases thread-trace reliability and scaling for applications that span many GPUs or processes, aligns GPU and host timestamps more closely, filters invalid PC samples on multi-chiplet GPUs, and adds diagnostics that make counter-collection problems easier to spot. It also adds Agent Skills that let AI coding assistants run and interpret profiling workflows. The subsections below describe each change in detail.
+ROCprofiler-SDK improves profiling across the toolchain. This release adds device-wide SPM counter sampling with support for gfx1200, gfx1201, and gfx1250, and experimental WSL2 profiling for validated RDNA 3.5 systems. It also increases thread-trace reliability and scaling for applications that span many GPUs or processes, aligns GPU and host timestamps more closely, filters invalid PC samples on multi-chiplet GPUs, and adds tracing for more HIP and HSA APIs. Diagnostics and input validation make problems easier to spot and avoid. ROCprofiler-SDK also adds Agent Skills that let AI coding assistants run and interpret profiling workflows. The subsections below describe each change in detail.
 
-##### Device counting mode added
+##### Device-wide counter sampling added
 
-ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM). It samples counters on a GPU for as long as profiling is active, so you can observe counter behavior across a whole run, including intervals when no kernels are running. This release also limits dispatch SPM to selected GPUs and records where on the GPU each counter sample was measured in the rocpd database.
+This lets you observe GPU counter behavior across a whole run, even when no kernels are running, with more control over the sampling interval. ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM), which samples counters on a GPU for as long as profiling is active, whether or not kernels are running. It also adds SPM support for gfx1200, gfx1201, and gfx1250, lets you set the sample interval in reference-clock cycles, limits dispatch SPM to selected GPUs, and records where on the GPU each counter sample was measured in the rocpd database.
 
 * Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect the samples as `rocprofiler_spm_counter_record_t` records, which carry no dispatch information. This lets you observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
+
+* SPM is now supported on gfx1200, gfx1201, and gfx1250. On gfx1250, samples also report the shader array and workgroup processor (WGP). These are encoded in the counter instance ID, alongside XCC, shader engine, and instance.
+
+* The new `ROCPROFILER_SPM_PARAMETER_TYPE_SAMPLE_INTERVAL_REFCLK_CYCLES` parameter sets the SPM sample interval in reference-clock cycles instead of shader-clock cycles. The sampling rate then doesn't move with the shader clock. The parameter is supported on gfx1200, gfx1201, and gfx1250. Other agents return `ROCPROFILER_STATUS_ERROR_INVALID_ARGUMENT`. Agent configuration queries now report shader-clock and reference-clock intervals separately. `rocprofv3 --spm-sample-interval-unit` accepts the new `refclk_cycles` value.
 
 * The new experimental `rocprofiler_spm_dispatch_counting_service_set_agents()` function scopes dispatch SPM to a selected set of GPU agents. Two SPM contexts can now be active at the same time when their agent sets don't overlap.
 
@@ -152,6 +156,8 @@ This improves thread trace reliability and scalability for applications that use
 
 * SQTT markers now ship as part of the ROCm compiler package, so they're present in a standard ROCm installation. Previously, they required building the compiler from source.
 
+* The `att-no-detail` parameter is now supported on gfx1200 and gfx1201. It collects occupancy data without instruction-level detail, for lower-volume traces.
+
 * `rocprofv3 --att` now works on installations that ship only the versioned decoder library, such as TheRock runtime wheels. The thread trace decoder is now resolved by versioned library name (`librocprof-trace-decoder.so.<major>`, then `.so.<major>.<minor>`, then `.so.<major>.<minor>.<patch>`) before falling back to the unversioned name.
 
 * The `rocprof-trace-decoder` Python API now ships with ROCm. It was previously available only from the `rocm-systems` sources. Decoding ATT/SQTT data from Python therefore works against a standard installation.
@@ -169,8 +175,6 @@ WSL2 provides GPU access through `/dev/dxg` rather than `/dev/kfd`, so paths tha
 ##### Kernel dispatch handling optimized
 
 Counter collection, Advanced Thread Trace, SPM, and PC sampling now run only on the GPUs where you enable them, so a service configured on one GPU doesn't affect dispatches on other GPUs. Previously, each service added itself to a shared list of callbacks that the HSA queue controller walked on every kernel dispatch. Now each service's dispatch hooks are called directly, after a check that the service is active on the GPU receiving the dispatch.
-
-Queue interposition now issues a memory fence when it writes packets to the ring buffer, so a packet can no longer be read out of order or half-written.
 
 ##### Closer GPU and CPU timestamp alignment
 
@@ -206,13 +210,17 @@ ROCprofiler-SDK adds tracing for the following:
 
 * Added tracing support for the HSA APIs `hsa_amd_enable_high_precision_timestamps`, `hsa_amd_agent_set_attribute`, `hsa_amd_vmem_get_vmem_info`, and `hsa_amd_svm_discard_and_prefetch_batch_async`.
 
+##### Target support added for gfx117x and gfx1250
+
+ROCprofiler-SDK now supports the gfx117x, gfx1250-strict, and gfx1250 targets.
+
 ##### Usability and diagnostics improvements
 
 This release improves input validation, diagnostics, and logging in ROCprofiler-SDK and `rocprofv3`. One environment variable was renamed, so check scripts that set `ROCPROF_ABORT_FLUSH_TIMEOUT_SECONDS`.
 
 * Extra counter YAML files passed with `-E`/`--extra-counters` are validated before they're loaded. A malformed definition now produces an error naming the field that's wrong, instead of a crash or a hang.
 
-* When collecting hardware performance counters (PMCs), ROCprofiler-SDK warns if `power_dpm_force_performance_level` isn't `profile_standard` or can't be read, because dynamic power and clock scaling skew counter values. Set the level with, for example, `amd-smi set --perf-level STABLE_STD`.
+* When collecting hardware performance counters (PMCs) on GPUs from gfx1100 up to but not including gfx1250, ROCprofiler-SDK warns if `power_dpm_force_performance_level` isn't `profile_standard` or can't be read, because dynamic power and clock scaling skew counter values. Set the level with, for example, `amd-smi set --perf-level STABLE_STD`.
 
 * `rocprofv3` now rejects multi-pass counter collection from an input file when combined with `--pid` or `--collection-period`, matching the existing behavior for multiple `--pmc` flags. The error message names what made the run multi-pass.
 
@@ -237,6 +245,8 @@ ROCm Compute Viewer (`rocprof-compute-viewer`) is developed in its own [reposito
 * The ISA panel now has a column header. You can resize columns by dragging a divider, restore automatic sizing by double-clicking the divider, and hide columns individually. Selectors in the header choose the draw type and the annotation category displayed alongside the disassembly.
 
 * Line numbers can be shown next to the disassembly and are remembered in the application configuration across sessions.
+
+* The viewer parses Streaming Performance Monitor data from gfx1200, gfx1201, gfx1250, and NAVI4 traces, including the associated derived counters.
 
 For details about the ISA view, see [Views and controls](https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/latest/reference/views.html).
 
