@@ -123,11 +123,11 @@ For more information, see the [HIP section](#hip-7-17-0) in the ROCm component c
 
 #### ROCprofiler-SDK feature highlights
 
-ROCprofiler-SDK improves profiling across the toolchain. This release adds device-wide SPM counter sampling with support for gfx1200, gfx1201, and gfx1250, and experimental WSL2 profiling for validated RDNA 3.5 systems. It also increases thread-trace reliability and scaling for applications that span many GPUs or processes, aligns GPU and host timestamps more closely, filters invalid PC samples on multi-chiplet GPUs, and adds tracing for more HIP and HSA APIs. Diagnostics and input validation make problems easier to spot and avoid. ROCprofiler-SDK also adds Agent Skills that let AI coding assistants run and interpret profiling workflows. The subsections below describe each change in detail.
+ROCprofiler-SDK improves profiling across the toolchain. This release adds device-wide SPM counter sampling for gfx1200, gfx1201, and gfx1250, experimental WSL2 profiling for validated RDNA 3.5 systems, and Agent Skills that let AI coding assistants run and interpret profiling workflows. It also makes thread trace more reliable for applications that span many GPUs or processes, improves timestamp alignment and PC sampling accuracy, and extends HIP and HSA API tracing. Diagnostics and input validation make problems easier to spot and avoid. The following sections describe each change.
 
 ##### Device-wide counter sampling added
 
-This lets you observe GPU counter behavior across a whole run, even when no kernels are running, with more control over the sampling interval. ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM), which samples counters on a GPU for as long as profiling is active, whether or not kernels are running. It also adds SPM support for gfx1200, gfx1201, and gfx1250, lets you set the sample interval in reference-clock cycles, limits dispatch SPM to selected GPUs, and records where on the GPU each counter sample was measured in the rocpd database.
+Device-wide sampling lets you observe GPU counter behavior across a whole run, even when no kernels are running, with more control over the sampling interval. ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM), which samples counters on a GPU for as long as profiling is active, whether or not kernels are running. It also adds SPM support for gfx1200, gfx1201, and gfx1250, lets you set the sample interval in reference-clock cycles, limits dispatch SPM to selected GPUs, and records where on the GPU each counter sample was measured in the rocpd database.
 
 * Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect the samples as `rocprofiler_spm_counter_record_t` records, which carry no dispatch information. This lets you observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
 
@@ -141,7 +141,7 @@ This lets you observe GPU counter behavior across a whole run, even when no kern
 
 ##### Thread trace improvements
 
-This improves thread trace reliability and scalability for applications that use many GPUs or processes, and makes trace data easier to correlate with API traces and to decode on standard ROCm installations. Thread trace now creates queues only on GPUs that load a code object, and adds timestamps that line up with API traces. SQTT markers and the `rocprof-trace-decoder` Python API now ship with ROCm, and `rocprofv3 --att` works on installations that ship only the versioned decoder library.
+ROCprofiler-SDK improves thread trace reliability and scalability for applications that use many GPUs or processes, and makes trace data easier to correlate with API traces and to decode on standard ROCm installations. Thread trace now creates queues only on GPUs that load a code object, and adds timestamps that line up with API traces. SQTT markers and the `rocprof-trace-decoder` Python API now ship with ROCm, and `rocprofv3 --att` works on installations that ship only the versioned decoder library.
 
 * Thread trace now allocates its memory and signals through KFD and copies trace data with SDMA. When an SDMA copy isn't possible, it falls back to HSA with a warning. This removes thread trace's dependence on HSA resource lifetime and fixes crashes and hangs that occurred when thread trace ran after `main()` returned.
 
@@ -252,7 +252,7 @@ For details about the ISA view, see [Views and controls](https://rocm.docs.amd.c
 
 #### ROCm Compute Profiler feature highlights
 
-ROCm Compute Profiler (`rocprofiler-compute`) improves profiling and analysis workflows with simplified dependency installation, updated command-line behavior, richer memory and PC-sampling analysis, enhanced roofline reporting, and Agent Skills for AI coding assistants. Several capabilities are hardware-specific or experimental; see the following sections for supported configurations and usage details.
+ROCm Compute Profiler (`rocprofiler-compute`) improves profiling and analysis workflows with simplified dependency installation, richer memory and PC-sampling analysis, enhanced roofline reporting, and Agent Skills for AI coding assistants. This release also includes a breaking change to command-line options and deprecates the analyze mode GUI and TUI options. Some capabilities are hardware-specific or experimental; the following sections describe supported configurations and usage.
 
 ##### Command-line options updated (breaking change)
 
