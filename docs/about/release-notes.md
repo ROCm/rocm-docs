@@ -21,7 +21,7 @@ Since ROCm 7.14, ROCm uses [TheRock](https://github.com/ROCm/TheRock) as its bui
 
 ## Release highlights
 
-This release focuses on profiling, runtime enhancements, and AI-assisted developer workflows across AMD Instinct™, Radeon™, and Ryzen™ AI platforms. Highlights include support for additional AMD Ryzen APUs and new virtualization configurations, updated PyTorch, JAX, vLLM, and SGLang versions, and new HIP APIs. The profiling tools gain WSL2 profiling and Agent Skills. AMD System Management Interface (AMD SMI) adds power profile management, and the libraries add complex GEMM in hipBLASLt and new sparse routines in rocSPARSE.
+This release adds platform, framework, runtime, profiling, and library enhancements across AMD Instinct™, Radeon™, and Ryzen™ platforms. It expands support for AMD Ryzen processors with integrated Radeon graphics and selected GPU virtualization configurations, and updates support for PyTorch, JAX, vLLM, and SGLang. Profiling tools add workflow and diagnostic improvements, and Agent Skills that help AI coding assistants select, run, and interpret profiling workflows. HIP adds new APIs and API-version targeting. Library updates include complex GEMM support in hipBLASLt and new sparse routines in rocSPARSE.
 
 ### Platform and hardware support
 
@@ -111,9 +111,11 @@ HIP adds new APIs to give you more control over modules, libraries, and kernels:
 
 The new `HIP_TARGET_API_VERSION` macro lets you select the target HIP API version at compile time, which helps maintain source compatibility for applications written against an earlier API version. The default is `700`, which matches the current HIP 7 release, and it changes only at a major ROCm release.
 
-When HIP 8 is introduced in a future release, this macro will initially be the only way to access it: you opt in by defining `HIP_TARGET_API_VERSION` to `800`, while the default remains `700`. Because the macro is set per translation unit, you can preview HIP 8 side by side with HIP 7 in the same codebase by building one target against `800` while the rest of your build stays on `700`. For example, HIP 8 aliases `hipMemAdvise` to `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID.
+Setting the macro has no effect today, but we recommend defining it explicitly so your build keeps compiling unchanged when the default moves. Because the macro is set per translation unit, you can adopt a future major HIP API version incrementally, one part of your build at a time.
 
-Setting the macro has no effect today, but we recommend defining it explicitly so your build keeps compiling unchanged when the default moves.
+```{note}
+When HIP 8 is introduced in a future release, this macro will initially be the only way to access it: define `HIP_TARGET_API_VERSION` as `800` for one target while the rest of your build stays on `700`. For example, HIP 8 aliases `hipMemAdvise` to `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID.
+```
 
 For more information, see the [HIP section](#hip-7-17-0) in the ROCm component changelogs.
 
@@ -121,11 +123,11 @@ For more information, see the [HIP section](#hip-7-17-0) in the ROCm component c
 
 #### ROCprofiler-SDK feature highlights
 
-The following are notable enhancements to ROCprofiler-SDK:
+ROCprofiler-SDK improves profiling across the toolchain. This release adds experimental WSL2 profiling for validated RDNA 3.5 systems, expands SPM and counter collection on gfx12, increases thread-trace reliability and scaling for applications that span many GPUs or processes, aligns GPU and host timestamps more closely, filters invalid PC samples on multi-chiplet GPUs, and adds diagnostics that make counter-collection problems easier to spot. It also adds Agent Skills that let AI coding assistants run and interpret profiling workflows. The subsections below describe each change in detail.
 
 ##### Device-wide counter sampling added
 
-ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM), which samples counters on a GPU for as long as profiling is active, whether or not kernels are running. It also adds SPM support for gfx12 and gfx1250, lets you set the sample interval in reference-clock cycles, limits dispatch SPM to selected GPUs, and records where on the GPU each counter sample was measured in the rocpd database.
+This lets you observe GPU counter behavior across a whole run, even when no kernels are running, with more control over the sampling interval. ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM), which samples counters on a GPU for as long as profiling is active, whether or not kernels are running. It also adds SPM support for gfx12 and gfx1250, lets you set the sample interval in reference-clock cycles, limits dispatch SPM to selected GPUs, and records where on the GPU each counter sample was measured in the rocpd database.
 
 * Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect the samples as `rocprofiler_spm_counter_record_t` records, which carry no dispatch information. This lets you observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
 
@@ -137,7 +139,7 @@ ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monito
 
 ##### Thread trace improvements
 
-Thread trace now creates queues only on GPUs that load a code object, and adds timestamps that line up with API traces. SQTT markers and the `rocprof-trace-decoder` Python API now ship with ROCm, and `rocprofv3 --att` works on installations that ship only the versioned decoder library.
+This improves thread trace reliability and scalability for applications that use many GPUs or processes, and makes trace data easier to correlate with API traces and to decode on standard ROCm installations. Thread trace now creates queues only on GPUs that load a code object, and adds timestamps that line up with API traces. SQTT markers and the `rocprof-trace-decoder` Python API now ship with ROCm, and `rocprofv3 --att` works on installations that ship only the versioned decoder library.
 
 * Thread trace now allocates its memory and signals through KFD and copies trace data with SDMA. When an SDMA copy isn't possible, it falls back to HSA with a warning. This removes thread trace's dependence on HSA resource lifetime and fixes crashes and hangs that occurred when thread trace ran after `main()` returned.
 
@@ -242,7 +244,7 @@ For details about the ISA view, see [Views and controls](https://rocm.docs.amd.c
 
 #### ROCm Compute Profiler feature highlights
 
-The following are notable enhancements to the ROCm Compute Profiler (`rocprofiler-compute`):
+ROCm Compute Profiler (`rocprofiler-compute`) improves profiling and analysis workflows with simplified dependency installation, updated command-line behavior, richer memory and PC-sampling analysis, enhanced roofline reporting, and Agent Skills for AI coding assistants. Several capabilities are hardware-specific or experimental; see the following sections for supported configurations and usage details.
 
 ##### Command-line options updated (breaking change)
 
