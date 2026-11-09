@@ -19,10 +19,11 @@ Output:
 import argparse
 import re
 import sys
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 from dataclasses import dataclass
-from urllib.request import urlopen, Request
 from urllib.error import URLError
+from urllib.parse import urlparse
+from urllib.request import urlopen, Request
 
 
 _GITHUB_RAW = (
@@ -114,9 +115,11 @@ def fetch_manifest(source: str) -> dict[str, Project]:
         tag_url = _GITHUB_RAW_TAG.format(version=source)
         for url in (branch_url, tag_url):
             print(f"  Fetching {url}", file=sys.stderr)
+            if urlparse(url).scheme != "https":
+                raise SystemExit(f"Refusing non-HTTPS manifest URL: {url}")
             try:
                 req = Request(url, headers={"User-Agent": "rocm-manifest-diff/1.0"})
-                with urlopen(req, timeout=30) as resp:
+                with urlopen(req, timeout=30) as resp:  # noqa: S310  # nosec B310 - scheme checked above
                     return parse_manifest(resp.read().decode(), from_string=True)
             except URLError as e:
                 if hasattr(e, "code") and e.code == 404:
