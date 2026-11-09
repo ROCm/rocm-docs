@@ -171,7 +171,7 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 * Fixed an unspecified minimum blocks per compute unit value being passed to the compiler.
 * Fixed the CK Tile dispatcher code generator and its ctypes bindings failing to build.
 
-#### **HIP** (10.1.0)
+#### **HIP** (7.16.0)
 
 ##### Added
 * New HIP APIs:
@@ -358,7 +358,6 @@ See the [ROCm 10.1.0 release notes](https://rocm.docs.amd.com/en/docs-10.1.0/abo
 * [LRN][LayerNorm] Fixed grid alignment and out-of-bounds thread access on gfx1250.
 * [Conv] Removed stale gfx950 grouped backward-weights SystemDB entries that caused suboptimal solver selection.
 * [Conv][Windows] Fixed system-database path resolution to use the MIOpen module location.
-* [Conv] Fixed system-database fallback so MI308X (gfx942) resolves to a usable tuned database.
 * Fixed JSON performance logs (`MIOPEN_PERFORMANCE_LOGS`) dropping the last solver evaluated during Find, so naive convolution solvers are no longer omitted.
 * Fixed a build failure when compiling against GCC 15's libstdc++ under C++20.
 
@@ -822,7 +821,7 @@ See the [ROCm 10.0.0 release notes](https://rocm.docs.amd.com/en/docs-10.0.0/abo
 
 * Improved performance of row-column quantized a8w8 GEMM through better instruction scheduling in the eight-waves pipeline, wider epilogue stores, and nontemporal C/D memory access.
 
-#### **HIP** (10.0.0)
+#### **HIP** (7.15.0)
 
 ##### Added
 * New HIP APIs

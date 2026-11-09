@@ -13,7 +13,7 @@ rocm_core_sdk:
       changelog: true
       support: {linux: {instinct: true, radeon: true}, windows: {radeon: true}}
     HIP:
-      version: 10.0.0
+      version: 7.15.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     HIPIFY:
       version: 10.0.0
