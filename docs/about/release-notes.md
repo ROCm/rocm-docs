@@ -111,7 +111,7 @@ HIP virtual memory management APIs now support `hipMemLocationTypeHostNuma` and 
 
 ROCr Runtime virtual memory management APIs (`hsa_amd_vmem_handle_create`, `hsa_amd_vmem_map`, and `hsa_amd_vmem_set_access`) now support CPU memory pools in addition to GPU agents, enabling the full create, reserve, map, set-access, and teardown lifecycle for host-pool virtual memory handles. This includes inter-process sharing of both host-pool and device-pool handles, letting multiple processes map the same GPU-accessible host memory without falling back to workarounds like `/dev/shm`.
 
-For more information, see the [HIP section](#hip-10-1-0) in the ROCm component changelogs.
+For more information, see the [HIP section](#hip-7-16-0) in the ROCm component changelogs.
 
 ### Profiling and debugging tools
 
@@ -154,7 +154,7 @@ ROCprofiler-SDK now supports enabling and disabling profiler tools at any point 
 The profilers built into AI frameworks are the primary beneficiaries. PyTorch’s Kineto backend and Triton’s Proton profiler activate mid-session, after the interpreter, HIP, HSA, and often the model itself have already initialized. Previously, late attachment was partially supported but tools could not reliably configure after another tool had already done so, and runtime interception could not be undone. Both restrictions are now lifted. Four changes enable this:
 
 * **Repeated and late configuration:** A tool can now call `rocprofiler_force_configure` after one or more other tools have already configured ROCprofiler-SDK, rather than being rejected because configuration was already complete.
-* **Reversible runtime interception:** All intercepted runtime domains (HIP, HSA, ROCTx/marker, RCCL, rocDecode, rocJpeg, rocSHMEM, and hipFile) now support a table restore operation, so interception can be installed, removed, and reinstalled while the application runs.
+* **Reversible runtime interception:** All intercepted runtime domains (HIP, HSA, ROCTx/marker, RCCL, rocDecode, rocJPEG, rocSHMEM, and hipFile) now support a table restore operation, so interception can be installed, removed, and reinstalled while the application runs.
 * **Symbol visibility for re-propagation:** `librocprofiler-register.so` is now opened explicitly with `RTLD_GLOBAL | RTLD_NOLOAD`, and `rocprofiler_register_invoke_all_registrations` is resolved from that handle instead of the global symbol namespace. Late registration therefore works in processes where `rocprofiler-register` was loaded privately. This happens when it arrives as a dependency of a Python extension module, the typical loading path for AI framework profilers.
 * **Pointer-stable internal registries:** The buffer and internal task-group registries move to chunked, pointer-stable containers with pre-reserved capacity, so references held by already-configured tools remain valid when a new tool registers mid-run and grows those registries.
 
@@ -520,6 +520,14 @@ ROCm SMI (rocm-smi-lib) is deprecated and, starting with this release, is no lon
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
 
+### Hugging Face model training throughput might regress for specific models on AMD Instinct MI350X
+
+When you run Hugging Face BERT, RoBERTa-large, DistilBERT-base, or GPT-2 training workloads on AMD Instinct MI350X (gfx950) GPUs,  you might observe 6–22% longer training wall-clock time than expected. BERT and DistilBERT-base training are affected whether or not DeepSpeed ZeRO stage 0 is used. RoBERTa-large and GPT-2 training are affected only when using DeepSpeed ZeRO stage 0. See [GitHub issue #8878](https://github.com/ROCm/TheRock/issues/8878).
+
+```{note}
+The impact of this issue was initially reported in ROCm 10.0.0 and is partially addressed in ROCm 10.1.0 for other Hugging Face model configurations. See the [ROCm 10.1.0 resolved issues](hugging-face-model-training-throughput-for-specific-models-is-restored-on-amd-instinct-mi350x) entry for details.
+```
+
 ### amd-smi event command might stop responding indefinitely on WSL
 
 Running the `amd-smi event` subcommand on Windows Subsystem for Linux (WSL) might cause the process to stop responding, requiring manual intervention to terminate it. Note that the event subcommand is not supported on WSL.
@@ -553,9 +561,32 @@ Running workloads under Valgrind on WSL2 might stop responding during ROCm runti
 
 ### RAS error injection and query are unavailable on AMD Instinct MI350P GPUs
 
-On AMD Instinct MI350P GPUs, the RAS error injection and query interfaces (used to validate error-handling paths, for example with the amdgpuras tool) are not supported in ROCm 10.1.0. Injection commands fail, and query commands report that the block doesn't support querying. This affects only manual RAS error injection and query tooling. Normal GPU reliability features such as ECC detection and error recovery during regular operation are not affected.
+On AMD Instinct MI350P GPUs, the RAS error injection and query interfaces (used to validate error-handling paths, for example with the `amdgpuras` tool) are not supported in ROCm 10.1.0. Injection commands fail, and query commands report that the block doesn't support querying. This affects only manual RAS error injection and query tooling. Normal GPU reliability features such as ECC detection and error recovery during regular operation are not affected. See [GitHub issue #8794](https://github.com/ROCm/TheRock/issues/8794).
 
-See [GitHub issue #8794](https://github.com/ROCm/TheRock/issues/8794).
+### ComfyUI workloads might show lower performance on Radeon Pro W7900 GPUs
+
+ComfyUI-based AI workloads running on Radeon Pro W7900 GPUs might experience lower performance compared to previous ROCm releases. Impacted workloads include image and video generation models such as Stable Diffusion, Wan, and LTX. See [GitHub issue #8842](https://github.com/ROCm/TheRock/issues/8842).
+
+### Device-to-device hipMemcpyAsync might fail on AMD Instinct MI200 Series GPUs
+
+On AMD Instinct MI200 Series GPUs, device-to-device `hipMemcpyAsync` copies that use the DMA engine path (for example, with the `hipMemcpyDeviceToDeviceNoCU` flag) might fail without changing the destination buffer and reporting an error. This happens because the copy path selects an SDMA engine without properly validating which engines are actually usable for that GPU pair, so the transfer can target an engine that never completes the write. Although this issue was validated on PCIe-connected systems, the root cause is topology-agnostic and might also affect xGMI-linked systems. As a workaround, use `hipMemcpyDeviceToDevice` (without `NoCU`), which copies through compute units instead of DMA and is not affected. See [GitHub issue #8843](https://github.com/ROCm/TheRock/issues/8843).
+
+### Multi-application workloads might experience an intermittent GPU page fault on some Instinct GPUs
+
+Running multiple concurrent applications with high GPU memory-transfer activity, including SDMA-driven copies and SDMA engine stalls, might intermittently trigger a GPU page fault on some Instinct GPUs. When this happens, the affected job stops responding and must be restarted. In some cases, the GPU queue does not recover until a timeout of about 15 minutes expires, and the kernel log reports a retry page fault. The issue is more likely to occur when GPU memory is already under pressure from a recently run workload. See [GitHub issue #8844](https://github.com/ROCm/TheRock/issues/8844).
+
+### vLLM server restarts might fail with out-of-memory errors on AMD Instinct MI350X and MI300X GPUs
+
+When you restart a vLLM server for a large, distributed model using tensor parallelism (for example, `-tp 8`) on AMD Instinct MI350X and MI300X GPUs, the new server might fail to start with an out-of-memory error:
+
+```bash
+ValueError: Free memory on device cuda:N is less than desired GPU memory utilization
+Exception: Server failed to start
+```
+
+This happens when the GPU driver fails or delays in fully releasing memory from the previous server process. If the next server starts before that memory is released, it finds less free GPU memory than it requires and fails to start. Smaller tensor-parallel configurations and single-server runs are generally not affected. The issue is identified with larger, distributed models that use most of the available GPU memory.
+
+As a workaround, confirm that the previous process has fully released GPU memory before starting the next server. For example, you can use `rocm-smi --showmeminfo vram` or `amd-smi` to check the process release status. If `ps` still shows `VLLM::Worker_TP` processes from the earlier server, terminate them before starting the next one. See [GitHub issue #9052](https://github.com/ROCm/TheRock/issues/9052).
 
 ## ROCm resolved issues
 
@@ -565,6 +596,10 @@ The following notable issues have been fixed in ROCm 10.1.0.
 
 Previously, PyTorch training and fine-tuning workloads using Llama-Factory or Unsloth could experience GPU resets or application crashes on some AMD Radeon graphics products, such as the Radeon RX 9070 Series and Radeon AI PRO R9700. See [GitHub issue #7699](https://github.com/ROCm/TheRock/issues/7699).
 
-### Hugging Face model training throughput might regress on AMD Instinct MI350X
+### Hugging Face model training throughput for specific models is restored on AMD Instinct MI350X
 
-A performance regression that caused 9–25% lower training throughput for HuggingFace model training workloads on AMD Instinct MI350X (gfx950) GPUs has been resolved. Affected models included BART, GPT-2, DiT (Diffusion Transformers), BERT, Llama 2 70B Chat, and RoBERTa-large. The regression was caused by AOTriton 0.13b selecting a suboptimal flash-attention backward kernel instead of the faster 3-kernel split implementation used in AOTriton 0.11.2b. See [GitHub issue #7696](https://github.com/ROCm/TheRock/issues/7696).
+ROCm 10.1.0 restores Hugging Face model training throughput to previous levels for BART, DiT (Diffusion Transformers), GPT-2, and Llama 2 70B Chat workloads on AMD Instinct MI350X (gfx950) GPUs, recovering the 9–25% throughput loss reported in the ROCm 10.0.0 known issues. The regression was caused by AOTriton 0.13b selecting a suboptimal flash-attention backward kernel instead of the faster 3-kernel split implementation used in AOTriton 0.11.2b. This kernel selection is corrected for these models in ROCm 10.1.0. See [GitHub issue #7696](https://github.com/ROCm/TheRock/issues/7696).
+
+```{note}
+BERT and DistilBERT-base training continue to be affected in ROCm 10.1.0 with or without DeepSpeed, along with GPT-2 and RoBERTa-large training that use DeepSpeed ZeRO stage 0. See the [ROCm 10.1.0 known issues](hugging-face-model-training-throughput-might-regress-for-specific-models-on-amd-instinct-mi350x) for current status and workarounds.
+```
