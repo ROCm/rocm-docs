@@ -125,13 +125,11 @@ For more information, see the [HIP section](#hip-7-17-0) in the ROCm component c
 
 ROCprofiler-SDK improves profiling across the toolchain. This release adds experimental WSL2 profiling for validated RDNA 3.5 systems, expands SPM and counter collection on gfx12, increases thread-trace reliability and scaling for applications that span many GPUs or processes, aligns GPU and host timestamps more closely, filters invalid PC samples on multi-chiplet GPUs, and adds diagnostics that make counter-collection problems easier to spot. It also adds Agent Skills that let AI coding assistants run and interpret profiling workflows. The subsections below describe each change in detail.
 
-##### Device-wide counter sampling added
+##### Device counting mode added
 
-This lets you observe GPU counter behavior across a whole run, even when no kernels are running, with more control over the sampling interval. ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM), which samples counters on a GPU for as long as profiling is active, whether or not kernels are running. It also adds SPM support for gfx12 and gfx1250, lets you set the sample interval in reference-clock cycles, limits dispatch SPM to selected GPUs, and records where on the GPU each counter sample was measured in the rocpd database.
+ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM). It samples counters on a GPU for as long as profiling is active, so you can observe counter behavior across a whole run, including intervals when no kernels are running. This release also limits dispatch SPM to selected GPUs and records where on the GPU each counter sample was measured in the rocpd database.
 
 * Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect the samples as `rocprofiler_spm_counter_record_t` records, which carry no dispatch information. This lets you observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
-
-* The new `ROCPROFILER_SPM_PARAMETER_TYPE_SAMPLE_INTERVAL_REFCLK_CYCLES` parameter sets the SPM sample interval in reference-clock cycles instead of shader-clock cycles. The sampling rate then doesn't move with the shader clock. The parameter is supported on gfx1200, gfx1201, and gfx1250. Other agents return `ROCPROFILER_STATUS_ERROR_INVALID_ARGUMENT`. Agent configuration queries now report shader-clock and reference-clock intervals separately. `rocprofv3 --spm-sample-interval-unit` accepts the new `refclk_cycles` value.
 
 * The new experimental `rocprofiler_spm_dispatch_counting_service_set_agents()` function scopes dispatch SPM to a selected set of GPU agents. Two SPM contexts can now be active at the same time when their agent sets don't overlap.
 
