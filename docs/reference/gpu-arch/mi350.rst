@@ -154,7 +154,7 @@ Node-level architecture
 The MI350X and MI355X use a fully connected 8-GPU node topology, identical to the
 prior generation. Each GPU connects to the host via one PCIe Gen 5 x16 link
 and communicates with other GPUs through 7 AMD Infinity Fabric links operating
-at 38.4 Gbps, providing over 1 TB/s of aggregate communication bandwidth per
+at 36 Gbps, providing over 1 TB/s of aggregate communication bandwidth per
 GPU.
 
 The MI350X uses the OAM form factor on a UBB8 baseboard compatible with prior

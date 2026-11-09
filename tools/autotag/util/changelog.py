@@ -1,6 +1,6 @@
 from collections import defaultdict
 from typing import Dict, List, TextIO, Tuple
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from util.release_data import ReleaseBundle
 from packaging.version import Version
 
@@ -44,7 +44,10 @@ class Changelog():
 
     def write_to_file(self, output: TextIO):
         """Writes the changelog to a text file."""
-        env = Environment(loader=FileSystemLoader("templates/"))
+        env = Environment(
+            loader=FileSystemLoader("templates/"),
+            autoescape=select_autoescape(),
+        )
         template = env.get_template("changelog.jinja")
 
         content = template.render(
