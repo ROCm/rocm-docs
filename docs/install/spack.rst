@@ -241,7 +241,7 @@ ROCm packages in Spack
    * - MIVisionX
      - ``mivisionx``
      - 5.6.0
-     - 10.1.0
+     - 10.0.0
 
    * - OpenCL
      - ``rocm-opencl``
@@ -266,7 +266,7 @@ ROCm packages in Spack
    * - rocAL
      - ``rocal``
      - 6.2.0
-     - 10.1.0
+     - 10.0.0
 
    * - rocALUTION
      - ``rocalution``
@@ -636,7 +636,7 @@ For example:
 
      $ spack spec mivisionx
 
-     -   mivisionx@10.1.0~add_tests~asan+hip~ipo amdgpu_target:=auto build_system=cmake build_type=Release commit=112b6ba9e8ab872a3e1b95afb037be0cea84fddd generator=make platform=linux os=ubuntu24.04 target=zen2 %cxx=gcc@13.3.
+     -   mivisionx@10.0.0~add_tests~asan+hip~ipo amdgpu_target:=auto build_system=cmake build_type=Release commit=112b6ba9e8ab872a3e1b95afb037be0cea84fddd generator=make platform=linux os=ubuntu24.04 target=zen2 %cxx=gcc@13.3.
      -       ^cmake@3.31.12~doc+ncurses+ownlibs~qtgui build_system=generic build_type=Release platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
      -       ^curl@8.20.0~gssapi~ldap~libidn2~librtmp~libssh~libssh2+nghttp2 build_system=autotools libs:=shared,static tls:=openssl platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
      -           ^nghttp2@1.67.1 build_system=autotools platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
