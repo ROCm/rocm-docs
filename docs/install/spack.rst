@@ -173,6 +173,11 @@ ROCm packages in Spack
      - 5.6.0
      - 10.1.0
 
+   * - hipDNN
+     - ``hipdnn``
+     - 7.1.1
+     - 10.1.0
+
    * - hipFFT
      - ``hipfft``
      - 5.6.0
@@ -528,31 +533,31 @@ Installing ROCm components using Spack
           7.14.0   https://github.com/ROCm/llvm-project/archive/refs/tags/therock-7.14.tar.gz
           7.13.0   https://github.com/ROCm/llvm-project/archive/refs/tags/therock-7.13.tar.gz
           7.2.3    https://github.com/ROCm/llvm-project/archive/rocm-7.2.3.tar.gz
-          7.2.1    https://github.com/ROCm/MIVisionX/archive/rocm-7.2.1.tar.gz
-          7.2.0    https://github.com/ROCm/MIVisionX/archive/rocm-7.2.0.tar.gz
-          7.1.1    https://github.com/ROCm/MIVisionX/archive/rocm-7.1.1.tar.gz
-          7.1.0    https://github.com/ROCm/MIVisionX/archive/rocm-7.1.0.tar.gz
-          7.0.2    https://github.com/ROCm/MIVisionX/archive/rocm-7.0.2.tar.gz
-          7.0.0    https://github.com/ROCm/MIVisionX/archive/rocm-7.0.0.tar.gz
-          6.4.3    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.3.tar.gz
-          6.4.3    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.3.tar.gz
-          6.4.2    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.2.tar.gz
-          6.4.1    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.1.tar.gz
-          6.4.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.4.0.tar.gz
-          6.3.3    https://github.com/ROCm/MIVisionX/archive/rocm-6.3.3.tar.gz
-          6.3.2    https://github.com/ROCm/MIVisionX/archive/rocm-6.3.2.tar.gz
-          6.3.1    https://github.com/ROCm/MIVisionX/archive/rocm-6.3.1.tar.gz
-          6.3.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.3.0.tar.gz
-          6.2.4    https://github.com/ROCm/MIVisionX/archive/rocm-6.2.4.tar.gz
-          6.2.1    https://github.com/ROCm/MIVisionX/archive/rocm-6.2.1.tar.gz
-          6.2.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.2.0.tar.gz
-          6.1.2    https://github.com/ROCm/MIVisionX/archive/rocm-6.1.2.tar.gz
-          6.1.1    https://github.com/ROCm/MIVisionX/archive/rocm-6.1.1.tar.gz
-          6.1.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.1.0.tar.gz
-          6.0.2    https://github.com/ROCm/MIVisionX/archive/rocm-6.0.2.tar.gz
-          6.0.0    https://github.com/ROCm/MIVisionX/archive/rocm-6.0.0.tar.gz
-          5.7.1    https://github.com/ROCm/MIVisionX/archive/rocm-5.7.1.tar.gz
-          5.7.0    https://github.com/ROCm/MIVisionX/archive/rocm-5.7.0.tar.gz
+          7.2.1    https://github.com/ROCm/llvm-project/archive/rocm-7.2.1.tar.gz
+          7.2.0    https://github.com/ROCm/llvm-project/archive/rocm-7.2.0.tar.gz
+          7.1.1    https://github.com/ROCm/llvm-project/archive/rocm-7.1.1.tar.gz
+          7.1.0    https://github.com/ROCm/llvm-project/archive/rocm-7.1.0.tar.gz
+          7.0.2    https://github.com/ROCm/llvm-project/archive/rocm-7.0.2.tar.gz
+          7.0.0    https://github.com/ROCm/llvm-project/archive/rocm-7.0.0.tar.gz
+          6.4.3    https://github.com/ROCm/llvm-project/archive/rocm-6.4.3.tar.gz
+          6.4.3    https://github.com/ROCm/llvm-project/archive/rocm-6.4.3.tar.gz
+          6.4.2    https://github.com/ROCm/llvm-project/archive/rocm-6.4.2.tar.gz
+          6.4.1    https://github.com/ROCm/llvm-project/archive/rocm-6.4.1.tar.gz
+          6.4.0    https://github.com/ROCm/llvm-project/archive/rocm-6.4.0.tar.gz
+          6.3.3    https://github.com/ROCm/llvm-project/archive/rocm-6.3.3.tar.gz
+          6.3.2    https://github.com/ROCm/llvm-project/archive/rocm-6.3.2.tar.gz
+          6.3.1    https://github.com/ROCm/llvm-project/archive/rocm-6.3.1.tar.gz
+          6.3.0    https://github.com/ROCm/llvm-project/archive/rocm-6.3.0.tar.gz
+          6.2.4    https://github.com/ROCm/llvm-project/archive/rocm-6.2.4.tar.gz
+          6.2.1    https://github.com/ROCm/llvm-project/archive/rocm-6.2.1.tar.gz
+          6.2.0    https://github.com/ROCm/llvm-project/archive/rocm-6.2.0.tar.gz
+          6.1.2    https://github.com/ROCm/llvm-project/archive/rocm-6.1.2.tar.gz
+          6.1.1    https://github.com/ROCm/llvm-project/archive/rocm-6.1.1.tar.gz
+          6.1.0    https://github.com/ROCm/llvm-project/archive/rocm-6.1.0.tar.gz
+          6.0.2    https://github.com/ROCm/llvm-project/archive/rocm-6.0.2.tar.gz
+          6.0.0    https://github.com/ROCm/llvm-project/archive/rocm-6.0.0.tar.gz
+          5.7.1    https://github.com/ROCm/llvm-project/archive/rocm-5.7.1.tar.gz
+          5.7.0    https://github.com/ROCm/llvm-project/archive/rocm-5.7.0.tar.gz
 
       Deprecated versions:
           None
@@ -638,7 +643,7 @@ For example:
 
      -   mivisionx@10.0.0~add_tests~asan+hip~ipo amdgpu_target:=auto build_system=cmake build_type=Release commit=112b6ba9e8ab872a3e1b95afb037be0cea84fddd generator=make platform=linux os=ubuntu24.04 target=zen2 %cxx=gcc@13.3.
      -       ^cmake@3.31.12~doc+ncurses+ownlibs~qtgui build_system=generic build_type=Release platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
-     -       ^curl@8.20.0~gssapi~ldap~libidn2~librtmp~libssh~libssh2+nghttp2 build_system=autotools libs:=shared,static tls:=openssl platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
+     -       ^curl@8.21.0~gssapi~ldap~libidn2~librtmp~libssh~libssh2+nghttp2 build_system=autotools libs:=shared,static tls:=openssl platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
      -           ^nghttp2@1.67.1 build_system=autotools platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
      -       ^ncurses@6.6~symlinks+termlib abi=none build_system=autotools patches:=7a351bc platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
      -       ^zlib-ng@2.3.3+compat+new_strategies+opt+pic+shared build_system=autotools platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
