@@ -121,187 +121,192 @@ ROCm packages in Spack
    * - AMD SMI
      - ``amdsmi``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - aqlprofile
      - ``hsa-amd-aqlprofile``
      - 7.0.0
-     - 10.0.0
+     - 10.1.0
 
    * - comgr
      - ``comgr``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - Composable Kernel
      - ``composable-kernel``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - devicelibs
      - ``rocm-device-libs``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - HIP (hip_in_vdi)
      - ``hip``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipBLAS
      - ``hipblas``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipBLAS-common
      - ``hipblas-common``
      - 6.3.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipBLASLt
      - ``hipblaslt``
      - 6.0.0
-     - 10.0.0
+     - 10.1.0
 
    * - HIPCC
      - ``hipcc``
      - 5.7.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipCUB
      - ``hipcub``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipFFT
      - ``hipfft``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipFile
      - ``hipfile``
      - 7.2.3
-     - 10.0.0
+     - 10.1.0
 
    * - hipfort
      - ``hipfort``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - HIPIFY
      - ``hipify-clang``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipRAND
      - ``hiprand``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipSOLVER
      - ``hipsolver``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipSPARSE
      - ``hipsparse``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipSPARSELt
      - ``hipsparselt``
      - 6.0.0
-     - 10.0.0
+     - 10.1.0
 
    * - hipTensor
      - ``hip-tensor``
      - 5.7.0
-     - 10.0.0
+     - 10.1.0
 
    * - HIP Tests
      - ``hip-tests``
      - 6.1.0
-     - 10.0.0
+     - 10.1.0
 
    * - llvm
      - ``llvm-amdgpu``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - MIGraphX
      - ``migraphx``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - MIOpen (HIP)
      - ``miopen-hip``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - MIVisionX
      - ``mivisionx``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - OpenCL
      - ``rocm-opencl``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - openmp-extras
      - ``rocm-openmp-extras``
      - 5.6.0
      - 7.2.3 (Moved into compiler packages)
 
+   * - profiler-hub
+     - ``profiler-hub``
+     - 10.0.0
+     - 10.1.0
+
    * - RCCL
      - ``rccl``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocAL
      - ``rocal``
      - 6.2.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocALUTION
      - ``rocalution``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocBLAS
      - ``rocblas``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCdbgapi
      - ``rocm-dbgapi``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocDecode
      - ``rocdecode``
      - 6.1.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocFFT
      - ``rocfft``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocJPEG
      - ``rocjpeg``
      - 6.3.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocm-core
      - ``rocm-core``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocminfo
      - ``rocminfo``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocMLIR
      - ``rocmlir``
@@ -316,72 +321,72 @@ ROCm packages in Spack
    * - ROCm CMake
      - ``rocm-cmake``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm Compute Profiler
      - ``rocprofiler-compute``
      - 6.3.2
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm Data Center Tool (RDC)
      - ``rdc``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm Debug Agent
      - ``rocm-debug-agent``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm Debugger (ROCgdb)
      - ``rocm-gdb``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm Examples
      - ``rocm-examples``
      - 6.2.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm SMI Library
      - ``rocm-smi-lib``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm Systems Profiler
      - ``rocprofiler-systems``
      - 6.3.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm Validation Suite
      - ``rocm-validation-suite``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocPRIM
      - ``rocprim``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCProfiler
      - ``rocprofiler-dev``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocprofiler-register
      - ``rocprofiler-register``
      - 6.1.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCprofiler-SDK
      - ``rocprofiler-sdk``
      - 6.2.4
-     - 10.0.0
+     - 10.1.0
 
    * - ROCprof Trace Decoder
      - ``rocprof-trace-decoder``
      - 10.0.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocPyDecode
      - ``rocpydecode``
@@ -391,62 +396,62 @@ ROCm packages in Spack
    * - rocRAND
      - ``rocrand``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCr Runtime
      - ``hsa-rocr-dev``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocSHMEM
      - ``rocshmem``
      - 6.4.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocSOLVER
      - ``rocsolver``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocSPARSE
      - ``rocsparse``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocThrust
      - ``rocthrust``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCTracer
      - ``roctracer-dev``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - roctracer-dev-api
      - ``roctracer-dev-api``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - rocWMMA
      - ``rocwmma``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - ROCm Performance Primitives (RPP)
      - ``rpp``
      - 5.7.0
-     - 10.0.0
+     - 10.1.0
 
    * - Tensile
      - ``rocm-tensile``
      - 5.6.0
-     - 10.0.0
+     - 10.1.0
 
    * - TransferBench
      - ``transferbench``
      - 6.3.0
-     - 10.0.0
+     - 10.1.0
 
    * - aqlprofile (old)
      - ``aqlprofile``
@@ -490,7 +495,7 @@ Installing ROCm components using Spack
 
       spack install rocm-cmake@<version number>
 
-   For example, ``spack install rocm-cmake@10.0.0``
+   For example, ``spack install rocm-cmake@10.1.0``
 
 2. ``info``
 
@@ -515,9 +520,10 @@ Installing ROCm components using Spack
       Homepage: https://github.com/ROCm/llvm-project
 
       Preferred version:
-          10.0.0    https://github.com/ROCm/llvm-project/archive/refs/tags/therock-10.0.tar.gz
+          10.1.0    https://github.com/ROCm/llvm-project/archive/refs/tags/therock-10.1.tar.gz
 
       Safe versions:
+          10.1.0    https://github.com/ROCm/llvm-project/archive/refs/tags/therock-10.1.tar.gz
           10.0.0    https://github.com/ROCm/llvm-project/archive/refs/tags/therock-10.0.tar.gz
           7.14.0   https://github.com/ROCm/llvm-project/archive/refs/tags/therock-7.14.tar.gz
           7.13.0   https://github.com/ROCm/llvm-project/archive/refs/tags/therock-7.13.tar.gz
@@ -630,7 +636,7 @@ For example:
 
      $ spack spec mivisionx
 
-     -   mivisionx@10.0.0~add_tests~asan+hip~ipo amdgpu_target:=auto build_system=cmake build_type=Release commit=112b6ba9e8ab872a3e1b95afb037be0cea84fddd generator=make platform=linux os=ubuntu24.04 target=zen2 %cxx=gcc@13.3.
+     -   mivisionx@10.1.0~add_tests~asan+hip~ipo amdgpu_target:=auto build_system=cmake build_type=Release commit=112b6ba9e8ab872a3e1b95afb037be0cea84fddd generator=make platform=linux os=ubuntu24.04 target=zen2 %cxx=gcc@13.3.
      -       ^cmake@3.31.12~doc+ncurses+ownlibs~qtgui build_system=generic build_type=Release platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
      -       ^curl@8.20.0~gssapi~ldap~libidn2~librtmp~libssh~libssh2+nghttp2 build_system=autotools libs:=shared,static tls:=openssl platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
      -           ^nghttp2@1.67.1 build_system=autotools platform=linux os=ubuntu24.04 target=zen2 %c,cxx=gcc@13.3.0
@@ -662,9 +668,9 @@ You can create an environment with all the required components of your version, 
    .. code-block:: shell
 
       spack add
-      rocm-cmake@10.0.0 rocm-dbgapi@10.0.0 rocm-debug-agent@10.0.0 rocm-gdb@10.0.0 rocminfo@10.0.0 \
-      rocm-opencl@10.0.0 rocm-smi-lib@10.0.0 rocprim@10.0.0 rocprofiler-dev@10.0.0 rocrand@10.0.0  \
-      rocthrust@10.0.0 roctracer-dev@10.0.0
+      rocm-cmake@10.1.0 rocm-dbgapi@10.1.0 rocm-debug-agent@10.1.0 rocm-gdb@10.1.0 rocminfo@10.1.0 \
+      rocm-opencl@10.1.0 rocm-smi-lib@10.1.0 rocprim@10.1.0 rocprofiler-dev@10.1.0 rocrand@10.1.0  \
+      rocthrust@10.1.0 roctracer-dev@10.1.0
 
 4. Generate the build plan.
 
@@ -691,48 +697,48 @@ To generate a patch and build with the changes:
 
    .. code-block:: shell
 
-      spack stage hip@10.0.0
-      # This will pull the 10.0.0 release version source code of hip and display the path to spack-src directory where entire source code is available
+      spack stage hip@10.1.0
+      # This will pull the 10.1.0 release version source code of hip and display the path to spack-src directory where entire source code is available
 
    You should see something like this:
 
    .. code-block:: shell-session
 
-      ==> Using cached archive: /data/root/temp/rocm-10.0.0/spack/var/spack/cache/_source-cache/archive/d8/d8dba8cdf05463afb7879de2833983cafa6a006ba719815a35b96d9b92fc7fc4.tar.gz
-      ==> Using cached archive: /data/root/temp/rocm-10.0.0/spack/var/spack/cache/_source-cache/archive/82/829e61a5c54d0c8325d02b0191c0c8254b5740e63b8bfdb05eec9e03d48f7d2c.tar.gz
-      ==> Using cached archive: /data/root/temp/rocm-10.0.0/spack/var/spack/cache/_source-cache/archive/80/8081d4ab1a43ffa1cebd646668d83008b799ab98c14daf7b455922355a439c8a.tar.gz
+      ==> Using cached archive: /data/root/temp/rocm-10.1.0/spack/var/spack/cache/_source-cache/archive/d8/d8dba8cdf05463afb7879de2833983cafa6a006ba719815a35b96d9b92fc7fc4.tar.gz
+      ==> Using cached archive: /data/root/temp/rocm-10.1.0/spack/var/spack/cache/_source-cache/archive/82/829e61a5c54d0c8325d02b0191c0c8254b5740e63b8bfdb05eec9e03d48f7d2c.tar.gz
+      ==> Using cached archive: /data/root/temp/rocm-10.1.0/spack/var/spack/cache/_source-cache/archive/80/8081d4ab1a43ffa1cebd646668d83008b799ab98c14daf7b455922355a439c8a.tar.gz
       ==> Moving resource stage
               source: /tmp/root/spack-stage/resource-clr-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/
-              destination: /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/clr
+              destination: /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/clr
       ==> Moving resource stage
               source: /tmp/root/spack-stage/resource-hip-tests-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/
-              destination: /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/hip-tests
-      ==> Staged hip in /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46
+              destination: /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src/hip-tests
+      ==> Staged hip in /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46
 
 2. Change directory to ``spack-src`` inside the staged directory.
 
    .. code-block:: shell-session
 
-      /spack$ cd /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46
-      /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46$ cd spack-src/
+      /spack$ cd /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46
+      /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46$ cd spack-src/
 
 3. Create a new Git repository.
 
    .. code-block:: shell
 
-      /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git init
+      /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git init
 
 4. Add the entire directory to the repository.
 
    .. code-block:: shell
 
-      /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git add .
+      /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git add .
 
 5. Make the required changes to the source code.
 
    .. code-block:: shell
 
-      /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src# vi hipamd/CMakeLists.txt
+      /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src# vi hipamd/CMakeLists.txt
       # Make required changes in the source code
 
 6. Generate the patch using the ``git diff`` command.
@@ -740,21 +746,21 @@ To generate a patch and build with the changes:
    .. code-block:: shell
 
       diff > /spack/var/spack/repos/builtin/packages/hip/0001-modifications.patch
-      /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git diff > /spack/var/spack/repos/builtin/packages/hip/0001-modifications.patch
+      /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ git diff > /spack/var/spack/repos/builtin/packages/hip/0001-modifications.patch
 
 7. Update the recipe with the patch file name and any conditions you want to apply.
 
    .. code-block:: shell
 
-      /tmp/root/spack-stage/spack-stage-hip-10.0.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ spack edit hip
+      /tmp/root/spack-stage/spack-stage-hip-10.1.0-zo53ondw3tevsr3gmoofbhre7asvis46/spack-src$ spack edit hip
 
 8. Provide the patch file name and the conditions for the patch to be applied in the ``hip`` recipe as follows.
 
    .. code-block:: shell
 
-      patch("0001-modifications.patch", when="@10.0.0")
+      patch("0001-modifications.patch", when="@10.1.0")
 
-   Spack will apply ``0001-modifications.patch`` on the 10.0.0 release code before starting the ``hip`` build.
+   Spack will apply ``0001-modifications.patch`` on the 10.1.0 release code before starting the ``hip`` build.
 
 9. After each modification, you must update the recipe. If there is no change to the recipe, run
 
