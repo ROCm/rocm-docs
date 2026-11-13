@@ -176,7 +176,7 @@ ROCm packages in Spack
    * - hipDNN
      - ``hipdnn``
      - 7.1.1
-     - 7.14.0
+     - 10.0.0
 
    * - hipFFT
      - ``hipfft``
