@@ -266,7 +266,7 @@ ROCm packages in Spack
    * - RCCL Tests
      - ``rccl-tests``
      - 7.14.0
-     - 10.1.0
+     - 10.0.0
 
    * - rocAL
      - ``rocal``
