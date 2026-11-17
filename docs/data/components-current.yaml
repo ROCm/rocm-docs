@@ -27,6 +27,7 @@ rocm_core_sdk:
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     RCCL:
       version: 2.30.7
+      changelog: true
       support: {linux: {instinct: true, radeon: true, ryzen: true}}
     ROCdbgapi:
       version: 0.80.0
