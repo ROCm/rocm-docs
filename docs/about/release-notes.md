@@ -290,25 +290,23 @@ PyTorch for ROCm now supports the `torch.cuda.gds` file I/O APIs, including `Gds
 
 hipFile support is now available in [fio 3.43](https://github.com/axboe/fio/releases/tag/fio-3.43) and in the main branch of [IOR](https://github.com/hpc/ior/pull/540). Both are open source storage benchmarking tools that you can use to evaluate storage performance.
 
-For more information, see the [hipFile section](#hipfile-0-6-0) in the ROCm component changelogs.
-
 #### rocFFT feature highlights
 
-The following are notable enhancements to rocFFT:
+The following are notable enhancements to rocFFT. For the full list, see the [rocFFT changelog](#rocfft-1-0-41).
 
 ##### Just-in-time callbacks supported on multi-GPU transforms
 
-Just-in-time (JIT) load and store callbacks, set with `rocfft_plan_description_set_load_callback` and `rocfft_plan_description_set_store_callback`, can now be used on multi-GPU transforms that use fields, removing the earlier restriction. Function pointer callbacks set with the deprecated `rocfft_execution_info_set_load_callback` and `rocfft_execution_info_set_store_callback` APIs remain unsupported with fields, so use the JIT callback APIs instead.
+Just-in-time (JIT) load and store callbacks, set with `rocfft_plan_description_set_load_callback` and `rocfft_plan_description_set_store_callback`, can now be used on multi-GPU transforms that use fields.
+
+Function pointer callbacks set with the deprecated `rocfft_execution_info_set_load_callback` and `rocfft_execution_info_set_store_callback` APIs can no longer be used on transforms that use fields. For these transforms, `rocfft_execute` returns `rocfft_status_invalid_arg_value`. Use the JIT callback APIs instead.
 
 ##### 64-bit indexing selected automatically for large transforms
 
 64-bit index arithmetic is now selected automatically for transforms large enough to overflow 32-bit addressing, so very large transforms, including lengths greater than 2^32, can run. Smaller transforms continue to use 32-bit arithmetic.
 
-For more information, see the [rocFFT section](#rocfft-1-0-41) in the ROCm component changelogs.
-
 #### rocSPARSE feature highlights
 
-The following are notable enhancements to rocSPARSE:
+The following are notable enhancements to rocSPARSE. For the full list, see the [rocSPARSE changelog](#rocsparse-5-1-0).
 
 ##### Strided batched sparse triangular solve supported
 
@@ -322,29 +320,21 @@ The following are notable enhancements to rocSPARSE:
 
 The new `rocsparse_spsort` generic API sorts COO, CSR, and CSC matrices through one routine instead of the format-specific `rocsparse_csrsort`, `rocsparse_cscsort`, and `rocsparse_coosort_by_*` routines. You can sort in place or into a separate target matrix. The routine also supports uniform strided batches, including broadcasting one source matrix across the target batch.
 
-##### Triangular solve and factorization optimized
+##### Performance improvements
 
-rocSPARSE reduces analysis-phase and solve-phase time for sparse triangular solves and incomplete factorizations on AMD Instinct MI300 Series and MI350 Series GPUs (gfx942 and gfx950). This covers `rocsparse_spsv`, `rocsparse_sptrsv`, `rocsparse_spsm`, `rocsparse_sptrsm`, `rocsparse_spilu0`, `rocsparse_spic0`, and `rocsparse_spildlt0`, as well as affected CSR and BSR routines.
-
-- **BSR block sizes:** Solve-phase improvements apply up to block size 32 for `rocsparse_Xbsrsv_solve`, 8 for `rocsparse_Xbsrilu0`, and 16 for `rocsparse_Xbsric0` with at most 128 blocks per block row. Larger block sizes and `rocsparse_Xbsrsm_solve` are unchanged in the solve phase.
-- **Smaller gains:** Matrices with fewer than about 1,000 rows per level, such as those with long dependency chains, see smaller gains.
-
-##### SpGEMM optimized for large output rows
-
-rocSPARSE improves sparse matrix-matrix multiplication (SpGEMM) performance for output rows too large for the shared-memory hash tables. Workloads that produce long, wide output rows, such as algebraic multigrid (AMG) setup in rocALUTION, can particularly benefit. This applies to `rocsparse_spgemm` for CSR and BSR matrices and to `rocsparse_Xcsrgemm` and `rocsparse_Xbsrgemm`, including their stage routines such as `rocsparse_csrgemm_nnz`. For BSR matrices with a block dimension greater than 1, only `rocsparse_bsrgemm_nnzb` is affected.
-
-For more information, see the [rocSPARSE section](#rocsparse-5-1-0) in the ROCm component changelogs.
+* Improved sparse triangular solve and incomplete factorization performance on AMD Instinct MI300 Series and MI350 Series GPUs (gfx942 and gfx950), in both the analysis and solve phases. This covers routines such as `rocsparse_spsv`, `rocsparse_spsm`, `rocsparse_spilu0`, and `rocsparse_spic0`. Matrices with long dependency chains see smaller gains.
+* Improved SpGEMM performance for products with long, wide output rows. Workloads such as algebraic multigrid (AMG) setup in rocALUTION can particularly benefit.
 
 ### HPC SDK highlights
 
-For more information about the HPC SDK, see the {doc}`AMD ROCm HPC SDK </components/hpc-sdk/index>` documentation.
+For more information about the HPC SDK, see {doc}`/components/hpc-sdk` and {doc}`/install/hpc-sdk`.
 
 #### New documentation
 
-hipTensor and rocALUTION now have dedicated documentation:
+hipTensor and rocALUTION now have standalone documentation sites:
 
-- [hipTensor documentation](https://rocm.docs.amd.com/projects/hipTensor/en/latest/)
-- [rocALUTION documentation](https://rocm.docs.amd.com/projects/rocALUTION/en/latest/)
+- [hipTensor documentation](https://rocm.docs.amd.com/projects/hipTensor/en/docs-10.2.0/)
+- [rocALUTION documentation](https://rocm.docs.amd.com/projects/rocALUTION/en/docs-10.2.0/)
 
 #### rocALUTION feature highlights
 
@@ -357,7 +347,6 @@ Ruge-Stueben algebraic multigrid (AMG) now supports the matrix-matrix-based inte
 ##### Depth limit for AMG hierarchies
 
 The new `BaseAMG::SetMaxLevels()` limits the number of levels in an AMG hierarchy. Combine it with another AMG solver as the coarse grid solver to build hybrid hierarchies, such as unsmoothed aggregation on the finest levels followed by Ruge-Stueben AMG on the coarser levels. The new `cg-uaamg-rsamg` sample demonstrates this configuration.
-
 
 (release-supported-hw)=
 
