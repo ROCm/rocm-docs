@@ -105,7 +105,7 @@ all_article_info_os = ["linux", "windows"]
 all_article_info_author = ""
 # pages with specific settings
 article_pages = [
-    {"file": "about/release-notes", "date": GA_DATE, "os": ["linux", "windows"]},
+    {"file": "about/release-notes", "date": GA_DATE, "os": ["linux", "windows"], "read-time": ""},
     {"file": "compatibility/compatibility-matrix"},
 ]
 
@@ -213,4 +213,18 @@ exclude_patterns = [
 official_branch = run(
     ["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True
 ).stdout.find("docs/")
+
+
+def _add_release_notes_heading_css(app, pagename, templatename, context, doctree):
+    """Load the heading scale only on the release notes page.
+
+    Sphinx copies the stylesheet list before each page and restores it
+    afterward, so a file added here is not linked from the other topics.
+    """
+    if pagename == "about/release-notes":
+        app.add_css_file("article-headings.css", priority=800)
+
+
+def setup(app):
+    app.connect("html-page-context", _add_release_notes_heading_css)
 

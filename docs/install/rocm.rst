@@ -222,6 +222,13 @@ in ROCm |ROCM_VERSION|, see the :doc:`Release notes </about/release-notes>`.
 
 .. include:: ./include/050-intro.rst
 
+.. selected:: i=runfile
+   :heading: Detailed installation
+   :heading-level: 2
+
+   For detailed installation options and configuration, see
+   :doc:`ROCm Runfile Installer </install/rocm-runfile-installer>`.
+
 ----
 
 .. _rocm-prerequisites:
@@ -264,7 +271,7 @@ in ROCm |ROCM_VERSION|, see the :doc:`Release notes </about/release-notes>`.
      document.addEventListener("DOMContentLoaded", () => {
        const nextLink = document.querySelector("footer.prev-next-footer a.right-next");
        const nextTitle = nextLink.querySelector(".prev-next-title");
-       nextTitle.textContent = "Build the ROCm Core SDK from source";
-       nextLink.href = "./build-from-source.html";
+       nextTitle.textContent = "Install HPC SDK";
+       nextLink.href = "./hpc-sdk.html";
      });
    </script>

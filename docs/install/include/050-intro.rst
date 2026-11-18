@@ -66,11 +66,6 @@
    post-installation configuration, and offers an interactive command line TUI for
    guided setup.
 
-   .. note::
-
-      For detailed installation options and configuration, see
-      :doc:`ROCm Runfile Installer </install/rocm-runfile-installer>`.
-
 .. selected:: i=amdgpu-install
 
    Use the ``amdgpu-install`` script to install ROCm, the AMD GPU driver,

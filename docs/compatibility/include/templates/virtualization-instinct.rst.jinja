@@ -10,7 +10,7 @@
   Data model (per GPU, flat list of entries):
     - hypervisor: KVM | ESXi | ...
       technology: Passthrough | SR-IOV | ...
-      driver: null | {name: str, url: str}
+      driver: null | {name: str, version: str, url: str, doc_url: str}
       host_os: str
       guest_os: [str, ...]   # one row per element
       vf_modes: [str, ...]   # parallel to guest_os; "\n"-separated for multi-mode cells
@@ -44,22 +44,36 @@
 {%- set all_slugs = gpu_slugs(virt_gpu_names) -%}
 
 {#--
-  hyp_groups(entries)
-  Groups a GPU's flat entry list into consecutive same-hypervisor blocks.
-  Returns a list of {hypervisor, entries, total_rows} dicts.
+  Collect unique drivers (with doc_url) and the GPUs that use them.
 --#}
-{%- macro hyp_groups(entries) -%}{%- endmacro -%}
+{%- set ns_drv = namespace(seen=[], groups=[]) -%}
+{%- for gpu_name in virt_gpu_names -%}
+  {%- for entry in instinct[gpu_name] if entry.driver is defined and entry.driver and entry.driver.doc_url is defined -%}
+    {%- set drv_ver = entry.driver.version if entry.driver.version is defined else (entry.driver.name | replace("GIM ", "")) -%}
+    {%- set drv_key = drv_ver ~ "|" ~ entry.driver.doc_url -%}
+    {%- if drv_key not in ns_drv.seen -%}
+      {%- set ns_drv.seen = ns_drv.seen + [drv_key] -%}
+      {%- set _ = ns_drv.groups.append({"version": drv_ver, "doc_url": entry.driver.doc_url, "gpus": [gpu_name]}) -%}
+    {%- else -%}
+      {%- for g in ns_drv.groups if (g.version ~ "|" ~ g.doc_url) == drv_key -%}
+        {%- if gpu_name not in g.gpus -%}
+          {%- set _ = g.gpus.append(gpu_name) -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
 
 .. selected:: {{ all_slugs }}
    :heading: GPU virtualization support
-
-   .. selected:: {{ all_slugs }}
+{% for dg in ns_drv.groups %}
+   .. selected:: {{ gpu_slugs(dg.gpus) }}
 
       Supported SR-IOV configurations require the GPU-IOV Module (GIM) driver
-      9.3.0.K -- see the `AMD Instinct Virtualization Driver documentation
-      <https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.3.0.k/>`__ to
+      {{ dg.version }} -- see the `AMD Instinct Virtualization Driver documentation
+      <{{ dg.doc_url }}>`__ to
       get started.
-
+{% endfor %}
 
    .. matrix::
 

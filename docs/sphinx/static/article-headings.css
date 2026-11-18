@@ -1,0 +1,159 @@
+/*
+ * Article heading scale.
+ *
+ * pydata-sphinx-theme draws h3 / h4 / h5 at 1.75 / 1.5 / 1.25rem, all at
+ * weight 400, with the same 2.75rem gap above every level. Release notes
+ * are mostly those three levels, so the hierarchy needs to read from more
+ * than size alone.
+ *
+ * This scale sizes h2 to h5 at 34 / 28 / 21 / 18px, so each step down,
+ * including h1 to h2, is about 1.17 times smaller or more, and h3 stays
+ * clearly larger than h4 when the two are stacked. The h1 stays semibold
+ * 600 at 2.5rem so the page title matches the other pages on the site.
+ * The site's Open Sans ships only static weights (300 to 800), so an
+ * in-between value such as 650 would snap to 700 anyway. h2 is semibold 600
+ * like h1, so a section heading never outweighs the page title; its size,
+ * rule, and spacing set it apart. h3 and h4 are bold 700 and are
+ * separated by size and spacing, not weight. h4 is bold so the component
+ * name outweighs the feature titles below it. h5 is semibold 600, and h6
+ * is medium 500. Body text remains regular 400. Bold text inside lists is
+ * semibold too, so a bullet lead does not outweigh the h5 above it.
+ *
+ * Space above each heading shrinks with the level (4.5 / 3.75 / 3 / 1.5rem
+ * for h2 to h5), and h2 also gets a hairline rule, so major sections open
+ * with a clearly larger break than the blocks inside them. The h4 gap is
+ * twice the h5 gap so each component's features group under its h4.
+ * When a heading directly follows its parent heading with no text in
+ * between, the gap drops to 1rem (1.25rem for h3 over h4) so the parent
+ * attaches to its section instead of floating between two large gaps.
+ * Space below h3 and h4 is 0.5rem, slightly more than below h5, so text
+ * under the larger headings does not look cramped.
+ *
+ * Linked only from about/release-notes, and scoped to the article
+ * container so the header and sidebars keep the theme styles. Priority
+ * 800 loads it after sphinx-book-theme.css.
+ */
+
+.bd-article-container h1 {
+  font-weight: 600;
+}
+
+.bd-article-container h3 {
+  font-weight: 700;
+}
+
+.bd-article-container h4 {
+  font-weight: 700;
+}
+
+.bd-article-container h5 {
+  font-weight: 600;
+}
+
+.bd-article-container h6 {
+  font-weight: 500;
+}
+
+.bd-article-container h1 {
+  font-size: 2.5rem;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+
+.bd-article-container h2 {
+  font-size: 2.125rem;
+  font-weight: 600;
+  line-height: 1.22;
+  margin: 4.5rem 0 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--pst-color-border);
+}
+
+.bd-article-container h3 {
+  font-size: 1.75rem;
+  line-height: 1.28;
+  margin: 3.75rem 0 0.5rem;
+}
+
+.bd-article-container h4 {
+  font-size: 1.3125rem;
+  line-height: 1.35;
+  margin: 3rem 0 0.5rem;
+}
+
+.bd-article-container h5 {
+  font-size: 1.125rem;
+  line-height: 1.45;
+  margin: 1.5rem 0 0.4rem;
+}
+
+.bd-article-container h6 {
+  font-size: 1rem;
+  line-height: 1.45;
+  margin: 1rem 0 0.25rem;
+}
+
+/*
+ * Sphinx wraps each heading and its content in a <section>, so a nested
+ * section that starts right after its parent heading means the two
+ * headings are stacked.
+ */
+.bd-article-container :is(h2, h3, h4) + section > :is(h3, h4, h5):first-child {
+  margin-top: 1rem;
+}
+
+/*
+ * An h4 directly under an h3 gets a little more room than the 1rem
+ * default, because the two are close in size and weight. This rule must
+ * stay below the general rule above: both have the same specificity, so
+ * source order decides which one wins.
+ */
+.bd-article-container h3 + section > h4:first-child {
+  margin-top: 1.25rem;
+}
+
+/*
+ * The page uses h3 for two different things. In the release highlights and
+ * changelogs, h3 is a short category label (9 to 29 characters, such as
+ * "Libraries"), which suits the large h3 size. In the known issues, resolved
+ * issues, and upcoming changes, h3 is the title of one item, often written
+ * as a full sentence (up to 93 characters), so at the h3 size most of them
+ * wrap to two lines. In these three sections only, the h3 uses the h4 size,
+ * semibold 600 instead of bold 700 so a long sentence title does not look
+ * heavy, and a smaller gap above it. The markup stays h3, so heading levels and
+ * the page TOC are unchanged. The IDs are the ones Sphinx generates from
+ * the "ROCm known issues", "ROCm resolved issues", and "ROCm upcoming
+ * changes" headings; if a heading is renamed, update its ID in both rules
+ * below.
+ *
+ * text-wrap: pretty keeps a title from ending with a single word alone on
+ * the last line, and otherwise fills lines as usual. text-wrap: balance was
+ * tried and removed: it split product names across lines ("AMD / Instinct
+ * MI300A") and left the first line short. Browsers that do not support
+ * pretty wrap as before; shorten the title to fix an awkward wrap there.
+ */
+#rocm-known-issues > section > h3,
+#rocm-resolved-issues > section > h3,
+#rocm-upcoming-changes > section > h3 {
+  font-size: 1.3125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-top: 2.25rem;
+  text-wrap: pretty;
+}
+
+/*
+ * When one of these h3s directly follows its h2 with no text in between
+ * (as in "ROCm upcoming changes"), restore the 1rem stacked-heading gap.
+ * The ID selector above outranks the general stacked-heading rule, so this
+ * rule has to repeat it.
+ */
+:is(#rocm-known-issues, #rocm-resolved-issues, #rocm-upcoming-changes)
+  > h2 + section > h3:first-child {
+  margin-top: 1rem;
+}
+
+.bd-article-container li strong,
+.bd-article-container li b {
+  font-weight: 600;
+}

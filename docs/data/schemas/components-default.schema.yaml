@@ -11,6 +11,8 @@ patternProperties:
 properties:
   rocm_core_sdk:
     $ref: "#/$defs/coreSDKDef"
+  rocm_hpc_sdk:
+    $ref: "#/$defs/coreSDKDef"
   rocm_extras:
     type: array
     items:

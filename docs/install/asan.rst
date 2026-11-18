@@ -16,8 +16,8 @@ GPU architectures and can be installed using the package manager or a tarball.
 
 .. important::
 
-   - ASAN builds are only available for ``gfx942`` and ``gfx950`` architectures,
-     plus a multiarch build (``all``, both gfx942 and gfx950).
+   - ASAN builds are only available for ``gfx90a``, ``gfx942``, and ``gfx950``
+     architectures, plus a multiarch build (``all``, gfx90a, gfx942, and gfx950).
    - ASAN rpm and debian packages use the naming convention ``amdrocm-asan10.2`` or
      ``amdrocm-asan10.2-gfxXYZ``.
    - ASAN rpm and debian packages install to ``/opt/rocm/core-asan-10.2``, separate from
@@ -66,6 +66,15 @@ and installation method.
 
       .. selector-option:: AMD Instinct MI300A (gfx942)
          :value: amd-instinct-mi300a gfx=gfx942
+
+      .. selector-option:: AMD Instinct MI250X (gfx90a)
+         :value: amd-instinct-mi250x gfx=gfx90a
+
+      .. selector-option:: AMD Instinct MI250 (gfx90a)
+         :value: amd-instinct-mi250 gfx=gfx90a
+
+      .. selector-option:: AMD Instinct MI210 (gfx90a)
+         :value: amd-instinct-mi210 gfx=gfx90a
 
 .. selector:: Operating system
    :key: os
@@ -515,6 +524,12 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo apt install amdrocm-asan10.2
 
+      .. selected:: gfx=gfx90a
+
+         .. code-block:: bash
+
+            sudo apt install amdrocm-asan10.2-gfx90a
+
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
@@ -535,6 +550,12 @@ Use the following instructions to install ROCm ASAN packages on your system.
 
             sudo dnf install amdrocm-asan10.2
 
+      .. selected:: gfx=gfx90a
+
+         .. code-block:: bash
+
+            sudo dnf install amdrocm-asan10.2-gfx90a
+
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
@@ -554,6 +575,12 @@ Use the following instructions to install ROCm ASAN packages on your system.
          .. code-block:: bash
 
             sudo zypper install amdrocm-asan10.2
+
+      .. selected:: gfx=gfx90a
+
+         .. code-block:: bash
+
+            sudo zypper install amdrocm-asan10.2-gfx90a
 
       .. selected:: gfx=gfx942
 
@@ -691,6 +718,14 @@ Use the following instructions to install ROCm ASAN packages on your system.
          mkdir install
          tar -xf *.tar.gz -C install
 
+   .. selected:: gfx=gfx90a
+
+      .. code-block:: bash
+
+         wget https://stable.repo.amd.com/rocm/core/tarball-asan/therock-dist-linux-gfx90a-10.2.0.tar.gz
+         mkdir install
+         tar -xf *.tar.gz -C install
+
    .. selected:: gfx=gfx942
 
       .. code-block:: bash
@@ -720,9 +755,58 @@ configure your system and validate the installation.
    :heading-level: 3
 
    Configure environment variables so that ROCm ASAN libraries and tools are
-   available either to all users on the system or only to your user account.
+   available in your current shell session, only to your user account, or to
+   all users on the system.
 
    .. tab-set::
+
+      .. tab-item:: Active session setup
+         :sync: active-session
+
+         Set the ROCm ASAN environment variables for the current shell session
+         only. To keep these settings across sessions, use System-wide setup or
+         User setup.
+
+         .. selected:: i=tar
+
+            Make sure you're in the ``therock-tarball-asan`` directory before
+            proceeding.
+
+            .. code-block:: bash
+
+               # Make sure you're in the therock-tarball-asan directory before proceeding.
+               export ROCM_ASAN_PATH=$(pwd)/install
+
+               # Add ROCm bin to PATH
+               export PATH=$PATH:$ROCM_ASAN_PATH/bin
+
+               # Enable XNACK for device-side GPU instrumentation
+               # Without this, only host-side (CPU) errors will be detected
+               export HSA_XNACK=1
+
+               # Locate ASan runtime directory and append instrumented library directories
+               ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
+               export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+               export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+               export LD_PRELOAD="${ASAN_LIB_PATH%/*}/$ASAN_LIB_NAME:${ROCM_ASAN_PATH}/lib/libamdhip64.so:${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
+
+         .. selected:: i=pkgman
+
+            .. code-block:: bash
+
+               export ROCM_ASAN_PATH=/opt/rocm/core-asan-10.2
+
+               # Enable XNACK for device-side GPU instrumentation
+               # Without this, only host-side (CPU) errors will be detected
+               export HSA_XNACK=1
+
+               # Locate ASan runtime directory and append instrumented library directories
+               ASAN_LIB_PATH=$(amdclang --print-file-name=libclang_rt.asan-x86_64.so 2>/dev/null || echo "")
+               export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ASAN_LIB_PATH%/*}:${ROCM_ASAN_PATH}/lib:${ROCM_ASAN_PATH}/lib/llvm/lib:${ROCM_ASAN_PATH}/lib/rocm_sysdeps/lib/"
+
+               export ASAN_LIB_NAME=libclang_rt.asan-x86_64.so
+               export LD_PRELOAD="${ASAN_LIB_PATH%/*}/$ASAN_LIB_NAME:${ROCM_ASAN_PATH}/lib/libamdhip64.so:${ROCM_ASAN_PATH}/lib/libhsa-runtime64.so"
 
       .. tab-item:: System-wide setup
          :sync: system-wide
@@ -975,6 +1059,12 @@ Uninstall ROCm ASAN
 
                sudo apt autoremove amdrocm-asan10.2
 
+         .. selected:: gfx=gfx90a
+
+            .. code-block:: bash
+
+               sudo apt autoremove amdrocm-asan10.2-gfx90a
+
          .. selected:: gfx=gfx942
 
             .. code-block:: bash
@@ -995,6 +1085,12 @@ Uninstall ROCm ASAN
 
                sudo dnf remove amdrocm-asan10.2
 
+         .. selected:: gfx=gfx90a
+
+            .. code-block:: bash
+
+               sudo dnf remove amdrocm-asan10.2-gfx90a
+
          .. selected:: gfx=gfx942
 
             .. code-block:: bash
@@ -1009,9 +1105,29 @@ Uninstall ROCm ASAN
 
       .. selected:: os=sles
 
-         .. code-block:: bash
+         .. selected:: fam=all
 
-            sudo zypper remove amdrocm-*-asan10.2*
+            .. code-block:: bash
+
+               sudo zypper remove --clean-deps amdrocm-asan10.2
+
+         .. selected:: gfx=gfx90a
+
+            .. code-block:: bash
+
+               sudo zypper remove --clean-deps amdrocm-asan10.2-gfx90a
+
+         .. selected:: gfx=gfx942
+
+            .. code-block:: bash
+
+               sudo zypper remove --clean-deps amdrocm-asan10.2-gfx942
+
+         .. selected:: gfx=gfx950
+
+            .. code-block:: bash
+
+               sudo zypper remove --clean-deps amdrocm-asan10.2-gfx950
 
    4. Remove ROCm repositories.
 

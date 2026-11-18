@@ -1,6 +1,6 @@
 .. meta::
-  :description: How to use Spack to install ROCm.
-  :keywords: Spack, package management tool, AMD, ROCm
+   :description: How to use Spack to install ROCm.
+   :keywords: Spack, package management tool, AMD, ROCm
 
 ************************************
 Using Spack to install ROCm packages
@@ -19,6 +19,13 @@ can concisely specify versions and configuration options. Spack is also simple
 for package authors: package files are written in pure Python, and specs allow
 package authors to maintain a single file for many different builds of the same
 package.
+
+.. note::
+
+   ROCm package versions in Spack might lag behind releases through AMD
+   channels. See :doc:`/install/rocm` and :doc:`/install/hpc-sdk` for
+   instructions on installing using your Linux distribution's package manager,
+   pip, or tarball.
 
 See the `official Spack documentation <https://spack-tutorial.readthedocs.io/en/latest/>`_ for more information.
 

@@ -29,6 +29,8 @@ $defs:
       url:
         type: string
         format: uri
+      note:
+        type: string
 
   windowsDriver:
     type: object

@@ -300,15 +300,15 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
     </tr>
     <tr>
       <td>RDNA3.5</td>
-      <td>-gfx1150<br>-gfx1151<br>-gfx1152</td>
+      <td>-gfx1150<br>-gfx1151<br>-gfx1152<br>-gfx1153</td>
       <td>—</td>
-      <td>AMD Ryzen AI 9 465 / AMD Ryzen AI 9 365 / AMD Ryzen AI 9 HX 475 / AMD Ryzen AI 9 HX 470 / AMD Ryzen AI 9 HX 375 / AMD Ryzen AI 9 HX 370 / AMD Ryzen AI 9 PRO 465 / AMD Ryzen AI 9 PRO HX 475 / AMD Ryzen AI 9 PRO HX 470 / AMD Ryzen AI 9 HX PRO 375 / AMD Ryzen AI 9 HX PRO 370 / AMD Ryzen AI Max 390 / AMD Ryzen AI Max 385 / AMD Ryzen AI Max+ 395 / AMD Ryzen AI Max+ 392 / AMD Ryzen AI Max+ 388 / AMD Ryzen AI Max PRO 390 / AMD Ryzen AI Max PRO 385 / AMD Ryzen AI Max PRO 380 / AMD Ryzen AI Max+ PRO 395 / AMD Ryzen AI 7 450 / AMD Ryzen AI 7 350 / AMD Ryzen AI 7 345 / AMD Ryzen AI 5 340 / AMD Ryzen AI 5 330 / AMD Ryzen AI 7 PRO 450 / AMD Ryzen AI 5 PRO 440 / AMD Ryzen AI 7 PRO 350 / AMD Ryzen AI 5 PRO 340</td>
+      <td>AMD Ryzen AI 9 465 / AMD Ryzen AI 9 365 / AMD Ryzen AI 9 HX 475 / AMD Ryzen AI 9 HX 470 / AMD Ryzen AI 9 HX 375 / AMD Ryzen AI 9 HX 370 / AMD Ryzen AI 9 PRO 465 / AMD Ryzen AI 9 PRO HX 475 / AMD Ryzen AI 9 PRO HX 470 / AMD Ryzen AI 9 HX PRO 375 / AMD Ryzen AI 9 HX PRO 370 / AMD Ryzen AI Max 390 / AMD Ryzen AI Max 385 / AMD Ryzen AI Max+ 395 / AMD Ryzen AI Max+ 392 / AMD Ryzen AI Max+ 388 / AMD Ryzen AI Max PRO 390 / AMD Ryzen AI Max PRO 385 / AMD Ryzen AI Max PRO 380 / AMD Ryzen AI Max+ PRO 395 / AMD Ryzen AI 7 450 / AMD Ryzen AI 7 350 / AMD Ryzen AI 7 345 / AMD Ryzen AI 5 340 / AMD Ryzen AI 5 330 / AMD Ryzen AI 7 PRO 450 / AMD Ryzen AI 5 PRO 440 / AMD Ryzen AI 7 PRO 350 / AMD Ryzen AI 5 PRO 340 / AMD Ryzen AI 7 445 / AMD Ryzen AI 5 435 / AMD Ryzen AI 5 430 / AMD Ryzen AI 5 PRO 435</td>
     </tr>
     <tr>
       <td>RDNA3</td>
       <td>-gfx1100<br>-gfx1101<br>-gfx1102<br>-gfx1103</td>
       <td>gfx110X-all</td>
-      <td>AMD Radeon RX 7700 / AMD Radeon RX 7600 / AMD Radeon PRO V710 / AMD Radeon PRO W7900 / AMD Radeon PRO W7800 / AMD Radeon PRO W7700 / AMD Radeon RX 7900 XT / AMD Radeon RX 7800 XT / AMD Radeon RX 7700 XT / AMD Radeon RX 7700 XE / AMD Radeon RX 7900 XTX / AMD Radeon RX 7900 GRE / AMD Radeon PRO W7800 48GB / AMD Radeon PRO W7900 Dual Slot</td>
+      <td>AMD Radeon RX 7700 / AMD Radeon RX 7600 / AMD Radeon PRO V710 / AMD Radeon PRO W7900 / AMD Radeon PRO W7800 / AMD Radeon PRO W7700 / AMD Radeon RX 7900 XT / AMD Radeon RX 7800 XT / AMD Radeon RX 7700 XT / AMD Radeon RX 7700 XE / AMD Radeon RX 7900 XTX / AMD Radeon RX 7900 GRE / AMD Radeon PRO W7800 48GB / AMD Radeon PRO W7900 Dual Slot / AMD Radeon PRO W7900D / AMD Ryzen 9 270 / AMD Ryzen 7 260 / AMD Ryzen 7 PRO 250 / AMD Ryzen 9 180 / AMD Ryzen 5 125</td>
     </tr>
     <tr>
       <td>RDNA2</td>
@@ -336,7 +336,7 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
 - hipTensor (`amdrocm-hiptensor`)
 - rocALUTION (`amdrocm-rocalution`)
 
-For more information, see [AMD ROCm HPC SDK](../components/hpc-sdk/index.rst).
+The `amdrocm-hpc-sdk` meta package installs both. For more information, see [AMD ROCm HPC SDK](../components/hpc-sdk).
 
 ### Moved to Standalone/ONNX
 
@@ -344,7 +344,7 @@ For more information, see [AMD ROCm HPC SDK](../components/hpc-sdk/index.rst).
 
 ### Removed
 
-- [ROCm SMI](https://rocm.docs.amd.com/en/latest/about/release-notes.html#rocm-smi-deprecation) (replaced by AMD SMI)
+- [ROCm SMI](https://rocm.docs.amd.com/en/docs-10.1.0/about/release-notes.html#rocm-smi-is-removed-from-the-standard-build) (replaced by AMD SMI)
 - ROCm Bandwidth Test (end-of-life as of the TheRock-based ROCm 7.14.0 release; use TransferBench or RVS instead)
 
 ## Notable package relocations

@@ -3,12 +3,11 @@
 
 # Anchors {{{
 _drivers:
-  - &gim_9_3_0_k
-    name: GIM 9.3.0.K
-    url: https://github.com/amd/MxGPU-Virtualization/releases/tag/9.3.0.K
   - &gim_9_4_0_k
     name: GIM 9.4.0.K
-    url: https://mkmartifactory.amd.com:8443/artifactory/sw-virt-prod-local/KVM_OpenSource_Releases/9.4.0.K/
+    version: 9.4.0.K
+    url: https://github.com/amd/MxGPU-Virtualization/releases/tag/9.4.0.K
+    doc_url: https://instinct.docs.amd.com/projects/virt-drv/en/docs-9.4.0.k/
 
 _vf_modes:
   - &vf_spx "1 - SPX - NPS1"
@@ -272,7 +271,19 @@ AMD Radeon:
       guest_os: [Ubuntu 26.04, Ubuntu 24.04]
       vf_modes: [*vf_na, *vf_na]
 
-  AMD Radeon PRO W7900DS:
+  AMD Radeon PRO W7900D:
+    - hypervisor: KVM
+      technology: Passthrough
+      host_os: Ubuntu 26.04
+      guest_os: [Ubuntu 26.04, Ubuntu 24.04]
+      vf_modes: [*vf_na, *vf_na]
+    - hypervisor: KVM
+      technology: Passthrough
+      host_os: Ubuntu 24.04
+      guest_os: [Ubuntu 26.04, Ubuntu 24.04]
+      vf_modes: [*vf_na, *vf_na]
+
+  AMD Radeon PRO W7900 Dual Slot:
     - hypervisor: KVM
       technology: Passthrough
       host_os: Ubuntu 26.04
