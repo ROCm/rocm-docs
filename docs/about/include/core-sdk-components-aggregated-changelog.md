@@ -1,4 +1,4 @@
-#### **AMD SMI** (27.2.0)
+#### AMD SMI (27.2.0)
 
 ##### Added
 
@@ -207,7 +207,7 @@
 * **Fixed `amdsmi_set_clk_freq()` falsely returning `AMDSMI_STATUS_INVAL` on Navi48 (gfx1201).**
   * The deep-sleep bitmask validation added previously rejected the entire request when any requested bit fell outside a settable range computed from a prior read, so a supported clock set failed on gfx1201 even though the write is valid. The set is now lenient: out-of-range bits are dropped, and `AMDSMI_STATUS_INVAL` is only returned when no requested level is settable. The read-only check runs after the write, and `TestFrequenciesReadWrite` is re-enabled on Aldebaran (gfx90a / MI210).
 
-#### **Composable Kernel** (1.3.0)
+#### Composable Kernel (1.3.0)
 
 ##### Added
 
@@ -218,11 +218,11 @@
 
 * Improved FMHA backward performance on gfx1250 by moving the operand transfers to TDM and the transposed reads to `ds_load_tr`, keeping the dK and dV accumulators in registers, pairing mirrored tiles under a causal mask, and coalescing the dQ atomic onto a single cache line.
 
-#### **HIP** (7.17.0)
+#### HIP (7.17.0)
 
 ##### Added
 
-* New HIP APIs
+* New HIP APIs:
   * Module Management: matches the corresponding CUDA API.
     * `hipModuleEnumerateFunctions` returns the function handles defined in a loaded module.
   * Library Management: matches the corresponding CUDA API.
@@ -236,11 +236,6 @@
 ##### Changed
 
 * Stream priority is now disabled to avoid known queue-priority-related issues. Priority streams are currently not supported.
-* The HRR capture feature is now disabled.
-* `hipMemAdvise` now aliases `hipMemAdvise_v2`, which uses a `hipMemLocation` parameter instead of a device ID. Applications using the legacy `hipMemAdvise` signature might require source updates to pass a `hipMemLocation` structure. To maintain compatibility with the previous API signature, define `HIP_TARGET_API_VERSION` to a nonzero value less than 800 (for example, 700 for HIP 7.0 or 717 for HIP 7.17) at compile time. By default, `hipMemAdvise` is an alias for the `hipMemAdvise_v2` interface.
-
-##### Removed
-
 * The `HIPRTC_USE_RUNTIME_UNBUNDLER` environment variable and its associated functionality have been removed from the HIP runtime. The runtime unbundler path is now always used; setting this variable no longer has any effect.
 
 ##### Optimized
@@ -262,12 +257,13 @@
 * Resolved a segmentation fault in `hipStreamEndCapture` during multi-stream capture caused by a bookkeeping cycle among capture participants. The fix tracks capture participants in a single origin-stream-owned set, eliminating recursive traversal of forked streams during capture finalization and improving stream capture stability.
 * Resolved a potential deadlock between `hipMallocAsync` and `hipEventSynchronize` during concurrent multi-threaded execution.
 * Fixed incorrect calculations when using the type `bool` for `cooperative_groups::exclusive_scan`. The implementation now correctly handles the identity value for the first active lane and prevents unintended type conversions from `bool` to `int`.
+* Resolved an issue where legacy-stream sync operations (`hipMemset`, `hipMemcpy`) incorrectly invalidated ThreadLocal and Relaxed graph captures on `hipStreamNonBlocking` streams. These captures now remain active, matching CUDA semantics. Global-mode captures and captures involving blocking participants are still invalidated as expected.
 
 ##### Known issues
 
 * A GPU Timeout Detection and Recovery (TDR) event can occur on ROCm 10.2 running under WSL2 (Windows Subsystem for Linux 2) when executing the `vllm_rocm_gpt-oss-20b_default_inf_fp4` vLLM inference workload.
 
-#### **hipBLAS** (3.8.0)
+#### hipBLAS (3.8.0)
 
 ##### Added
 
@@ -278,7 +274,7 @@
 * The minimum required CMake version is now 3.17, for the library and the clients. `FindCUDAToolkit`, used by the CUDA backend, was added in that release.
 * `hipblasSetWorkspace` chooses whether the rocBLAS backend can grow its device workspace. A non-null workspace with a nonzero size is a fixed limit and is never resized, which caps device memory for the handle. A later call that needs more, such as `trsmBatched` or `trsmStridedBatched` with a large `batchCount`, returns `HIPBLAS_STATUS_ALLOC_FAILED` even when free device memory remains. Passing `nullptr` or a size of 0 returns the handle to rocBLAS-managed memory, which starts from a default size and grows as needed. `HIPBLAS_WORKSPACE_CONFIG=:0:0` selects that same managed mode for callers that configure the workspace through the environment, such as PyTorch. With the rocBLAS backend, set `ROCBLAS_VERBOSE_ERROR=1` to print the required and available sizes when a fixed workspace is too small for `trsm`.
 
-#### **hipBLASLt** (1.5.0)
+#### hipBLASLt (1.5.0)
 
 ##### Added
 
@@ -357,47 +353,13 @@
 * Fixed the SM count target being rounded down to a multiple of 32, which applied a target of 100 as 96 and treated any target below 32 as 0 (use all CUs). The target is now used as given.
 * Fixed gfx1250 hangs and faults: an intermittent hang at compute-loop entry in clustered GEMM kernels, a memory fault and GPU hang in MXFP8 GEMMs with Multicast, TDM, and `ClusterDim` on non-power-of-2 macro tiles, and a page fault in bf16 pointer-array batched GEMMs with GL2 prefetch.
 
-#### **hipCUB** (5.0.0)
-
-##### Added
-
-* Added feature parity with CCCL/CUB 3.0.0.
-* Added `::hip::std` support.
-* Added support for large `num_items` in `DeviceMerge` and `DeviceSegmentedSort`.
-
-##### Changed
-
-* Changed `CCCL_MINIMUM_VERSION` to `3.0.0` to align with CUB.
-* Replaced `#pragma unroll` by `_CCCL_PRAGMA_UNROLL_FULL()` and `#pragma nounroll` by `_CCCL_PRAGMA_NOUNROLL()`.
-* Updated `WarpExchange` template parameters for CUB compatibility. The third argument, `ARCH`, has been removed.
-* The block merge sort and thread sort algorithms now perform optional loop unrolling via `_CCCL_SORT_MAYBE_UNROLL()`.
-
-##### Deprecated
-
-* The hipCUB migration to cccl3 has resulted in the following deprecations:
-  * Deprecated `hipcub::Swap`. Use `rocprim::swap` instead.
-  * Deprecated `HIPCUB_IS_INT128_ENABLED`. Use `_CCCL_HAS_INT128()` instead.
-  * Deprecated `hipcub::Equality`, `hipcub::Inequality`, `hipcub::InequalityWrapper`, `hipcub::Sum`, `hipcub::Difference`, `hipcub::Division`, `hipcub::Max`, and `hipcub::Min` operators. Use `hip::std::equal_to`, `hip::std::not_equal_to`, `hip::std::plus`, `hip::std::minus`, `hip::std::divides`, `hip::maximum`, and `hip::minimum` operators instead.
-
-##### Removed
-
-* The hipCUB migration to cccl3 has resulted in the following removals:
-  * Removed `hipcub::BaseTraits::CATEGORY`, `hipcub::BaseTraits::nullptr_TYPE` and `hipcub::BaseTraits::PRIMITIVE`.
-  * Removed `ConstantInputIterator`, `CountingInputIterator`, `DiscardOutputIterator` and `TransformInputIterator`, which were deprecated in hipCUB-4.1.0.
-  * Removed `DeviceSpmv`, which was removed from CUB after CCCL's 2.8.0 release. Use the hipSPARSE or rocSPARSE libraries instead.
-  * Removed `GridBarrier`.
-  * Removed `HIPCUB_MIN`, `HIPCUB_MAX`, `HIPCUB_QUOTIENT_FLOOR`, `HIPCUB_QUOTIENT_CEILING`, `HIPCUB_ROUND_UP_NEAREST` and `HIPCUB_ROUND_DOWN_NEAREST`, which were deprecated in hipCUB-4.1.0.
-  * Removed `LEGACY_PTX_ARCH`.
-  * Removed `hipcub::max` and `hipcub::min`, which were deprecated. Use `hip::std::max` and `hip::std::min` instead.
-* hipCUB compatibility with PyTorch v2.9 and v2.10 has been removed in this release. Use PyTorch v2.11 or later.
-
-#### **hipFFT** (1.0.27)
+#### hipFFT (1.0.27)
 
 ##### Changed
 
 * Minor internal changes.
 
-#### **hipFile** (0.6.0)
+#### hipFile (0.6.0)
 
 ##### Added
 
@@ -423,7 +385,7 @@
 * The bandwidth reported by `ais-stats` and the Stats API is derived from the sum of the per-operation latencies instead of the elapsed wall-clock time, so when several threads issue I/O concurrently, the reported bandwidth is understated by roughly the number of concurrent threads. See [issue #11919](https://github.com/ROCm/rocm-systems/issues/11919).
 * Asynchronous fastpath I/O, added in hipFile 0.5.0 for ROCm 10.1.0, performs poorly. The ROCm runtime serializes all stream host functions onto a single thread, so asynchronous fastpath operations cannot run concurrently.
 
-#### **hipSOLVER** (3.8.0)
+#### hipSOLVER (3.8.0)
 
 ##### Added
 
@@ -454,10 +416,9 @@
 
 ##### Resolved issues
 
-* Fixed `hipsolverDnXpotrs` calling 32-bit `potrs` instead of 64-bit `potrs`.
 * Fixed `hipsolverSpSetStream` not setting the internal `rocsparse_handle` stream.
 
-#### **MIOpen** (3.6.2)
+#### MIOpen (3.6.2)
 
 ##### Added
 
@@ -542,11 +503,12 @@
   registry and explicitly instantiated but missing from both Find solver lists, so it could never be
   enumerated or selected for NHWC convolutions.
 
-#### **RCCL** (2.32.3)
+#### RCCL (2.32.3)
 
 ##### Added
 
 * Compatibility with NCCL 2.32.3.
+* Support for collective operations across up to eight AMD Instinct MI350P GPUs in a single node.
 * `ncclSetEncryption()` and `ncclEncryptionConfig_t` (initialize with `NCCL_ENCRYPTION_CONFIG_INITIALIZER`) to encrypt NCCL-owned TCP socket traffic with TLS using a pre-shared key of at least 32 bytes. Requires a build configured with `-DTLS_BACKEND=OPENSSL3`; `libssl.so.3` is loaded at run time. Encryption is off by default and covers only traffic sent through RCCL's TCP sockets, not RDMA or GPU-to-GPU transfers.
 * `launchCompletionEvent` in the per-collective config (`ncclCollConfig_t`, now `ncclCollConfig_v23200`): a caller-owned event that RCCL records for the collective's kernel launch. Every rank must pass an event, or every rank must pass `NULL`. HIP has no launch-completion launch attribute, so on ROCm the event is recorded on the stream immediately before the kernel launch.
 * `NCCL_WIN_GIN_ONLY` window registration flag, which registers a window for GIN access only.
@@ -652,7 +614,7 @@
 * On the Anvil SDMA (`NCCL_GIN_TYPE=7`) and rocSHMEM GDA (`NCCL_GIN_TYPE=6`) GIN backends, `ncclGinFlushTimeout` ignores the timeout and blocks until the flush completes; `ncclGinWaitTimeout` does the same on Anvil SDMA. rocSHMEM GDA does not support `ncclGinFlushAsync` or waiting on a GIN request, and those calls trap on the device. The signal and counter wait timeouts work on all backends.
 * The following NCCL 2.31 features are not available in RCCL: Compute Fabric Transport, the GDAKI and EFA GDA GIN backends, PAT combined with NVLS, NVLink-multicast AllGather, and the CuTeDSL and `nccl4rust` bindings.
 
-#### **rocBLAS** (5.8.0)
+#### rocBLAS (5.8.0)
 
 ##### Added
 
@@ -683,7 +645,7 @@
 * Fixed Level 2 `trsv` and Level 3 `trsm`, `trtri`, `trmm`, and `gemmt` returning `rocblas_status_success` when an internal GEMM, GEMV, vector copy, or block helper failed. Those statuses are now returned to the caller. On the negative-`incx` path, a failed `trsv` also restores the caller's input vector, which the solve reverses in place.
 * Fixed `rocblas_get_commit_hash_string` writing past the caller's buffer. The length check compared against the size of a pointer, so a buffer shorter than the commit hash was accepted, and the copy omitted the terminating null. `rocblas_get_version_string` and `rocblas_get_commit_hash_string` now require the size reported by the matching `*_size` query, including the terminating null.
 
-#### **ROCdbgapi** (0.82.1)
+#### ROCdbgapi (0.82.1)
 
 ##### Added
 
@@ -693,33 +655,28 @@
   * `gfx1172`
   * `gfx11-7-generic`
 
-#### **ROCm Data Center Tool** (1.4.0)
+#### ROCm Data Center Tool (1.4.0)
 
 ##### Resolved issues
 
 * The `RDC_FI_GPU_MEMORY_CUR_BANDWIDTH` fix for zero readings under DMA or copy-only memory traffic is now included.
 * `rdci dmon` and `rdci health -s` name the missing group again, for example `Cannot find the group 4242`. Since ROCm 7.12 they printed only `Group not found` (or `Fieldgroup not found` for a missing field group in `rdci dmon`).
 
-#### **rocDecode** (1.12.0)
+#### rocDecode (1.12.0)
 
 ##### Added
 
-* Added handling for invalid video sizes for AVC/HEVC.
-* Added support for explicitly loading `librocm_sysdeps_va` with `dlopen`, ensuring complete isolation from the system libva library.
 * Initial Windows support: hardware-accelerated video decoding on Windows via the vaon12 backend (Mesa's VA-API on D3D12 translation layer). Requires HIP and the vaon12 VA-API driver from TheRock for Windows.
 * On Windows, the TheRock VA-API DLLs (`rocm_sysdeps_va_win32.dll`, `rocm_sysdeps_va.dll`) are loaded at run time, matching the Linux `dlopen` behavior. `%ROCM_PATH%\lib\rocm_sysdeps\bin` no longer needs to be on `PATH`.
 * HEVC: generation of unavailable reference pictures for a BLA picture or a CRA picture with `NoRaslOutputFlag` equal to 1 (H.265 clause 8.3.3).
 
 ##### Resolved issues
 
-* Fixed decode errors of some AVC interlaced container streams by adding support for the picture data packet from the demuxer which contains multiple pictures.
-* Corrected CTest tests that reported false passes.
-* Fixed the vendored `libva` link issue in samples without extra environment variables.
 * Fixed a stray RASL picture being output from the first CRA picture after an application signals end of sequence with the `ROCDEC_PKT_ENDOFSTREAM` packet flag. The flag now ends the coded video sequence the same way an in-band EOS NAL unit does, so the next IRAP picture gets `NoRaslOutputFlag` equal to 1.
 * Fixed out-of-bounds memory access issues in the HEVC, AVC, AV1, VP9, and base parsers.
 * Fixed `rocDecGetDecoderCaps` advertising 16-bit output surface formats for 8-bit content.
 
-#### **rocFFT** (1.0.41)
+#### rocFFT (1.0.41)
 
 ##### Added
 
@@ -772,7 +729,7 @@
 * Fixed `rocfft_plan_create` failures and GPU memory access faults for 1D complex transforms of
   lengths involving large prime factors when batches are interleaved (unit batch distance).
 
-#### **rocJPEG** (1.13.0)
+#### rocJPEG (1.13.0)
 
 ##### Added
 
@@ -780,7 +737,7 @@
 * Added the `RocJpegSurfaceFormat` enum to describe the layout of the decoded image produced by the VCN JPEG decoder, and the `RocJpegCodingProcess` enum to report the supported JPEG coding processes.
 * Added the `jpegDecodeCaps` sample to demonstrate the `rocJpegGetDecoderCaps` API.
 
-#### **ROCm Compute Profiler** (3.10.0)
+#### ROCm Compute Profiler (3.10.0)
 
 ##### Added
 
@@ -810,8 +767,9 @@
   * Updated arrows, labels, and the legend in the memory chart to better represent their meaning.
 * The Torch trace collector now ships prebuilt for PyTorch 2.13 and 2.14, so
   `--torch-trace` traces operators on every thread, including the autograd
-  threads that run the backward pass.
-* Named each per-kernel PC sampling folder `<short_name>_uuid_<kernel_uuid>` instead of `kernel_<kernel_uuid>`, and added the matching `short_name` column to `kernel.csv`. The short name is the demangled identifier captured while profiling.
+  threads that run the backward pass. Other PyTorch versions use a reduced trace
+  that misses backward-pass operators.
+* Named each per-kernel PC sampling folder `<short_name>_uuid_<kernel_uuid>` instead of `kernel_<kernel_uuid>`, and added the matching `short_name` column to `kernel.csv`. The short name is the demangled identifier captured while profiling. Update any scripts that match the old `kernel_` prefix.
 * Redesigned the CDNA (gfx9) Memory Chart with a new Rich-based layout that improves readability in the terminal. Added Non-buffer/Buffer request breakdowns (Read/Write/Atomic wavefronts) and L2-Fabric bandwidth metrics across all CDNA architectures.
   * gfx908–gfx942: added HBM and remote traffic percentages.
   * gfx950: added LDS Read/Write/Atomic instruction counts and per-channel bandwidth for HBM, xGMI, and PCIe.
@@ -855,18 +813,33 @@
 
 * The analyze-mode `--gui` and `--tui` options are deprecated and will be removed in a future release. Use the default CLI analysis instead.
 
-#### **ROCgdb** (16.3)
+#### ROCgdb (16.3)
 
 ##### Added
 
-* Support for local memory (LDS) out-of-range address exception reporting
-  on architectures that support it (gfx12.5 or later). When enabled, GDB
-  reports a `SIGBUS` instead of the access silently failing. Off by default;
-  can be set and viewed with:
-  * `set amdgpu lds-exception [on|off]`
-  * `show amdgpu lds-exception`
+* Support for workgroup clusters. GDB now includes cluster coordinates in the
+  target ID of a GPU thread when the dispatch is running in cluster mode. The
+  `info dispatch` command also shows cluster dimensions.
+* Support for the following architectures:
+  * `gfx1170`
+  * `gfx1171`
+  * `gfx1172`
+  * `gfx11-7-generic`
+  * `gfx1250-strict`
 
-#### **ROCm Systems Profiler** (1.10.0)
+##### Resolved issues
+
+* Fixed ROCgdb hiding a `SIGSEGV` and showing a breakpoint hit instead when a
+  GPU thread caused the `SIGSEGV` (which is reported imprecisely by default)
+  and also hit a breakpoint. ROCgdb now prioritizes and shows the `SIGSEGV`.
+* Fixed incorrect architecture selection when calling address dependency
+  queries on generic AMDGPU code objects running on a concrete-architecture
+  wave.
+* Fixed a broken HIP documentation link in the GDB help text.
+* Fixed the precise-memory fault location test to account for XNACK mode when
+  determining the expected stop address.
+
+#### ROCm Systems Profiler (1.10.0)
 
 ##### Added
 
@@ -878,7 +851,7 @@
 * AMD Infinity Storage I/O telemetry. Per-GPU I/O counters are sampled into
   the profiler output. Enable collection with `ROCPROFSYS_USE_HIPFILE` and select metrics with
   `ROCPROFSYS_HIPFILE_METRICS`. See
-  [hipFile Infinity Storage I/O telemetry](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/latest/how-to/hipfile-telemetry.html).
+  [hipFile Infinity Storage I/O telemetry](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/hipfile-telemetry.html).
 * `--detach-after <seconds>` flag on `rocprof-sys-attach` for non-interactive use; the binary
   sleeps for the given duration after attach instead of waiting for `ENTER` on stdin.
 * `rocprof-sys-attach` finds the tool library in the target's own ROCm installation when the
@@ -908,19 +881,10 @@
   path is now validated against the target's mount namespace before attaching, failing
   cleanly with a diagnostic instead.
 
-#### **rocPRIM** (5.0.0)
+#### rocPRIM (4.8.0)
 
 ##### Added
 
-* Added C++17-style `type_traits` utilities.
-  * `is_floating_point_v`
-  * `is_integral_v`
-  * `is_arithmetic_v`
-  * `is_fundamental_v`
-  * `is_unsigned_v`
-  * `is_signed_v`
-  * `is_scalar_v`
-  * `is_compound_v`
 * gfx1250-strict support.
 
 ##### Changed
@@ -930,45 +894,50 @@
 ##### Optimized
 
 * Updated existing `ordered_block_id` and `lookback_scan` optimizations to include gfx1250/gfx1250-strict.
-* `lookback_scan` has improved data padding/alignment to reduce false sharing.
 
 ##### Resolved issues
 
-* Fixed a crash in `histogram_even`, `histogram_range`, and the multi-channel histogram variants on gfx942 when the bin count does not fit in shared memory and the stream is `hipStreamLegacy`. The device is now resolved with `get_device_from_stream`, which accepts the default, per-thread, and legacy streams.
 * Fixed incorrect categorization of RDNA4 and CDNA5 GPUs.
 
-#### **ROCprofiler-SDK** (1.4.2)
+#### ROCprofiler-SDK (1.4.2)
 
 ##### Added
 
-* Device counting mode for the Streaming Performance Monitor (SPM) service (experimental):
-  * New `rocprofiler_configure_spm_device_counting_service` samples SPM counters on an agent for as long as the context is active, without tying samples to individual kernel dispatches.
+* **Device-wide counter sampling (SPM)**
+  * Device counting mode for the Streaming Performance Monitor (SPM) service (experimental). New `rocprofiler_configure_spm_device_counting_service` samples SPM counters on an agent for as long as the context is active, without tying samples to individual kernel dispatches.
   * Samples are delivered to a buffer as `rocprofiler_spm_counter_record_t` records with no dispatch information.
-* SPM support for gfx12 and gfx1250:
-  * gfx1250 SPM samples report the shader array and WGP. Both are encoded in the counter instance ID together with XCC, shader engine, and instance.
+  * SPM support for gfx12 and gfx1250. gfx1250 SPM samples report the shader array and WGP. Both are encoded in the counter instance ID together with XCC, shader engine, and instance.
   * New `ROCPROFILER_SPM_PARAMETER_TYPE_SAMPLE_INTERVAL_REFCLK_CYCLES` parameter sets the SPM sample interval in reference-clock cycles. Only gfx1200, gfx1201, and gfx1250 support it; other agents return `ROCPROFILER_STATUS_ERROR_INVALID_ARGUMENT`. Agent configuration queries report shader-clock and reference-clock intervals separately.
-* Thread trace shader data now has timestamps. `rocprofiler_thread_trace_shader_data_t` has new `start_timestamp` and `end_timestamp` fields of type `rocprofiler_thread_trace_timestamp_t`, each holding a GPU clock value and a system clock value, so thread trace data can be lined up with API traces.
+  * `--spm-sample-interval-unit` accepts the new `refclk_cycles` value, which sets `--spm-sample-interval` in reference-clock cycles. It works only on gfx1200, gfx1201, and gfx1250.
+* **Thread trace**
+  * Thread trace shader data now has timestamps. `rocprofiler_thread_trace_shader_data_t` has new `start_timestamp` and `end_timestamp` fields of type `rocprofiler_thread_trace_timestamp_t`, each holding a GPU clock value and a system clock value, so thread trace data can be lined up with API traces.
+  * New `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE` thread trace parameter and `rocprofiler_thread_trace_resource_mode_t` enum, which control when thread trace resources are allocated:
+    * `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_CODE_OBJECT` creates the thread trace queue for a GPU only when the first code object is loaded on that GPU, so GPUs the application never uses get no queue. This is the default.
+    * `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA` allocates resources at HSA initialization, as in previous releases.
+    * The `HIP`, `ALL`, and `DISPATCH` modes are reserved and return `ROCPROFILER_STATUS_ERROR_NOT_IMPLEMENTED`.
+  * New `--att-resource-mode` option (`default`, `hsa`, or `code-object`) sets when thread trace resources are allocated. The default is `code-object`.
+  * SQTT markers and the `rocprof-trace-decoder` Python API are now included in the ROCm installation. Previously, they required building from source.
+  * Extended `att-no-detail` support to gfx1200 and gfx1201, for lower-volume traces that collect occupancy without instruction-level detail.
 * Memory copy tracing for `hsa_amd_memory_async_batch_copy`. Each copy in a batch is reported as its own memory copy record through the existing callback and buffer tracing kinds.
 * New `rocprofiler::sdk::pc_sampling::verify_sample` in the header-only `rocprofiler-sdk/cxx/pc_sampling.hpp`. It checks that a stochastic PC sample is consistent with the instruction at its PC.
-* Compute and profiling support on WSL2 for RDNA 3 (gfx11) GPUs, including `rocprofv3` counter collection and thread trace (`--att`). Agent topology is read through `librocdxg`, so `rocprofiler_query_available_agents` returns the same results whether or not HSA has been initialized.
+* Tech preview of compute and profiling support on WSL2 for RDNA 3.5 (gfx1150, Strix Point) GPUs, including `rocprofv3` counter collection and thread trace (`--att`). Agent topology is read through `librocdxg`, so `rocprofiler_query_available_agents` returns the same results whether or not HSA has been initialized.
 * CPU agents are now detected on ppc64le (POWER) systems. The `/proc/cpuinfo` parser previously handled only x86 fields.
-* `--spm-sample-interval-unit` accepts the new `refclk_cycles` value, which sets `--spm-sample-interval` in reference-clock cycles. It works only on gfx1200, gfx1201, and gfx1250.
-* New `ROCPROF_FINALIZE_WAIT_TIMEOUT_SECONDS` environment variable (default: 10) sets how long finalization waits for child processes or an abort to finish.
-* New `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE` thread trace parameter and `rocprofiler_thread_trace_resource_mode_t` enum, which control when thread trace resources are allocated:
-  * `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_CODE_OBJECT` creates the thread trace queue for a GPU only when the first code object is loaded on that GPU, so GPUs the application never uses get no queue. This is the default.
-  * `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA` allocates resources at HSA initialization, as in previous releases.
-  * The `HIP`, `ALL`, and `DISPATCH` modes are reserved and return `ROCPROFILER_STATUS_ERROR_NOT_IMPLEMENTED`.
 * HIP API tracing for `hipKernelSetAttributeForDevice`, `hipLibraryGetModule`, `hipModuleEnumerateFunctions`, and `hipDeviceFlushGPUDirectRDMAWrites`.
 * HSA API tracing for `hsa_amd_enable_high_precision_timestamps`, `hsa_amd_agent_set_attribute`, `hsa_amd_vmem_get_vmem_info`, and `hsa_amd_svm_discard_and_prefetch_batch_async`.
-* New `--att-resource-mode` option (`default`, `hsa`, or `code-object`) sets when thread trace resources are allocated. The default is `code-object`.
+* Support for the gfx117x, gfx1250-strict, and gfx1250 targets.
+* Documentation on [using `rocprofv3` with LLM inference frameworks](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/how-to/using-rocprofv3-with-inference-frameworks.html).
 
 ##### Changed
 
-* rocPD schema 3.0.5 stores SPM counter location on `rocpd_info_pmc`. Each agent and combination of counter, XCC, shader engine, shader array, WGP, and instance has its own pmc id. Location dimensions not provided for a counter are stored as `NULL` and left blank in CSV output. The instance index is always stored. `rocpd_pmc_event` keeps the sample value and points at that id.
+* **Device-wide counter sampling (SPM)**
+  * rocPD schema 3.0.5 stores SPM counter location on `rocpd_info_pmc`. Each agent and combination of counter, XCC, shader engine, shader array, WGP, and instance has its own pmc id. Location dimensions not provided for a counter are stored as `NULL` and left blank in CSV output. The instance index is always stored. `rocpd_pmc_event` keeps the sample value and points at that id.
+  * Experimental `rocprofiler_spm_dispatch_counting_service_set_agents()` scopes dispatch SPM to selected GPU agents; two SPM contexts can be active together when their agent sets are disjoint (#11968).
+* **Thread trace**
+  * Thread trace now allocates its memory and signals through KFD and copies data with SDMA. If an SDMA copy isn't possible, it falls back to HSA and prints a warning. This fixes several crashes and hangs that occurred when thread trace ran after `main()` returned.
+  * The thread trace decoder now tries the versioned library names (`librocprof-trace-decoder.so.<major>`, then `.so.<major>.<minor>`, then `.so.<major>.<minor>.<patch>`) before falling back to the unversioned name. This lets `rocprofv3 --att` work on installs that ship only the versioned library, such as TheRock runtime wheels.
+  * By default, thread trace now creates its queue on each GPU when the first code object is loaded there, not at HSA initialization. To keep the old behavior, use `--att-resource-mode hsa` or `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA`.
 * Request ROCr high-precision timestamp correlation during HSA registration when GPU timestamp collection is configured and the runtime provides the tools API. Older runtimes and tools that only trace CPU APIs or markers retain the existing behavior.
 * Dispatch counter collection, Advanced Thread Trace (ATT), SPM, and PC sampling no longer register with the HSA queue controller's per-queue callback registry. The write interceptor and async completion path call each service's dispatch hooks explicitly, with agent-scoped active checks so a service configured on one GPU does not pull other GPUs off the fast path (#11967, #11968, #11969, #11970).
-* Experimental `rocprofiler_spm_dispatch_counting_service_set_agents()` scopes dispatch SPM to selected GPU agents; two SPM contexts can be active together when their agent sets are disjoint (#11968).
-* Thread trace now allocates its memory and signals through KFD and copies data with SDMA. If an SDMA copy isn't possible, it falls back to HSA and prints a warning. This fixes several crashes and hangs that occurred when thread trace ran after `main()` returned.
 * ROCprofiler-SDK takes the OpenMP tools (OMPT) interface only when a registered client subscribes to OMPT tracing. Otherwise it passes the interface to the next OMPT tool, so a user's own OMPT tool can run alongside ROCprofiler-SDK.
 * Signal-less KFD dispatch-log mode (`ROCPROFILER_KFD_DISPATCH_LOG_SIGNAL_LESS`) now uses version 4 of the KFD dispatch-log stream ABI (profiler ABI version 6).
 * `rocprofv3` checks each stochastic PC sample against the instruction at its PC. Samples that fail the check are dropped and counted as invalid. Samples from unknown code objects are kept as is.
@@ -977,10 +946,9 @@
 * Environment variables whose names contain sensitive keywords, such as `password`, `secret`, `token`, or `key`, are no longer written to the rocPD database.
 * When collecting PMC counters on GPUs from gfx1100 up to but not including gfx1250, ROCprofiler-SDK warns if `power_dpm_force_performance_level` is not `profile_standard` or can't be read. Dynamic power and clock scaling can skew counter values. Set the level to `profile_standard` (for example, with `amd-smi set --perf-level STABLE_STD`) for stable results.
 * Queue interposition now issues a memory fence when writing packets to the ring buffer to prevent packets from being read out of order or half-written.
-* Increased the PC sampling buffer size on MI300 and MI350 series GPUs. Many samples were dropped or invalid at reasonable sampling rates with the smaller buffer.
-* The thread trace decoder now tries the versioned library names (`librocprof-trace-decoder.so.<major>`, then `.so.<major>.<minor>`, then `.so.<major>.<minor>.<patch>`) before falling back to the unversioned name. This lets `rocprofv3 --att` work on installs that ship only the versioned library, such as TheRock runtime wheels.
+* Increased the PC sampling buffer size from 4 MB to 64 MB on gfx94x, gfx95x, and gfx125x GPUs, which allocate a buffer per XCC. Many samples were dropped or invalid at reasonable sampling rates with the smaller buffer.
+* Renamed the `ROCPROF_ABORT_FLUSH_TIMEOUT_SECONDS` environment variable to `ROCPROF_FINALIZE_WAIT_TIMEOUT_SECONDS` (default: 10). It sets how long finalization waits for an abort to finish and now also for child processes after a signal. The old name is no longer read, so update any scripts that set it.
 * Tool lifecycle messages are now logged at info level instead of warning. Processes that load a rocprofiler-sdk tool with logging disabled no longer write these messages to stderr.
-* By default, thread trace now creates its queue on each GPU when the first code object is loaded there, not at HSA initialization. To keep the old behavior, use `--att-resource-mode hsa` or `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA`.
 
 ##### Resolved issues
 
@@ -1007,7 +975,7 @@
 * Fixed `rocprofv3 --att` ignoring `ROCPROF_ATT_LIBRARY_PATH`. It searched the whole filesystem from `/` and used the first trace decoder it found.
 * Fixed `rocprofiler-sdk-rocattach` failing to find symbols such as `rocprofiler_register_detach` in the target process when the library's memory mappings didn't line up one-to-one, in address order, with its loadable segments.
 
-#### **rocRAND** (5.2.0)
+#### rocRAND (5.2.0)
 
 ##### Optimized
 
@@ -1021,7 +989,7 @@
 * Fixed an issue with Sobol teardown aborting after `hipDeviceReset`.
 * Fixed the host API scrambled Sobol generators using incorrect scramble constants. The output of `ROCRAND_RNG_QUASI_SCRAMBLED_SOBOL32` and `ROCRAND_RNG_QUASI_SCRAMBLED_SOBOL64` changes as a result.
 
-#### **rocSHMEM** (3.8.0)
+#### rocSHMEM (3.8.0)
 
 ##### Added
 
@@ -1051,7 +1019,7 @@
 * Fixed tile RMA operations (`rocshmem_tile_put`, `rocshmem_tile_get`) to correctly apply non-zero `start_coord` values to both the source and destination tensors; previously only the remote tensor was offset, causing incorrect data movement when `start_coord != 0`.
   Fully-packed column-major tiles are now also classified as `Contiguous`, enabling a single flat `memcpy` instead of per-column copies.
 
-#### **rocSOLVER** (3.38.0)
+#### rocSOLVER (3.38.0)
 
 ##### Added
 
@@ -1076,7 +1044,7 @@
 * Improved kernel launches to detect invalid launch configuration.
 * Fixed sparse functions potentially not using the stream set in the handle.
 
-#### **rocSPARSE** (5.1.0)
+#### rocSPARSE (5.1.0)
 
 ##### Added
 
@@ -1113,17 +1081,7 @@
 * Fixed an invalid kernel launch in legacy `rocsparse_Xbsr2csr` and the 64-bit BSR-to-CSR conversion, where the 1024-thread kernels overflowed the 32-bit work-item grid limit at about 4.2 million block rows because the grid was not clamped.
 * Fixed an overflow issue in the COO atomic SpMV kernels used by `rocsparse_spmv` and `rocsparse_v2_spmv` for COO and COO AoS matrices. When using 64-bit indices and `nnz` >= `2^32`, a 32-bit element-ID calculation could overflow and prevent some nonzeros from being accumulated. The kernels now compute element IDs in 64-bit arithmetic.
 
-#### **rocThrust** (5.0.0)
-
-##### Added
-
-* rocThrust is now largely at feature parity with CCCL/thrust v3.0.3. If there isn't a libhipcxx corresponding to CCCL/libcudacxx version 3.0.3 or later, `thrust::tuple`, `thrust::pair`, and `thrust::zip_iterator` will fall back to rocThrust 4.4.0 implementations.
-
-##### Removed
-
-* rocThrust compatibility with PyTorch v2.9 and v2.10 has been removed in this release. Use PyTorch v2.11 or later.
-
-#### **rocWMMA** (2.2.2)
+#### rocWMMA (2.2.2)
 
 ##### Added
 
@@ -1142,38 +1100,18 @@
 * Fixed host/device annotations on constexpr functions for compatibility with stricter Clang diagnostics.
 * Fixed resource leaks in DLRM and hipRTC regression tests.
 
-#### **RPP** (3.2.0)
+#### RPP (3.2.0)
 
 ##### Added
 
-* Single-image processing support for 8 kernels (Brightness, Blend, Box Filter, Crop, Flip, Gaussian Filter, Median Filter, Resize Nearest Neighbor).
-* Runtime backend selection parameter (`RppBackend executionBackend`) for all RPP tensor API functions.
-* Backend tracking in `rppHandle_t` to store backend type (HOST or HIP).
-* `RPP_ERROR_HIP_LAUNCH` error type for reporting HIP kernel launch errors.
-* `rppGetStatusString()` to convert an `RppStatus` value into its enumerator name.
-* `rpp_BACKEND_TYPE` and `rpp_AUDIO_AUGMENTATIONS_SUPPORT` variables to RPP CMake package config.
 * Support for building RPP on non-x86 architectures using the SIMDE (SIMD Everywhere) library for portable SIMD intrinsics; x86 builds are unchanged.
+* `rppGetStatusString()` helper that maps an `RppStatus` code to its enumerator name string.
 * Support for the `gfx1250-strict` GPU target in HIP builds.
 * `RPP_RETURN_IF_ERROR` macro in `rppdefs.h` for propagating nested `RppStatus` failures from the enclosing function.
 
 ##### Changed
 
-* All RPP tensor API functions now unified with a single function signature.
-* Updated all test suite calls to use unified API with backend parameter.
-* Enhanced layout validation for image augmentations within unified API.
-* Test suite dependency on TurboJPEG removed. Updated to use `.rgb` files as input.
-* OpenCV and pandas are now optional dependencies for the test suite.
-* `CMakeLists.txt` updated to remove batch PD references.
-* Updated test suite to use `rpp_BACKEND_TYPE` and `rpp_AUDIO_AUGMENTATIONS_SUPPORT` variables from RPP CMake package config instead of header parsing.
-* `find_package(rpp)` now automatically passes on public include directories to the target link interface.
-* On non-x86 architectures, `simde` (found with `pkg-config`) is now a required RPP build dependency and is propagated to consumers of the `rpp` CMake package.
-
-##### Removed
-
-* Batch PD legacy support completely removed.
-* `LEGACY_SUPPORT` compilation flag and all code enclosed within it.
-* OpenCL backend support.
-* Batch PD test suite and installation.
+* On non-x86 architectures, `simde` (found via `pkg-config`) is now a required RPP build dependency and is propagated to consumers of the `rpp` CMake package.
 
 ##### Resolved issues
 

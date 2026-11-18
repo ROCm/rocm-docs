@@ -84,7 +84,7 @@ rocm_core_sdk:
       version: 1.5.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipCUB:
-      version: 5.0.0
+      version: 4.7.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     hipFFT:
       version: 1.0.27
@@ -139,7 +139,8 @@ rocm_core_sdk:
           radeon: true
           ryzen: [gfx1150, gfx1151, gfx1152, gfx1153]
     rocPRIM:
-      version: 5.0.0
+      version: 4.8.0
+      changelog: true
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocRAND:
       version: 5.2.0
@@ -163,7 +164,7 @@ rocm_core_sdk:
       changelog: true
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocThrust:
-      version: 5.0.0
+      version: 4.7.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}, windows: {radeon: true, ryzen: true}}
     rocWMMA:
       version: 2.2.2
@@ -171,3 +172,24 @@ rocm_core_sdk:
     rocminfo:
       version: 1.0.0
       support: {linux: {instinct: true, radeon: true, ryzen: true}}
+
+rocm_hpc_sdk:
+  meta:
+    release_tag: therock-10.2
+    rtd_version_slug: docs-10.2.0
+  components:
+    hipTensor:
+      version: 2.6.0
+      changelog: true
+      support:
+        linux:
+          instinct: [gfx908, gfx90a, gfx942, gfx950]
+          radeon: [gfx1100, gfx1101, gfx1102, gfx1200, gfx1201]
+          ryzen: [gfx1103, gfx1150, gfx1151, gfx1152, gfx1153]
+    rocALUTION:
+      version: 4.1.1
+      support:
+        linux:
+          instinct: [gfx908, gfx90a, gfx942, gfx950]
+          radeon: [gfx1030, gfx1100, gfx1101, gfx1102, gfx1200, gfx1201]
+          ryzen: [gfx1150, gfx1151, gfx1152, gfx1153]
