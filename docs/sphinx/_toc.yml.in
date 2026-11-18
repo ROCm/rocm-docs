@@ -47,13 +47,13 @@ subtrees:
           - file: ai-ecosystem.md
             title: Install AI frameworks
             entries:
-                - url: https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/frameworks/pytorch/install.html
+                - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/pytorch/install.html
                   title: PyTorch
-                - url: https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/frameworks/jax/install.html
+                - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/jax/install.html
                   title: JAX
-                - url: https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/inference/vllm.html
+                - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/vllm.html
                   title: vLLM
-                - url: https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/inference/sglang.html
+                - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/sglang.html
                   title: SGLang
     - caption: Components
       entries:
