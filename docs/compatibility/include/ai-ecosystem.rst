@@ -39,13 +39,13 @@
 
       .. matrix-cell:: JAX
          :rowspan: 3
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
 
       .. matrix-cell:: 0.11.2
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
 
       .. matrix-cell:: 3.14, 3.13, 3.12
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
 
    .. matrix-row::
       :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
@@ -69,39 +69,27 @@
       :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
 
       .. matrix-cell:: vLLM
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
 
-      .. matrix-cell:: 0.32.0
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
-
-      .. matrix-cell:: 3.14 (requires PyTorch 2.14.0)
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
-
-   .. matrix-row::
-      :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
-
-      .. matrix-cell:: SGLang
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
-
-      .. matrix-cell:: 0.5.21
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
+      .. matrix-cell:: 0.32
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
 
       .. matrix-cell:: 3.14 (requires PyTorch 2.14.0)
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
 
    .. matrix-row::
       :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
 
       .. matrix-cell:: TensorFlow
          :rowspan: 2
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
 
       .. matrix-cell:: 2.21
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
 
       .. matrix-cell:: 3.12
          :rowspan: 2
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
 
    .. matrix-row::
       :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
@@ -113,22 +101,22 @@
       :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
 
       .. matrix-cell:: ONNX Runtime
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
 
       .. matrix-cell:: 1.29.0
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
 
       .. matrix-cell:: 3.12
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
 
    .. matrix-row::
       :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
 
       .. matrix-cell:: MIGraphX
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
 
-      .. matrix-cell:: 2.18
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
+      .. matrix-cell:: 2.19.0
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
 
       .. matrix-cell:: 3.12
-         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx90a gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103 gfx=gfx1153 gfx=gfx1152 gfx=gfx1151 gfx=gfx1150
