@@ -377,8 +377,6 @@ The following table is a general overview of supported operating systems. Actual
 :template: os-support-table.md.jinja
 ```
 
-## Installation updates
-
 (release-supported-fw)=
 
 ## Kernel driver and firmware bundle support
@@ -393,7 +391,7 @@ ROCm requires a coordinated stack of compatible firmware, driver, and user-space
 
 ## GPU virtualization support
 
-AMD Instinct and Radeon GPUs support virtualization in the following configurations. Supported SR-IOV configurations require the AMD GPU Virtualization Driver (GIM) 9.4.0.K. See the [AMD Instinct Virtualization Driver documentation](https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.4.0.k/) for more information.
+AMD Instinct and Radeon GPUs support virtualization in the following configurations. Supported SR-IOV configurations require the AMD GPU Virtualization Driver (GIM) 9.4.0.K. See the [AMD Instinct Virtualization Driver documentation](https://instinct.docs.amd.com/projects/virt-drv/en/latest/) for more information.
 
 ```{datatemplate:yaml} /data/virtualization-support.yaml
 :template: virtualization-support-table.md.jinja
