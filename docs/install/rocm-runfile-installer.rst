@@ -1,3 +1,5 @@
+:orphan:
+
 .. meta::
   :description: How to use the ROCm Runfile Installer
   :keywords: ROCm installation, AMD, ROCm, tools, Runfile installer

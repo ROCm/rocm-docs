@@ -19,7 +19,7 @@ The ROCm for HPC applications and containers run on a standard ROCm
 installation. See the :ref:`Compatibility matrix <compat-matrix>` for details
 on supported hardware and operating systems.
 
-The HPC application containers are published through
+HPC application containers are published through
 `AMD InfinityHub-CI <https://github.com/amd/InfinityHub-CI>`_. Each container
 provides parameters to specify source code branches and release versions of ROCm,
 OpenMPI, UCX, and Ubuntu.
@@ -96,11 +96,15 @@ software, and driver requirements. For instructions, see :ref:`Install AMD ROCm 
 selector panel on that page to view instructions appropriate for your system
 environment.
 
-HPC SDK includes `hipTensor
-<https://rocm.docs.amd.com/projects/hipTensor/en/users-peterjunpark-hpc-sdk-10.2-preview/install/installation.html>`_
-and `rocALUTION
-<https://rocm.docs.amd.com/projects/rocALUTION/en/users-peterjunpark-rocalution-gpus/install/rocALUTION-install.html>`_
-packaged as part of the installation.
+.. datatemplate:yaml:: /data/components-current.yaml
+
+    {%- set defaults = load("/data/components-default.yaml").rocm_hpc_sdk.components -%}
+    {%- set slug = data.rocm_hpc_sdk.meta.rtd_version_slug -%}
+    {%- set hiptensor_url = defaults["hipTensor"].xref.rtd_project | replace("${rtd_version_slug}", slug) -%}
+    {%- set rocalution_url = defaults["rocALUTION"].xref.rtd_project | replace("${rtd_version_slug}", slug) -%}
+    HPC SDK includes `hipTensor <{{ hiptensor_url }}install/installation.html>`_
+    and `rocALUTION <{{ rocalution_url }}install/rocALUTION-install.html>`_
+    packaged as part of the installation.
 
 Install HPC SDK
 ---------------
@@ -792,3 +796,4 @@ Uninstall HPC SDK
          .. code-block:: bash
 
              sudo zypper remove amdrocm-hpc10.2-gfx1153 amdrocm-hpc-sdk10.2-gfx1153
+

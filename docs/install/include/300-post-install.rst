@@ -457,10 +457,8 @@ complete your system configuration and validate the installation.
       configuration, see `Memory tuning (UMA carveout and GTT)
       <https://rocm.docs.amd.com/projects/amdsmi/en/develop/how-to/amdsmi-cli-tool.html#memory-tuning-uma-carveout-and-gtt>`__.
 
-   .. selected:: fam=all fam=instinct
-
-      To learn about HPC libraries and applications, see
-      :doc:`ROCm HPC SDK </components/hpc-sdk/index>`.
+   To learn about HPC libraries and applications, see
+   :doc:`ROCm HPC SDK </components/hpc-sdk>`.
 
    .. selected:: fam=all fam=instinct fam=radeon
 

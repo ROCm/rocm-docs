@@ -264,7 +264,7 @@ in ROCm |ROCM_VERSION|, see the :doc:`Release notes </about/release-notes>`.
      document.addEventListener("DOMContentLoaded", () => {
        const nextLink = document.querySelector("footer.prev-next-footer a.right-next");
        const nextTitle = nextLink.querySelector(".prev-next-title");
-       nextTitle.textContent = "Build the ROCm Core SDK from source";
-       nextLink.href = "./build-from-source.html";
+       nextTitle.textContent = "Install HPC SDK";
+       nextLink.href = "./hpc-sdk.html";
      });
    </script>
