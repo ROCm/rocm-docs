@@ -13,97 +13,97 @@ Uninstalling
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1
+               sudo apt autoremove amdrocm10.2
 
          .. selected:: gfx=gfx950
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx950
+               sudo apt autoremove amdrocm10.2-gfx950
 
          .. selected:: gfx=gfx942
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx942
+               sudo apt autoremove amdrocm10.2-gfx942
 
          .. selected:: gfx=gfx90a
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx90a
+               sudo apt autoremove amdrocm10.2-gfx90a
 
          .. selected:: gfx=gfx908
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx908
+               sudo apt autoremove amdrocm10.2-gfx908
 
          .. selected:: gfx=gfx1201
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1201
+               sudo apt autoremove amdrocm10.2-gfx1201
 
          .. selected:: gfx=gfx1200
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1200
+               sudo apt autoremove amdrocm10.2-gfx1200
 
          .. selected:: gfx=gfx1100
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1100
+               sudo apt autoremove amdrocm10.2-gfx1100
 
          .. selected:: gfx=gfx1101
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1101
+               sudo apt autoremove amdrocm10.2-gfx1101
 
          .. selected:: gfx=gfx1102
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1102
+               sudo apt autoremove amdrocm10.2-gfx1102
 
          .. selected:: gfx=gfx1103
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1103
+               sudo apt autoremove amdrocm10.2-gfx1103
 
          .. selected:: gfx=gfx1030
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1030
+               sudo apt autoremove amdrocm10.2-gfx1030
 
          .. selected:: gfx=gfx1151
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1151
+               sudo apt autoremove amdrocm10.2-gfx1151
 
          .. selected:: gfx=gfx1150
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1150
+               sudo apt autoremove amdrocm10.2-gfx1150
 
          .. selected:: gfx=gfx1152
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1152
+               sudo apt autoremove amdrocm10.2-gfx1152
 
          .. selected:: gfx=gfx1153
 
             .. code-block:: bash
 
-               sudo apt autoremove amdrocm10.1-gfx1153
+               sudo apt autoremove amdrocm10.2-gfx1153
 
       2. Remove ROCm repositories.
 
@@ -127,97 +127,97 @@ Uninstalling
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1
+                  sudo apt autoremove amdrocm10.2
 
             .. selected:: gfx=gfx950
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx950
+                  sudo apt autoremove amdrocm10.2-gfx950
 
             .. selected:: gfx=gfx942
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx942
+                  sudo apt autoremove amdrocm10.2-gfx942
 
             .. selected:: gfx=gfx90a
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx90a
+                  sudo apt autoremove amdrocm10.2-gfx90a
 
             .. selected:: gfx=gfx908
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx908
+                  sudo apt autoremove amdrocm10.2-gfx908
 
             .. selected:: gfx=gfx1201
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1201
+                  sudo apt autoremove amdrocm10.2-gfx1201
 
             .. selected:: gfx=gfx1200
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1200
+                  sudo apt autoremove amdrocm10.2-gfx1200
 
             .. selected:: gfx=gfx1100
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1100
+                  sudo apt autoremove amdrocm10.2-gfx1100
 
             .. selected:: gfx=gfx1101
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1101
+                  sudo apt autoremove amdrocm10.2-gfx1101
 
             .. selected:: gfx=gfx1102
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1102
+                  sudo apt autoremove amdrocm10.2-gfx1102
 
             .. selected:: gfx=gfx1103
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1103
+                  sudo apt autoremove amdrocm10.2-gfx1103
 
             .. selected:: gfx=gfx1030
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1030
+                  sudo apt autoremove amdrocm10.2-gfx1030
 
             .. selected:: gfx=gfx1151
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1151
+                  sudo apt autoremove amdrocm10.2-gfx1151
 
             .. selected:: gfx=gfx1150
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1150
+                  sudo apt autoremove amdrocm10.2-gfx1150
 
             .. selected:: gfx=gfx1152
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1152
+                  sudo apt autoremove amdrocm10.2-gfx1152
 
             .. selected:: gfx=gfx1153
 
                .. code-block:: bash
 
-                  sudo apt autoremove amdrocm10.1-gfx1153
+                  sudo apt autoremove amdrocm10.2-gfx1153
 
          .. selected:: os=rhel os=oracle-linux os=rocky-linux
 
@@ -225,103 +225,195 @@ Uninstalling
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1
+                  sudo dnf remove amdrocm10.2
 
             .. selected:: gfx=gfx950
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx950
+                  sudo dnf remove amdrocm10.2-gfx950
 
             .. selected:: gfx=gfx942
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx942
+                  sudo dnf remove amdrocm10.2-gfx942
 
             .. selected:: gfx=gfx90a
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx90a
+                  sudo dnf remove amdrocm10.2-gfx90a
 
             .. selected:: gfx=gfx908
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx908
+                  sudo dnf remove amdrocm10.2-gfx908
 
             .. selected:: gfx=gfx1201
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1201
+                  sudo dnf remove amdrocm10.2-gfx1201
 
             .. selected:: gfx=gfx1200
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1200
+                  sudo dnf remove amdrocm10.2-gfx1200
 
             .. selected:: gfx=gfx1100
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1100
+                  sudo dnf remove amdrocm10.2-gfx1100
 
             .. selected:: gfx=gfx1101
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1101
+                  sudo dnf remove amdrocm10.2-gfx1101
 
             .. selected:: gfx=gfx1102
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1102
+                  sudo dnf remove amdrocm10.2-gfx1102
 
             .. selected:: gfx=gfx1103
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1103
+                  sudo dnf remove amdrocm10.2-gfx1103
 
             .. selected:: gfx=gfx1030
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1030
+                  sudo dnf remove amdrocm10.2-gfx1030
 
             .. selected:: gfx=gfx1151
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1151
+                  sudo dnf remove amdrocm10.2-gfx1151
 
             .. selected:: gfx=gfx1150
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1150
+                  sudo dnf remove amdrocm10.2-gfx1150
 
             .. selected:: gfx=gfx1152
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1152
+                  sudo dnf remove amdrocm10.2-gfx1152
 
             .. selected:: gfx=gfx1153
 
                .. code-block:: bash
 
-                  sudo dnf remove amdrocm10.1-gfx1153
+                  sudo dnf remove amdrocm10.2-gfx1153
 
          .. selected:: os=sles
 
-            .. code-block:: bash
+            .. selected:: fam=all
 
-               sudo zypper remove amdrocm*
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2
+
+            .. selected:: gfx=gfx950
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx950
+
+            .. selected:: gfx=gfx942
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx942
+
+            .. selected:: gfx=gfx90a
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx90a
+
+            .. selected:: gfx=gfx908
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx908
+
+            .. selected:: gfx=gfx1201
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1201
+
+            .. selected:: gfx=gfx1200
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1200
+
+            .. selected:: gfx=gfx1100
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1100
+
+            .. selected:: gfx=gfx1101
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1101
+
+            .. selected:: gfx=gfx1102
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1102
+
+            .. selected:: gfx=gfx1103
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1103
+
+            .. selected:: gfx=gfx1030
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1030
+
+            .. selected:: gfx=gfx1151
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1151
+
+            .. selected:: gfx=gfx1150
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1150
+
+            .. selected:: gfx=gfx1152
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1152
+
+            .. selected:: gfx=gfx1153
+
+               .. code-block:: bash
+
+                  sudo zypper remove --clean-deps amdrocm10.2-gfx1153
 
       2. Remove ROCm repositories.
 
@@ -482,103 +574,103 @@ Uninstalling
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=all
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=all
 
       .. selected:: gfx=gfx950
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx950
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx950
 
       .. selected:: gfx=gfx942
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx942
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx942
 
       .. selected:: gfx=gfx90a
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx90a
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx90a
 
       .. selected:: gfx=gfx908
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx908
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx908
 
       .. selected:: gfx=gfx1201
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1201
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1201
 
       .. selected:: gfx=gfx1200
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1200
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1200
 
       .. selected:: gfx=gfx1100
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1100
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1100
 
       .. selected:: gfx=gfx1101
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1101
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1101
 
       .. selected:: gfx=gfx1102
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1102
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1102
 
       .. selected:: gfx=gfx1103
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1103
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1103
 
       .. selected:: gfx=gfx1030
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1030
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1030
 
       .. selected:: gfx=gfx1151
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1151
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1151
 
       .. selected:: gfx=gfx1150
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1150
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1150
 
       .. selected:: gfx=gfx1152
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1152
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1152
 
       .. selected:: gfx=gfx1153
 
          .. code-block:: bash
 
-            bash rocm-installer-10.1.0-5.run uninstall-rocm gfx=gfx1153
+            bash rocm-installer-10.2.0-5.run uninstall-rocm gfx=gfx1153
 
    2. Use the following command to uninstall the AMD GPU Driver (amdgpu).
 
       .. code-block:: bash
 
-         bash rocm-installer-10.1.0-5.run uninstall-amdgpu
+         bash rocm-installer-10.2.0-5.run uninstall-amdgpu
 
 .. selected:: i=amdgpu-install
 

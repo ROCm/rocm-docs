@@ -104,7 +104,7 @@
         <p>
           <strong>AMD GPU Driver (amdgpu)</strong><br>
 {%- for drv in gpu.linux.amdgpu %}
-          <a href="{{ drv.url }}" target="_blank">{{ drv.version }}</a><br>
+          <a href="{{ drv.url }}" target="_blank">{{ drv.version }}</a>{% if drv.note is defined %}<a href="#fn-amdgpu-{{ drv.version | replace('.', '-') }}" style="vertical-align:super;font-size:0.75em;">[*]</a>{% endif %}<br>
 {%- endfor %}
         </p>
       </td>
@@ -113,6 +113,11 @@
 {%- endfor %}
   </tbody>
 </table>
+{%- for drv in gpu_list[0].gpu.linux.amdgpu %}
+{%- if drv.note is defined %}
+<p id="fn-amdgpu-{{ drv.version | replace('.', '-') }}"><sup>[*]</sup> {{ drv.note }}</p>
+{%- endif %}
+{%- endfor %}
 
 ```
 

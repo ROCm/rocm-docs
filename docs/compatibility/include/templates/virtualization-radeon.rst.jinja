@@ -23,16 +23,37 @@
 {%- set virt_gpu_names = radeon.keys() | list -%}
 {%- set all_slugs = gpu_slugs(virt_gpu_names) -%}
 
+{#--
+  Collect unique drivers (with doc_url) and the GPUs that use them.
+--#}
+{%- set ns_drv = namespace(seen=[], groups=[]) -%}
+{%- for gpu_name in virt_gpu_names -%}
+  {%- for entry in radeon[gpu_name] if entry.driver is defined and entry.driver and entry.driver.doc_url is defined -%}
+    {%- set drv_ver = entry.driver.version if entry.driver.version is defined else (entry.driver.name | replace("GIM ", "")) -%}
+    {%- set drv_key = drv_ver ~ "|" ~ entry.driver.doc_url -%}
+    {%- if drv_key not in ns_drv.seen -%}
+      {%- set ns_drv.seen = ns_drv.seen + [drv_key] -%}
+      {%- set _ = ns_drv.groups.append({"version": drv_ver, "doc_url": entry.driver.doc_url, "gpus": [gpu_name]}) -%}
+    {%- else -%}
+      {%- for g in ns_drv.groups if (g.version ~ "|" ~ g.doc_url) == drv_key -%}
+        {%- if gpu_name not in g.gpus -%}
+          {%- set _ = g.gpus.append(gpu_name) -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+
 .. selected:: {{ all_slugs }}
    :heading: GPU virtualization support
-
-   .. selected:: {{ all_slugs }}
+{% for dg in ns_drv.groups %}
+   .. selected:: {{ gpu_slugs(dg.gpus) }}
 
       Supported SR-IOV configurations require the GPU-IOV Module (GIM) driver
-      9.3.0.K -- see the `AMD Instinct Virtualization Driver documentation
-      <https://instinct.docs.amd.com/projects/virt-drv/en/mainline-9.3.0.k/>`__ to
+      {{ dg.version }} -- see the `AMD Instinct Virtualization Driver documentation
+      <{{ dg.doc_url }}>`__ to
       get started.
-
+{% endfor %}
 
    .. matrix::
 
@@ -144,7 +165,12 @@
 
 {%- endif %}
 {%- else %}
+{%- if tdg.total_rows > 1 %}
          .. matrix-cell:: —
+            :rowspan: {{ tdg.total_rows }}
+{%- else %}
+         .. matrix-cell:: —
+{%- endif %}
 {%- endif %}
 {%- set ns_tdfirst.first = false %}
 {%- endif %}

@@ -34,26 +34,26 @@ subtrees:
                   title: Post-installation
                 - file: install/redirect/_uninstall.rst
                   title: Uninstalling
-          - file: install/rocm-runfile-installer.rst
-            title: ROCm Runfile Installer
-          - file: install/build-from-source.rst
-            title: Build ROCm from source
-          - file: install/spack.rst
-            title: Install ROCm packages using Spack
+          - file: install/hpc-sdk.rst
+            title: Install HPC SDK
           - file: install/asan.rst
             title: Install ROCm with ASAN
+          - file: install/spack.rst
+            title: Install ROCm using Spack
+          - file: install/build-from-source.rst
+            title: Build ROCm from source
           - file: install/docker-containers.md
             title: Docker containers
           - file: ai-ecosystem.md
             title: Install AI frameworks
             entries:
-                - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/pytorch/install.html
+                - url: https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/frameworks/pytorch/install.html
                   title: PyTorch
-                - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/jax/install.html
+                - url: https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/frameworks/jax/install.html
                   title: JAX
-                - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/vllm.html
+                - url: https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/inference/vllm.html
                   title: vLLM
-                - url: https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/sglang.html
+                - url: https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/inference/sglang.html
                   title: SGLang
     - caption: Components
       entries:
@@ -160,11 +160,13 @@ subtrees:
                         title: ROCm Data Center Tool (RDC)
                       - url: ${project:rocminfo}
                         title: rocminfo
-          - file: components/hpc-sdk/index.rst
+          - file: components/hpc-sdk.rst
             title: ROCm HPC SDK
             entries:
-                - file: components/hpc-sdk/install.rst
-                  title: Install HPC SDK
+                - url: ${project:hiptensor}
+                  title: hipTensor
+                - url: ${project:rocalution}
+                  title: rocALUTION
           - file: components/extras.rst
             title: ROCm Extras
             entries:
@@ -304,15 +306,3 @@ subtrees:
             title: Providing feedback about the ROCm documentation
           - file: about/license.md
             title: ROCm licenses
-   # - caption: About
-   #   entries:
-   #       - file: about/license.md
-    #       - file: about/contribute/contributing.md
-    #         entries:
-    #             - file: about/contribute/toolchain.md
-    #             - file: about/contribute/building.md
-    #             - url: https://github.com/ROCm/rocm-libraries/blob/develop/CONTRIBUTING.md
-    #               title: Contribute to ROCm Libraries
-    #             - url: https://github.com/ROCm/rocm-systems/blob/develop/CONTRIBUTING.md
-    #               title: Contribute to ROCm Systems
-    #       - file: about/contribute/feedback.md

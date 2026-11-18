@@ -1,754 +1,1121 @@
-#### **AMD SMI** (27.1.0)
+#### AMD SMI (27.2.0)
 
 ##### Added
 
-- **Exposed `BOOT_FIRMWARE` field in `amd-smi static --ifwi` output**.
-  - The `boot_firmware` value returned by `amdsmi_get_gpu_vbios_info()` now appears under the `IFWI` section alongside `NAME`, `BUILD_DATE`, `PART_NUMBER` and `VERSION` (`--vbios` remains available as a legacy alias).
+* **Added unified `amdsmi_get_link_topology()` API on bare metal.**  
+  * Returns link weight, status, type, hop count, and framebuffer-sharing data.
+  * Matches the existing host interface; includes Python and Rust bindings.
+  * Exports `AmdSmiLinkStatus` in Python and `AmdsmiLinkStatusT` in Rust for status interpretation.
+  * Self pair (same GPU): `INTERNAL`, `ENABLED`, zero hops and weight, `fb_sharing=1`.
+  * Migration from component APIs on bare metal:
+    * `amdsmi_topo_get_link_type(gpu, gpu)` reports PCIe and 2 hops instead.
+    * `amdsmi_topo_get_link_weight(gpu, gpu)` reports twice the NUMA node weight (typically 40).
 
-- **An experimental, opt-in WSL (WDDM/dxg) GPU backend**.
-  - Built only with `-DENABLE_WSL_BACKEND=ON` (off by default); native builds and packages are unchanged.
-  - Reads GPU telemetry through `librocdxg`; queries with no WDDM equivalent return `AMDSMI_STATUS_NOT_SUPPORTED`. See [Using AMD SMI under WSL](https://rocm.docs.amd.com/projects/amdsmi/en/latest/how-to/amdsmi-wsl-mode.html).
+* **Added IFoE fabric RAS CPER API.**
+  * `amdsmi_get_fabric_cper_entries()`: Retrieves IFoE RAS CPER records from the UALoE library.
+  * CLI: `amd-smi ras --cper` now reports fabric link events alongside GPU errors (fabric-linkdown, fabric-linkup, fabric-fatal).
 
-- **UALoE-backed physical accelerator ID and tray info**.
-  - `physical_acc_id` added to `amdsmi_asic_info_t` and `amdsmi_enumeration_info_t`, populated by `amdsmi_get_gpu_asic_info()` and `amdsmi_get_gpu_enumeration_info()`.
-  - New node-scoped `amdsmi_get_tray_info()` reports compute tray type and accelerator count via `amdsmi_tray_info_t` and `amdsmi_compute_tray_type_t`.
-  - Without an active UALoE session these report `AMDSMI_STATUS_NOT_SUPPORTED`, or `UINT32_MAX` for `physical_acc_id`.
-  - CLI: `amd-smi static --asic` and `amd-smi list --enumeration` show `PHYSICAL_ACC_ID`; new `amd-smi node --tray`/`-T` prints tray type and accelerator count.
+* **Added AMPP (amdsmi power profile) API and CLI support.**
+  * `amdsmi_get_ampp_profiles`, `amdsmi_get_ampp_fields`, `amdsmi_activate_ampp_profile`, and `amdsmi_configure_ampp_profile` expose the driver's `app_modes/` sysfs tree of predefined power/performance recipes. Profiles, fields, and units are all dynamically enumerated at runtime, and nothing is hardcoded, since the driver does not guarantee a fixed field set, profile count, or naming across SoC generations.
+  * `amd-smi static --ampp` displays the tree-wide `app_modes/profile_abi` version plus per-profile active/writable/configured state and per-field name/unit/value/min/max.
+  * `amd-smi set --ampp-activate <profile_name>` activates a profile.
+  * `amd-smi set --ampp-configure <profile_name> KEY=VALUE...` stages one or more fields on a writable profile and commits them.
+  * `amd-smi set --ampp-configure @<path>` restores every writable profile with staged fields from an `amd-smi static --ampp --json`-shaped file in one call.
+  * This is unrelated to the legacy `amdsmi_*_gpu_power_profile*` preset-mask API, which is unchanged.
 
-- **`CACHE_ACRONYM` and `TOTAL_CACHE_SIZE` to `amd-smi metric --cache`**.
-  - Each `CACHE_<N>` entry now reports a short type label (`L1D`, `L1I`, `L2`, `L3`) and the total size across all instances at that level.
+* **Added `AMDSMI_VRAM_TYPE_HBM4` to `amdsmi_vram_type_t`.**  
+  * Identifies HBM Generation 4 VRAM, reported by `amdsmi_get_gpu_vram_info()`.
+  * Also added the pre-existing `HBM3E` value to the Python `AmdSmiVramType` enum, which had been missing it.
 
-- **`chip_rev_id` and `external_rev_id` to `amdsmi_get_gpu_asic_info()`**.
-  - Reports the amdgpu `chip_rev` and `external_rev` values from the `AMDGPU_INFO_DEV_INFO` DRM query, both distinct from `rev_id`, which is the PCI config-space revision. `external_rev_id` is family-scoped, so interpret it alongside `device_id`.
-  - Exposed under the same names in the Python `amdsmi_get_gpu_asic_info()` dictionary and in `amd-smi static --asic`. The C fields report `0xFFFFFFFF` when unsupported; Python and the CLI render that as `N/A`.
-  - ABI-preserving: the fields take two `uint32_t` slots from `amdsmi_asic_info_t.reserved`, which shrinks from 17 to 15 entries. The structure size and all other field offsets are unchanged.
+* **Added NPM (Node Power Management) power limit setting.**  
+  * New `amd-smi set --node-power-limit`/`-n` to set the node-level power limit in watts (node-wide, not per-GPU).
+  * New API: `amdsmi_set_npm_limit()`.
+  * New `current_node_power` field in `amdsmi_npm_info_t` (returned by `amdsmi_get_npm_info()`) reports the current (instantaneous) node power in watts, queried once per node rather than once per GPU. `amd-smi node -p` now displays it when available.
+  * New `max_node_power_limit` field in `amdsmi_npm_info_t` (returned by `amdsmi_get_npm_info()`), the platform max bound for `amdsmi_set_npm_limit()` requests.
+  * `amdsmi_set_npm_limit()` rejects the request with `AMDSMI_STATUS_INVAL` when NPM is disabled on the node (`amdsmi_npm_info_t::status == AMDSMI_NPM_STATUS_DISABLED`), instead of writing a limit that would have no defined effect. `amd-smi set --node-power-limit` performs the same check up front to fail fast with a friendlier message.
+
+* **Added NPM (Node Power Management) balancing mode get/set.**  
+  * New `amdsmi_npm_balancing_mode_t` enum: `AMDSMI_NPM_BALANCING_MODE_POWER_BALANCING` (PB, the default) or `AMDSMI_NPM_BALANCING_MODE_FREQUENCY_BALANCING` (FB).
+  * New APIs: `amdsmi_get_npm_balancing_mode()` and `amdsmi_set_npm_balancing_mode()`. Getting always reflects the last-selected mode regardless of NPM enablement, returning `AMDSMI_STATUS_NOT_SUPPORTED` only when the underlying value is missing or unreadable.
+  * Setting is AMD-SMI-only (not exposed through BMC Redfish/APML) and requires elevated privileges; it returns `AMDSMI_STATUS_NOT_SUPPORTED` without touching sysfs when NPM is disabled on the node.
+  * CLI: `amd-smi node -p` now shows `BALANCING_MODE`; new `amd-smi set --node-balancing-mode {POWER_BALANCING,FREQUENCY_BALANCING}` (node-wide, not per-GPU, requires sudo).
+  * New `AMDSMI_NPM_BALANCING_MODE_MAX` enum value marks the end of the defined range, and new `amdsmi_get_npm_supported_balancing_modes()` reports the balancing modes supported by a node's platform/ASIC as a bitmask (bit N for enum value N), independent of NPM enablement. `amdsmi_set_npm_balancing_mode()` now returns `AMDSMI_STATUS_SETTING_UNAVAILABLE` when the requested mode is absent from this bitmask, distinct from the `AMDSMI_STATUS_NOT_SUPPORTED` NPM-disabled case. CLI: `amd-smi node -p` now also shows `SUPPORTED_BALANCING_MODES`, and `amd-smi set --node-balancing-mode` reports a distinct "not supported on this platform" message for a mode absent from the bitmask vs. the generic "NPM is disabled" message.
+
+* **Added a receipt timestamp to `amd-smi event` records.**
+  * `AmdSmiEventReader.read()` now attaches a `timestamp` (Unix epoch seconds) to every event record, and the `event` subcommand surfaces it as a `TIMESTAMP` field so events can be correlated across streams.
+  * Human-readable output renders one indented block per event (including `TIMESTAMP`); `--csv` writes the header once followed by a row per event, and `--json` emits newline-delimited JSON (one object per line).
 
 ##### Changed
 
-- **`amdsmi_get_clock_info()` now returns `AMDSMI_STATUS_INPUT_OUT_OF_BOUNDS` for clock values that exceed `INT_MAX`**.
-  - Such values were previously narrowed to a negative number and returned as data.
+* **Use fwupd daemon to read and write UMA carveout information.**  
+  * `amdsmi_get_gpu_uma_carveout_info()` / `amdsmi_set_gpu_uma_carveout()` (and therefore `amd-smi static/set --mem-carveout`) now read and write the carveout through the fwupd BIOS-settings interface on integrated GPUs and fall back to the amdgpu `.../device/uma/carveout` sysfs node when the fwupd daemon is absent.
+  * Implemented in the AMD SMI library over the fwupd daemon's D-Bus BIOS-settings interface; the fwupd path is used only for the integrated (APU) GPU, and PolicyKit brokers authorization instead of requiring explicit root. Reading needs fwupd >= 1.8.4; writing needs fwupd >= 2.1.1 (Ubuntu 26.04+).
 
-- **Expanded `amdsmi_gpu_block_t` enum with 20 new RAS IP blocks**.
-  - Added blocks: from `AMDSMI_GPU_BLOCK_MMSCH` to `AMDSMI_GPU_BLOCK_UCIE_PCS` at bit positions 19-38.
-  - Updated `AMDSMI_GPU_BLOCK_LAST` to `AMDSMI_GPU_BLOCK_UCIE_PCS`.
+* **Reworked `amd-smi` CLI process exit codes.**  
+  * How exit codes are chosen:
+    * Library failures exit with the underlying `AMDSMI_STATUS_*` value (0-56).
+    * CLI-only errors use dedicated codes in the reserved 193-253 band.
+    * When more than one failure with different codes is recorded in a single run — across devices, or across sub-steps of one command (e.g., `reset --clocks`) — the process exits `204`.
+  * Multi-device `set`/`reset` behavior:
+    * A per-device GPU failure is now recorded, and the command continues to the remaining devices.
+    * The exit code is decided once, after every device has been attempted. Previously a single device failure could abort the loop early.
+  * Notable value changes (many cases previously aliased onto `1`/`2`; each now has a distinct code):
 
-- **A section with no entries now renders as `SECTION: N/A` in human-readable CLI output**.
-  - It previously printed a bare `SECTION:` header with nothing beneath it, which read as truncated output. For `SWITCH_ERRORS` this also hid data: a block the driver reported as `N/A` became an empty header.
-  - Affects sections that list a variable number of entries: `PORTS` and `RDMA_DEVICES` for an AI-NIC, the per-block counters under `NIC_ERRORS` and `SWITCH_ERRORS`, and `FREQUENCY_LEVELS` in `amd-smi static --clock`. Sections with a fixed set of fields already print `N/A` per field and are unaffected.
-  - `--json`, `--csv`, and the table-based subcommands (`monitor`, `partition`, `topology`, `xgmi`, and the default no-argument output) are unchanged.
+    | Case | Was | Now |
+    | --- | --- | --- |
+    | Import failure | `1` | `193` |
+    | Invalid command | `1` | `194` |
+    | Invalid parameter | `2` | `195` |
+    | Device not found (bad device index, or no devices present) | `3` / `255` | `196` |
+    | Invalid file path | `4` | `197` |
+    | Invalid parameter value | `5` | `198` |
+    | Missing parameter value | `6` | `199` |
+    | Command not supported (CLI, parse-time) | `7` | `200` (distinct from library `NOT_SUPPORTED` = `2`) |
+    | Device interface unavailable (CLI, runtime) | — | `201` |
+    | Required target/argument missing | `9` | `202` |
+    | Invalid subcommand | `10` | `203` |
+    | Permission denied | `11` | `10` (real `AMDSMI_STATUS_NO_PERM`) |
+    | Mixed device/field failures (differing codes) | — | `204` |
+    | `amdsmi_init()` watchdog timeout | `2` | `205` |
+    | Drivers not loaded | `255` | `206` |
+    | Interactive confirmation declined (answering no, or closing stdin) | `1` | `207` |
+    | Library (device) failure | `(1000 + status)` wrapped to a byte | underlying `AMDSMI_STATUS_*` (`0`-`56`) |
+    | Unknown/unmapped library error | `231` | `255` (library `UNKNOWN_ERROR` reported as its low byte) |
+    | Library status too large to report as an exit code | — | `253` (not reachable with current library versions) |
 
-- **`container_name` in process info now reports the full container ID**.
-  - Previously only the first 16 characters were reported. The value is now the complete 64-character ID that `docker inspect`, `docker ps --no-trunc` and Kubernetes tooling use, so process output can be matched against them directly.
-  - Nested LXC containers now report the outer container name rather than `<parent>/<child>`.
+  * The `Was`/`Now` values are process exit codes (`$?`). Previously the printed `code` field showed the *negative* of these (e.g., `-7`) while the process exited with the absolute value (`7`); the rework makes the printed `code` and `$?` agree (both `200`).
 
-- **`amd_smi/impl/amd_smi_cper.h` and `example/amd_smi_cper.cc` are no longer installed in the dev package**.
-  - Both functions the header declares are C++ symbols, which the version script's `amdsmi_*` export glob does not match, so including the header only ever led to a link error. It joins the `_test` and WSL impl headers that are already build-only.
-  - The example is the one shipped file that included that header, so it went with it rather than being left unbuildable against an install tree.
+* **`amd-smi set --power-cap` now applies per GPU instead of aborting on the first out-of-range device.**  
+  * Each GPU is validated against its own reported range.
+  * An out-of-range value on one GPU is reported for that GPU, while in-range GPUs still apply.
+  * The process exit code reflects the per-device failure.
+
+* **Clearer, more consistent `amd-smi` error messages.**  
+  * Errors now read `[AMDSMI_STATUS_<name>] <message>`, so the underlying status is obvious at a glance. The internal class name is no longer prepended, and `--json`/`--csv` errors are now valid JSON/CSV.
+    * Before: `amdsmi_cli_exceptions.AmdSmiLibraryErrorException: AMDSMI has returned error '-1002' - 'Command not supported' Error code: -1002`
+    * After (human): `[AMDSMI_STATUS_NOT_SUPPORTED] Command not supported Error code: 2 [AMDSMI_STATUS_NOT_SUPPORTED]`
+    * After (`--json`): `{"error": "[AMDSMI_STATUS_NOT_SUPPORTED] Command not supported", "code": 2, "error_type": "AMDSMI_STATUS_NOT_SUPPORTED"}`
+  * `--json` and `--csv` errors gain an `error_type` field (e.g., `INVALID_PARAMETER_VALUE` or an `AMDSMI_STATUS_*` name) alongside the numeric `code`. `--csv` gains a third column (`error,code,error_type`); a reader that unpacks exactly two fields per row will need updating.
+  * `amd-smi ras` reports a readable error when a CPER file can't be read or decoded, instead of printing a Python traceback.
+
+* **`amd-smi ras` now exits non-zero when a CPER file fails to decode.**  
+  * Affects `--afid --folder`, `--afid --cper-file`, and `--cper`, which previously exited `0`.
+  * The exit code is the underlying `AMDSMI_STATUS_*`, for example `43`. When files fail with different codes, the command exits `204`.
+  * The failing file shows `[AMDSMI_STATUS_<name>] <message>` in place of its AFIDs.
+  * A record that decodes successfully but carries no AFIDs (e.g., a corrected entry) shows `N/A` in place of its AFIDs.
+  * `--json` and `--csv` gain `status`, `message`, and `code` fields. Existing fields are unchanged.
+  * `--afid --csv` now emits CSV instead of the human-readable table.
+
+* **`amd-smi set --compute-partition` / `-C` now attempts each GPU individually.**  
+  * An unsupported GPU reports `NOT_SUPPORTED` on its own, instead of the whole command aborting up front.
+  * Input is validated against the static partition type names when profiles cannot be enumerated.
+  * A numeric profile INDEX (e.g., `-C 0`) is also accepted, matched against an estimated `SPX, DPX, TPX, QPX, CPX` ordering.
+  * The `-C` help now lists `SPX, DPX, TPX, QPX, CPX` and `0-4` instead of `N/A`.
+
+* **`amdsmi_get_npm_info()` and `amdsmi_set_npm_limit()` now reject `amdsmi_node_handle` values not vended by `amdsmi_get_node_handle()`.**  
+  * Previously any non-null handle was dereferenced directly; an unregistered/garbage handle now returns `AMDSMI_STATUS_INVAL` instead.
+
+* **NPM sysfs numeric reads (e.g., `cur_node_power_limit`, `max_node_power_limit`) now reject negative or malformed content.**  
+  * Previously a leading `-` (e.g., `"-1"`) parsed successfully as `UINT64_MAX`; such content now fails with `RSMI_STATUS_UNEXPECTED_DATA`.
+
+* **`amd-smi metric` no longer prints fields the GPU's `gpu_metrics` table version cannot carry** (human-readable output only).  
+  * These fields previously printed as `N/A` and are now omitted from human-readable output. On a metrics v1.3 GPU this removes 88 of the 110 `N/A` values in `amd-smi metric -g 0` (80%), taking the command from 140 lines to 95.
+  * **Fields that stop appearing on current accelerators.** On the metrics v1.6 and later tables, which cover MI300X, MI325X and MI355X, the `POWER` section loses `THROTTLE_STATUS` and the `USAGE` section loses `MM_ACTIVITY`, `VCN_ACTIVITY` and `JPEG_ACTIVITY`. Naming the section does not bring them back, so `amd-smi metric --power` no longer prints `THROTTLE_STATUS` and `amd-smi metric --usage` no longer prints the three activity rows. On a metrics v1.3 GPU plain `amd-smi metric` instead drops the whole `THROTTLE` section, and `THROTTLE_STATUS` is still printed. **`--show-unsupported` restores all of them**, and `--json` and `--csv` never stopped emitting them.
+  * **`--json` and `--csv` are unaffected and still emit every field, `N/A` ones included.** They are the machine-readable contract, so their key sets and column sets stay complete and stable: any key or column a script indexed before still resolves. Anything parsing the human-readable output does see fewer fields, and `--show-unsupported` gives it back the previous output.
+  * **Pass `--show-unsupported` to restore the full human-readable output.** The flag is accepted with `--json` and `--csv` and has no effect there, since those formats are never filtered.
+  * Scoped to the metrics table version, not to ASIC support: fields the CLI can also source from hwmon or sysfs are always printed, namely the `edge`, `hotspot` and `mem` temperature sensors, the fan section, the voltages, and the `gfx_N`, `vclk_N`, `dclk_N`, `mem_N` and `socclk_N` clock slots. Entries sourced only from the metrics blobs are eligible for omission: the `hbm_stacks`, `mid`, `aid` and `xcd` temperature arrays, and the `uclk_aid` and `socclks_mid` clock arrays.
+  * A section named on the command line is never emptied. Plain `amd-smi metric` drops a section the version can populate nothing of, which on a metrics v1.3 GPU removes the whole `throttle` section; `amd-smi metric --throttle` prints all 31 rows instead. A named section that is only partly suppressed is still filtered. `--partition` scopes the data rather than naming a section, so `amd-smi metric --partition` protects nothing and filters like plain `amd-smi metric`.
+  * A field the version does carry but the ASIC or driver leaves unpopulated still prints `N/A`, a field reporting a real value is never removed, and an unrecognized metrics version or an unreadable header suppresses nothing.
+
+* **`amd-smi static` shows NUMA information on Linux guests.**  
+  * `--numa` was previously limited to Linux bare metal and passthrough guests.
+  * Default `amd-smi static` output on guests now includes NUMA, in human-readable, JSON, and CSV output.
+
+##### Removed
+
+* **Removed the internal `amd-smi` CLI exception classes `AmdSmiParameterNotSupportedException` and `AmdSmiUnknownErrorException`.**  
+  These were CLI-internal (not part of the public `amdsmi` Python library). Their exit-code behavior is superseded by the reworked CLI process exit codes described above.
 
 ##### Resolved issues
 
-- **Fixed `rsmi_dev_reg_table_get()` failing on register-state images that contain no SMN entries**.
-  - The loop-back test ran before the SMN and instance counters reached zero, so an image with no SMN entries re-entered the loop and read past the end of the image; the call then returned an error for a well-formed file.
+* **Fixed `amd-smi` printing a Python traceback when an unknown NIC or switch is selected.**  
+  * `amd-smi static --nic 999` and `--switch 999` failed while building the "device not found" error, so the command exited `1` with a traceback and no readable message. `--json` and `--csv` produced no parseable output.
+  * Both now report `Can not find a device: NIC '999'` (or `SWITCH`) and exit `196`, matching `--gpu`, `--cpu`, and `--core`.
 
-- **Fixed an out-of-bounds write when a GPU's NUMA or local CPU list names a CPU beyond the bitmask**.
-  - `get_bitmask_from_numa_node()` and `get_bitmask_from_local_cpulist()` indexed the bitmask with the parsed CPU number without checking it against the allocated word count. Ranges are now clamped to the bitmask, and negative entries are skipped.
+* **Fixed `amd-smi set`/`reset` on a GPU silently exiting `0` after a per-device failure.**  
+  * A device error during GPU `set`/`reset` is now recorded, so the process exits with a non-zero code instead of reporting success.
+  * Example: `set --memory-partition` on a GPU that does not support it.
 
-- **Fixed `vram_bit_width` never being reported as `N/A`**.
-  - The unavailable-value check compared a `uint32_t` field against `UINT64_MAX`, which can never match, so an unknown bit width was logged as `4294967295`.
+* **Fixed the topology APIs reporting uninitialized NUMA data when a GPU has no CPU `io_link`.**  
+  * The KFD node left its NUMA node number, weight and type uninitialized, so `amdsmi_topo_get_numa_node_number()`, `amdsmi_topo_get_link_weight()` and `amdsmi_topo_get_link_type()` could return an unrelated value alongside `AMDSMI_STATUS_SUCCESS`. They now return `AMDSMI_STATUS_NOT_SUPPORTED` for that case.
+  * A debug build previously aborted on an assertion in the same path instead of reporting a status.
 
-- **Fixed an out-of-bounds read in the DRM example's RAS block listing**.
-  - `amd_smi_drm_example.cc` iterated every `amdsmi_gpu_block_t` value but indexed a 14-entry name array, so every block from `AMDSMI_GPU_BLOCK_MCA` onward read past the end of the array and printed a garbage label. The list now covers all 39 blocks and the lookup is bounds-checked.
+* **Fixed `amdsmi_get_gpu_fabric_info()` failing when only some UALink sysfs files carry data.**  
+  * The call required every file in scope to have usable content and otherwise returned `AMDSMI_STATUS_UNEXPECTED_DATA`, so a legitimately empty `vpod_active_accels` or `local_accels` suppressed the rest of the fabric data and left `amd-smi fabric` with nothing to print.
+  * It now returns `AMDSMI_STATUS_SUCCESS` when at least one file has usable content, and `AMDSMI_STATUS_NO_DATA` only when none do.
 
-- **Fixed `amd-smi ras --afid --folder --json` emitting nothing when no CPER files are readable**.
-  - When every `.cper` file in the folder was skipped (e.g. rejected as a symlink), the JSON path printed empty output, so consumers feeding stdout to `json.loads` failed with `Expecting value: line 1 column 1 (char 0)`. It now emits `[]` for that case, matching the `--cper --json` contract.
+* **Restored `amd-smi` bash autocompletion.**  
+  * Pressing Tab completes `amd-smi` subcommands and their options again, whether completion is registered explicitly or through the global `argcomplete` hook.
 
-- **Fixed an uninitialized processor index that let the CPU and Core APIs read an unrelated CPU socket**.
-  - Passing a GPU, NIC, or switch handle to a CPU or Core API could return another socket's telemetry with `AMDSMI_STATUS_SUCCESS`. Such handles are now rejected. Calls that pass a CPU or Core handle are unaffected.
+* **Fixed runtime fatal CPERs reporting no AFIDs.**  
+  * `amd-smi ras --cper` showed an empty `list afids` column for fatal records, `amd-smi ras --afid --cper-file` printed `-`, and `amdsmi_get_afids_from_cper()` returned no AFIDs. amdgpu writes fatal crashdump sections 32 bytes shorter than `sizeof(cper_sec_crashdump)`, and the section bounds check required the full struct, so every such section was skipped. The check now requires only the dump member the record type uses.
 
-- **Fixed `amd-smi metric` printing nothing for a section requested by name on APUs**.
-  - APUs do not expose the discrete-GPU sensors, so those sections are dropped from the default dump. The same suppression applied to an explicitly named section, leaving `amd-smi metric --energy` printing only the GPU header and exiting 0, with no key at all in `--json` and `--csv` output.
-  - `--energy`, `--ecc-blocks`, `--overdrive`, `--xgmi-err`, `--pcie`, `--voltage-curve`, `--voltage` and `--fan` now report `N/A` when named explicitly. The default `amd-smi metric` dump is unchanged.
+* **Fixed APU core and skin temperatures showing `0.0 °C` when the sensor is not measured.**  
+  * On APUs such as Ryzen AI Max (Strix Halo), `amd-smi metric` and the library now report these readings as not available instead of a false 0 °C.
 
-- **Fixed `amdsmi_get_clock_info()` reporting an unavailable clock as `65535` instead of `N/A`**.
-  - `amdsmi_clk_info_t.clk` is a `uint32_t`, but the GFX, MEM, SOC, VCLK, and DCLK domains copied the raw `uint16_t` value straight from the GPU metrics table, so the 16-bit unavailable marker surfaced as the literal reading `65535` MHz. The `DF` domain already returned the 32-bit marker.
-  - All domains now report an unavailable clock as `UINT32_MAX`, which the Python interface maps to `N/A`. The field is documented accordingly.
+* **Fixed xGMI read and write data counters reading as unavailable on gfx1250.**  
+  * On gfx1250 the GPU connects to the CPU over xGMI, and the driver reports that link's traffic as a single counter. It was dropped instead of being stored as the first link, so `xgmi_read_data_acc` and `xgmi_write_data_acc` from `amdsmi_get_gpu_metrics_info()`, and the link `read`/`write` from `amdsmi_get_link_metrics()`, read `UINT64_MAX` (`N/A`).
 
-- **Fixed `amd-smi metric --usage` reporting APU IPU read/write bandwidth without a unit**.
-  - `APU_AVERAGE_IPU_READS` and `APU_AVERAGE_IPU_WRITES` printed bare numbers while the adjacent DRAM counters carried `MB/s`. All four bandwidth counters now report `MB/s`, and the header documents the unit for each.
+* **Fixed `amdsmi_get_processor_count_from_handles()` crashing on NULL output pointers.**  
+  * It wrote through a NULL `nr_cpusockets`, `nr_cpucores` or `nr_gpus` and crashed. It now returns `AMDSMI_STATUS_INVAL`.
 
-- **Fixed `amd-smi static --vram` reporting `GDDR7` for LPDDR5 unified memory on APUs (e.g. gfx117x)**.
-  - `AMDSMI_VRAM_TYPE__MAX` aliases the highest real memory type (`LPDDR5`), so a genuine LPDDR5 reading was matched by the `__MAX` special case and mislabeled `GDDR7`. It is now correctly reported as `LPDDR5`.
+* **Fixed `amdsmi_get_gpu_cper_entries()` failing the page after a large CPER record.**  
+  * A record an earlier call had already returned still had to fit the caller's buffers on the next call, so that call failed with `AMDSMI_STATUS_OUT_OF_RESOURCES`. Records already returned are now skipped before the space check.
 
-- **Fixed `container_name` in process info being wrong, missing, or crashing `amd-smi`**.
-  - `amd-smi process --sort-by-pid` could abort with `terminate called after throwing an instance of 'std::out_of_range'` when any GPU process ran in a cgroup whose path ended in `docker` or `lxc`.
-  - Processes in containerd, CRI-O and Podman containers reported no container at all, including Kubernetes pods. They are now identified under either cgroup driver.
-  - Processes that were not in a container could be reported as if they were, for example anything running under the Docker daemon's own `docker.service`.
-  - Containers managed by LXC 3 or later, or by LXD, under systemd are now identified.
-  - A process started from a path of 256 characters or more could report a corrupted process name.
+* **Fixed `amd-smi static --clock` printing a Python traceback for an unknown clock name.**  
+  * It now reports the invalid parameter and exits `195` (`INVALID_PARAMETER`).
 
-- **Fixed out-of-bounds reads and writes when parsing malformed CPER records**.
-  - The ring reader now drops a record whose `record_length` is smaller than a CPER header; such a record was previously copied and then had a product serial number written past the end of the caller's buffer. `amdsmi_get_afids_from_cper` likewise returns `AMDSMI_STATUS_UNEXPECTED_SIZE` for an undersized `buf_size` instead of reading header fields the caller never supplied.
-  - A section descriptor's `fru_id` and `fru_text` are now logged only up to their declared width, and a crashdump section's registers are copied into an aligned buffer before decoding. Neither field carries a terminator, and the section can sit at an unaligned record-supplied offset.
-  - A non-standard error section whose `reg_arr_size` exceeds the fixed 128-byte register dump, and a record whose `error_severity` overflows the severity mask, are now rejected. Both previously read or matched outside the record; in boot context (`reg_ctx_type` 9) any AFID derived from the over-long register read is gone.
+* **Fixed `amd-smi static --numa --csv` dropping socket affinity.**  
+  * When NUMA-node CPU affinity was unavailable, as on guests, the CSV row printed `N/A` for the socket columns that human-readable and JSON output showed. It also no longer fails when only the socket affinity is unavailable.
 
-- **Fixed `amd-smi metric --clock` reporting FCLK `MAX_CLK` as 0 MHz**.
-  - The FCLK range came from `pp_od_clk_voltage`, which on some GPUs has no FCLK section, leaving the parsed maximum at 0. It now falls back to `pp_dpm_fclk` (and likewise `pp_dpm_sclk`/`pp_dpm_mclk`) when the overdrive file omits a domain.
+* **Fixed crashes when several threads start or stop AMD SMI at the same time.**  
+  * Programs that initialize and shut down the library from more than one thread could crash, find no GPUs, or leave the library initialized after every thread had shut it down.
 
-- **Fixed `amd-smi set -L/--clk-limit <clk> max <value>` not enforcing caps that fall between clock levels**.
-  - For `mclk` and `fclk` ONLY, which expose a discrete DPM table, the requested `max` is now rounded down to the nearest selectable clock level, so the enforced limit never exceeds the requested value.
-  - `sclk` supports a continuous frequency range, so its requested `max` is honored exactly (e.g. `600` enforces a limit of 600MHz) and is not snapped.
+* **Fixed a one-byte overrun when reading the memory partition into a small buffer.**  
+  * A buffer too small for the partition name had the byte after its end overwritten. The name is now truncated inside the buffer, and the call still reports that the buffer is too small.
 
-- **Fixed AI-NICs disappearing from `amd-smi` when the RDMA driver is unavailable**.
-  - Discovery treated a missing RDMA device list as a fatal error for the whole NIC, so a host with `ionic_rdma` blacklisted (or otherwise not loaded) dropped the NIC entirely and reported no AI-NIC at all.
-  - The NIC is now enumerated with an empty `rdma_dev`.
-  - `amdsmi_get_nic_rdma_dev_info()` returns `AMDSMI_STATUS_SUCCESS` with `num_rdma_dev` set to 0.
-  - `amd-smi static` reports `RDMA_DEVICES: N/A` instead of omitting the device. All other NIC information is reported as usual.
+* **`amd-smi set --memory-partition` no longer advises a driver reload when the partition is already current.**  
+  * Requesting the current partition does not cancel a different partition set earlier, so a reload would apply that one. `amd-smi` now reports that nothing changed and notes that an earlier request still applies at the next reload.
 
-- **Fixed `amdsmi_get_gpu_asic_info()` reporting `rev_id` as a real revision when it is not available**.
-  - The WSL backend returned success with a zeroed structure, so `rev_id` read as `0x0`, and where it did report the not-supported value Python rendered it as the raw `0xffffffff`. Python and the CLI now render it as `N/A`.
-  - `amdsmi_asic_info_t` is now reset through one shared initializer used by every backend, so a field a backend cannot supply keeps its not-supported value rather than a plausible zero.
+* **Fixed `amdsmi_get_gpu_driver_info()` reporting `0` as the driver date.**  
+  * Kernels that no longer use the DRM driver date report it as `0`. `driver_date` is now empty in the C API and `N/A` in Python.
 
-##### Upcoming changes
+* **Fixed `amd-smi node --tray` printing an empty section on hardware without UALoE.**  
+  * The tray output was guarded on the retrieved dictionary being non-empty, so the `N/A` defaults next to it could never be reached. `NODE:` was emitted with no body, and `--json` returned `[{"node": {}}]`. All three output formats now report `MAX_ACC_PER_TRAY` and `TRAY_TYPE` as `N/A`.
 
-- **UUIDs will be replaced by CUIDs in an upcoming version**.
-  - UUIDs will soon be replaced with Component Unified IDs (CUIDs). These CUIDs will be consistent across various AMD tools and products so users will be able to definitively identify their devices regardless of what tool they're using.
-  - `amdsmi_get_gpu_device_cuid` has been added as an API for this upcoming change but will remain disabled until full support from the amdgpu driver is available.
-  - The CLI `list` output and GPU selection now report the CUID in place of the UUID when a CUID is available, and fall back to the UUID otherwise.
+* **Fixed `amdsmi_get_afids_from_cper()` raising `TypeError` when passed a list of CPER records.**  
+  * The list branch called `isinstance()` with a subscripted generic, which Python rejects at runtime, so the documented list-of-dicts input always failed. `bytes` input was unaffected. Input that is neither `bytes` nor a list now raises `AmdSmiParameterException`.
 
-#### **Composable Kernel** (1.3.0)
+* **Fixed a segmentation fault in the DRM example when run without root.**  
+  * `amdsmi_get_gpu_accelerator_partition_profile_config()` returns `AMDSMI_STATUS_NO_PERM` without filling its output, and the example read `num_profiles` from that uninitialized structure, so the profile loop ran past the end of the `profiles` array on every GPU. The loop now runs only when the query succeeds.
+
+* **Fixed `amd-smi` using the `amdsmi` Python library of another ROCm install.**  
+  * When `ROCM_PATH` or `ROCM_HOME` named a different ROCm install, `amd-smi` loaded that install's library, so it either failed with an `AttributeError` or reported the other install's library and ROCm versions. `ROCM_PATH` and `ROCM_HOME` no longer redirect which `amdsmi` Python package `amd-smi` loads.
+
+* **Fixed `amdsmi_set_clk_freq()` falsely returning `AMDSMI_STATUS_INVAL` on Navi48 (gfx1201).**
+  * The deep-sleep bitmask validation added previously rejected the entire request when any requested bit fell outside a settable range computed from a prior read, so a supported clock set failed on gfx1201 even though the write is valid. The set is now lenient: out-of-range bits are dropped, and `AMDSMI_STATUS_INVAL` is only returned when no requested level is settable. The read-only check runs after the write, and `TestFrequenciesReadWrite` is re-enabled on Aldebaran (gfx90a / MI210).
+
+#### Composable Kernel (1.3.0)
 
 ##### Added
 
-* Support for building Composable Kernel for the target-agnostic SPIR-V target (`amdgcnspirv`), which is compiled to native code at run time.
-* Grouped convolution forward, backward data, and backward weight instances for gfx1250.
-* A wavelet GEMM pipeline for convolution forward that specializes waves into separate load and math roles to reduce VALU contention.
-* A batched contraction kernel with multiple ABD support to CK Tile.
-* CK Tile dispatcher support for more GEMM operators, including weight preshuffle GEMM, batched GEMM, batched contraction, grouped A-quantized and AB-quantized GEMM, grouped row-column and tensor quantized GEMM, and block scale quantized GEMM.
-* gfx1250 support to the CK Tile dispatcher GEMM operators, covering universal, grouped, multiple D, multiple ABD, batched, batched contraction, and grouped quantized GEMM.
-* gfx1250 WMMA instance support to the CK backend for PyTorch Inductor, covering universal GEMM, batched GEMM, and grouped convolution forward.
-* The tanh approximation of GELU to the XDL two-stage MoE GEMM epilogue.
-* Double-precision buffer atomic add support on gfx1250.
-
-##### Changed
-
-* Disabled the large tensor XDL grouped convolution backward weight instances on gfx1250, where they could produce intermittent memory access faults.
-* Changed the ck4inductor instance enumerators to emit a deduplicated, deterministically ordered instance list.
+* Added a CI path-length check that rejects newly added or renamed files whose repository-relative path exceeds 200 characters, keeping the absolute path under the Windows `MAX_PATH` limit of 260.
+* Added bf16, fp32, fp8, and bf8 data types and the `rrr`, `crr`, and `ccr` layouts to the CK Tile Tile Engine batched GEMM and its dispatcher bridge.
 
 ##### Optimized
 
-* Improved FMHA forward performance for head dimension 128 on gfx11 and gfx12 targets by retuning tile selection.
-* Improved FMHA forward performance on gfx1250 for bf16 and fp16 head dimension 128 by padding the LDS layout in the qr_tdm pipeline.
-* Improved memory coalescing of microscaling (MX) scale loads on gfx1250 by unifying the scale16 layout with scale32.
+* Improved FMHA backward performance on gfx1250 by moving the operand transfers to TDM and the transposed reads to `ds_load_tr`, keeping the dK and dV accumulators in registers, pairing mirrored tiles under a causal mask, and coalescing the dQ atomic onto a single cache line.
 
-##### Resolved issues
-
-* Fixed a 32-bit integer overflow in the tensor descriptor element space size that caused undersized workspace allocation and out-of-bounds writes in grouped convolution backward weight for large tensors.
-* Fixed grouped convolution forward rejecting valid problem sizes because the implicit GEMM view was subject to the 2 GB logical GEMM size limit.
-* Fixed incorrect results in grouped convolution backward data and XDL GEMM kernels caused by an invalid `__restrict__` qualifier on LDS pointers.
-* Fixed incorrect accumulation in atomic and split-K kernels on gfx1250 by issuing buffer atomic adds with device scope coherence.
-* Fixed memory faults in FMHA batch prefill with a paged KV cache when the page size is a single token.
-* Fixed the softmax sink gradient shape in the FMHA backward kernel and corrected sliding window progression when the attention sink is enabled.
-* Fixed incorrect results in microscaling (MX) XDL GEMM and B preshuffle kernels when the B operand is more densely packed than A, such as FP8 by FP4.
-* Fixed intermittent incorrect results in microscaling (MX) GEMM on gfx1250 caused by missing LDS read ordering in the double-buffered pipeline.
-* Fixed incorrect results in FP8 block scale weight preshuffle GEMM and MoE GEMM on gfx1250 caused by an invalid preshuffle layout and a hardcoded wave size.
-* Fixed incorrect results in FP4 weight preshuffle quantized GEMM caused by mismatched packed element granularity between the host B preshuffle and the device B tile distribution.
-* Fixed incorrect results in the B preshuffle dequantized GEMM pipeline caused by the C transpose setting being ignored.
-* Fixed incorrect results from the CK Tile compute v3 intrawave GEMM pipeline with eight-warp block arrangements on gfx1250.
-* Fixed out-of-bounds asynchronous loads in the CK Tile compute async WMMA GEMM pipeline caused by a missing element validity check.
-* Fixed accuracy loss in the bf16 fast GELU element-wise operation on gfx1250 by using the non-native implementation.
-* Fixed a build failure caused by the compiler change from vector to ext_vector types.
-* Fixed a CMake failure when building instance libraries for multiple offload targets.
-* Fixed an unspecified minimum blocks per compute unit value being passed to the compiler.
-* Fixed the CK Tile dispatcher code generator and its ctypes bindings failing to build.
-
-#### **HIP** (7.16.0)
+#### HIP (7.17.0)
 
 ##### Added
+
 * New HIP APIs:
-    - Device Management: Support for the following APIs for parity with corresponding CUDA APIs.
-      * `hipDeviceGetLuid` returns the locally unique identifier (LUID) and device node mask for the specified device.
-      * `hipInitDevice` initializes the runtime state for the specified device without making it the current device for the calling thread. It also applies the requested flags and ensures the device's default stream is created.
-* New HIP device attribute:
-    - `hipDeviceAttributeHostAllocDmaBufSupported` is now supported, enabling host-allocated buffer sharing.
-* Support for host-NUMA virtual memory management (VMM) in `hipMemCreate()` and related VMM APIs. These APIs now support `hipMemLocationTypeHostNuma` and `hipMemLocationTypeHostNumaCurrent`, enabling allocations backed by physical host memory on the selected NUMA node. Previously, support was limited to GPU VMM pools with deferred host access. This enhancement aligns HIP behavior with the corresponding CUDA APIs and expands support for NUMA-aware memory allocation.
-* Support for coarse-grained memory coherency on Windows. In supported Windows configurations, applications can now use unified memory to reduce memory footprint by eliminating unnecessary host-device data copies. Components interacting with the device can directly access host memory pointers and enable coarse-grained memory coherency by registering and pinning the associated host allocations using `hipHostRegister()` with the `hipExtHostRegisterCoarseGrained` flag. This provides behavior on Windows that is consistent with the existing Linux implementation while improving memory efficiency.
+  * Module Management: matches the corresponding CUDA API.
+    * `hipModuleEnumerateFunctions` returns the function handles defined in a loaded module.
+  * Library Management: matches the corresponding CUDA API.
+    * `hipLibraryGetModule` returns the module handle associated with a library.
+    * `hipKernelSetAttributeForDevice` sets a device-wide attribute for a kernel on a specific device.
+* Support for the `hipMemRangeFlagDmaBufMappingTypePcie` flag in `hipMemGetHandleForAddressRange`, matching the CUDA behavior.
+* Support for recovering allocation properties from imported virtual memory handles. `hipMemGetAllocationPropertiesFromHandle` now correctly reports `hipMemLocationTypeHost` for host-backed allocations imported through `hipMemImportFromShareableHandle`, instead of always reporting device memory. For device-backed allocations, it reports the owning device rather than the device that was current when the handle was imported.
+* Support in WSL2 to prevent indefinite application hangs and to report errors for device-side faults, including out-of-bounds writes, null pointer dereferences, and device asserts.
+* Added `HIP_TARGET_API_VERSION` to enable compile-time API version selection, helping maintain source compatibility with applications built against older HIP API versions.
+
+##### Changed
+
+* Stream priority is now disabled to avoid known queue-priority-related issues. Priority streams are currently not supported.
+* The `HIPRTC_USE_RUNTIME_UNBUNDLER` environment variable and its associated functionality have been removed from the HIP runtime. The runtime unbundler path is now always used; setting this variable no longer has any effect.
+
+##### Optimized
+
+* Enhanced graph execution update performance and scalability by reducing update overhead and eliminating quadratic scaling behavior in certain graph update scenarios.
+* Optimized memory allocation capacity on Windows by increasing the maximum aperture size to 4 TiB, enabling larger memory allocations and improving support for memory-intensive workloads.
+* Optimized the performance of `hipMemcpy3DBatchAsync` by reducing SDMA submission overhead. Previously, the runtime issued a separate SDMA submission for each operand, which added overhead for small transfers. The runtime now reduces this submission overhead for batched 3D memory copy operations.
 
 ##### Resolved issues
-* On Windows, HIP runtime now correctly handles non-P2P data transfers between GPUs and coordinates multi-GPU kernel execution. It eliminates deadlocks and invalid values in multi-process workloads and resolves issues observed when running LLMs on multi-GPU Windows configurations.
-* Resolved an out-of-memory issue affecting certain AMD APUs, such as Strix Halo, on Windows when loading LLMs that could exceed dedicated graphics memory and spill into shared memory. The HIP runtime now correctly uses the full unified memory pool available on high-memory APUs, enabling system RAM to be dynamically allocated as graphics memory. This enhancement improves memory utilization and supports the execution of larger AI models on affected APU platforms.
-* Fixed a memory leak in the HIP/HSA runtime that could occur during stream and signal creation on certain GPUs. The issue was triggered by `hipStreamCreate()`, resulting in allocated signal objects not being properly released. The HIP/HSA runtime now correctly releases allocated signal objects during stream destruction and runtime cleanup, eliminating the memory leak and improving resource management.
+
+* Resolved a regression on MI300A and other APUs that could cause the first stream creation, `hipMemcpy`, `hipMemset`, or kernel launch to fail with out-of-memory or invalid-argument errors. The runtime now correctly uses system-memory AQL rings on APUs, which share memory with the host and do not provide a discrete device-memory path.
+* Resolved a memory leak in `VirtualGPU::ManagedBuffer` that could occur during stream creation when signal initialization failed. The runtime now properly cleans up partially created resources on error paths.
+* Resolved an issue in `hipLaunchKernel` where invalid or unloaded kernel handles could cause a segmentation fault. Invalid handles are now properly validated and return an appropriate error.
+* A registered `__device__` global that is absent from the loaded code object no longer aborts the process. Symbol lookup now returns `hipErrorInvalidSymbol` from the runtime's variable materialization path (`hipGetSymbolAddress`, `hipLibraryGetGlobal`, and related entry points). `hipModuleGetGlobal` still reports `hipErrorNotFound` for a missing name.
+* Fixed `__hip_bfloat162` comparisons that ignored or misread the high lane. `__hbneu2` now returns true only when both lanes are unordered-not-equal, `__hgt2` and `__hisnan2` now return the per-lane result in `.y` instead of always 1.0, and the `<`, `<=`, `>`, `>=` operators now compare `.y` with `.y`. Code that relied on the previous results might see different values.
+* Fixed an issue that could cause peer-to-peer (P2P) `hipMemcpyAsync()` transfers using the `hipMemcpyDeviceToDeviceNoCU` memcpy kind to fail on certain multi-GPU systems. SDMA engine selection has been improved to ensure reliable P2P transfer operation.
+* Resolved a performance issue affecting large host-to-device (H2D) transfers on integrated (unified-memory) GPUs, where HMM-based KFD userptr pinning could reduce transfer throughput and appear to stall workloads. Large transfers are now routed through the existing staging-copy fallback, improving transfer performance.
+* Fixed a host-blocking issue in `hipMemcpyBatchAsync` that could occur when the API was repeatedly issued on a stream containing a long-running kernel. The implementation now reserves only the total descriptor space required for each dispatch in the kernel argument pool, preventing pool exhaustion and eliminating unnecessary host waits for kernel completion.
+* Resolved a segmentation fault in `hipStreamEndCapture` during multi-stream capture caused by a bookkeeping cycle among capture participants. The fix tracks capture participants in a single origin-stream-owned set, eliminating recursive traversal of forked streams during capture finalization and improving stream capture stability.
+* Resolved a potential deadlock between `hipMallocAsync` and `hipEventSynchronize` during concurrent multi-threaded execution.
+* Fixed incorrect calculations when using the type `bool` for `cooperative_groups::exclusive_scan`. The implementation now correctly handles the identity value for the first active lane and prevents unintended type conversions from `bool` to `int`.
+* Resolved an issue where legacy-stream sync operations (`hipMemset`, `hipMemcpy`) incorrectly invalidated ThreadLocal and Relaxed graph captures on `hipStreamNonBlocking` streams. These captures now remain active, matching CUDA semantics. Global-mode captures and captures involving blocking participants are still invalidated as expected.
 
 ##### Known issues
 
-* Under WSL2 (Windows Subsystem for Linux 2), GPU device-side memory faults might not be reported correctly and can result in the process hanging.
+* A GPU Timeout Detection and Recovery (TDR) event can occur on ROCm 10.2 running under WSL2 (Windows Subsystem for Linux 2) when executing the `vllm_rocm_gpt-oss-20b_default_inf_fp4` vLLM inference workload.
 
-#### **hipBLAS** (3.7.0)
-
-##### Added
-
-* Level 3 grouped batched GEMM functions `hipblasSgemmGroupedBatched`, `hipblasDgemmGroupedBatched`, `hipblasGemmGroupedBatchedEx`, and `hipblasGemmGroupedBatchedExWithFlags` for both C and FORTRAN, including ILP64 API (`_64` name suffix).
-
-#### **hipCUB** (4.7.0)
-
-##### Changed
-
-* Benchmarking now uses primbench for its benchmarks instead of Google Benchmark.
-  * See [primbench/README.md](https://github.com/ROCm/rocm-libraries/blob/develop/shared/primbench/README.md) for its documentation.
-
-#### **hipFFT** (1.0.26)
+#### hipBLAS (3.8.0)
 
 ##### Added
 
-* Support for the `amdgcnspirv` architecture in client programs, so that they are functional even on gfx architectures for which they have not been explicitly compiled.
-* `hipfftXtSetWorkArea` API for setting work areas on single-process, multi-device plans.
-
-* Implemented `hipfftXtSetJITCallback` API, to allow for user-defined device functions to be called when loading
-  input or storing output of a transform. These callback functions are specified after a plan is allocated with
-  `hipfftCreate` but before the plan is initialized with one of the `MakePlan` functions. The backend FFT library
-  will Just-In-Time (JIT) compile the code into its own kernels.
-
-  On AMD platforms, the device function is provided as SPIR-V. On CUDA platforms, the device function is provided as
-  LTO-IR fatbin.
-
-  These APIs are not currently compatible with multi-GPU transforms. This
-  support will be added in a future release of hipFFT.
+* Added gfx1170 and gfx1171 support to clients.
 
 ##### Changed
 
-* Modified the rocFFT backend's implementation details of hipFFT so that cuFFT backend's
-  behavior is matched for single-process, multi-device plans configured via
-  `hipfftMakePlan{2,3}d` and `hipfftMakePlanMany`, with respect to data distribution
-  within descriptors. Behaviors are now aligned for unbatched multi-dimensional transforms
-  (in-place only) and all batched transforms (in-place and out-of-place).
-  Multi-device, unbatched one-dimensional transforms remain unimplemented pending
-  further analyses of the exact behavior(s) to be matched.
+* The minimum required CMake version is now 3.17, for the library and the clients. `FindCUDAToolkit`, used by the CUDA backend, was added in that release.
+* `hipblasSetWorkspace` chooses whether the rocBLAS backend can grow its device workspace. A non-null workspace with a nonzero size is a fixed limit and is never resized, which caps device memory for the handle. A later call that needs more, such as `trsmBatched` or `trsmStridedBatched` with a large `batchCount`, returns `HIPBLAS_STATUS_ALLOC_FAILED` even when free device memory remains. Passing `nullptr` or a size of 0 returns the handle to rocBLAS-managed memory, which starts from a default size and grows as needed. `HIPBLAS_WORKSPACE_CONFIG=:0:0` selects that same managed mode for callers that configure the workspace through the environment, such as PyTorch. With the rocBLAS backend, set `ROCBLAS_VERBOSE_ERROR=1` to print the required and available sizes when a fixed workspace is too small for `trsm`.
+
+#### hipBLASLt (1.5.0)
+
+##### Added
+
+* `HIPBLASLT_CHECK_SYNCHRONIZER` environment variable: opt-in post-launch
+  dirty-buffer check for the handle's inter-workgroup flag buffers, which their
+  kernels must leave at zero (`1`, `on`, or `true` to enable; anything else
+  disables). It scans the whole `Synchronizer` buffer used by GSU
+  `MultipleBufferSingleKernel` and `amaxD`, and the Stream-K flag block bound to the
+  launch's stream. Covers `rocblaslt_matmul_impl` only. Unlike
+  `HIPBLASLT_CHECK_NUMERICS`, each covered call pays a stream sync and a
+  device-to-host copy, so this is single-threaded debugging use only, not for
+  concurrent-stream workloads.
+* w4a16 mixed-precision GEMM support: matrix A accepts `HIP_R_4I` (signed int4, two elements per byte) with per-K-group scales, as used by GPTQ, AWQ, and compressed-tensors checkpoints. Group sizes are 32, 64, and 128, with symmetric scales or asymmetric scales that carry packed zero-points. New API: twelve `hipblasLtMatmulMatrixScale_t` values (`HIPBLASLT_MATMUL_MATRIX_SCALE_VEC32_16BF_EXT` through `HIPBLASLT_MATMUL_MATRIX_SCALE_VEC128_16F_EXT`, plus the matching `_ZP_EXT` variants), the `HIPBLASLT_MATMUL_DESC_A_INT4_ENCODING_EXT` descriptor attribute with `hipblasLtInt4Encoding_t` (`HIPBLASLT_INT4_ENCODING_SIGNED_EXT` or `HIPBLASLT_INT4_ENCODING_UNSIGNED_BIAS8_EXT`), and `hipblaslt_ext::GemmProblemType::setInt4EncodingA` and `getInt4EncodingA`. Custom gfx1151 assembly kernels cover bf16 and fp16 activations. `hipblaslt-bench` adds `--int4_encoding`.
+* gfx1170 and gfx1171 GPU target support, with tuned Equality and GridBased GEMM libraries for gfx1170.
+* gfx1250 GEMM support for bf16 and fp32 with bias, GELU activation, and Aux output (`UseE`), and for per-tensor FP8 and BF8 inputs with FP8 or BF8 output and `OutputAmaxD`, each for all four transpose combinations. MXFP8 (TN only) adds mixed e4m3/e5m2 inputs, FP8 inputs with FP16 output, and BF8 inputs.
+* Non-TN (NT, NN, and TT) MXFP4 GEMM support on gfx950.
+* Custom gfx950 kernels for FP6 and BF6 GEMMs, and for block-scaled mixed-MX GEMMs (FP8, BF8, FP6, BF6, and FP4 inputs), with `Half`, `BFloat16`, and `Float` outputs.
+* Tuned grid-based DGEMM library logic for gfx942 at 228 CUs (MI300A), covering all four transpose combinations.
+* Gemm-From-Anywhere (GFA) custom kernel framework, which lets hipBLASLt load and dispatch GEMM kernels written outside TensileLite (for example AITER, Composable Kernel, rocRoller, Wave, and Triton) through the existing solution-selection path. Each custom kernel's `.s` file embeds a `custom.config` YAML block in its `.amdgpu_metadata` section that records its provenance, supported features, and, for external kernels, its Tensile interface. The `Tensile.AddCustomConfig` tool injects that block, and `Tensile.ValidateMetadata` validates it.
+* BF16 TN skinny-GEMM kernels (`n` up to 4) for gfx950, adapted from rocBLAS `wvSpltK` and dispatched automatically through the GFA framework, for LLM decode shapes.
+
+##### Changed
+
+* Persistent launch controls now use `TENSILE_PERSISTENT_*` environment names, and Hybrid assignment uses `--hybrid_assignment_policy` in `hipblaslt-bench` and `HybridAssignmentPolicy` in TensileLite YAML. Legacy environment, CLI, and YAML aliases remain supported. Preferred environment names take precedence; conflicting old and new CLI or YAML values are rejected.
+* A tuning file is now trusted one entry at a time instead of all or nothing. `HIPBLASLT_TUNING_OVERRIDE_FILE` records solution indices, which are positions in one build's kernel library. Previously the C API ignored the whole file when its build-version line did not match the running build, while the C++ API applied it regardless and could run kernels it was never tuned on. `hipblaslt-bench` now records a `kernel_name` beside each `solution_index` in `HIPBLASLT_TUNING_FILE`, and on both APIs a row that records a name is checked at replay and dropped only if its index no longer names that kernel. A row without a name is used only when the file's `Git Version` line matches the running build; a build made outside a git checkout has no version, so it uses no such rows. Problems whose rows are dropped fall back to normal kernel selection.
+* Extension API `initialize` compares against the size set with `setMaxWorkspaceBytes` on the `Gemm` or `GroupedGemm` instance, which defaults to 0. A caller that passes a large enough buffer without setting it is now rejected with `HIPBLAS_STATUS_INVALID_VALUE` for solutions with a fixed workspace requirement, such as GSU. Stream-K and zero-workspace solutions are unaffected.
+* Workspace limits and sizes above `UINT32_MAX` (4 GiB - 1), such as `SIZE_MAX` for no limit, are clamped to `UINT32_MAX`, because kernels address the workspace with 32-bit offsets. This applies to `HIPBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES` (which then reads back as `UINT32_MAX`), the `hipblasLtMatmul` workspace size, and the extension API `setMaxWorkspaceBytes`.
+* Grouped GEMM calls that select a flag-reading Stream-K solution and contain more than 16 problems now fail with `HIPBLAS_STATUS_INVALID_VALUE` instead of assigning the excess problems another problem's flags.
+* `hipblasLtMatmulDescSetAttribute` now returns `HIPBLAS_STATUS_NOT_SUPPORTED` for a non-NULL `HIPBLASLT_MATMUL_DESC_EPILOGUE_AUX_SCALE_POINTER` (setting it to NULL still succeeds), and `hipblaslt_ext::Gemm::setProblem` and `hipblaslt_ext::GroupedGemm::setProblem` do the same when `GemmInputs::setScaleAux` is given a non-NULL pointer. No kernel applies an epilogue aux scale, so the pointer was previously accepted and silently ignored, leaving the auxiliary output unscaled.
+
+##### Removed
+
+* `TENSILE_PRECISE_SM_TARGET` environment variable, which previously disabled the rounding of the SM count target.
+* `install.sh --asic-revision` option and `HIPBLASLT_ASIC_REVISION` CMake variable.
+
+##### Optimized
+
+* Improved DGEMM performance on gfx942 (MI300X) with retuned GridBased library logic.
+* Improved fp16 and bf16 NN GEMM performance on gfx1100 and fp8, bf8, and int8 TN GEMM performance on gfx1201 with Origami libraries.
+* Added tuned Origami libraries for CGEMM, ZGEMM, and int8 GEMMs on gfx950.
 
 ##### Resolved issues
 
-* Fixed a hang when creating a plan with a zero length or zero batch. These now return `HIPFFT_INVALID_SIZE`.
-* `hipfftGetSize*` work area estimates now account for the plan's pre-initialization
-  state (e.g. multi-device configuration) instead of ignoring it.
+* Fixed `rocisa` macro expansion ignoring conditions after `&&`, which could omit required final-loop LDS waits in gfx950 kernels using custom main-loop scheduling.
+* Fixed premature LDS reads when handwritten gfx950 BF16 and FP16 TN kernels skip the second global prefetch at `K=64`.
+* Fixed `hipblaslt-bench` using C's batch stride for D and computing its CPU reference with the wrong layout when C and D have different leading dimensions or batch strides.
+* Fixed output-amax accumulation omitting packed-store values and returning zero when C/D scaling is disabled. Invalid Stream-K or split-reduction combinations with output-amax are rejected during solution validation.
+* Fixed GEMM output scaling reading C/D scale values before their scalar memory loads completed.
+* Fixed C++ algorithm support checks rejecting integer and complex scalar types, and preserved complex conjugation when constructing or updating GEMM descriptors.
+* Fixed gfx1250 output-amax generation to use Wave32 masks, supported atomics, cross-workgroup memory ordering, and target-specific buffer descriptors.
+* When a tuning file held several entries for one problem and the first could not be used, the later entries were never used either. The replay loop reused a single vector across entries and always read element `[0]`, so each later entry was checked against the first entry's solution instead of its own.
+* Solution index `0` in a tuning file was rejected outright, despite being a valid index that is present in the shipped logic.
+* A grouped GEMM heuristic query crashed when `HIPBLASLT_TUNING_OVERRIDE_FILE` held any entry, because the override lookup read the grouped problem as a single GEMM. Grouped GEMMs now use default selection.
+* `hipblaslt-bench` recorded grouped GEMM winners in `HIPBLASLT_TUNING_FILE`, where a single-group winner read back as a single GEMM of the same shape. Grouped runs no longer write to the file.
+* An XF32 problem on the C++ extension API could fall back to FP32 kernels. When a tuning file entry failed both the XF32 check and its FP32 fallback check, the problem was left in FP32 mode for the remaining entries and for default kernel selection.
+* `*returnAlgoCount` was read uninitialized when an override satisfied a single-algo request, and then used to scan one element past the end of the caller's array.
+* A tuning file that yielded no usable rows was re-read and re-parsed on every heuristic query instead of once.
+* A tuning file row cut short, for example when the disk fills while `hipblaslt-bench` appends it, could be replayed with a truncated `solution_index`. A row whose cells do not line up with its header is now ignored.
+* `GemmInstance::getSolutionName()` in `hipblaslt_ext` crashed for a RocRoller solution. It looked the encoded RocRoller index up in the Tensile library and dereferenced the null result. It now returns the RocRoller short name, as `hipblaslt_ext::getSolutionNameFromAlgo()` already did.
+* The logger's destructor called `close()` on the log file, which throws out of a destructor and terminates the process at exit when the log file has failed, for example on a full disk. Reproducible with `HIPBLASLT_LOG_LEVEL=4` and a failing `HIPBLASLT_LOG_FILE`.
+* `hipblasLtMatmul` with no `algo` could return success for a GEMM that never launched. Its status already held the result of choosing the algorithm, and an exception thrown after that returned it unchanged instead of an error.
+* Fixed silently incorrect GEMM results from 32-bit overflow in the scalar division helpers that rocisa emits for tile-index and macrotile arithmetic. `scalarStaticDivideAndRemainder` and `scalarStaticCeilDivide` corrupted the quotient for large dividends, and `scalarUInt32DivideAndRemainder` produced wrong workgroup coordinates for problems with more than `2^24` output tiles, which left parts of D unwritten while `hipblasLtMatmul` returned success.
+* Fixed `hipblasLtMatmul` returning success with a wrong or partly unwritten D for problems that exceed 32-bit limits. Problems whose M, N, K, leading dimensions, or batch strides reach `2^32` elements are now rejected, and `hipblasLtMatmulAlgoGetHeuristic` returns no algorithms for them. Launches whose grid does not fit in 32 bits now return `hipErrorInvalidValue` instead of launching a truncated grid.
+* Fixed `hipblasLtMatmul` returning `HSA_STATUS_ERROR_MEMORY_FAULT` or silently incorrect results for fp32 NN GEMMs with large leading dimensions on gfx1201, caused by the StaggerU global-read increment overflowing a signed 32-bit register.
+* Fixed incorrect work-group count calculation for GEMMs with matrix dimensions above 262,144 elements on MI300, which caused out-of-bounds memory accesses and wrong results.
+* Fixed wrong results in Stream-K tree-reduction GEMMs with `LocalSplitU > 1` when the partials write spans more than one workspace batch. Peer workgroups summed incorrect values into the output tile.
+* Fixed bf16 GEMM solutions with `LocalSplitU > 1` on gfx942 and gfx950 that stored unscaled results in later store batches, producing values about half the expected magnitude for `alpha = 2`.
+* Fixed a race in persistent direct-to-LDS GEMM kernels on gfx950 where the prefetch of the next tile could overwrite the bias and `scaleAlpha` vectors while slower waves were still reading them, producing nondeterministic wrong results.
+* Fixed incorrect GEMM results for narrow-input (sub-4-byte) kernels configured with `PrefetchLocalRead=2` and `ClusterLocalRead=0`. TensileLite now rejects these solutions.
+* Fixed incorrect results on gfx950 where a bf16-bias query could be served f16-bias solutions cached for an earlier `hipblasLtMatmulAlgoGetHeuristic` call of the same shape, so `hipblasLtMatmul` returned success and wrote D without the bias. Solution caches are now keyed on every field the solution predicates read.
+* Fixed wrong or NaN values in the auxiliary output E when an FP16 E store used a 16-byte vector store on gfx940-family GPUs, including gfx950.
+* Fixed a hang when a Stream-K GEMM was launched on the legacy null stream (`nullptr` or `hipStreamLegacy`). The null stream now claims its own flag block instead of aliasing the block of the next stream that claimed one. Grouped GEMM solution switching also no longer leaves a stale Stream-K flag binding that could send a later GSU reduction into the smaller Stream-K region.
+* Fixed batched TF32 GEMMs on gfx950 that select Stream-K SK3 custom kernels failing with `HIPBLAS_STATUS_INTERNAL_ERROR` for large batch counts.
+* Fixed MI300A (gfx942, 228 CUs) kernel selection, which rejected most generic gfx942 solutions and left SGEMM NT and fp8/bf8 GEMMs with only a few tiles. The full MI300X kernel set is available again. The k-d tree batch search also now skips cells with no entry for the problem's batch count, which could return an incorrect or missing solution.
+* Fixed a regression that increased `hipblasLtMatmulAlgoGetHeuristic` host time on small GEMMs, most visibly on gfx1200 and gfx1201.
+* Fixed the SM count target being rounded down to a multiple of 32, which applied a target of 100 as 96 and treated any target below 32 as 0 (use all CUs). The target is now used as given.
+* Fixed gfx1250 hangs and faults: an intermittent hang at compute-loop entry in clustered GEMM kernels, a memory fault and GPU hang in MXFP8 GEMMs with Multicast, TDM, and `ClusterDim` on non-power-of-2 macro tiles, and a page fault in bf16 pointer-array batched GEMMs with GL2 prefetch.
+
+#### hipFFT (1.0.27)
+
+##### Changed
+
+* Minor internal changes.
+
+#### hipFile (0.6.0)
+
+##### Added
+
+* `hipFileGetStatsL3()` now populates the `uuid` field of each `hipFilePerGpuStats` entry with the raw 16-byte GPU UUID, zero-filled when the device cannot report one.
+* Added a batch API example, `batch-roundtrip`.
+* Added reference documentation for the Stats API.
+* Added a documentation page listing frameworks and applications that use hipFile, including LMCache, fastsafetensors, rocAL, PyTorch, fio, and IOR.
+
+##### Changed
+
+* The hipFile CMake options have been renamed from `AIS_*` to `HIPFILE_*` (e.g., `AIS_CXX_STANDARD` is now `HIPFILE_CXX_STANDARD`). The old `AIS_*` names still work but are deprecated and emit a CMake deprecation warning.
+* The `HIPFILE_WARN_UNSAFE_BUFFER_OPS` CMake option now defaults to `OFF`.
+* Documented that Linux kernels built with `CONFIG_PCI_P2PDMA=y` are required for fastpath.
+
+##### Resolved issues
+
+* The `HIPFILE_WARN_UNSAFE_BUFFER_OPS` CMake option now applies the clang `-Wunsafe-buffer-usage` and `-fsafe-buffer-usage-suggestions` flags to C++ sources. Previously, the flags were never passed to the compiler.
+* hipFile now returns `hipFileGetNewFDFailed` instead of `hipFileInternalError` when the process or system runs out of file descriptors. API calls that need a new file descriptor, such as `hipFileHandleRegister()`, can return this error.
+* Asynchronous fastpath operations now fail over to the fallback backend on `ENODEV` or `EREMOTEIO`, matching the synchronous and batch paths.
+
+##### Known issues
+
+* The bandwidth reported by `ais-stats` and the Stats API is derived from the sum of the per-operation latencies instead of the elapsed wall-clock time, so when several threads issue I/O concurrently, the reported bandwidth is understated by roughly the number of concurrent threads. See [issue #11919](https://github.com/ROCm/rocm-systems/issues/11919).
+* Asynchronous fastpath I/O, added in hipFile 0.5.0 for ROCm 10.1.0, performs poorly. The ROCm runtime serializes all stream host functions onto a single thread, so asynchronous fastpath operations cannot run concurrently.
+
+#### hipSOLVER (3.8.0)
+
+##### Added
+
+* Added functions:
+  * `gelsBatched`
+    * `hipsolverXXgelsBatched_bufferSize`
+    * `hipsolverXXgelsBatched`
+  * `geqrfBatched`
+    * `hipsolverSgeqrfBatched_bufferSize`, `hipsolverDgeqrfBatched_bufferSize`, `hipsolverCgeqrfBatched_bufferSize`, and `hipsolverZgeqrfBatched_bufferSize`
+    * `hipsolverSgeqrfBatched`, `hipsolverDgeqrfBatched`, `hipsolverCgeqrfBatched`, and `hipsolverZgeqrfBatched`
+  * `getrfBatched`
+    * `hipsolverSgetrfBatched_bufferSize`, `hipsolverDgetrfBatched_bufferSize`, `hipsolverCgetrfBatched_bufferSize`, and `hipsolverZgetrfBatched_bufferSize`
+    * `hipsolverSgetrfBatched`, `hipsolverDgetrfBatched`, `hipsolverCgetrfBatched`, and `hipsolverZgetrfBatched`
+  * `getriBatched`
+    * `hipsolverXgetriBatched_bufferSize`
+    * `hipsolverXgetriBatched`
+  * `getrsBatched`
+    * `hipsolverSgetrsBatched_bufferSize`, `hipsolverDgetrsBatched_bufferSize`, `hipsolverCgetrsBatched_bufferSize`, and `hipsolverZgetrsBatched_bufferSize`
+    * `hipsolverSgetrsBatched`, `hipsolverDgetrsBatched`, `hipsolverCgetrsBatched`, and `hipsolverZgetrsBatched`
+* Added compatibility-only functions:
+  * `trtri`
+    * `hipsolverDnXtrtri_bufferSize`
+    * `hipsolverDnXtrtri`
+
+##### Changed
+
+* The rocSOLVER backend now allows `devIpiv` to be passed as a null pointer to `hipsolverXgetrs` and `hipsolverDnXgetrs`.
+
+##### Resolved issues
+
+* Fixed `hipsolverSpSetStream` not setting the internal `rocsparse_handle` stream.
+
+#### MIOpen (3.6.2)
+
+##### Added
+
+* [Conv] Added gfx950 depthwise backward-weights (fp16/bf16) and gfx1250 depthwise
+  kernels to the `ConvHipConv` solver (hipconv v0.3.1).
+* [Conv] Added gfx950 patch-embedding kernels (fp16/bf16), gfx950 TF32 kernels for dense
+  and depthwise forward/backward-data and dense backward-weights, and gfx1250 depthwise
+  backward-weights kernels (fp16/bf16) to the `ConvHipConv` solver (hipconv v0.3.2).
+* [Conv] Added a gfx1250 dense backward-weights kernel (fp16/bf16) to the `ConvHipConv`
+  solver (hipconv v0.4.0).
+* [Conv] Added NHWC (channel-last) support to the GEMM convolution solvers, together with the
+  im2col and col2im kernels the layout requires.
+* [Conv] Added cross-architecture AI heuristics for immediate mode (`MIOPEN_FIND_MODE=2`): a
+  LightGBM ranker selects the solver and a per-solver model selects its performance config,
+  extending data-driven selection to the Navi architectures.
+* [Conv] Added the missing 3x3 stride-1 pad-1 tile-28 CK depthwise backward-data instance.
+
+##### Changed
+
+* [Reduce] `miopenGetReductionWorkspaceSize` and `miopenGetReductionIndicesSize` now reject tensors
+  of rank greater than 6, matching `miopenReduceTensor`.
+* [Reduce] Invalid arguments to the reduction API (mismatched descriptors, unsupported types,
+  undersized workspace or indices buffers) now return `miopenStatusBadParm` instead of
+  `miopenStatusUnknownError`.
+* [Conv] `ConvHipConv` is held out of the AI performance-config picker and uses its own default
+  config until the model is retrained against the current hipconv config vocabulary.
+* [Conv] Large forward and backward-data convolutions are no longer gated off CK by tensor byte
+  span. The 32-bit byte-offset overflow that motivated the gate is fixed in CK itself, so these
+  problems can again use the faster int32 CK instances.
+* [Conv] Relaxed the ASM-GTC NHWC large-tensor guard for forward and backward-data. Those kernels
+  address a full 4 GiB window per dispatch slice and advance the base pointer per batch-split, so
+  the input and output bounds were redundant; what remains is a bound on the per-group weight size.
+  Backward-weights keeps the stricter int32 bound, because 292 of its 900 kernels ignore the
+  batch-split dimension (#11805). This restores 8,978 forward and backward-data entries across the
+  six system find-databases that the guard's first revision removed.
+
+##### Removed
+
+* [Conv] Removed gfx803 convolution solver `ConvBinWinogradRxSFused` and its kernel sources.
+* [Conv] Removed the gfx803 code paths and kernel sources from `ConvBinWinograd3x3U` and `ConvBinWinogradRxS`.
+* [Conv] Removed the gfx803 find-database files.
+
+##### Optimized
+
+* [Conv] Optimized the `ConvDirectNaiveConv` solver with per-direction kernel files, float
+  accumulators for fp32/fp16/bf16 inputs, spatial tiling and a bfloat16 path, to improve
+  performance on representative model shapes.
+* Optimized the kernel cache by reusing cached database connections instead of opening and
+  closing SQLite on every binary load or store.
+
+##### Resolved issues
+
+* [Reduce] Fixed `miopenReduceTensor` silently truncating tensor lengths, strides, element counts
+  and byte spans above `INT32_MAX`, and single reductions of about `2^30` or more fp16, bf16 or int8
+  elements, which produced incorrect results. Such tensors are now rejected with
+  `miopenStatusBadParm`.
+* [Conv] Fixed a `ConvHipConv` crash on gfx1250 for grouped convolutions with more than
+  65535 group-batch tiles, and an LDS race in its gfx1250 direct kernel
+  (hipconv v0.3.2).
+* [Conv] Fixed `ConvHipConv` losing its tuned config on a perf-db reload, which could fail
+  execution with "not enough workspace for direct kernel" after an exhaustive Find. Records
+  now carry the hipconv minor version, and records from another version are discarded.
+* [Conv] Fixed incorrect backward-weights results from the `ConvHipConv` gfx950 direct kernel
+  for configurations with `waves_q == 1`, where the LDS staging tile was reused across filter
+  positions without cross-lane ordering.
+* [Conv] Fixed slower-than-expected performance of the `ConvHipConv` `direct`, `direct_l1` and `direct_wgrad` kernels
+  under ROCm 10.1's full AMDGCN link-time optimization default by building the hipconv device
+  targets with `-fno-offload-lto`.
+* [Conv] Fixed a multi-node data-parallel training throughput regression on gfx942 by excluding
+  the backward-pass GEMM solvers for single-group 1x1 stride-1 pad-0 NHWC convolutions with a
+  batch size below 4.
+* [Conv] Fixed invalid Composable Kernel (CK) perf-config entries in the gfx1201 and gfx1100
+  system databases that MIOpen could not resolve, which caused a fallback to untuned defaults.
+* [BatchNorm] Fixed just-in-time compilation failures for the batch normalization kernels on
+  non-GFX9 targets by restricting the Welford reduction's DPP inline assembly to GFX9 instead
+  of a per-architecture denylist.
+* Fixed an out-of-bounds write in `miopenLoadSolution` when a serialized solution carries more
+  than three kernel work dimensions; such solutions are now rejected.
+* Fixed a `uint64_t` typedef conflict between `miopen_cstdint.hpp` and the system `<stdint.h>`
+  that broke runtime kernel compilation on LP64 Linux.
+* [Conv] Fixed `TransposedConvWinoRageRxS<2,3>` being unreachable: it was registered in the solver
+  registry and explicitly instantiated but missing from both Find solver lists, so it could never be
+  enumerated or selected for NHWC convolutions.
+
+#### RCCL (2.32.3)
+
+##### Added
+
+* Compatibility with NCCL 2.32.3.
+* Support for collective operations across up to eight AMD Instinct MI350P GPUs in a single node.
+* `ncclSetEncryption()` and `ncclEncryptionConfig_t` (initialize with `NCCL_ENCRYPTION_CONFIG_INITIALIZER`) to encrypt NCCL-owned TCP socket traffic with TLS using a pre-shared key of at least 32 bytes. Requires a build configured with `-DTLS_BACKEND=OPENSSL3`; `libssl.so.3` is loaded at run time. Encryption is off by default and covers only traffic sent through RCCL's TCP sockets, not RDMA or GPU-to-GPU transfers.
+* `launchCompletionEvent` in the per-collective config (`ncclCollConfig_t`, now `ncclCollConfig_v23200`): a caller-owned event that RCCL records for the collective's kernel launch. Every rank must pass an event, or every rank must pass `NULL`. HIP has no launch-completion launch attribute, so on ROCm the event is recorded on the stream immediately before the kernel launch.
+* `NCCL_WIN_GIN_ONLY` window registration flag, which registers a window for GIN access only.
+* GIN device-API C entry points for the timeout waits (`ncclGinWaitTimeout`, `ncclGinWaitSignalTimeout`, `ncclGinWaitSignalTimeoutVA`, `ncclGinWaitCounterTimeout`, `ncclGinFlushTimeout`), which return `ncclTimeout` after `timeoutCycles` `clock64()` cycles, and for `ncclGinFlushAsync`, `ncclGinWait` and the VA-signal operations (`ncclGinReadSignalVA`, `ncclGinResetSignalVA`, `ncclGinWaitSignalVA`). The equivalent C++ `ncclGin` members were already available.
+* ReduceSum and ReduceCopy device APIs (`ncclLsaReduceSum`, `ncclLsaCopy`, `ncclLsaReduceSumCopy`, `ncclLocalReduceSumCopy`) in the LLVM bitcode library (`EMIT_LLVM_IR=ON`, `librccl_device.bc`) for 8-, 32- and 64-bit integer, FP16, BF16, FP32 and FP64 types.
+* `NCCL_DEBUG_LEVELS` and the `ATTN` log level. `ATTN` reports non-fatal conditions that need attention, such as configuration fallbacks and plugin initialization failures. `NCCL_DEBUG_LEVELS` adds individual levels (`VERSION`, `WARN`, `ATTN`, `INFO`, `ABORT`, `TRACE`) to the selection made by `NCCL_DEBUG`.
+* Device progress counters (`NCCL_PROGRESS_COUNTERS`, default `0`; also requires `NCCL_RAS_ENABLE=1`, the default) mirrored to host memory, and a RAS progress monitor that warns when a communicator's counters stop advancing (`NCCL_PROGRESS_COUNTER_MONITOR_POLL_MS`, `NCCL_PROGRESS_COUNTER_MONITOR_STALE_MS`, `NCCL_PROGRESS_COUNTER_MONITOR_STALE_WARN_SEC`).
+* New RAS diagnostics checks (`NCCL_RUN_RAS_DIAGNOSTICS`) for PCI topology (`rdma_topo check`), the IOMMU mode and groups and the ATS state of GPU/NIC pairs, and the path types each communicator uses.
+* An IB write-bandwidth check in the communicator init diagnostics (`NCCL_RUN_DIAGNOSTICS`). It runs perftest's `ib_write_bw` between hosts of multi-node communicators, with a per-run timeout set by `NCCL_DIAGNOSTICS_IB_BW_TIMEOUT` (default 5 seconds). It measures from GPU memory only when the installed `ib_write_bw` supports `--use_cuda`; otherwise it measures from host memory.
+* Communicator initialization reports, at the `ATTN` level, ranks that run RCCL builds from different git revisions.
+* Inspector plugin ring-buffer drop counters: a single warning per process when events are dropped, a `dump_stats` record with operation and drop counts in JSON output, and `NCCL_INSPECTOR_PROM_DUMP_STATS` (default `0`) to add the same counters to Prometheus output.
+* `NCCL_CE_CHUNK_SIZE` (default 8 MiB): chunk size for the round-robin chunking that host RMA Copy Engine batches use when per-peer transfer sizes differ.
+* `NCCL_CE_INTRA_GPU_MEMCPY_ENABLE` (default `1`): controls whether batched Copy Engine collective copies pass `hipMemcpyFlagPreferOverlapWithCompute`. RCCL previously always set this flag, so the default keeps the previous behavior; set `0` to omit it.
+* `NCCL_HIER_CE_COLL_AG_RAIL_RING_ENABLE` (default `-1`): a positive value selects a ring for the inter-node rail phase of hierarchical Copy Engine `ncclAllGather`. The default keeps the direct path.
+* `NCCL_IB_SORT_MERGE_NICS`: sorts the sub-devices of a merged IB device by plane ID. RCCL defaults it to `0` (NCCL defaults to `1`), so merged-device order and names are unchanged.
+* nccl4py: per-call collective configuration (`NCCLCollConfig`, `VendorOption`) including the launch completion event, communicator properties (`NCCLCommProperties`), and the `GIN_ONLY` window flag. On ROCm, the HIP `Event` shim provides only an event handle; `record()`, `sync()`, and `query()` are not implemented.
+* `RCCL_TUNER_EMBEDDED_CONFIG` (default `1`): the built-in CSV tuner configurations in `tuner/*.csv` are now compiled into `librccl.so` and used as the stock tuning defaults, so a cluster no longer has to stage the CSV on every node or on NFS. Set `0` to ignore the embedded configurations. `NCCL_TUNER_CONFIG_FILE` and the on-disk tuner directories still take precedence, and `NCCL_TUNER_PLUGIN=none` still disables the tuner entirely.
+* `RCCL_CE_AR_MAX_MSG_BYTES` (default `-1`): overrides the 2-shot AllReduce size cap from the arch table. Set to a positive value to override `ceNonRegMax[AR]`.
+* `RCCL_CE_AR_REG_MAX_MSG_BYTES` (default `-1`): overrides the registered CE AllReduce size cap from the arch table.
+* `RCCL_CE_AR_STAGING_BYTES` (default `-1`): overrides the CE AllReduce staging buffer allocation size; when unset, `NCCL_CE_AR_STAGING_BYTES` is used.
+* Per-architecture dispatch table (`rcclArchThresholds`) centralizing algo/proto selection for DDA protocol, CE, and symmetric kernel per collective, replacing scattered hardcoded defaults. Tables are defined for gfx1250, gfx950, and gfx942; the lookup `rcclGetArchThresholds()` maps GCN arch strings to the appropriate entry. The `symMinR2[func]` field sets a per-collective lower bound for registered buffers.
+* `RCCL_IGNORE_ARCH_TABLE` (default `0`): when set to `1`, bypasses the `rcclArchThresholds` dispatch table and falls back to compile-time constants for all DDA, CE, and symmetric-kernel thresholds. Has no effect on gfx942 and gfx950, which always use the arch table.
+* New `rcclAddonAlgos_t` values: `RCCL_CE_SCRATCH` (CE via DDA scratch, distinct from `RCCL_CE_REGISTERED`), `RCCL_A2A_PIVOT`, `RCCL_A2A_GDA`, `RCCL_A2A_GIN_SDMA`, and `RCCL_DIRECT_ALLTOALL`, with corresponding `rcclGetAlgoName()` labels.
+* rccl-tests: AlltoAll now reports algo/protocol in VERSION output, consistent with other collectives.
+* Compatibility with NCCL 2.31.2.
+* `net_ib_cast` refreshes local GIDs after `IBV_EVENT_GID_CHANGE` and applies them to data, flush, probing and port recovery QPs during IB port recovery, matching `net_ib` in NCCL 2.31.2.
+* Per-collective configuration APIs (`ncclCollConfig_t` / `nccl*Config()` entry points) and the `ncclConfigExt_t` vendor extension list. Initialize configs with `NCCL_COLLCONFIG_INITIALIZER`.
+* Communicator config (`ncclConfig_v23100`) fields for implicit launch ordering (`launchOrderImplicit`), RMA signal count (`numRmaSig`), eager RMA init (`rmaEagerInit`), and host collective fault tolerance (`hostCftMode`).
+* NCCL profiler plugin API v7, with per-call user profiler tags and symmetric-kernel phase events.
+* RAS diagnostics (`NCCL_RUN_RAS_DIAGNOSTICS`) covering GPU inventory, ROCm runtime versions, ECC counters, XGMI link state, and `NCCL_*` environment consistency (AMDSMI in place of NVML).
+* Communicator init diagnostics (`NCCL_RUN_DIAGNOSTICS`) with an active P2P connectivity check.
+* Multiple GIN proxy progress threads via `NCCL_GIN_PROXY_NTHREADS`.
+* Enabled hierarchical Copy Engine `ncclAllGather`, `ncclAlltoAll`, and `ncclAlltoAllv` on multi-node communicators: the intra-node phase runs over SDMA/CE across the LSA team and the inter-node phase over one-sided RMA through the CPU (GIN) proxy. The path is off by default and takes two opt-ins: `NCCL_CTA_POLICY=2` (equivalently `config.CTAPolicy = NCCL_CTA_POLICY_ZERO`), and symmetric registration of both the send and the receive buffer through `ncclCommWindowRegister`. On architectures other than gfx1250 a third is needed, `NCCL_CUMEM_ENABLE=1`, because symmetric memory depends on cuMem and cuMem auto-detection enables itself only on gfx1250. `NCCL_GIN_ENABLE`, `NCCL_NUM_RMA_CTX`, `NCCL_WIN_ENABLE` and `NCCL_DMABUF_ENABLE` need no change, since their defaults already qualify; the inter-node rail draws from the internal RMA context pool (`NCCL_NUM_RMA_INT_CTX`, default 4) rather than the user-addressable contexts, so `numRmaCtx` only has to stay above zero. Selection also requires an available GIN backend and the same number of ranks on every node; communicators that do not qualify keep using the kernel path. `ncclAlltoAllv` walks the gathered per-peer size matrix, skips zero-length peers, and chunks each inter-node put; single-node AlltoAllv stays on the existing CE path. Validated for correctness and path selection from 1 to 32 nodes.
+* Added `ncclGinFenceLevel` barrier semantics on the Anvil SDMA GIN backend (`NCCL_GIN_TYPE=7`). `gin.get`, `flushAsync` and `wait` are implemented instead of trapping, and a barrier's signal is now ordered behind the payload on the peer's SDMA queue, so `Put`, `Get` and the default `Put | Get` fences drain what they promise. `Put` covers a rank's puts to itself, and `ncclGinAllContexts` fences every GIN context. Single-node validated on gfx950.
+* Added gfx1250 Tensor Data Mover staging to the symmetric AllGather, AllReduce and ReduceScatter kernels. Their deep loops move each tile through the warp's shared-memory scratch with the DMA engine instead of per-lane vector loads; on ROCm that path previously compiled out entirely, so the `Tma` kernels were never generated. Launch tuning was also corrected so these kernels can use up to a quarter of a GPU's WGPs, where only 14 were reached before. Opt-in via `NCCL_SYM_TMA_ENABLE=1`, and reached only when the application opts into symmetric memory. `NCCL_SYM_TMA_ENABLE=2` additionally forces these kernels wherever the collective has one, skipping both the tuner's cost comparison and the deep-loop size bar, which is intended for A/B measurement rather than production. The new kernels are generated only when gfx1250 is in `GPU_TARGETS`, and every other architecture keeps the vector path unchanged.
+
+##### Changed
+
+* Removed GIN rocSHMEM GDA dependency on rocSHMEM GDA bitcode: GIN rocSHMEM GDA is now header-only. The CMake `roc::rccl` target provides the required include directories in its `INSTALL_INTERFACE` property.
+* Host-side device API declarations (`ncclDevCommCreate`, `ncclDevCommDestroy`, `ncclCommQueryProperties`, `ncclGetPeerDevicePointer`, the `*CreateRequirement` helpers, the `ncclDevCommRequirements` and `ncclCommProperties` structs and their initializers) moved to `nccl_device/host.h`. `nccl_device.h` still includes it; code that includes individual `nccl_device/*.h` headers directly must also include `nccl_device/host.h`.
+* Profiler `ncclProfileKernelPhase` events are emitted only by symmetric kernels, matching NCCL 2.32. Regular and P2P kernels report only `ncclProfileKernelCh` start and stop.
+* Updated the RMA plugin interface to v16, which adds a per-communicator `getRmaProperties` query. Plugins built against v13, v14 or v15 still load.
+* `NCCL_DEBUG_TIMESTAMP_LEVELS` now timestamps `ATTN` messages as well as `WARN` messages by default.
+* The internal IB RMA proxy chains work requests and rings the doorbell once per batch of up to `NCCL_RMA_IB_WR_BATCHSIZE` (default `64`) requests, which raises the small-message rate.
+* Communicator initialization at large scale is faster because the proxy no longer scans inactive poll descriptors.
+* Network devices for each GPU are now chosen by rail and plane assignment, replacing the previous start-device scattering.
+* `NCCL_MLOPART_RDMA_ENABLE` (default `0`) is kept. NCCL 2.32 removed it and treats buffers on partitioned GPUs as RDMA-capable on all non-ARM hosts; RCCL keeps network buffer registration for partitioned (CPX/DPX) GPUs opt-in.
+* The CSV tuner configurations are no longer installed to `${ROCM_PATH}/share/rccl/tuner/` or copied into the build tree; they ship inside `librccl.so`. A CSV placed in that directory, or in `<librccl.so dir>/tuner/`, still overrides the built-in defaults. A copy left behind by an earlier build or by `cmake --install` over an existing prefix also still takes precedence, so delete it to pick up the embedded defaults; package upgrades remove it automatically.
+* Retuned the symmetric AllReduce, ReduceScatter and AllGather kernels for gfx950. The block width is now selected per collective and message size instead of a fixed 256 threads, and the work partitioning and unroll factors in the load-direct kernels and the AllGather store kernel were refitted to the 64-lane wavefront. AllGather also switches from LL to the store kernel from 4 MB instead of 16 MB. The multi-node GIN kernels and all other architectures are unchanged. To fit the wider LL blocks, the shared LL scratch buffer on gfx950 grows from 4 MiB to 8 MiB per 8-rank communicator.
+* gfx1250 no longer forces unregistered `ncclAllGather`, `ncclAlltoAll`, `ncclGather` and `ncclScatter` through the Copy Engine scratch path (CE-Scratch), because it was slower than the kernel paths it replaced. Whether CE-Scratch is forced by default now comes from the per-architecture table: gfx942 and gfx950 still force it. A communicator-level `NCCL_CTA_POLICY_ZERO` still forces it on every architecture; an explicit `RCCL_FORCE_CE=1` still forces it and `RCCL_FORCE_CE=0` still turns it off. gfx1250 `ncclAllGather` now uses DDA LL128 up to 128 MiB.
+* gfx1250 `ncclAllReduce` on single-node communicators keeps the LL128 protocol at larger sizes: Tree at every size, Ring up to nRanks x 32 MiB, and the DDA LL128 tier up to 256 MiB. The DDA LL128 two-shot ceiling now follows that tier ceiling (`RCCL_DDA_LL128_TWOSHOT_THRESHOLD` still overrides it); the DDA scratch slot lets two-shot reach 256 MiB from 32 ranks, about 240 MiB at 16 and 128 MiB at 2 to 8. On gfx1250 communicators of 2 to 8 ranks, the DDA fabric scratch buffer grows to about 546 MiB.
+* On gfx1250 single-node communicators of 8 or more ranks, the DDA tier, algorithm and protocol crossovers now scale with the rank count. Communicators below 8 ranks keep the previous thresholds.
+  * `ncclAllReduce`: DDA LL two-shot up to nRanks x 1 MiB (`RCCL_DDA_LL_TWOSHOT_THRESHOLD` still overrides it); from 32 ranks, DDA VMM between 2 MiB and nRanks x 512 KiB for unregistered buffers unless `RCCL_DDA_THRESHOLD` or `RCCL_DDA_LL_THRESHOLD` is set; Tree instead of Ring up to nRanks x 1 MiB unless `NCCL_ALGO` or `NCCL_PROTO` is set, with LL up to nRanks x 32 KiB.
+  * `ncclAllGather`: DDA LL up to nRanks x 16 KiB, DDA LL128 up to 256 MiB from 16 ranks, and Ring LL128 up to 64 MiB per rank.
+  * `ncclReduceScatter`: DDA LL up to nRanks x 256 KiB, DDA LL128 up to nRanks x 512 KiB, then DDA VMM up to nRanks x 2 MiB; Ring LL up to 512 KiB per rank and LL128 up to 8 MiB per rank (32 MiB for 1-byte types); Ring Simple on at most 128 channels between 8 and 32 MiB per rank unless `NCCL_MIN_NCHANNELS` or `NCCL_MAX_NCHANNELS` is set.
+  * DDA VMM `ncclAllReduce` and `ncclReduceScatter` launch 2048 / nRanks blocks, clamped to 32 to 128 and never more than before.
+* Vendored `{fmt}` 10.2.1 as a header-only tree under `external/fmt`. RCCL, its tests, and the `topo_expl` tool now always build against this copy instead of looking for a system `fmt` package or downloading one through `FetchContent` or `git clone`.
+* The `rcclSelectAllGather` signature changed. It now takes a `cudaStream_t stream` parameter (for live dispatch) and a `bool query` mode that uses `graphCapturingHint` instead of probing the stream.
+* `RCCL_DDA_THRESHOLD`, `RCCL_DDA_LL_THRESHOLD`, and `RCCL_DDA_LL128_THRESHOLD` now default to `-1` (unset), resolved at runtime from the arch dispatch table instead of being hardcoded to 128 MiB and 64 KiB respectively (`RCCL_DDA_LL128_THRESHOLD` had no pre-table default; the LL128 tier was off by default). Setting these environment variables explicitly still takes precedence over the table.
+* `RCCL_DDA_LL128` now defaults to `-1` (auto): the LL128 tier is enabled only for architectures whose arch-table row has a non-zero `ddaLL128Max` for the collective (currently gfx1250 only).
+* `RCCL_CE_ALLREDUCE` now defaults to `-1` (auto/enabled) instead of `0` (disabled). CE AllReduce is therefore on by default for gfx1250 communicators that meet all other eligibility criteria.
+* CE-2-Shot AllReduce size cap is now resolved at runtime via `rcclCeAr2ShotMax()` (env var wins, then arch table `ceNonRegMax[AR]`, then the 256 MiB `NCCL_CE_AR_TMPBUF_DEFAULT_BYTES` fallback) rather than from a compile-time constant.
+* `RCCL_FORCE_CE_ALLREDUCE=1` no longer overrides the CE AllReduce 2-shot selector cap. It bypasses the `CTA_POLICY_ZERO` check only; the selector cap is enforced regardless.
+* Registered `tuning_model_11` for gfx1250 single-node and added gfx1250 to the AINIC tuning index map.
+* Extended `ncclFunc_t` enum in rccl-tests `common.h` to match the librccl internal ABI: renumbered existing values and added `ncclFuncAlltoAll` (8), `ncclFuncScatter` (9), `ncclFuncGather` (10), `ncclFuncAllToAllPivot` (11), `ncclFuncAlltoAllGda` (12), `ncclFuncAlltoAllvGda` (13), `ncclFuncAllGatherV` (14), `ncclFuncPutSignal` (15), `ncclFuncSignal` (16), `ncclFuncWaitSignal` (17), `ncclFuncAlltoAllv` (18); `ncclNumFuncs` updated to 19.
+* AlltoAll index variables in `alltoall_dda.h` and `alltoall_dda_fabric.h` widened from `int` to `size_t` to prevent overflow on large message sizes.
+* DDA fabric and IPC AlltoAll launchers refactored to derive launch geometry from a single inline helper (`ddaAllToAllFabricGeom`, `ddaAllToAllFabricLLGeom`, `ddaAllToAllFabricLL128Geom`, `ddaAllToAllIpcGeom`) shared between the dispatch path and the new block-count query functions.
+* `rcclGetCollImplInfo` now covers ReduceScatter and AlltoAll (previously both fell back to `rcclGetAlgoInfo()`); rccl-tests reports accurate algo/proto for all four collective types.
+* Algorithm selectors (`rcclSelectAllReduce`, `rcclSelectAllGather`, `rcclSelectReduceScatter`, `rcclSelectAlltoAll`) now tag the task with `rcclSymkExtract` (`ALLOW`/`DENY`) so `taskAppend` does not re-derive the symmetric kernel decision. Setting `NCCL_ALGO=Ring` now correctly prevents the symmetric kernel from being extracted even when both buffers are registered.
+* **Breaking: `NCCL_GIN_TYPE` values for AMD backends are not compatible with 2.30.7.** NCCL 2.31 inserted EFA GDA at value 5, so rocSHMEM GDA moved 5→6 and Anvil SDMA moved 6→7. The IB proxy remains `2`. Jobs that still set `NCCL_GIN_TYPE=6` now select rocSHMEM GDA, not Anvil SDMA. See `src/gin/README.md`.
+* One-sided RMA supports multiple contexts and signals; the previous restriction to context 0 and signal index 0 has been lifted (`numRmaCtx` / `numRmaSig`).
+* Reduced communicator host memory by allocating topology path link arrays to their actual length.
+* Widened the LL128 per-thread shared-memory slice from 8 to 32 elements on gfx1250; other architectures are unchanged. Forced Ring/LL128 bandwidth increases at 16 MiB and above. Per-block LDS rises from 36448 to 85472 bytes, and because the scratch region is shared across protocols this applies to every kernel launch, not only LL128 ones. The tuner's protocol selection is unchanged, so the gain is only visible when LL128 is selected explicitly.
+
+##### Removed
+
+* `NCCL_TOPO_SCATTER_START_NET`, which selected how the first network device was scattered across GPUs. Rail and plane assignment replaces it.
+
+##### Resolved issues
+
+* Fixed profiler overhead when no profiler plugin is loaded or only kernel-channel events are enabled.
+* Fixed profiler API events reporting rank 0 instead of the originating communicator rank.
+* Fixed P2P IPC registration reuse producing out-of-bounds remote addresses when a registered allocation spans multiple cuMem segments.
+* Fixed non-thread-safe token parsing that could corrupt configuration parsed concurrently from multiple threads.
+* Fixed tuner plugins receiving uninitialized cost-model constants.
+* Fixed GIN proxy descriptor shared-memory sizing and alignment.
+* Fixed virtual address space exhaustion when symmetric windows backed by the same physical allocation are registered repeatedly.
+* Fixed Copy Engine `ncclAlltoAllv` hanging on intra-node communicators of more than 8 ranks with uneven send sizes. Each rank decided from its own send sizes whether to add intra-batch barriers, so ranks could issue different barrier counts. The decision now uses the full send-size matrix, which every rank shares.
+* Fixed `NCCL_P2P_DISABLE` and `NCCL_P2P_LEVEL` being ignored on Intel, ARM and Zhaoxin hosts, where the CPU-based default P2P level overwrote the user setting. On such hosts `NCCL_P2P_DISABLE=1` now falls back to SHM as documented, and `NCCL_P2P_LEVEL` is honored.
+* Fixed intermittent data corruption in multi-node collectives, seen as out-of-bounds values in 8-node AllToAll, on hosts that use GPU Direct RDMA through peermem. Since RCCL 2.30.4 the GDR flush scratchpad was registered only through dma-buf, so on peermem hosts the flush degraded to a single RDMA read of the receive buffer, which does not order earlier relaxed-ordering writes. The scratchpad is now also registered through peermem, restoring the strictly ordered RDMA write that precedes the flush read.
+* Fixed FP8 E4M3 and E5M2 `ncclAvg` returning wrong values for every element of every reduction collective on gfx942, and on architectures that use the software FP8 fallback. The `1/nRanks` scale was packed as an FP8 value in the host's OCP encoding, which those devices decode as FNUZ, so every result came out half as large. The scale is now carried as `float` on all architectures, which also keeps it exact at rank counts FP8 cannot represent: in OCP E4M3, `1/384` was off by 25% and `1/1024` rounded to zero. Single-rank FP8 reductions on gfx942 no longer fail to launch the `oneRankReduce` kernel, and rccl-tests no longer skips FP8 `avg` for `all_reduce`, `all_reduce_bias` and `reduce`.
+* Restored topo tuning-model init (`ncclTopoTuneModel`) after the 2.31 `ncclTuningInit` switch so multi-node kernels do not launch with `blockDim.x=0`.
+* Aligned grouped multi-rank finalize with the v2.31 teardown barrier.
+* Fixed Copy Engine `ncclAllGather`, `ncclAlltoAll`, `ncclScatter` and `ncclGather` returning incorrect data, and no error, when `NCCL_LSA_TEAM_SIZE` was set below the number of ranks on the node. These routines index both their peer list and their buffer offsets by LSA rank, so a communicator wider than its LSA team exchanged data only within that team and placed it at LSA rather than communicator offsets, leaving the slices owned by every other rank unwritten. Copy Engine selection now requires the LSA team to cover the whole communicator on the scratch (`RCCL_FORCE_CE`) path as well as the registered-window path, so such communicators use the kernel path instead. Runs that leave `NCCL_LSA_TEAM_SIZE` unset are unaffected, because the LSA team then spans every rank on the node.
+* Fixed hierarchical Copy Engine collectives dereferencing a NULL RMA proxy context when `NCCL_RMA_DISABLE=1` was combined with the hierarchical opt-ins. `NCCL_RMA_DISABLE` suppresses the window registration that creates those contexts, but the hierarchical availability check did not consult it, so a multi-node communicator with `NCCL_CTA_POLICY=2` and symmetric send and receive windows admitted the path and then crashed at launch. The internal RMA context predicate now defers to `ncclRmaProxyEnabled`, so such a communicator declines the hierarchical path and uses the kernel path instead.
+* Fixed Copy Engine `ncclAllReduce` hanging when one thread drives several GPUs, as in rccl-tests `-g 4`. The staging buffer was set up on first launch, and that setup is a collective window registration, so the first rank waited for peers the same thread had not launched yet. The setup is now queued when the collective is enqueued and runs in each communicator's own group job at `ncclGroupEnd`.
+* Fixed `ncclCommWindowRegister` after `ncclDevCommCreate` aborting on the GIN Anvil SDMA backend (`NCCL_GIN_TYPE=7`) with `could not resolve LSA flat addr`. Symmetric-window memory is now linked onto the device-runtime list before GIN/RMA registration so plugins that resolve the user VA through that list can see the in-flight window.
+* Fixed the DDA, Copy-Engine 2-shot, GIN SDMA and hierarchical AllGather/ReduceScatter backends not making the communicator's device current and not ordering a new stream against the previous collective. A collective issued while another device was current failed with `ncclUnhandledCudaError`, and consecutive collectives on different streams could overlap.
+
+##### Known issues
+
+* The FP8 ReduceSum and ReduceCopy device APIs are not exported in the LLVM bitcode library.
+* On the Anvil SDMA (`NCCL_GIN_TYPE=7`) and rocSHMEM GDA (`NCCL_GIN_TYPE=6`) GIN backends, `ncclGinFlushTimeout` ignores the timeout and blocks until the flush completes; `ncclGinWaitTimeout` does the same on Anvil SDMA. rocSHMEM GDA does not support `ncclGinFlushAsync` or waiting on a GIN request, and those calls trap on the device. The signal and counter wait timeouts work on all backends.
+* The following NCCL 2.31 features are not available in RCCL: Compute Fabric Transport, the GDAKI and EFA GDA GIN backends, PAT combined with NVLS, NVLink-multicast AllGather, and the CuTeDSL and `nccl4rust` bindings.
+
+#### rocBLAS (5.8.0)
+
+##### Added
+
+* Enabled gfx1170 and gfx1171. Level 3 `gemm`, `gemm_ex`, and the functions that internally use GEMM default to the hipBLASLt backend on these architectures. `ROCBLAS_USE_HIPBLASLT` continues to force or disable the hipBLASLt backend.
+
+##### Changed
+
+* On gfx1250, rocBLAS loads the Tensile library catalog that matches the device revision. Strict-revision silicon uses `library/gfx1250-strict` when that catalog is present in the build, and otherwise falls back to `library/gfx1250`.
+* On gfx950, hipBLASLt is now the default GEMM backend for every input type except real `f32_r`. Real single precision still defaults to Tensile. `ROCBLAS_USE_HIPBLASLT` continues to force or disable the hipBLASLt backend.
+* On gfx942, double-precision Level 3 `gemm`, `gemm_ex`, and the functions that internally use GEMM now default to the hipBLASLt backend. gfx942 devices other than the MI300A (gfx942 with 228 compute units) also default to hipBLASLt for `f16_r/bf16_r` data, while the remaining data types on gfx942 default to Tensile. `ROCBLAS_USE_HIPBLASLT` continues to force or disable the hipBLASLt backend.
+* Batched GEMM now uses the same hipBLASLt selection as other GEMM while a stream is capturing. Previously, batched APIs were forced to the Tensile backend during stream capture.
+* If the new `ROCBLAS_VERBOSE_ERROR` environment variable is set, `trsm`, `trsm_batched`, and `trsm_strided_batched` print the required and available workspace sizes when they return `rocblas_status_memory_error` because a fixed-size handle workspace is too small. Previously this failure looked identical to running out of device memory.
+
+##### Removed
+
+* The `ROCBLAS_USE_HIPBLASLT_BATCHED` environment variable, deprecated in rocBLAS 5.6.0, is removed and is now ignored. Batched GEMM is controlled by the same environment variable as all other GEMM, so a batched-only override is no longer required. Use `ROCBLAS_USE_HIPBLASLT=0` to select the Tensile backend for all GEMM, including batched.
+
+##### Optimized
+
+* Improved the performance of Level 2 `gemv` non-transposed (`TransA == N`) by selecting the n-split reduction from the launch shape rather than a fixed output-length crossover. The split applies when the output grid has at most 8 tiles and the column split produces at least 2 parallel blocks, or when the output length is at or below the crossover.
+* Improved the performance of Level 3 `gemm` and `gemm_ex` for transposed operands with a very large summation dimension. k-chunking, which keeps Tensile element offsets inside 32 bits, previously used `max(lda, ldb)` for every transpose combination, so a unit-stride summation was split into many small launches. The bound is now the k stride of each operand: the leading dimension when that operand is k-major, and 1 otherwise. k-major layouts that can overflow are still chunked.
+
+##### Resolved issues
+
+* Fixed incorrect results and out-of-bounds reads from Level 1 ILP64 `dot` and `dotc`, including batched, strided-batched, and `_ex` forms, when a negative increment is wide enough to take the 64-bit increment path and `n` fits the single-block reduction. That path shifted by `(n - 1)` before calling the launcher, which applies the same walk, and the `y` shift tested `incx` rather than `incy`. The offsets are now passed through unshifted.
+* Fixed incorrect results and out-of-bounds indexing from Level 1 ILP64 `axpy` and `axpy_ex`, including batched and strided-batched forms, when `batch_count` is greater than 65535 and an increment is wide enough to take the 64-bit kernel. That kernel was launched with the full `batch_count` rather than the chunk length, so each pass walked past the current batch and applied `alpha * x` again.
+* Fixed incorrect results and out-of-bounds accesses from Level 1 ILP64 `rot` and `rot_ex`, including batched and strided-batched forms, when `n` or `batch_count` is large enough to chunk the launch and `incx` or `incy` is negative. Chunk offsets were `n_base * inc`, and the wide-increment path used `-inc * n_base`, so a negative increment started at the wrong end of the vector. Each chunk now starts at `offset + (inc < 0 ? -inc * (n - n_chunk - n_base) : n_base * inc)`.
+* Fixed Level 2 `trsv` and Level 3 `trsm`, `trtri`, `trmm`, and `gemmt` returning `rocblas_status_success` when an internal GEMM, GEMV, vector copy, or block helper failed. Those statuses are now returned to the caller. On the negative-`incx` path, a failed `trsv` also restores the caller's input vector, which the solve reverses in place.
+* Fixed `rocblas_get_commit_hash_string` writing past the caller's buffer. The length check compared against the size of a pointer, so a buffer shorter than the commit hash was accepted, and the copy omitted the terminating null. `rocblas_get_version_string` and `rocblas_get_commit_hash_string` now require the size reported by the matching `*_size` query, including the terminating null.
+
+#### ROCdbgapi (0.82.1)
+
+##### Added
+
+* Support for the following architectures:
+  * `gfx1170`
+  * `gfx1171`
+  * `gfx1172`
+  * `gfx11-7-generic`
+
+#### ROCm Data Center Tool (1.4.0)
+
+##### Resolved issues
+
+* The `RDC_FI_GPU_MEMORY_CUR_BANDWIDTH` fix for zero readings under DMA or copy-only memory traffic is now included.
+* `rdci dmon` and `rdci health -s` name the missing group again, for example `Cannot find the group 4242`. Since ROCm 7.12 they printed only `Group not found` (or `Fieldgroup not found` for a missing field group in `rdci dmon`).
+
+#### rocDecode (1.12.0)
+
+##### Added
+
+* Initial Windows support: hardware-accelerated video decoding on Windows via the vaon12 backend (Mesa's VA-API on D3D12 translation layer). Requires HIP and the vaon12 VA-API driver from TheRock for Windows.
+* On Windows, the TheRock VA-API DLLs (`rocm_sysdeps_va_win32.dll`, `rocm_sysdeps_va.dll`) are loaded at run time, matching the Linux `dlopen` behavior. `%ROCM_PATH%\lib\rocm_sysdeps\bin` no longer needs to be on `PATH`.
+* HEVC: generation of unavailable reference pictures for a BLA picture or a CRA picture with `NoRaslOutputFlag` equal to 1 (H.265 clause 8.3.3).
+
+##### Resolved issues
+
+* Fixed a stray RASL picture being output from the first CRA picture after an application signals end of sequence with the `ROCDEC_PKT_ENDOFSTREAM` packet flag. The flag now ends the coded video sequence the same way an in-band EOS NAL unit does, so the next IRAP picture gets `NoRaslOutputFlag` equal to 1.
+* Fixed out-of-bounds memory access issues in the HEVC, AVC, AV1, VP9, and base parsers.
+* Fixed `rocDecGetDecoderCaps` advertising 16-bit output surface formats for 8-bit content.
+
+#### rocFFT (1.0.41)
+
+##### Added
+
+* Added further support for very large FFTs (length greater than 2^32).
+* JIT callbacks specified with the `rocfft_plan_description_set_load_callback` and
+  `rocfft_plan_description_set_store_callback` APIs can now be used with transforms that have fields
+  specified on the same plan description.
+
+##### Changed
+
+* Function pointer callbacks specified with the deprecated `rocfft_execution_info_set_load_callback` and
+  `rocfft_execution_info_set_store_callback` APIs are now disallowed with transforms that have fields
+  specified on the plan description.
+
+##### Optimized
+
+* Improved performance of unit-strided, interleaved, complex-to-real FFTs on gfx1201, gfx90a, gfx942, and gfx950 for the following lengths:
+  * (100,100,100)
+  * (192,96,96)
+  * (200,96,96)
+  * (128,128,256)
+  * (160,168,168)
+  * (160,168,192)
+  * (168,168,192)
+  * (168,192,192)
+  * (192,192,192)
+  * (192,192,200)
+  * (192,200,200)
+  * (200,200,200)
+  * (216,216,216)
+  * (216,104,104)
+  * (216,104,100)
+  * (224,104,104)
+  * (224,108,104)
+  * (224,108,108)
+
+##### Resolved issues
+
+* Fixed possible failures of `rocfft_plan_create` for multi-device plans.
+* Fixed out-of-bounds memory access when executing a multi-device complex-to-complex plan whose
+  bricks used non-contiguous data layouts.
+* Fixed a memory leak when `rocfft_plan_create` fails.
+* Fixed `rocfft_plan_create` failures for large prime-length 1D complex transforms when a scale factor is set.
+* Fixed a potential write-after-free if plans are destroyed during process teardown.
+* Fixed a possible hang in `rocfft_cleanup` in builds with RCCL enabled, for single-process multi-device usage.
+* Fixed incorrect results for 1D complex transforms of lengths involving large prime factors
+  with large batch sizes, where 32-bit kernel indexing could overflow.
+* Fixed `rocfft_plan_create` failures for 1D complex transforms of lengths involving large prime
+  factors when the output data layout uses a batch distance larger than the transform length.
+* Fixed `rocfft_plan_create` failures and GPU memory access faults for 1D complex transforms of
+  lengths involving large prime factors when batches are interleaved (unit batch distance).
+
+#### rocJPEG (1.13.0)
+
+##### Added
+
+* Added the `rocJpegGetDecoderCaps` API and the `RocJpegDecodeCaps` structure to query the decode capabilities of a rocJPEG handle, including the number of JPEG cores, the supported JPEG coding processes, image resolutions, chroma subsamplings, and output formats, the native output surface format of each chroma subsampling as verified with the VA-API driver, and the hardware ROI decode and color conversion support.
+* Added the `RocJpegSurfaceFormat` enum to describe the layout of the decoded image produced by the VCN JPEG decoder, and the `RocJpegCodingProcess` enum to report the supported JPEG coding processes.
+* Added the `jpegDecodeCaps` sample to demonstrate the `rocJpegGetDecoderCaps` API.
+
+#### ROCm Compute Profiler (3.10.0)
+
+##### Added
+
+* Added the `LDS Utilization` metric to the gfx115x Memory Chart.
+* Added two wave utilization metrics to PC sampling analysis.
+  * `active_thread_percent` is the percent of a wave's lanes that were active at an instruction, so a low value points at control flow divergence. Both sampling methods report it.
+  * `wave_occupancy_percent` is the percent of the machine's wave slots that held a wave. Only stochastic sampling reports it, because a host-trap record carries no wave count.
+  * Both appear in the analyze terminal table and in each kernel's `per_kernel_pc_sampling/` CSV.
+* Added the two wave utilization metrics to the analysis database summary view, so `compute_pc_sampling_summary_view` and the `pc_sampling_summary.csv` export carry them alongside the sample counts.
+* Added a profile-mode warning on gfx115x when the `AUTO` performance level can gate the perfmon clock and zero PMC counters such as `TCP_REQ`, with a link to the ROCprofiler-SDK `STABLE_STD` workaround.
+* Added CLI guidance for viewing the wide memory chart without line wrapping (`less -RS` or `code -`).
+* Added Python 3.14 support.
+* Added an analyze-only install path. `pip install "rocm-profiler[compute-analyze]"` into a virtual environment installs the analysis dependencies for you.
+* Added `rocprof-compute analyze --verify-deps`, which reports any missing analysis dependencies.
+* Added Memory Bandwidth Analysis for gfx950 under `--experimental --membw-analysis`. Profile with the flag to collect block 30 counters; `analyze` detects the data automatically and annotates active GL1/GL2/EA stall bottlenecks on the memory chart with a guidance panel.
+* Added the rocprof-compute Agent Skills and the documentation they link to to the install under `share/rocprofiler-compute/`, with an `install-skills.sh` script that installs or removes them for Claude Code, Codex, or Cursor. `rocprof-compute --help` shows where to find them.
+
+##### Changed
+
+* Dispatch IDs now start at 1 instead of 0.
+* Renamed the profile-mode dispatch filter to `--kernel-iteration-range`, matching the rocprofv3 option it drives. Update any profile command by replacing `-d/--dispatch` with `--kernel-iteration-range` to select dispatches.
+  * `--dispatch` is no longer accepted in profile mode.
+  * `-d` is now the short form of `--output-directory` in profile mode, also matching rocprofv3.
+* gfx115x Memory Chart improvements.
+  * Renamed memory chart metric names for more clarity.
+  * Each edge now reports the traffic measured at the interface it represents.
+  * Updated arrows, labels, and the legend in the memory chart to better represent their meaning.
+* The Torch trace collector now ships prebuilt for PyTorch 2.13 and 2.14, so
+  `--torch-trace` traces operators on every thread, including the autograd
+  threads that run the backward pass. Other PyTorch versions use a reduced trace
+  that misses backward-pass operators.
+* Named each per-kernel PC sampling folder `<short_name>_uuid_<kernel_uuid>` instead of `kernel_<kernel_uuid>`, and added the matching `short_name` column to `kernel.csv`. The short name is the demangled identifier captured while profiling. Update any scripts that match the old `kernel_` prefix.
+* Redesigned the CDNA (gfx9) Memory Chart with a new Rich-based layout that improves readability in the terminal. Added Non-buffer/Buffer request breakdowns (Read/Write/Atomic wavefronts) and L2-Fabric bandwidth metrics across all CDNA architectures.
+  * gfx908–gfx942: added HBM and remote traffic percentages.
+  * gfx950: added LDS Read/Write/Atomic instruction counts and per-channel bandwidth for HBM, xGMI, and PCIe.
+* Analyze mode now auto-detects memory bandwidth analysis data from the profiling output. The `--membw-analysis` analyze option has been removed; use `--membw-analysis` only at profile time.
+* Renamed gfx1250 metric labels for clarity.
+  * `VMEM Atomic RTN` to `VMEM Atomic Return` and `VMEM Atomic NORTN` to `VMEM Atomic Non-Return` in the WGP VMEM Instruction Mix panel.
+  * `LDS Atomic RTN` to `LDS Atomic Return` and `LDS Atomic NORTN` to `LDS Atomic Non-Return` in the WGP LDS Instruction Mix panel.
+  * `Total Requests - Sectors` to `Total GL0 Sectors`, `Total Requests - Sector Reads` to `GL0 Read Sectors`, and `Total Requests - Sector Writes` to `GL0 Write Sectors` in the GL0 Cache and LDS panel.
+
+##### Removed
+
+* Removed the `--kernel-verbose` analyze option and the kernel name shortener it drove. The option had no effect on any output.
+* Removed the Nuitka standalone binary build (`STANDALONEBINARY`, `STANDALONEBINARY_EXTRACT_DIR`), its RHEL 8 docker recipe, and the `--call-binary` pytest option that exercised it.
+* Removed the `SKIP_NATIVE_TOOL_BUILD` build option. The counter collection tool is always built, and its sources are no longer installed for runtime compilation.
+* Removed the deprecated `Active CUs` metric from the System Speed-of-Light panel and the Memory Chart SVG for all CDNA architectures (gfx908, gfx90a, gfx940, gfx941, gfx942, gfx950). Use `CU Utilization` instead.
+
+##### Optimized
+
+* HBM and remote traffic percentages are now more accurate, with all their counters collected in a single profiling pass.
+* Analyze mode produces less warning noise. Repeated warnings are de-duplicated, and messages for metrics that evaluate to N/A moved to debug level.
+* Analyze mode uses less disk space. It reads the profiling output directly instead of writing an extra merged copy of all counter data into the workload directory.
+* Analyze mode now stops as soon as it finds unreadable profiling data, instead of continuing with an incomplete set of counters.
+* Improved the profiling failure message when the workload and the profiler load different ROCm installations. The error now points to the PyTorch and `rocm[profiler]` install instructions instead of only showing the LLVM abort.
+
+##### Resolved issues
+
+* Fixed the standalone roofline HTML so it always opens with the same axes for a given GPU, which makes two runs comparable. The axes come from the benchmarked bandwidth and compute ceilings, not from the kernels in the run.
+* Fixed `L2 Cache (per Channel)` labels to use a `Metric` column and numbered `Channel` row labels in CLI, TUI, and analysis database output.
+* Fixed `--set` running the roofline microbenchmark, which is never part of a metric set.
+* Fixed PC sampling source snapshots to use canonical paths and include source contents and checksums in analysis exports.
+* Fixed false `0` values in the gfx115x Memory Chart; missing counter data now reports `N/A`.
+* Fixed `GL2-Fabric Write BW` understating write bandwidth on gfx115x in the System Speed-of-Light and Memory Chart panels.
+* Fixed `profile -b 3 --experimental --membw-analysis` not collecting memory bandwidth analysis counters.
+* Fixed `analyze -b` crashing when only the gfx950 LDS bandwidth metrics are selected.
+
+##### Known issues
+
+* On gfx115x, `TCP_REQ*` counters and the `GL0` metrics derived from them can read zero because the perfmon clock is power-gated at the `AUTO` performance level.
 
 ##### Upcoming changes
 
-* The `hipfftXtSetCallback` and `hipfftXtClearCallback` APIs are now deprecated and will be removed in a future
-  release. They allow for specifying callbacks as device function pointers at plan execution time, but rocFFT cannot
-  optimize the combined code. Instead, users should specify JIT callbacks with `hipfftXtSetJITCallback` before
-  initializing the plan.
+* The analyze-mode `--gui` and `--tui` options are deprecated and will be removed in a future release. Use the default CLI analysis instead.
 
-#### **hipFile** (0.5.0)
+#### ROCgdb (16.3)
 
 ##### Added
 
-* A Stats API for querying hipFile I/O statistics. `hipFileGetStatsL1()`, `hipFileGetStatsL2()`, and `hipFileGetStatsL3()` return progressively more detailed counters: basic I/O and operation counts (Level 1), I/O size histograms (Level 2), and per-GPU statistics (Level 3).
-* `ais-check` now detects SR-IOV virtual function (VF) GPUs via `amd-smi` and warns when one is present. hipFile's fastpath is only supported on GPU physical functions (PFs); on a VF, I/O falls back to the compatibility path. The check is skipped if `amd-smi` is unavailable.
-* `hipFileReadAsync()` and `hipFileWriteAsync()` now support the AIS fastpath backend, enabling asynchronous GPU-direct I/O enqueued on a HIP stream. Transparent async backend failover to the slowpath is not currently supported for async fastpath operations.
-* Batch operations now execute on an internal thread pool, enabling batch API support on the AMD backend. Together with async fastpath support, this resolves the 0.3.0 limitation where batch and async API calls were unsupported on the AMD backend.
-* The `HIPFILE_ASYNC_BUFFER_SIZE` environment variable to control the size of the host bounce buffer used for asynchronous fallback I/O. The default size is 16 MiB; setting it to `0` uses the default.
-
-##### Changed
-
-* The synchronous fallback I/O path now sets the active HIP device to the buffer's GPU before `hipMemcpy` and restores the caller's device afterward, fixing copies that could run against the wrong device context.
-* Asynchronous fallback I/O now reuses a single per-stream bounce buffer, splitting large transfers into chunks that fit the buffer, to reduce the memory footprint of asynchronous workloads.
+* Support for workgroup clusters. GDB now includes cluster coordinates in the
+  target ID of a GPU thread when the dispatch is running in cluster mode. The
+  `info dispatch` command also shows cluster dimensions.
+* Support for the following architectures:
+  * `gfx1170`
+  * `gfx1171`
+  * `gfx1172`
+  * `gfx11-7-generic`
+  * `gfx1250-strict`
 
 ##### Resolved issues
 
-* Corrected CMake ROCm path detection so out-of-tree builds locate the correct ROCm installation.
+* Fixed ROCgdb hiding a `SIGSEGV` and showing a breakpoint hit instead when a
+  GPU thread caused the `SIGSEGV` (which is reported imprecisely by default)
+  and also hit a breakpoint. ROCgdb now prioritizes and shows the `SIGSEGV`.
+* Fixed incorrect architecture selection when calling address dependency
+  queries on generic AMDGPU code objects running on a concrete-architecture
+  wave.
+* Fixed a broken HIP documentation link in the GDB help text.
+* Fixed the precise-memory fault location test to account for XNACK mode when
+  determining the expected stop address.
+
+#### ROCm Systems Profiler (1.10.0)
+
+##### Added
+
+* `rocsys` unified CLI entry point. `rocsys -- ./app` and `rocsys profile -- ./app`
+  produce a full trace profile. `rocsys rewrite` runs `rocprof-sys-instrument`
+  in binary-rewrite mode (`-o`). Other subcommands (`instrument`, `causal`,
+  `avail`, `python`, `attach`) forward to the existing tools. The
+  `rocprof-sys-*` binaries are unchanged.
+* AMD Infinity Storage I/O telemetry. Per-GPU I/O counters are sampled into
+  the profiler output. Enable collection with `ROCPROFSYS_USE_HIPFILE` and select metrics with
+  `ROCPROFSYS_HIPFILE_METRICS`. See
+  [hipFile Infinity Storage I/O telemetry](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/hipfile-telemetry.html).
+* `--detach-after <seconds>` flag on `rocprof-sys-attach` for non-interactive use; the binary
+  sleeps for the given duration after attach instead of waiting for `ENTER` on stdin.
+* `rocprof-sys-attach` finds the tool library in the target's own ROCm installation when the
+  target cannot see this installation's library (for example, inside a container), so
+  `ROCPROF_ATTACH_TOOL_LIBRARY` is no longer needed there.
+
+##### Removed
+
+* Legacy direct Perfetto tracing mode. Perfetto traces are now always generated from the
+  trace cache. `ROCPROFSYS_TRACE_LEGACY` and `--trace-legacy` / `-L` were removed (passing `-L` is
+  now an unknown-argument error); the `tracing.legacy` key was removed from JSON
+  configuration export.
+* Timemory component annotations (for example `thread_cpu_clock` and PAPI counter
+  values) are no longer attached to Perfetto slices. They will be available through the
+  timemory output formats.
+
+##### Resolved issues
+
+* Fixed a crash (`SIGSEGV`) in `rocprof-sys-instrument` when instrumenting Fortran+HIP
+  programs compiled with `gfortran -g` or `-g -O0`. gfortran encodes assumed-shape and
+  allocatable array bounds as DWARF location expression blocks rather than integer
+  constants at debug optimization levels; DynInst was treating these block-form
+  attributes as errors and dereferencing a null pointer in `parseSubrange()`.
+  Fixed in [ROCm/dyninst#33](https://github.com/ROCm/dyninst/pull/33).
+* Fixed `rocprof-sys-attach` aborting the target process when attaching to a process
+  running in a different mount namespace (for example, a container). The tool library
+  path is now validated against the target's mount namespace before attaching, failing
+  cleanly with a diagnostic instead.
+
+#### rocPRIM (4.8.0)
+
+##### Added
+
+* gfx1250-strict support.
+
+##### Changed
+
+* Replaced the soon-to-be-deprecated `__hip_atomic_*` builtins with the equivalent `__scoped_atomic_*` builtins.
+
+##### Optimized
+
+* Updated existing `ordered_block_id` and `lookback_scan` optimizations to include gfx1250/gfx1250-strict.
+
+##### Resolved issues
+
+* Fixed incorrect categorization of RDNA4 and CDNA5 GPUs.
+
+#### ROCprofiler-SDK (1.4.2)
+
+##### Added
+
+* **Device-wide counter sampling (SPM)**
+  * Device counting mode for the Streaming Performance Monitor (SPM) service (experimental). New `rocprofiler_configure_spm_device_counting_service` samples SPM counters on an agent for as long as the context is active, without tying samples to individual kernel dispatches.
+  * Samples are delivered to a buffer as `rocprofiler_spm_counter_record_t` records with no dispatch information.
+  * SPM support for gfx12 and gfx1250. gfx1250 SPM samples report the shader array and WGP. Both are encoded in the counter instance ID together with XCC, shader engine, and instance.
+  * New `ROCPROFILER_SPM_PARAMETER_TYPE_SAMPLE_INTERVAL_REFCLK_CYCLES` parameter sets the SPM sample interval in reference-clock cycles. Only gfx1200, gfx1201, and gfx1250 support it; other agents return `ROCPROFILER_STATUS_ERROR_INVALID_ARGUMENT`. Agent configuration queries report shader-clock and reference-clock intervals separately.
+  * `--spm-sample-interval-unit` accepts the new `refclk_cycles` value, which sets `--spm-sample-interval` in reference-clock cycles. It works only on gfx1200, gfx1201, and gfx1250.
+* **Thread trace**
+  * Thread trace shader data now has timestamps. `rocprofiler_thread_trace_shader_data_t` has new `start_timestamp` and `end_timestamp` fields of type `rocprofiler_thread_trace_timestamp_t`, each holding a GPU clock value and a system clock value, so thread trace data can be lined up with API traces.
+  * New `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE` thread trace parameter and `rocprofiler_thread_trace_resource_mode_t` enum, which control when thread trace resources are allocated:
+    * `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_CODE_OBJECT` creates the thread trace queue for a GPU only when the first code object is loaded on that GPU, so GPUs the application never uses get no queue. This is the default.
+    * `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA` allocates resources at HSA initialization, as in previous releases.
+    * The `HIP`, `ALL`, and `DISPATCH` modes are reserved and return `ROCPROFILER_STATUS_ERROR_NOT_IMPLEMENTED`.
+  * New `--att-resource-mode` option (`default`, `hsa`, or `code-object`) sets when thread trace resources are allocated. The default is `code-object`.
+  * SQTT markers and the `rocprof-trace-decoder` Python API are now included in the ROCm installation. Previously, they required building from source.
+  * Extended `att-no-detail` support to gfx1200 and gfx1201, for lower-volume traces that collect occupancy without instruction-level detail.
+* Memory copy tracing for `hsa_amd_memory_async_batch_copy`. Each copy in a batch is reported as its own memory copy record through the existing callback and buffer tracing kinds.
+* New `rocprofiler::sdk::pc_sampling::verify_sample` in the header-only `rocprofiler-sdk/cxx/pc_sampling.hpp`. It checks that a stochastic PC sample is consistent with the instruction at its PC.
+* Tech preview of compute and profiling support on WSL2 for RDNA 3.5 (gfx1150, Strix Point) GPUs, including `rocprofv3` counter collection and thread trace (`--att`). Agent topology is read through `librocdxg`, so `rocprofiler_query_available_agents` returns the same results whether or not HSA has been initialized.
+* CPU agents are now detected on ppc64le (POWER) systems. The `/proc/cpuinfo` parser previously handled only x86 fields.
+* HIP API tracing for `hipKernelSetAttributeForDevice`, `hipLibraryGetModule`, `hipModuleEnumerateFunctions`, and `hipDeviceFlushGPUDirectRDMAWrites`.
+* HSA API tracing for `hsa_amd_enable_high_precision_timestamps`, `hsa_amd_agent_set_attribute`, `hsa_amd_vmem_get_vmem_info`, and `hsa_amd_svm_discard_and_prefetch_batch_async`.
+* Support for the gfx117x, gfx1250-strict, and gfx1250 targets.
+* Documentation on [using `rocprofv3` with LLM inference frameworks](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/how-to/using-rocprofv3-with-inference-frameworks.html).
+
+##### Changed
+
+* **Device-wide counter sampling (SPM)**
+  * rocPD schema 3.0.5 stores SPM counter location on `rocpd_info_pmc`. Each agent and combination of counter, XCC, shader engine, shader array, WGP, and instance has its own pmc id. Location dimensions not provided for a counter are stored as `NULL` and left blank in CSV output. The instance index is always stored. `rocpd_pmc_event` keeps the sample value and points at that id.
+  * Experimental `rocprofiler_spm_dispatch_counting_service_set_agents()` scopes dispatch SPM to selected GPU agents; two SPM contexts can be active together when their agent sets are disjoint (#11968).
+* **Thread trace**
+  * Thread trace now allocates its memory and signals through KFD and copies data with SDMA. If an SDMA copy isn't possible, it falls back to HSA and prints a warning. This fixes several crashes and hangs that occurred when thread trace ran after `main()` returned.
+  * The thread trace decoder now tries the versioned library names (`librocprof-trace-decoder.so.<major>`, then `.so.<major>.<minor>`, then `.so.<major>.<minor>.<patch>`) before falling back to the unversioned name. This lets `rocprofv3 --att` work on installs that ship only the versioned library, such as TheRock runtime wheels.
+  * By default, thread trace now creates its queue on each GPU when the first code object is loaded there, not at HSA initialization. To keep the old behavior, use `--att-resource-mode hsa` or `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA`.
+* Request ROCr high-precision timestamp correlation during HSA registration when GPU timestamp collection is configured and the runtime provides the tools API. Older runtimes and tools that only trace CPU APIs or markers retain the existing behavior.
+* Dispatch counter collection, Advanced Thread Trace (ATT), SPM, and PC sampling no longer register with the HSA queue controller's per-queue callback registry. The write interceptor and async completion path call each service's dispatch hooks explicitly, with agent-scoped active checks so a service configured on one GPU does not pull other GPUs off the fast path (#11967, #11968, #11969, #11970).
+* ROCprofiler-SDK takes the OpenMP tools (OMPT) interface only when a registered client subscribes to OMPT tracing. Otherwise it passes the interface to the next OMPT tool, so a user's own OMPT tool can run alongside ROCprofiler-SDK.
+* Signal-less KFD dispatch-log mode (`ROCPROFILER_KFD_DISPATCH_LOG_SIGNAL_LESS`) now uses version 4 of the KFD dispatch-log stream ABI (profiler ABI version 6).
+* `rocprofv3` checks each stochastic PC sample against the instruction at its PC. Samples that fail the check are dropped and counted as invalid. Samples from unknown code objects are kept as is.
+* `rocprofv3` now rejects multi-pass counter collection from an input file when combined with `--pid` or `--collection-period`. This already applied to multiple `--pmc` flags. The error message names what made the run multi-pass.
+* Extra counter YAML files passed with `-E`/`--extra-counters` are now validated before they are loaded. If a definition is malformed, `rocprofv3` reports the field that is wrong and exits with an error. It previously crashed or hung.
+* Environment variables whose names contain sensitive keywords, such as `password`, `secret`, `token`, or `key`, are no longer written to the rocPD database.
+* When collecting PMC counters on GPUs from gfx1100 up to but not including gfx1250, ROCprofiler-SDK warns if `power_dpm_force_performance_level` is not `profile_standard` or can't be read. Dynamic power and clock scaling can skew counter values. Set the level to `profile_standard` (for example, with `amd-smi set --perf-level STABLE_STD`) for stable results.
+* Queue interposition now issues a memory fence when writing packets to the ring buffer to prevent packets from being read out of order or half-written.
+* Increased the PC sampling buffer size from 4 MB to 64 MB on gfx94x, gfx95x, and gfx125x GPUs, which allocate a buffer per XCC. Many samples were dropped or invalid at reasonable sampling rates with the smaller buffer.
+* Renamed the `ROCPROF_ABORT_FLUSH_TIMEOUT_SECONDS` environment variable to `ROCPROF_FINALIZE_WAIT_TIMEOUT_SECONDS` (default: 10). It sets how long finalization waits for an abort to finish and now also for child processes after a signal. The old name is no longer read, so update any scripts that set it.
+* Tool lifecycle messages are now logged at info level instead of warning. Processes that load a rocprofiler-sdk tool with logging disabled no longer write these messages to stderr.
+
+##### Resolved issues
+
+* When a context that needs packet interception replaces a queue created by `hsa_amd_queue_create` with a system-memory intercept queue, the device-memory placement flags are now cleared in the caller's descriptor. HIP reads these flags back and previously assumed a device-memory ring buffer that profiling had silently replaced.
+* Fixed kernel replay dropping later `--pmc` groups when used with `--kernel-iteration-range`: the range is evaluated once per logical dispatch (pass 0), and later replay passes reuse that decision instead of consuming another iteration each pass (#11335).
+* Fixed a deadlock in queue interposition that occurred when more kernels were linked by barriers than `ROCPROFILER_ASYNC_SIGNAL_HANDLER_THREADS` allowed, for example in a HIP graph fork/join or an all-reduce. A single thread now waits for any completion signal. This also works with older ROCr versions.
+* Fixed `rocprofv3` hanging at normal exit when the application left a long-running child process. Child processes are now waited for only when exiting on a signal, and that wait has a time limit.
+* Fixed `roctxProfilerPause` and `roctxProfilerResume` with `rocprofv3` process attachment. A pause issued before attaching no longer affects the attached session. With `--selected-regions`, collection starts at the first `roctxProfilerResume` after attaching.
+* Fixed two process attachment issues. Reusing a pooled HSA signal leaked the signal's previous handle. Attach callbacks could also be associated with the wrong tool when `rocprofiler_configure` and `rocprofiler_configure_attach` came from different shared objects, for example when PyTorch exports `rocprofiler_configure`.
+* Fixed output path formatting hanging when a placeholder's value contains that same placeholder, for example `-o '%argt%'` with an application argument of `%argt%`, or an environment variable that refers to itself. Such placeholders are now left as written and a warning is printed.
+* Fixed `%q{NAME}` not expanding in output paths. Names such as `results_%q{MPI_RANK}` became `results_` on every rank.
+* Fixed a second copy of rocprofiler-sdk bundled with an application such as PyTorch initializing itself under `rocprofv3`, even though all calls go to the globally preloaded library.
+* Fixed the TCP counter instance count on gfx1250 GPUs, where the two SIMD pairs now share one TCP.
+* Fixed `SQ_WAVES` overcounting on gfx1152 when a desktop session is active. On gfx11, SQ counters now count only VMIDs 8 to 15, which excludes graphics work from the desktop.
+* Fixed the gfxip family label for agents whose name includes an ISA variant suffix, such as `gfx1250-strict`.
+* Fixed `rocprofv3 --pmc` aborting on WSL2, where `/dev/kfd` doesn't exist. PC sampling and KFD-only controls are now reported as unavailable instead.
+* Fixed a build failure with newer HSA headers that define `HSA_ACCESS_PERMISSION_EX`. Execute permissions are now formatted correctly.
+* Fixed internal singletons being constructed in storage that wasn't aligned for their type, which is undefined behavior and could cause split-lock accesses on x86.
+* Fixed `ROCPROFILER_KFD_DISPATCH_LOG_SIGNAL_LESS=true` writing log messages in processes where no tool is registered.
+* Fixed the synchronous device counting sample crashing at exit.
+* Fixed time-based (microsecond) PC sampling intervals being limited by the maximum meant for cycle-based intervals.
+* Fixed a possible crash when a traced HIP API call had a string (`const char*`) argument that was read after the call returned. String arguments are now copied when the call is traced.
+* Fixed `rocprofv3` process attachment failing with framework workloads and Python wheels. Attachment libraries now load on runtime-only installs that lack unversioned library symlinks. Loading the same library through different paths is no longer treated as a conflict. A compatible library next to `rocprofiler-register` is preferred over an unrelated installation.
+* Fixed `rocprofv3 --att` ignoring `ROCPROF_ATT_LIBRARY_PATH`. It searched the whole filesystem from `/` and used the first trace decoder it found.
+* Fixed `rocprofiler-sdk-rocattach` failing to find symbols such as `rocprofiler_register_detach` in the target process when the library's memory mappings didn't line up one-to-one, in address order, with its loadable segments.
 
 ##### Known issues
 
-* Asynchronous operations that use the fastpath backend will not retry on the fallback backend. If asynchronous operations have proper alignment, they now run on the fastpath backend. If the fastpath device lookup fails or the P2P DMA transfer is not supported between the devices, the asynchronous operation will now fail.
+* Thread trace can produce an incorrect binary (.att) size in gfx115x.
 
-#### **hipSOLVER** (3.7.0)
-
-##### Added
-
-* Compatibility-only functions for larft:
-    * `hipsolverDnXlarft_bufferSize`
-    * `hipsolverDnXlarft`
-
-##### Resolved issues
-
-* Fixed `hipsolverDnXpotrs` calling 32-bit potrs instead of 64-bit potrs.
-
-#### **hipSPARSE** (4.8.0)
-
-##### Added
-* The generic API routines `hipsparseSpGEAM_createDescr`, `hipsparseSpGEAM_destroyDescr`, `hipsparseSpGEAM_bufferSize`, `hipsparseSpGEAM_nnz`, and `hipsparseSpGEAM` for sparse matrix-matrix addition (`C = alpha * op(A) + beta * op(B)`), along with the `hipsparseSpGEAMDescr_t` type and the `hipsparseSpGEAMAlg_t` algorithm enum, to match the cuSPARSE 13.3 generic `SpGEAM` API.
-* Batched support to `hipsparseSDDMM` for CSR format.
-
-#### **hipThreads** (1.0.0)
-
-##### Added
-
-* `std::thread`-style concurrency primitives that run inside GPU kernels. `hip::wthread`, `hip::mutex`, `hip::lock_guard`, and `hip::condition_variable`, along with cooperative `pseudo_*` variants, mirror the C++ standard-library concurrency API.
-* A persistent scheduler kernel that accepts work from both the host and the device, with multi-fiber (SIMD width) execution so a single unit of work can run across multiple GPU lanes.
-* Runtime-tunable scheduling. Scheduler concurrency can be configured at runtime through the `HIPTHREADS_VCORES_PER_WGP` environment variable to match your GPU and workload.
-* Cross-platform build and tooling. A CMake build with native HIP language support, a lit-based test suite, and example projects. All are supported on Linux and Windows.
-
-#### **libhipcxx** (3.0.2)
-
-##### Added
-
-* libhipcxx is included in the ROCm Core SDK and is built with TheRock.
-* `<cuda/std/span>`, backported to C++14.
-* `<cuda/std/mdspan>`, backported to C++14.
-* `<cuda/std/concepts>`, backported to C++14. C++20 concepts are usable in C++14 and C++17 through existing SFINAE techniques.
-* Structured bindings for `cuda::std::tuple`, `cuda::std::pair`, and `cuda::std::array`.
-* Experimental `{async_}resource_ref`.
-* Support for Clang 15.
-* Support for using `lerp` in device code.
-
-##### Changed
-
-* Advanced the version to 2.1 with no breaking changes, aligning with Thrust and CUB as the three libraries move toward a unified CUDA C++ Core Libraries (CCCL) repository.
-* Updated the atomics backend to be compatible with `atomic_ref`.
-* Modularized `<type_traits>`, `<iterator>`, `<utility>`, and `<functional>`.
-
-##### Resolved issues
-
-* Fixed errors in `atomic` with small aggregates and enum classes.
-* Corrected CMake install rules.
-* Fixed several issues discovered through tests added for host-only translation units.
-
-#### **MIOpen** (3.6.1)
-
-##### Added
-
-* Support for building kernels with debug symbols. Set `MIOPEN_DEBUG_SYMBOLS_KERNEL=1` to add debug symbols.
-* [BatchNorm] Implements Welford's algorithm for calculating variance in FwdTrainSpatial variant 1
-* [RNN] Added a fused single-layer LSTM forward-inference kernel, gated behind `MIOPEN_DEBUG_RNN_FUSED_INFERENCE` (disabled by default).
-* [Conv] Added a naive reference kernel enabling 3D INT8 forward convolution.
-* [Conv] Added the `ConvHipConv` solver backed by vendored hipconv kernels.
-* [Conv] Added float8 vector type support and deduplicated the shared math kernels.
-* [Conv] Added validated gfx1151 and gfx1200 (Navi) SystemDBs so immediate-mode lookups use tuned entries instead of generic heuristics.
-* [Conv] Added `MIOPEN_DEBUG_DISABLE_SYSTEM_DB` and `MIOPEN_DEBUG_DISABLE_USER_DB` runtime environment variables to disable the system and user databases.
-* [Conv] Enabled Composable Kernel (CK) depthwise convolution on RDNA wave32 GPUs.
-
-##### Changed
-* [Conv] Pruned ASM-GTC NHWC entries from the gfx908, gfx90a, gfx942, and gfx950 system find-databases for shapes the new large-tensor guard rejects, so immediate-mode lookups no longer resolve to a solver that is gated off at runtime. This removes 12,907 entries across the six databases, 4,668 of them rank-1, and empties 81 keys.
-* [Conv] Enabled the Winograd Rage RxS f2x3 solver on gfx950 and updated the gfx942 kernels to v4_6_1/v4_9_1.
-* [Conv] Updated the 3D AI heuristics (solver selection) for gfx942 and gfx950.
-
-##### Removed
-* Removed disabled convolution solver `ConvCkIgemmFwdV6r1DlopsNchw`, `ConvHipImplicitGemmBwdDataV1R1Xdlops`, and `ConvHipImplicitGemmBwdDataV4R1`.
-
-##### Optimized
-* [Conv] Use a single GEMM for point (1x1) output convolutions in all three directions (forward, backward-data, and backward-weights) for both 2D and 3D.
-* [Conv] Optimized the naive backward-data convolution kernel by widening its workgroup to 1024 threads.
-
-##### Resolved issues
-* [Conv] Fixed silently incorrect results from the grouped backward-weights CK xdlops solver when a tensor's element extent exceeds INT_MAX but its individual lengths and strides still fit int32; such problems now use a large-tensor (int64) CK instance instead of overflowing int32 indexing.
-* [Conv] Fixed a HIPRTC compilation failure in the ConvDepthwiseFwd3D (gfx942/gfx950) FP16/BFP16 solver.
-* [BatchNorm] Fixed MIOpen#3900 by implementing Welford's algorithm in FwdTrainSpatial variant 1
-* [Conv] Fixed a batch-split miscalculation that produced incorrect results for large backward-weights (WrW) tensors.
-* [Conv] Fixed a convolution failure on XNACK-unsupported gfx9 APUs (gfx902, gfx909, gfx90c).
-* [BatchNorm] Fixed a device heap-buffer-overflow in the forward spatial `FinalMeanVariance` kernel.
-* [Conv] Fixed incorrect `SetNextValue` polarity in deterministic mode for the grouped backward-data and backward-weights CK solvers.
-* [LRN][LayerNorm] Fixed grid alignment and out-of-bounds thread access on gfx1250.
-* [Conv] Removed stale gfx950 grouped backward-weights SystemDB entries that caused suboptimal solver selection.
-* [Conv][Windows] Fixed system-database path resolution to use the MIOpen module location.
-* Fixed JSON performance logs (`MIOPEN_PERFORMANCE_LOGS`) dropping the last solver evaluated during Find, so naive convolution solvers are no longer omitted.
-* Fixed a build failure when compiling against GCC 15's libstdc++ under C++20.
-
-#### **RCCL** (2.30.7)
-
-##### Added
-
-* Communicator suspend and resume (`ncclCommSuspend`, `ncclCommResume`, `ncclCommMemStats`), which releases the dynamic GPU memory of an idle communicator and reacquires it later without destroying the communicator.
-* accl-profiler profiler plugin for per-collective timing decomposition (`ACCL_PROFILER_OUTPUT_DIR`, `ACCL_PROFILER_MIN_SIZE_BYTES`).
-* DDA `AllReduce` and `AllGather` on the gfx1250 fabric path in both LL and LL128 protocols. `AllReduce` adds one-shot and two-shot tiers per protocol, AllGather one tier each. Gated by `RCCL_DDA_ENABLE` and `RCCL_DDA_LL`, both default on.
-* An experimental gfx1250 Tensor Data Mover path for copy-shaped SIMPLE-protocol transfers. All collectives can reach it, but reduction collectives only qualify on slices that carry no reduction operation. Excluded from the default build: it requires `--enable-tdm-simple` at build time and `RCCL_TDM_SIMPLE_ENABLE=1` at runtime. Reduction into LDS staging buffers and double buffering are not yet implemented.
-* `install.sh --all_unrolls` (`-DBUILD_ALL_UNROLLS=ON`) to generate every unroll factor (1, 2, 4, 8, 16, 32) for the targeted GPU architecture(s), for measuring unroll factors that the default per-arch matrix does not build. The flag also drops the per-architecture pin, so such a build accepts every `RCCL_UNROLL_FACTOR` value on any targeted architecture.
-* The strict `--enable-full-coverage` install flag for unified host + device LLVM source-based code coverage. It requires `--debug`, the device linker, and ROCm 7.15 or newer. The test runner uses the CMake-level `ENABLE_FULL_COVERAGE=AUTO` mode, which falls back to host-only coverage when device instrumentation is unavailable.
-* Enabled the Copy-Engine profiler path (`ncclProfiler_v6`): Copy-Engine events are emitted for CE collectives, and the example profiler plugin reports them.
-
-##### Changed
-
-* Raised the default channel count on single-node gfx1250 to 256 for both collectives and P2P. The count is still clamped by the GPU CU count and by `NCCL_MAX_NCHANNELS` / `NCCL_MAX_CTAS` / `NCCL_MAX_P2P_NCHANNELS`. Multi-node gfx1250 keeps the 64-channel cap on the NET path. `RCCL_SATURATE_P2P_NCHANNELS` now defaults to on for gfx1250 so the per-peer channel count tiles the larger pool; set it to `0` to restore the previous behavior.
-* Narrowed unroll-factor kernel generation: gfx1250 local builds now generate only unroll 32, its runtime default, instead of 8/16/32, and a multi-arch build generates 1/2/4/32 instead of all six factors. This cuts the multi-arch kernel count by roughly a third; use `--all_unrolls` to build 8 and 16.
-* Capped DDA fabric SIMPLE kernels by each GPU's CU count and use the clique-wide minimum so every rank launches matching barrier blocks. `RCCL_DDA_FABRIC_MAXBLOCKS` can lower this cap but cannot raise it; invalid, nonpositive, and excessive values now produce diagnostics.
-* Raised `kDdaMaxNranks` from 72 to 144, extending DDA fabric path support to larger DPX cliques.
-
-##### Resolved issues
-
-* `NCCL_MAX_P2P_NCHANNELS` opt-in is now detected from the environment rather than from the parameter value. The value defaults to `MAXCHANNELS`, so every unset run was treated as an opt-in past the historical `4*CHANNEL_LIMIT` (64) bound. As a result, P2P channels on non-gfx1250 architectures were limited only by the collective channel count, and the gfx950 (MI350) multi-node P2P caps never applied. Set `NCCL_MAX_P2P_NCHANNELS` explicitly to restore a higher bound.
-* Fixed `ncclConfig_t::maxP2pPeers` and `NCCL_P2P_MAX_PEERS` having no effect. The field was plumbed through configuration parsing, validation, the version gate, the communicator-size cap and the rank exchange, but the resolved `comm->p2pMaxPeers` was never read: the NCCL consumer sits inside `ncclTopoComputeP2pChannels`, which RCCL rewrites, so the NCCL 2.30.4 sync landed the producer without the consumer. Both P2P per-peer channel heuristics, the `RCCL_SATURATE_P2P_NCHANNELS` tiling and the multi-node per-peer reduction, now divide by `maxP2pPeers` instead of the full rank count, so limiting the number of concurrent P2P peers raises the number of channels each of those peers receives. Library behavior is unchanged when the knob is left unset, where `maxP2pPeers` resolves to the communicator size. Note that rccl-tests `sendrecv_perf` sets `maxP2pPeers = 2` through the communicator config, so its per-peer channel count, and therefore its reported bandwidth, does change. Two `NCCL_ENV` log lines also named the variable `NCCL_MAX_P2P_PEERS`; the variable is, and always was, `NCCL_P2P_MAX_PEERS`.
-* Fixed `NCCL_CHECK_MODE` having no effect. `commAlloc` reset `comm->checkMode` from the deprecated `NCCL_CHECK_POINTERS` after `NCCL_CHECK_MODE` had already been parsed, so `DEBUG_LOCAL` was only reachable through the deprecated variable and `DEBUG_GLOBAL`, which validates symmetric buffer registration across ranks, was unreachable entirely.
-* `RCCL_UNROLL_FACTOR` is now rejected when the requested unroll factor's device functions were not compiled for the running architecture, instead of being accepted and then dispatching into an empty device function table. Unroll factor 32 is compiled for gfx1250 only, but a multi-arch build reported every unroll factor as available, so requesting it on another GPU crashed on the device. That value now fails communicator initialization with a warning naming the architecture, and the default selection falls back to the highest unroll factor actually compiled for the GPU rather than trusting the heuristic's choice. The WarpSpeed auto-tuner's preference for unroll factor 2 is subject to the same check, so it no longer replaces a validated unroll factor with one this build cannot dispatch. gfx1250 is unaffected and still defaults to 32.
-* Fixed the per-unroll device function tables being misaligned in multi-arch builds. The LL128 `SendRecv` kernel was skipped for unrolls 8/16/32, so every function after `SendRecv` in those tables sat one index below the id the host had computed from the unroll-1 ordering, and the last entry of the host lookup table was dropped. `AlltoAllPivot`, `AlltoAllGda`, `AlltoAllvGda` and `AllGatherV` were affected on gfx1250.
-* Fixed the AMD SMI fabric ABI guard rejecting the layout amd_smi 27.x introduced, which broke the RCCL build outright. The fabric payload union gained a second member, enlarging `amdsmi_fabric_info_t` without moving the v1 fields RCCL reads. RCCL now recognizes that layout, identifies the loaded runtime by how much of the probe buffer it writes, and falls back to the sysfs fabric backend on a 27.x runtime rather than reading a payload it does not model. Fabric topology on such a runtime therefore comes from sysfs, and RCCL warns once per process when it makes that switch.
-* Fixed gfx1250 LL and LL128 comm-FIFO hangs on sibling DPX partitions. The FIFO store now uses system-scope b128 (`RCCL_LL_FIFO_SYS_SCOPE`) alongside the existing system-scope load, preventing hangs at slot reuse starting from the 9th collective operation.
-* Fixed DDA fabric AllToAll validation race by staging send data into scratch with a host-launched `cudaMemcpyAsync` before the peer exchange kernel.
-* Fixed DDA fabric barrier publication race causing sporadic validation errors by using release-acquire semantics on the prologue barrier.
-
-##### Known issues
-* On gfx90a (MI210/MI250/MI250X) with ROCm 7.14 or later, per-launch scratch-memory reclaim in the runtime degrades RCCL performance. Set `HSA_NO_SCRATCH_RECLAIM=1` to restore performance.
-* Collectives that select the RCCL DDA path are not traced by the profiler plugins. `RCCL_DDA_ENABLE=0` can be used to route the collectives through the instrumented path while profiling.
-
-#### **rocBLAS** (5.7.0)
-
-##### Added
-
-* Level 3 grouped batched GEMM functions `rocblas_sgemm_grouped_batched`, `rocblas_dgemm_grouped_batched`, and `rocblas_gemm_grouped_batched_ex` for both C and FORTRAN, including ILP64 API (`_64` name suffix).
-
-##### Changed
-
-* On gfx950, Level 3 `gemm`, `gemm_ex`, and the functions that internally use GEMM, for single- and double-precision now default to the hipBLASLt backend instead of Tensile. Complex types on gfx950 still default to Tensile. `ROCBLAS_USE_HIPBLASLT` continues to force or disable the hipBLASLt backend.
+#### rocRAND (5.2.0)
 
 ##### Optimized
 
-* Improved the performance of Level 3 `gemm` for the problem sizes where `m == 1` or `n == 1` and `batch_count == 1` by using `gemv` kernels, previously applied only in `gemm_ex`. On gfx11 the per-precision heuristics guarding this path are also bypassed, except for the `1x1` case.
-* Improved the performance of Level 2 `gemv` non-transposed (`TransA == N`) for the problem sizes where `m` is small and `n` is large by splitting the reduction across the grid, as the transposed case already does.
+* Added `__restrict__` qualifiers to the device API benchmark, enabling better compiler optimization.
+* Reduced shared memory usage and used the ADDC intrinsic in the Philox generator.
 
 ##### Resolved issues
 
-* Fix incorrect per-batch `alpha`/`beta` values on the ILP64 (`_64`) path for batched and strided-batched `scal` (including `_ex`), `ger`, `geru`, `gerc`, `syr`, `symv`, `hemv`, `sbmv`, and `spmv` when `rocblas_set_batch_alpha_stride` or `rocblas_set_batch_beta_stride` is set in device pointer mode. The 64-bit launchers passed an unoffset scalar pointer into each batch chunk, and `scal` also advanced `alpha` by the vector-length chunk instead of the batch index, so later batches used the wrong scalars.
-* Fix out-of-bounds workspace access in Level 3 batched and strided-batched `syrk` and `herk` on gfx90a and gfx942 with `batch_count` greater than 65536, `k` of at least 500, and `n` below an internal per-architecture threshold, where the GEMM-only path advanced its workspace pointer cumulatively on each pass of the batch sweep and so wrote past the end of the workspace. This could corrupt memory past a workspace supplied through `rocblas_set_workspace` or, when the device memory pool was sized to the requirement reported by a size query, fault, or return incorrect results. The ILP64 (`_64`) forms were unaffected.
-* Fix incorrect results from Level 1 `dot` and `dotc` batched and strided-batched forms, including their `_ex` forms, when `batch_count` is greater than 65535. Every batch item at index 65535 and beyond reduced an empty range and returned zero. The ILP64 (`_64`) forms were unaffected, as they chunk the batch dimension below that limit.
-* Fix incorrect results from Level 3 batched and strided-batched `trsm` on the small left-side device path when `batch_count` is greater than 65535 and each batch item has a distinct `A` pointer. Threads that finished the first grid pass left the kernel, so later passes could not reload `A`. Also fix Level 3 `trmm` out-of-place when `batch_count` is greater than 65535 and a per-batch `alpha` of zero caused the kernel to skip remaining batches. The ILP64 (`_64`) forms were unaffected, as they chunk the batch dimension below that limit.
-* Fix the hipBLASLt backend returning `rocblas_status_internal_error` when an explicit GEMM solution index is unsupported. The call now returns `rocblas_status_invalid_value`, matching Tensile.
-* Fix `ROCBLAS_TENSILE_GEMM_OVERRIDE_PATH` ignoring the solution indices reported by `rocblas_gemm_ex_get_solutions` and `rocblas-gemm-tune`. Tensile solutions are reported as negative indices and were previously discarded when loading an override file, leaving the default kernel selection in place. Raw positive Tensile indices in existing override files are still honored after this fix. An entry which names no Tensile solution is skipped with a warning instead of failing the other overrides in the file.
-* Fix `rocblas-gemm-tune` skipped best solution reporting when it came from the Tensile backend. Problems whose fastest kernel belongs to neither backend, such as the internal gemv kernel, remain unreported as no index can name them.
-* Fix a process hang on Windows exit when profile logging is enabled (`ROCBLAS_LAYER` bit 2, for example `ROCBLAS_LAYER=4`). The profile dump waited on a worker thread that the loader had already terminated during `DLL_PROCESS_DETACH`.
+* Internal kernels are no longer exported from `librocrand.so`.
+* Fixed incorrect values generated by the Sobol method when a single generation request crosses the end of the sequence period. Also fixes an out-of-bounds read in host generation.
+* Fixed an issue with Sobol teardown aborting after `hipDeviceReset`.
+* Fixed the host API scrambled Sobol generators using incorrect scramble constants. The output of `ROCRAND_RNG_QUASI_SCRAMBLED_SOBOL32` and `ROCRAND_RNG_QUASI_SCRAMBLED_SOBOL64` changes as a result.
 
-#### **rocDecode** (1.10.0)
+#### rocSHMEM (3.8.0)
 
 ##### Added
 
-* Support for explicitly loading `librocm_sysdeps_va` via `dlopen`, ensuring complete isolation from the system `libva` library.
+* GDA device code refactor (#7217).
+  * Core GDA device code is now header-only.
+  * Removed indirection and branching when compiled for a single GDA provider.
+  * Reduced the size of device code GDA Queue Pair management objects.
+  * Reduced latency of `rocshmem_quiet` for AMD Pensando IONIC provider.
+    This also reduces the latency of blocking communication calls.
+  * Communications using the GDA backend can now selectively choose at compilation time
+    to reduce the internal GDA Queue Pair object correctness and safety constraints,
+    improving application performance when such relaxations are known to be safe by the caller.
+    These relaxations can be applied independently at each call site.
+    This is currently an internal mechanism and is not exposed by the public rocSHMEM APIs.
+* Added standalone signal APIs:
+  * `rocshmem_signal_add` and `rocshmem_ctx_signal_add`
+  * `rocshmem_signal_set` and `rocshmem_ctx_signal_set`
+  * `rocshmem_signal_wait_until`
+
+##### Deprecated
+
+* Deprecated `rocshmem_signal_fetch_wg` and `rocshmem_signal_fetch_wave`.
+  Use `rocshmem_signal_fetch` instead.
 
 ##### Resolved issues
 
-* Resolved vendored `libva` link issue in samples without extra env vars.
+* Fixed tile RMA operations (`rocshmem_tile_put`, `rocshmem_tile_get`) to correctly apply non-zero `start_coord` values to both the source and destination tensors; previously only the remote tensor was offset, causing incorrect data movement when `start_coord != 0`.
+  Fully-packed column-major tiles are now also classified as `Contiguous`, enabling a single flat `memcpy` instead of per-column copies.
 
-#### **rocFFT** (1.0.40)
-
-##### Added
-
-* Support for the `amdgcnspirv` architecture in client programs, so that they are functional even on gfx architectures for which they have not been explicitly compiled.
-
-* Implemented `rocfft_plan_description_set_load_callback` and `rocfft_plan_description_set_store_callback` APIs, to
-  allow for user-defined device functions to be called when loading input or storing output of a transform. These
-  callback functions are specified during plan creation and allow rocFFT to Just-In-Time (JIT) compile the code into
-  rocFFT's own kernels.
-
-  Also implemented `rocfft_execution_info_set_load_callback_data` and
-  `rocfft_execution_info_set_store_callback_data` APIs to allow
-  specifying the data pointers for these callbacks, which may differ
-  on each execution.
-
-  These APIs are not currently compatible with transforms that have
-  fields or bricks also specified on the same plan description. This
-  support will be added in a future release of rocFFT.
-
-* Support for very large FFTs on gfx1250.
-
-##### Resolved issues
-
-* Addressed a cache-reuse issue with RCCL communicators by giving each communicator its own set of streams.
-* Fixed multi-dimensional real transforms returning wrong results when a complex
-  transform that shares the same internal 2D kernel had been planned earlier in the
-  process and its plan was still alive. A real transform's kernel needs extra
-  twiddle values for its fused real pre/post-processing step, but the 2D twiddle
-  table cache key did not distinguish the two, so the real transform could be handed
-  the complex transform's shorter table.
-* Fixed `rocfft_plan_create` hanging when given a zero FFT length, zero batch, or zero dimensions; these
-  now return `rocfft_status_invalid_dimensions` or `rocfft_status_invalid_arg_value`.
-* Fixed `rocfft_execution_info_set_stream` to derive the device from the stream itself instead of assuming the current device.
-
-* Fixed a potential issue where rocFFT could terminate the calling process if a HIP module failed to load during plan
-  creation.
-
-##### Known issues
-
-* Function pointer callbacks specified via `rocfft_execution_info_set_load_callback` or
-  `rocfft_execution_info_set_store_callback` are not functional on gfx1250 and `rocfft_execute` will fail in this case.
-
-##### Upcoming changes
-
-* The `rocfft_execution_info_set_load_callback` and `rocfft_execution_info_set_store_callback` APIs are now
-  deprecated and will be removed in a future release. They allow for specifying callbacks as device function
-  pointers at plan execution time, but rocFFT cannot optimize the combined code. Instead, users should specify JIT callbacks on plan descriptions.
-
-#### **rocJPEG** (1.10.0)
+#### rocSOLVER (3.38.0)
 
 ##### Added
 
-* `rocJpegDecodeBatchedAsync` and `rocJpegDecodeBatchedSync` APIs to support asynchronous batched JPEG decoding.
-* Support for explicitly loading librocm_sysdeps_va via dlopen, ensuring complete isolation from the system `libva` library.
+* Hessenberg reduction routines
+  * `GEHD2`
+  * `GEHRD`
 
-#### **ROCm Compute Profiler** (3.9.0)
-
-##### Added
-
-* GPU benchmarking and roofline profiling and analysis support for gfx1153 hardware.
-
-* Per-kernel PC sampling analysis.
-  * `rocprof-compute analyze --output-format csv` writes each kernel's disassembly under `per_kernel_pc_sampling/`, with the sample and stall counts on every instruction and the source it was compiled from.
-  * The analysis database records the same per-instruction data, so `--output-format db` can be queried for it.
-
-* Multi-process PC sampling across profile and analyze modes.
-  * Profile mode writes one PID-prefixed `<pid>_ps_file_results.json` per process.
-  * Analyze mode reports every process in a single run, with a `pid` column
-    identifying each one.
-
-* Redesigned the standalone roofline HTML to improve user experience and interactivity.
-
-* A profile-mode warning reporting the active compute and memory partition
-  modes on partition-capable accelerators, noting that analysis derives logical
-  XCD, L2 channel, and HBM channel counts from them.
-
-* [Profile vLLM workloads](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.1.0/how-to/profile/mode.html#profile-vllm-workloads) guide for profiling vLLM workloads and its caveats.
+* Added support for the `gfx1250-strict` architecture.
 
 ##### Changed
 
-* Renamed the PC sampling analysis output: `pc_sampling.csv` is now `pc_sampling_summary.csv`, and the `compute_pc_sampling_view` view is now `compute_pc_sampling_summary_view`.
-
-* ML API tracing options (`--torch-trace`/`--triton-trace`/`--ml-api-trace`) are no longer allowed with PC-sampling-only profiling; the run now fails with an error telling the user to drop the ML API tracing flag or add a counter block, since without counters there is nothing to correlate the markers against.
-
-##### Removed
-
-* Removed the CSV profile output backend and the `--format-rocprof-output` profile mode option. Profiling now always uses the `rocpd` output format, which was already the default.
-  * Removed the `--join-type` profile mode option, which only affected the CSV output format.
-
-* Removed analyze support for workloads produced by the CSV profile backend. Such workloads are now rejected with an error telling you to re-profile with a current release.
+* Clarified in the API documentation that `rocsolver_rfinfo` is an input and output parameter because it can be modified within the functions.
 
 ##### Optimized
 
-* Reduced profile-mode peak memory when writing counter data on large workloads.
-
-* Profile mode now gzip-compresses large counter CSV artifacts to reduce workload directory size.
+* Improved performance of expert eigensolvers `SYEVDX`/`HEEVDX` and `SYGVDX`/`HEGVDX`.
 
 ##### Resolved issues
 
-* Corrected the VGPR allocation label from `RVGPRseq` to `VGPRs` in gfx9 memory charts
+* Fixed failure of `GETRS` for `batch_count > 64 * 1024`.
+* Fixed failure of `GETRF` for `batch_count > 64 * 1024` for certain sizes such as `m = 3` and `n = 4`.
+* Improved kernel launches to detect invalid launch configuration.
+* Fixed sparse functions potentially not using the stream set in the handle.
 
-#### **ROCm Data Center Tool** (1.3.1)
-
-##### Removed
-
-- Removed the unused `GetBlockNameStr()` test helper and its GPU block name map. Nothing called it, and its `static_assert` on `AMDSMI_GPU_BLOCK_LAST` broke the RDC build whenever AMD SMI added an IP block.
-
-##### Resolved issues
-
-- `RDC_FI_GPU_MEMORY_CUR_BANDWIDTH` no longer reports zero under DMA or copy-only memory traffic on GPUs whose instantaneous UMC activity does not reflect DMA transfers. It now derives memory activity from the `mem_activity_acc` accumulator over firmware time, and falls back to the instantaneous `umc_activity` reading when the accumulator or firmware timestamp is unavailable.
-
-- `RDC_FI_ECC_CORRECT_TOTAL`, `RDC_FI_ECC_UNCORRECT_TOTAL`, and `RDC_FI_ECC_DEFERRED_TOTAL` no longer hang when AMD SMI defines GPU blocks above bit 31. The block iteration used a 32-bit counter that wrapped to zero instead of terminating.
-
-<a id="rocgdb-16-3"></a>
-
-#### **ROCm Debugger (ROCgdb)** (16.3)
+#### rocSPARSE (5.1.0)
 
 ##### Added
 
-* For AMD64 and AMDGPU targets, ROCgdb now displays backtrace information for Clang's `__builtin_verbose_trap`. The debug information emitted by the compiler describes the category and message arguments passed to the built-in as a call to an inlined function, and ROCgdb presents it as the context of frame `#0: #0 ... __clang_trap_msg$<category>$<message> () at ...`
-
-* Support for the gfx1103 GPU architecture.
+* Added the `rocsparse_spsort` and `rocsparse_spsort_buffer_size` generic routines, which sort a sparse matrix in place or into a separate target matrix. COO matrices are sorted by row or by column, and CSR and CSC matrices have the indices within each row or column sorted. The values are reordered with the indices. Uniform strided batched matrices are supported, including broadcasting a single source matrix to every sample of the target matrix.
+* Added the `rocsparse_spsort_descr_create`, `rocsparse_spsort_descr_destroy`, and `rocsparse_spsort_set_input` auxiliary routines, together with the `rocsparse_spsort_descr` type and the `rocsparse_spsort_alg`, `rocsparse_spsort_input`, and `rocsparse_spsort_stage` enums.
+* Added support for the `gfx1250-strict` architecture.
+* Added batch support for `rocsparse_sptrsm`.
+* Added the `rocsparse_dnmat_transpose` generic routine for dense matrix transposing.
+* Added the `rocsparse_dnmat_copy_data` generic routine for dense matrix data copying.
 
 ##### Changed
 
-* Improved `maint print address-spaces` command to display properties of address spaces supported by an architecture. For each address space, print its name, DWARF id, address size, null address, and access class.
-
-* The "catch hiperr" feature is now exposed to MI too, with a new `-catch-hiperr` command and related fields in `*stopped` records.
-  See the "HIP Runtime Error" subsection of the "GDB/MI Catchpoint Commands" section in the [ROCgdb manual](https://rocm.docs.amd.com/projects/ROCgdb/en/latest/ROCgdb/gdb/doc/gdb/GDB_002fMI-Catchpoint-Commands.html).
-
-#### **ROCm Systems Profiler** (1.9.0)
-
-##### Changed
-
-- **rocpd is now the default output format.** When no output format is specified,
-profiling data is emitted as a rocpd SQLite database (`rocpd.db`). Perfetto (`.proto`)
-output must now be explicitly enabled via `--output-format proto`. Requires
-ROCProfiler-SDK 1.0.0 or later (ROCm 7.0.0+).
-- `ROCPROFSYS_PROFILE` (timemory backend) now defaults to `false`, since rocpd
-replaces Perfetto as the primary trace output.
-- All built-in presets that perform tracing (`--balanced`, `--detailed`, `--sys-trace`,
-  `--runtime-trace`, `--trace-gpu`, `--trace-hpc`, `--trace-hw-counters`, `--trace-openmp`,
-  `--workload-trace`) now produce a rocpd database by default, because rocpd is the new
-  library default. The `--profile-only` and `--profile-mpi` presets explicitly disable
-  rocpd output to preserve their lightweight, flat-profile-only character.
-- `ROCPROFSYS_SAMPLING_GPUS` is now restricted by the GPUs the ROCm runtime exposes
-  via `ROCR_VISIBLE_DEVICES` / `HIP_VISIBLE_DEVICES`.
-- The `trace-hpc` preset now enables flat profiling (`ROCPROFSYS_FLAT_PROFILE`) by
-  default. Pass `--profile` to get a call-stack-based profile instead.
-- `rocprof-sys-python` no longer accepts abbreviated long options (for example,
-  `--conf` for `--config`). Spell out the full option name.
-
-##### Removed
-
-- Removed the `ROCPROFSYS_BUILD_SQLITE3` CMake option and the in-tree SQLite3/rocpd
-  storage backend. This is now handled by profiler-hub.
-
-- Removed the deprecated `rocprof-sys-user` library and its C API
-  (`rocprofsys_user_*`, `<rocprofiler-systems/user.h>`), including the `user`
-  find_package component, the `examples/user-api` example, the Python
-  `rocprofsys.user` submodule, and the associated pytest coverage. Use
-  ROCTx (`rocprofiler-sdk-roctx`) for general-purpose manual instrumentation
-  (starting/stopping tracing, named regions) instead; see `examples/roctx`
-  for usage.
-
-  - Causal profiling's `ROCPROFSYS_CAUSAL_PROGRESS`/`ROCPROFSYS_CAUSAL_BEGIN`/
-    `ROCPROFSYS_CAUSAL_END` macros are unaffected at the source level: they now
-    run on a new, minimal `rocprof-sys-causal-api` library instead of the removed
-    general-purpose user API. Existing causal profiling code does not need to be
-    edited, but it must be rebuilt against the new headers and library, and
-    projects that requested the old component via
-    `find_package(rocprofiler-systems COMPONENTS user)` must change that to
-    `COMPONENTS causal-api`. The `user` component no longer exists, so requesting
-    it now fails at configure time.
-
-##### Resolved issues
-
-- Fixed `rocprof-sys-python` ignoring the `-c`/`--config` flag. The configuration
-  file is now applied to `ROCPROFSYS_CONFIG_FILE` before the profiler bindings are
-  loaded, so its settings take effect. A configuration file already named by
-  `ROCPROFSYS_CONFIG_FILE` is preserved, and the one given on the command line is
-  appended to it.
-- Pausing sampling now stops the underlying per-thread timers instead of only discarding the samples they produce. Previously a paused sampler kept delivering timer signals, so the profiled application's sleeps were still interrupted throughout a window in which no data was being collected.
-- `ROCPROFSYS_TRACE_DELAY`/`ROCPROFSYS_TRACE_DURATION` now actually gate GPU context startup, producing a real gap in cached GPU/rocpd data. Previously they only suppressed downstream category emission. For GPU-only tracing with no marker domain or trace region configured, the configured delay had no effect at all on when GPU data collection actually began.
-
-#### **ROCprofiler-SDK** (1.4.1)
-
-##### Added
-
-**API:**
-
-  - Advanced Thread Trace (ATT) support in the live attach workflow:
-    - On attach, the SDK registers for code-object iteration and creation callbacks so thread trace operates correctly on code objects that were loaded before the attach occurred.
-    - Makes ATT usable on already-running production workloads without an application restart.
-  - Experimental SQTT quick scan mode for thread trace, enabled through a new CMake flag:
-    - Collects thread trace data without packet insertion or HSA signal manipulation, removing the queue interception overhead required by the standard ATT path.
-    - Individual kernels can be traced without serialization, and the path is independent of the ROCm runtime version.
-    - Experimental: intended to validate the new collection path and to enable out-of-process thread trace and long-kernel tracing in future releases.
-
-  - HIP event tracing: GPU-side barrier tracing for `hipEventRecord` and `hipStreamWaitEvent`:
-    - New tracing kinds `ROCPROFILER_CALLBACK_TRACING_HIP_EVENT` and `ROCPROFILER_BUFFER_TRACING_HIP_EVENT` with operation enum `rocprofiler_hip_event_operation_t` (RECORD, WAIT).
-    - New `--hip-event-trace` CLI flag, automatically enabled by `--hip-trace` and `--hip-runtime-trace`.
-    - rocpd schema bumped to 3.0.4 with new `rocpd_hip_event` table and `hip_events` data view.
-
-**rocprof-trace-decoder:**
-
-  - Python API for decoding Advanced Thread Trace (ATT) / SQTT data directly from Python, without writing a C++ consumer:
-    - Wraps the decoder library and exposes thread trace decoding as a first-class Python interface, with samples demonstrating common workflows.
-    - Useful for analysis scripts, Jupyter notebooks, and custom profiling tools that process ATT output programmatically.
-    - Decoder integration tests have been migrated to Python, simplifying test authoring and making it easier for downstream tools to validate their trace-decoding pipelines.
-
-##### Resolved issues
-
-  - Fixed `rocprofv3` crashing during output generation when a second tool subscribed to code object tracing in the same process, which blocked profiling PyTorch and Triton workloads through rocprofiler-compute.
-  - Fixed `rocprofv3` hanging instead of exiting when a fatal signal arrives while it is already handling one, for example when output generation aborts. It previously left GPU child processes running and required killing the process manually.
-
-#### **ROCr Debug Agent** (2.2.0)
-
-##### Added
-- The `--output` and `--save-code-objects` options now support '%' format
-  tokens to produce the output file names. The `%p`, `%h`, `%t`, `%e`, `%u`,
-  `%g` and `%%` tokens are supported.
-
-#### **rocSHMEM** (3.7.0)
-
-##### Added
-* New APIs:
-    * `rocshmem_tile_{min, max, sum}_reduce{_wave}{_wg}` variants for the IPC backend
-    * `rocshmem_ctx_tile_{min, max, sum}_reduce{_wave}{_wg}` variants for the IPC backend
-* Tile RMA and collectives support for GDA backend.
-* `--num_wf` argument to functional test harness for runtime wavefront size detection on architectures with wave size 32 (gfx1100, gfx1201, gfx1250).
-* LTO inline-remarks comparison toolset and interactive resource-usage dashboards under `scripts/analysis/`.
-* Optimized device API wrappers to remove double-indirection in cross-TU calls, enabling more reliable LTO inlining.
-* Reduced IPC RMA latency by caching the symmetric heap base and size in device constant memory, removing hot-path heap metadata loads in `ipcPeerPtr()`.
-
-##### Changed
-* **Breaking build-system change**: The five compile-time CMake options
-  `USE_HEAP_DEVICE_FINEGRAIN`, `USE_HEAP_DEVICE_UNCACHED`,
-  `USE_HEAP_DEVICE_COARSEGRAIN`, `USE_HEAP_DEVICE_VMM_POSIX`, and
-  `USE_HEAP_DEVICE_VMM_FABRIC` have been removed. Heap allocator
-  selection is now a runtime decision via the environment variable:
-  ```
-  ROCSHMEM_HEAP_ALLOCATOR_TYPE=<uncached|finegrained|coarsegrained|vmm_posix|vmm_fabric>
-  ```
-  The default is architecture-dependent: `finegrained` for gfx1100/gfx1201,
-  `uncached` for all other targets. The VMM allocator sources are now compiled
-  unconditionally (when ROCm ≥ 7.2 / AMD SMI fabric handle support is
-  detected) rather than behind build flags.
-
-##### Resolved issues
-* Fixed `reduce_wg` and `reduce_wave` operations producing incorrect results for some scenarios
-* Fixed compilation of rocSHMEM when using clang++ instead of hipcc
-* Fixed team-relative PE rank computation in GDA alltoallv
-* Fixed `USE_SDMA=ON` builds failing for GDA+IPC with messages > 128 B
-* Fixed libverbs/libmlx5 discovery using `.so.1` versioned symlinks in GDA backend
-* Fixed Broadcom NIC (bnxt) dmabuf CQ/SQ creation
-* Fixed ASan build: correct string size for socket, exclude libhsa
-
-#### **rocSOLVER** (3.37.0)
-
-##### Added
-
-* 2-stage reduction to tridiagonal in the Hermitian eigensolver (SYEVD/HEEVD) and generalized Hermitian eigensolver (SYGVD/HEGVD).
-* Cholesky QR methods for computing the QR factorization of a tall rectangular matrix
-    - CHOLQR (with batched and strided\_batched versions)
-    - CHOLQR_64 (with batched and strided\_batched versions)
-* Hessenberg reduction auxiliary routine
-    * LAHR2
-* 64-bit APIs for existing functions:
-    - LARFT_64
+* Replaced the soon-to-be-deprecated `__hip_atomic_*` builtins with the equivalent `__scoped_atomic_*` builtins.
 
 ##### Optimized
 
-* Improved the performance of sygst/hegst.
-
-#### **rocSPARSE** (5.1.0)
-
-##### Added
-* The `rocsparse_spmat_scale` generic routine for sparse matrix scaling (`C = alpha * A`). It writes to `C` `alpha` times the values of `A` and does not copy the sparsity pattern (`C` is assumed to already have the same sparsity pattern as `A`). `alpha` is passed as a self-describing scalar dense vector descriptor that can reside in host or device memory, so no temporary storage buffer is required. In-place operation (`C == A`) is supported. COO, COO AoS, CSR, CSC, BSR, ELL, Blocked ELL, and SELL formats are supported.
-* The `rocsparse_dnvec_descr_create_scalar` auxiliary routine, which creates a size-one dense vector descriptor for a host or device scalar.
-* Batched support to the SpMM algorithm `rocsparse_spmm_alg_csr_nnz_split` and `rocsparse_spmm_alg_csr_merge_path`.
-* `rocsparse_sddmm` batched support to CSR, CSC, COO, COO AoS, and ELL formats.
-* ELL format support to `rocsparse_spsv` and `rocsparse_sptrsv`.
-* The `rocsparse_solve_mode` enum (`triangular`, `diagonal`) and the `rocsparse_diagonal_modifier` enum (`none`, `absolute`) to enable diagonal-only solves in `rocsparse_sptrsv` and `rocsparse_sptrsm`, together with the `rocsparse_sptrsv_input_solve_mode` / `rocsparse_sptrsm_input_solve_mode` and `rocsparse_sptrsv_input_diagonal_modifier` / `rocsparse_sptrsm_input_diagonal_modifier` set-input values. The modifier selects the function applied to each diagonal value (`d` or `|d|`). CSR and CSC formats are supported.
-
-##### Optimized
-* Optimized architecture-aware launch configurations for RDNA (wave32) and CDNA (wave64) GPUs, improving performance and performance portability for several sparse level 2 and level 3 routines without algorithmic or numerical changes. Affected routines include `rocsparse_spmv` for the CSR adaptive, nnz-split, and LRB algorithms, the COO (SoA and AoS) formats, and the ELL format (`rocsparse_Xellmv`); `rocsparse_Xbsrmv`; `rocsparse_Xbsrxmv`; `rocsparse_Xgemvi`; `rocsparse_Xgemmi`; and `rocsparse_spmm` with the blocked-ELL format.
+* Improved `rocsparse_Xgemvi` performance, especially when `n` is greater than `m`.
+* Improved the performance of the sparse triangular solves and the incomplete factorizations on gfx942 and gfx950. The kernels no longer write back and invalidate the L2 cache for every solved or factorized row. The row results and their completion flags are now exchanged with device-scope atomic stores and loads instead. This affects `rocsparse_spsv` and `rocsparse_sptrsv` (CSR, CSC, COO, and ELL formats), `rocsparse_spsm` and `rocsparse_sptrsm` (CSR, CSC, and COO formats), `rocsparse_Xcsrsv_solve`, `rocsparse_Xcsrsm_solve`, `rocsparse_Xcsrilu0`, `rocsparse_Xcsric0`, `rocsparse_spilu0`, `rocsparse_spic0`, and `rocsparse_spildlt0`. It also affects `rocsparse_Xbsrsv_solve` with block sizes up to 32, `rocsparse_Xbsrilu0` with block sizes up to 8, and `rocsparse_Xbsric0` with block sizes up to 16 and at most 128 blocks per block row. Larger block sizes and `rocsparse_Xbsrsm_solve` keep the previous synchronization, because their kernels reread row results too often for device-scope atomics to be worthwhile.
+* Improved the performance of the analysis of the CSR, CSC, COO, and BSR triangular solves and incomplete factorizations on gfx942 and gfx950. This affects the analysis stage of `rocsparse_spsv`, `rocsparse_sptrsv`, `rocsparse_spsm`, and `rocsparse_sptrsm`, and `rocsparse_Xcsrsv_analysis`, `rocsparse_Xcsrsm_analysis`, `rocsparse_Xbsrsv_analysis`, `rocsparse_Xbsrsm_analysis`, `rocsparse_Xcsrilu0_analysis`, `rocsparse_Xcsric0_analysis`, `rocsparse_Xbsrilu0_analysis`, `rocsparse_Xbsric0_analysis`, and the analysis stage of `rocsparse_spilu0`, `rocsparse_spic0`, and `rocsparse_spildlt0`. Each row previously updated the maximum row length with its own device-scope atomic on a single address, which serializes on these architectures. On gfx942 and gfx950, each row now updates a per-workgroup maximum with a shared-memory atomic, and the last row of the workgroup to finish issues a single device-scope atomic.
+* Optimized `rocsparse_spgemm` (CSR and BSR), `rocsparse_csrgemm_nnz`, `rocsparse_Xcsrgemm`, `rocsparse_csrgemm_symbolic`, `rocsparse_Xcsrgemm_numeric`, `rocsparse_bsrgemm_nnzb`, and `rocsparse_Xbsrgemm` for rows of `C` whose hash table does not fit in shared memory. For BSR matrices with a block dimension greater than 1, only `rocsparse_bsrgemm_nnzb` is affected.
 
 ##### Resolved issues
-* Fixed an integer overflow in `rocsparse_prune_dense2csr_by_percentage` and `rocsparse_prune_csr2csr_by_percentage`, which computed the matrix element count in 32-bit arithmetic. For matrices with more than `INT32_MAX` (~2.1 billion) elements the count overflowed to a negative value, resulting in out-of-bounds pointer construction and an invalid kernel launch grid. The element count is now computed in 64-bit arithmetic.
-* Fixed `rocsparse_spmm` with the segmented COO, atomic COO, segmented-atomic COO, and row-split CSR algorithms, which failed with `hipErrorInvalidConfiguration` for batch counts exceeding 65535 because the batch dimension of the kernel launch grid exceeded the maximum supported grid dimension.
-* Fixed an out-of-bounds write caused by an incorrectly sized temporary buffer in the CSR-to-CSC conversion performed by `rocsparse_sparse_to_sparse` when the row pointer and column index types differ (for example, 64-bit row pointers with 32-bit column indices).
-* Fixed an issue with `rocsparse_spmm` when using the nnz-split algorithm with the CSR or CSC format. The operation produced incorrect results because the segmented-block-reduction helper had shared-memory pointer parameters marked `__restrict__`, while threads in the block must read values written by other threads. The `__restrict__` attribute has now been removed.
 
-#### **rocThrust** (4.7.0)
+* Fixed an out-of-bounds write in `rocsparse_coosort_by_row` and `rocsparse_coosort_by_column` when every row (or column) contains a single non-zero entry. The temporary workspace for the segment computation was one index too small, which could corrupt the segment offsets and produce incorrectly sorted results.
+* Fixed `rocsparse_dense_to_sparse` (including the Blocked ELL format), `rocsparse_Xnnz`, `rocsparse_Xdense2csr`, `rocsparse_Xdense2csc`, `rocsparse_Xcsr2dense`, `rocsparse_Xcsc2dense`, `rocsparse_Xcoo2dense`, and `rocsparse_sparse_to_dense` for matrices with a large number of rows, columns, block rows, or non-zeros. The conversion kernels sized the launch grid from these counts without a grid-stride loop, so a large enough matrix exceeded the 32-bit kernel dispatch limit. The launch grids are now clamped to the device limit and the kernels use grid-stride loops. With 32-bit indices, `rocsparse_Xcsr2dense`, `rocsparse_Xcsc2dense`, and `rocsparse_Xcoo2dense` also computed the dense element count in 32 bits and skipped zero-filling a dense matrix with `2^31` or more elements. The count is now 64-bit, so dense matrices with fewer than `2^32` elements are zero-filled correctly.
+* Fixed an overflow issue in `rocsparse_roti` and the generic `rocsparse_rot` routine. When using 64-bit indices and `nnz` >= `2^32`, a 32-bit element-index calculation could overflow, leaving some elements unrotated and causing low-index elements to be processed with incorrect data. The kernel now computes element indices in 64-bit arithmetic and uses a grid-stride loop with the launch grid clamped to the 32-bit work-item dispatch limit.
+* Fixed an overflow issue in `rocsparse_Xsctr` and the generic `rocsparse_scatter` routine. When using 64-bit indices and `nnz` >= `2^32`, a 32-bit element-index calculation could overflow and prevent some elements from being scattered. The kernel now computes element indices in 64-bit arithmetic and uses a grid-stride loop with the launch grid clamped to the 32-bit work-item dispatch limit.
+* Fixed an integer overflow in the ELL SpMV kernels used by `rocsparse_spmv` (ELL format) and the legacy `rocsparse_Xellmv` routines when operating on matrices with more than `2^32` rows and 64-bit index types. The overflow caused rows beyond the `2^32` boundary to be mapped to incorrect row indices, leaving some output values uncomputed. Row indices are now always computed using the matrix index type.
+* Fixed an out-of-bounds read of the row map in the block-row incomplete factorization kernels used by `rocsparse_spic0` and `rocsparse_spilu0`. Eight of the nine BSR kernels indexed the map with the raw block index and never compared it against the block row count, so a launch grid rounded up past that count read outside the map allocation. All nine now bounds check, which is what the CSR kernels in the same family already did.
+* Fixed `rocsparse_spic0` and `rocsparse_spilu0` silently truncating the launch grid for matrices with more block rows than the launch grid can hold. The block row count is taken from the sparse matrix descriptor as a 64-bit value and was narrowed into the 32-bit grid extent without a clamp. The binding grid.x limit is `(2^32 - 1) / blockDim.x` blocks, because `gridDim.x * blockDim.x` must stay below `2^32`, rather than the 2147483647 that `maxGridSize[0]` reports. All BSR kernels now clamp the extent and recover the remaining block rows inside the kernel.
+* Fixed an integer overflow in `rocsparse_Xgtsv_interleaved_batch`, which produced incorrect results when `batch_count * m` or `batch_stride * m` exceeded `INT32_MAX`. The interleaved layout makes every array `batch_stride * m` elements long, but the solver kernels computed the row offsets into those arrays in 32-bit arithmetic. The offsets are now computed in 64-bit arithmetic.
+* Fixed kernel launches whose `grid.x * blockDim.x` exceeded the 32-bit work-item dispatch limit. CDNA rejects those launches (`hipErrorInvalidConfiguration` / `rocsparse_status_internal_error`). `rocsparse_axpby` (both the `beta` scaling of `y` and the `axpyi` update), `rocsparse_axpyi`, `rocsparse_roti` and `rocsparse_rot`, `rocsparse_scatter`, ELL SpMV (non-transposed and transposed), and COO AoS SpMV (atomic and transposed) now clamp `grid.x` to `(2^32 - 1) / blockDim.x` and cover the remainder with a grid-stride loop.
+* Fixed an integer overflow in the binary search that maps nonzeros to rows in the nnz-split algorithms of `rocsparse_spmv` (CSR) and `rocsparse_spmm` (CSR and CSC). With 32-bit indices and matrices with more than `2^30` rows, the search midpoint `(left + right) / 2` could overflow, causing out-of-bounds reads or incorrect row assignments. The midpoint is now computed as `left + (right - left) / 2`.
+* Fixed an invalid kernel launch in legacy `rocsparse_Xbsr2csr` and the 64-bit BSR-to-CSR conversion, where the 1024-thread kernels overflowed the 32-bit work-item grid limit at about 4.2 million block rows because the grid was not clamped.
+* Fixed an overflow issue in the COO atomic SpMV kernels used by `rocsparse_spmv` and `rocsparse_v2_spmv` for COO and COO AoS matrices. When using 64-bit indices and `nnz` >= `2^32`, a 32-bit element-ID calculation could overflow and prevent some nonzeros from being accumulated. The kernels now compute element IDs in 64-bit arithmetic.
 
-##### Changed
-
-* rocThrust now searches for an existing SQLite3 system library first by default. SQLITE_USE_SYSTEM_PACKAGE can be set to OFF to force a local download of SQLite3. The minimum required version of SQLite3 is 3.51.3.
-* Updated the mechanism in which rocThrust looks for and includes libhipcxx to be compliant with libhipcxx packaging changes in ROCm 10.1.0.
-
-#### **RPP** (3.2.0)
+#### rocWMMA (2.2.2)
 
 ##### Added
 
-* RPP is included in the ROCm Core SDK and is built with TheRock.
-* Single-image processing support for 8 kernels (Brightness, Blend, Box Filter, Crop, Flip, Gaussian Filter, Median Filter, Resize Nearest Neighbor) to match performance with OpenCV.
-* Runtime backend selection parameter (`RppBackend executionBackend`) for all RPP tensor API functions.
-* Backend tracking in `rppHandle_t` to store backend type (HOST or HIP).
-* `RPP_ERROR_HIP_LAUNCH` error type for reporting HIP kernel launch errors.
-* `rpp_BACKEND_TYPE` and `rpp_AUDIO_AUGMENTATIONS_SUPPORT` variables to the RPP CMake package configuration.
+* Added support for the `gfx1250-strict` target.
+* Added community samples for grouped MoE GEMM (`grouped_gemm_moe`), Stream-K GEMM (`simple_gemm_streamk`), and FlashAttention v2 (`simple_flash_attn_v2`).
+* Added host tests for test-kernel generation.
 
 ##### Changed
 
-* All RPP tensor API functions now use a single function signature.
-* Updated all test suite calls to use the unified API with a backend parameter.
-* Enhanced layout validation for image augmentations within the unified API.
-* Test suite dependency on TurboJPEG removed. The test suite now uses `.rgb` files as input.
-* OpenCV and pandas are now optional dependencies for the test suite.
-* `CMakeLists.txt` updated to remove batch PD references.
-* Updated the test suite to use `rpp_BACKEND_TYPE` and `rpp_AUDIO_AUGMENTATIONS_SUPPORT` from the RPP CMake package configuration instead of header parsing.
-* `find_package(rpp)` now automatically passes public include directories to the target link interface.
+* Reduced test build time through shared support objects, split GEMM instantiations, and lower template overhead.
+* Consolidated documentation dependencies in `rocm-docs-core`.
 
-##### Removed
+##### Resolved issues
 
-* BatchPD legacy support.
-* `LEGACY_SUPPORT` compilation flag and all code enclosed within it.
-* OpenCL backend support.
-* Batch PD test suite and installation.
+* Fixed HIP and OpenMP dependency discovery in the installed CMake package.
+* Fixed host/device annotations on constexpr functions for compatibility with stricter Clang diagnostics.
+* Fixed resource leaks in DLRM and hipRTC regression tests.
+
+#### RPP (3.2.0)
+
+##### Added
+
+* Support for building RPP on non-x86 architectures using the SIMDE (SIMD Everywhere) library for portable SIMD intrinsics; x86 builds are unchanged.
+* `rppGetStatusString()` helper that maps an `RppStatus` code to its enumerator name string.
+* Support for the `gfx1250-strict` GPU target in HIP builds.
+* `RPP_RETURN_IF_ERROR` macro in `rppdefs.h` for propagating nested `RppStatus` failures from the enclosing function.
+
+##### Changed
+
+* On non-x86 architectures, `simde` (found via `pkg-config`) is now a required RPP build dependency and is propagated to consumers of the `rpp` CMake package.
+
+##### Resolved issues
+
+* Corrected `rppt_log` to return `RPP_ERROR_INVALID_SRC_DATATYPE` instead of the misleading `RPP_ERROR_INVALID_DST_DATATYPE` for unsupported source datatypes.
+* Fixed error propagation through the HIP kernel dispatcher: kernel launch failures now return `RPP_ERROR_HIP_LAUNCH` instead of `RPP_SUCCESS`, which previously masked launch errors as pixel mismatches on GPUs with no matching kernel binary.

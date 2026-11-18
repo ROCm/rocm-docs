@@ -13,9 +13,25 @@ complete your system configuration and validate the installation.
       :heading-level: 3
 
       Configure environment variables so that ROCm libraries and tools are
-      available either to all users on the system or only to your user account.
+      available in your current shell session, only to your user account, or
+      to all users on the system.
 
       .. tab-set::
+
+         .. tab-item:: Active session setup
+            :sync: env-active-session
+
+            Set the ROCm environment variables for the current shell session
+            only. To keep these settings across sessions, use System-wide setup
+            or User setup. Make sure you're in the ``therock-tarball`` directory
+            before proceeding.
+
+            .. code-block:: bash
+
+               # Make sure you're in the therock-tarball directory before proceeding.
+               export ROCM_PATH=$(pwd)/install
+               export PATH=$PATH:$ROCM_PATH/bin
+               export LD_LIBRARY_PATH=$ROCM_PATH/lib
 
          .. tab-item:: System-wide setup
             :sync: env-system-setup
@@ -177,7 +193,7 @@ complete your system configuration and validate the installation.
 
          .. code-block:: shell-session
 
-            AMDSMI Tool: 27.1.0+7da43026 | AMDSMI Library version: 27.1.0 | ROCm version: 10.1.0 | amdgpu version: 7.1.9.31600000 | ionic version: N/A
+            AMDSMI Tool: 27.2.0+2a0e6e67 | AMDSMI Library version: 27.2.0 | ROCm version: 10.2.0 | amdgpu version: 7.2.3.31700000 | ionic version: N/A
 
    .. selected:: i=pip
 
@@ -457,10 +473,8 @@ complete your system configuration and validate the installation.
       configuration, see `Memory tuning (UMA carveout and GTT)
       <https://rocm.docs.amd.com/projects/amdsmi/en/develop/how-to/amdsmi-cli-tool.html#memory-tuning-uma-carveout-and-gtt>`__.
 
-   .. selected:: fam=all fam=instinct
-
-      To learn about HPC libraries and applications, see
-      :doc:`ROCm HPC SDK </components/hpc-sdk/index>`.
+   To learn about HPC libraries and applications, see
+   :doc:`ROCm HPC SDK </components/hpc-sdk>`.
 
    .. selected:: fam=all fam=instinct fam=radeon
 

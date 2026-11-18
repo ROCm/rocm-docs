@@ -8,6 +8,8 @@ additionalProperties: false
 properties:
   rocm_core_sdk:
     $ref: "#/$defs/coreSDK"
+  rocm_hpc_sdk:
+    $ref: "#/$defs/coreSDK"
 
 $defs:
   meta:

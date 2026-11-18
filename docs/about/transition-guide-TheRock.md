@@ -1,6 +1,6 @@
 # Transition guide from legacy ROCm release stream
 
-The [ROCm Core SDK](https://rocm.docs.amd.com/en/latest/index.html#rocm-core-sdk) is built on TheRock, AMD's new build system. The transition from the legacy ROCm release stream began with [ROCm Core SDK 7.14.0](https://rocm.docs.amd.com/en/docs-7.14.0/about/release-notes.html), the first production release. [ROCm 10.1.0](https://rocm.docs.amd.com/en/latest/about/release-notes.html) is the latest production release. For more on the transition, see [ROCm 7.14: TheRock Goes Production and Expands AMD's AI Software Platform](https://rocm.blogs.amd.com/ecosystems-and-partners/rocm-7.14-blog/README.html).
+The [ROCm Core SDK](https://rocm.docs.amd.com/en/latest/index.html#rocm-core-sdk) is built on TheRock, AMD's new build system. The transition from the legacy ROCm release stream began with [ROCm Core SDK 7.14.0](https://rocm.docs.amd.com/en/docs-7.14.0/about/release-notes.html), the first production release. [ROCm 10.2.0](https://rocm.docs.amd.com/en/latest/about/release-notes.html) is the latest production release. For more on the transition, see [ROCm 7.14: TheRock Goes Production and Expands AMD's AI Software Platform](https://rocm.blogs.amd.com/ecosystems-and-partners/rocm-7.14-blog/README.html).
 
 ## Major changes
 
@@ -16,7 +16,7 @@ The [ROCm Core SDK](https://rocm.docs.amd.com/en/latest/index.html#rocm-core-sdk
   <tbody>
     <tr>
       <td>Installation directory</td>
-      <td><code class="docutils literal notranslate"><span class="pre">/opt/rocm/core-10.1</span></code></td>
+      <td><code class="docutils literal notranslate"><span class="pre">/opt/rocm/core-10.2</span></code></td>
       <td><code class="docutils literal notranslate"><span class="pre">/opt/rocm-7.2/</span></code></td>
       <td>To support additional release streams downstream of the ROCm Core SDK.</td>
     </tr>
@@ -61,7 +61,7 @@ ROCm Core SDK is available in the following distribution formats. For step-by-st
     <tr>
       <td><strong>Tarball archives</strong></td>
       <td>
-        Self-contained install that requires neither root nor a package manager, suited to HPC module systems and custom install locations. Archives follow the naming convention <code>therock-dist-linux-{FAMILY}-{VERSION}.tar.gz</code> (for example, <code>therock-dist-linux-gfx110X-all-{VERSION}.tar.gz</code>). For the <code>{FAMILY}</code> value for your GPU, see <a href="#architecture-specific-packages">Architecture-specific packages available in ROCm 10.1.0</a>.<br><br>
+        Self-contained install that requires neither root nor a package manager, suited to HPC module systems and custom install locations. Archives follow the naming convention <code>therock-dist-linux-{FAMILY}-{VERSION}.tar.gz</code> (for example, <code>therock-dist-linux-gfx110X-all-{VERSION}.tar.gz</code>). For the <code>{FAMILY}</code> value for your GPU, see <a href="#architecture-specific-packages">Architecture-specific packages available in ROCm 10.2.0</a>.<br><br>
         Extract to any directory, then set <code>PATH</code>, <code>LD_LIBRARY_PATH</code>, and <code>ROCM_PATH</code> to point to the extracted location (default: <code>/opt/rocm/core</code>). Tarballs don't create symlinks or resolve dependencies.<br><br>
         Available from <a href="https://repo.amd.com/">repo.amd.com</a>.
       </td>
@@ -97,9 +97,9 @@ stream. For example, hipBLAS and rocBLAS are now combined into one package,
 `amdrocm-blas`. The table below lists the packages, their contents, and the
 corresponding legacy packages.
 
-(linux-packages-available-in-rocm-10-1-0)=
+(linux-packages-available-in-rocm-10-2-0)=
 
-### Linux packages available in ROCm 10.1.0
+### Linux packages available in ROCm 10.2.0
 
 <table class="rocm-docs-table table">
   <thead>
@@ -148,7 +148,7 @@ corresponding legacy packages.
     <tr>
       <td>amdrocm-solver</td>
       <td>rocSOLVER, hipSOLVER</td>
-      <td>rocsolver, hipsolver, rocalution</td>
+      <td>rocsolver, hipsolver</td>
     </tr>
     <tr>
       <td>amdrocm-dnn</td>
@@ -245,8 +245,8 @@ corresponding legacy packages.
 
 Packages are offered in the following variants:
 
-- **For all supported GPUs:** Works across all GPUs supported by ROCm (for example, `apt install amdrocm-core-sdk10.1`).
-- **For a specific GPU architecture:** Smaller install size, but requires you to know the GPU installed in your system (for example, `apt install amdrocm-core-sdk10.1-gfx110x`).
+- **For all supported GPUs:** Works across all GPUs supported by ROCm (for example, `apt install amdrocm-core-sdk10.2`).
+- **For a specific GPU architecture:** Smaller install size, but requires you to know the GPU installed in your system (for example, `apt install amdrocm-core-sdk10.2-gfx110x`).
 
 Installing all GPU architectures is not required. You can install packages for a specific architecture, multiple architectures side by side, or all supported GPU architectures.
 
@@ -254,7 +254,7 @@ When redistributing software built on the ROCm Core SDK (for example, in contain
 
 (architecture-specific-packages)=
 
-### Architecture-specific packages available in ROCm 10.1.0
+### Architecture-specific packages available in ROCm 10.2.0
 
 Tarball archives use *family* names that differ from the deb/rpm package suffixes. The **Tarball family name** column maps each package suffix to its corresponding tarball family.
 
@@ -300,15 +300,15 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
     </tr>
     <tr>
       <td>RDNA3.5</td>
-      <td>-gfx1150<br>-gfx1151<br>-gfx1152</td>
+      <td>-gfx1150<br>-gfx1151<br>-gfx1152<br>-gfx1153</td>
       <td>—</td>
-      <td>AMD Ryzen AI 9 465 / AMD Ryzen AI 9 365 / AMD Ryzen AI 9 HX 475 / AMD Ryzen AI 9 HX 470 / AMD Ryzen AI 9 HX 375 / AMD Ryzen AI 9 HX 370 / AMD Ryzen AI 9 PRO 465 / AMD Ryzen AI 9 PRO HX 475 / AMD Ryzen AI 9 PRO HX 470 / AMD Ryzen AI 9 HX PRO 375 / AMD Ryzen AI 9 HX PRO 370 / AMD Ryzen AI Max 390 / AMD Ryzen AI Max 385 / AMD Ryzen AI Max+ 395 / AMD Ryzen AI Max+ 392 / AMD Ryzen AI Max+ 388 / AMD Ryzen AI Max PRO 390 / AMD Ryzen AI Max PRO 385 / AMD Ryzen AI Max PRO 380 / AMD Ryzen AI Max+ PRO 395 / AMD Ryzen AI 7 450 / AMD Ryzen AI 7 350 / AMD Ryzen AI 7 345 / AMD Ryzen AI 5 340 / AMD Ryzen AI 5 330 / AMD Ryzen AI 7 PRO 450 / AMD Ryzen AI 5 PRO 440 / AMD Ryzen AI 7 PRO 350 / AMD Ryzen AI 5 PRO 340</td>
+      <td>AMD Ryzen AI 9 465 / AMD Ryzen AI 9 365 / AMD Ryzen AI 9 HX 475 / AMD Ryzen AI 9 HX 470 / AMD Ryzen AI 9 HX 375 / AMD Ryzen AI 9 HX 370 / AMD Ryzen AI 9 PRO 465 / AMD Ryzen AI 9 PRO HX 475 / AMD Ryzen AI 9 PRO HX 470 / AMD Ryzen AI 9 HX PRO 375 / AMD Ryzen AI 9 HX PRO 370 / AMD Ryzen AI Max 390 / AMD Ryzen AI Max 385 / AMD Ryzen AI Max+ 395 / AMD Ryzen AI Max+ 392 / AMD Ryzen AI Max+ 388 / AMD Ryzen AI Max PRO 390 / AMD Ryzen AI Max PRO 385 / AMD Ryzen AI Max PRO 380 / AMD Ryzen AI Max+ PRO 395 / AMD Ryzen AI 7 450 / AMD Ryzen AI 7 350 / AMD Ryzen AI 7 345 / AMD Ryzen AI 5 340 / AMD Ryzen AI 5 330 / AMD Ryzen AI 7 PRO 450 / AMD Ryzen AI 5 PRO 440 / AMD Ryzen AI 7 PRO 350 / AMD Ryzen AI 5 PRO 340 / AMD Ryzen AI 7 445 / AMD Ryzen AI 5 435 / AMD Ryzen AI 5 430 / AMD Ryzen AI 5 PRO 435</td>
     </tr>
     <tr>
       <td>RDNA3</td>
       <td>-gfx1100<br>-gfx1101<br>-gfx1102<br>-gfx1103</td>
       <td>gfx110X-all</td>
-      <td>AMD Radeon RX 7700 / AMD Radeon RX 7600 / AMD Radeon PRO V710 / AMD Radeon PRO W7900 / AMD Radeon PRO W7800 / AMD Radeon PRO W7700 / AMD Radeon RX 7900 XT / AMD Radeon RX 7800 XT / AMD Radeon RX 7700 XT / AMD Radeon RX 7700 XE / AMD Radeon RX 7900 XTX / AMD Radeon RX 7900 GRE / AMD Radeon PRO W7800 48GB / AMD Radeon PRO W7900 Dual Slot</td>
+      <td>AMD Radeon RX 7700 / AMD Radeon RX 7600 / AMD Radeon PRO V710 / AMD Radeon PRO W7900 / AMD Radeon PRO W7800 / AMD Radeon PRO W7700 / AMD Radeon RX 7900 XT / AMD Radeon RX 7800 XT / AMD Radeon RX 7700 XT / AMD Radeon RX 7700 XE / AMD Radeon RX 7900 XTX / AMD Radeon RX 7900 GRE / AMD Radeon PRO W7800 48GB / AMD Radeon PRO W7900 Dual Slot / AMD Radeon PRO W7900D / AMD Ryzen 9 270 / AMD Ryzen 7 260 / AMD Ryzen 7 PRO 250 / AMD Ryzen 9 180 / AMD Ryzen 5 125</td>
     </tr>
     <tr>
       <td>RDNA2</td>
@@ -331,13 +331,20 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
 - TransferBench
 - ROCm Optiq
 
+### Moved to HPC SDK
+
+- hipTensor (`amdrocm-hiptensor`)
+- rocALUTION (`amdrocm-rocalution`)
+
+The `amdrocm-hpc-sdk` meta package installs both. For more information, see [AMD ROCm HPC SDK](../components/hpc-sdk).
+
 ### Moved to Standalone/ONNX
 
 - ONNX runtime
 
 ### Removed
 
-- [ROCm SMI](https://rocm.docs.amd.com/en/latest/about/release-notes.html#rocm-smi-deprecation) (replaced by AMD SMI)
+- [ROCm SMI](https://rocm.docs.amd.com/en/docs-10.1.0/about/release-notes.html#rocm-smi-is-removed-from-the-standard-build) (replaced by AMD SMI)
 - ROCm Bandwidth Test (end-of-life as of the TheRock-based ROCm 7.14.0 release; use TransferBench or RVS instead)
 
 ## Notable package relocations
@@ -365,7 +372,7 @@ Tarball archives use *family* names that differ from the deb/rpm package suffixe
       <td rowspan="8" class="stub" style="vertical-align: middle"><strong>ROCm Core SDK</strong></td>
       <td>Math and compute libraries</td>
       <td>CK, hipBLAS, hipBLASLt, hipCUB, hipFFT, hipRAND, hipSOLVER, hipSPARSE/SPARSELt, libhipcxx, MIOpen, rocBLAS, rocFFT, rocRAND, rocSOLVER, rocSPARSE, rocPRIM, rocThrust, rocWMMA</td>
-      <td>hipfort, rocALUTION</td>
+      <td>hipfort, hipTensor (moved to HPC SDK), rocALUTION (moved to HPC SDK)</td>
     </tr>
     <tr>
       <td>Communication libraries</td>

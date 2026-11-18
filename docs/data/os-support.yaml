@@ -13,9 +13,11 @@ _versions:
   - &ubuntu_22_04_hwe { version: "22.04.5", kernel: "HWE 6.8" }
   - &debian_13 { version: "13", kernel: "6.12" }
   - &debian_12 { version: "12", kernel: "6.1.0" }
-  - &rhel_10_2 { version: "10.2", kernel: "6.12.0-211", graphics: true }
+  - &rhel_10_3 { version: "10.3", kernel: "6.12.0-264", graphics: true }
+  - &rhel_10_2 { version: "10.2", kernel: "6.12.0-211" }
   - &rhel_10_0 { version: "10.0", kernel: "6.12.0-55" }
-  - &rhel_9_8 { version: "9.8", kernel: "5.14.0-687", graphics: true }
+  - &rhel_9_9 { version: "9.9", kernel: "5.14.0-741", graphics: true }
+  - &rhel_9_8 { version: "9.8", kernel: "5.14.0-687" }
   - &rhel_9_6 { version: "9.6", kernel: "5.14.0-570" }
   - &rhel_9_4 { version: "9.4", kernel: "5.14.0-427" }
   - &rhel_8_10 { version: "8.10", kernel: "4.18.0-553" }
@@ -23,6 +25,7 @@ _versions:
   - &oracle_9 { version: "9", kernel: "UEK 8" }
   - &oracle_8 { version: "8", kernel: "UEK 7" }
   - &rocky_9 { version: "9", kernel: "5.14.0-570" }
+  - &sles_16_1 { version: "16.1", kernel: "6.12" }
   - &sles_16_0 { version: "16.0", kernel: "6.12" }
   - &sles_15_7 { version: "15.7", kernel: "6.4.0-150700.51" }
   - &windows_11 { version: "11 25H2", graphics: true }
@@ -36,12 +39,12 @@ AMD Instinct:
       versions: [*debian_13, *debian_12]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
     Oracle Linux:
       versions: [*oracle_10, *oracle_9]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI350X:
     Ubuntu:
@@ -50,12 +53,12 @@ AMD Instinct:
       versions: [*debian_13, *debian_12]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
     Oracle Linux:
       versions: [*oracle_10, *oracle_9]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI350P:
     Ubuntu:
@@ -64,10 +67,10 @@ AMD Instinct:
       versions: [*debian_13]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8, *rhel_9_6]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_9_9, *rhel_9_8, *rhel_9_6]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI325X:
     Ubuntu:
@@ -76,12 +79,12 @@ AMD Instinct:
       versions: [*debian_13, *debian_12]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4]
     Oracle Linux:
       versions: [*oracle_10, *oracle_9]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI300X:
     Ubuntu:
@@ -90,14 +93,14 @@ AMD Instinct:
       versions: [*debian_13, *debian_12]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
     Oracle Linux:
       versions: [*oracle_10, *oracle_9, *oracle_8]
     Rocky Linux:
       versions: [*rocky_9]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI300A:
     Ubuntu:
@@ -106,12 +109,12 @@ AMD Instinct:
       versions: [*debian_12]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
     Rocky Linux:
       versions: [*rocky_9]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI250X:
     Ubuntu:
@@ -120,10 +123,10 @@ AMD Instinct:
       versions: [*debian_12]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI250:
     Ubuntu:
@@ -132,27 +135,27 @@ AMD Instinct:
       versions: [*debian_12]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI210:
     Ubuntu:
       versions: [*ubuntu_26_04, *ubuntu_24_04, *ubuntu_22_04]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
     SUSE Linux Enterprise Server:
       <<: *sles
-      versions: [*sles_16_0, *sles_15_7]
+      versions: [*sles_16_1, *sles_16_0, *sles_15_7]
 
   AMD Instinct MI100:
     Ubuntu:
       versions: [*ubuntu_26_04, *ubuntu_24_04, *ubuntu_22_04]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_10_0, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
+      versions: [*rhel_10_3, *rhel_10_2, *rhel_10_0, *rhel_9_9, *rhel_9_8, *rhel_9_6, *rhel_9_4, *rhel_8_10]
     SUSE Linux Enterprise Server:
       <<: *sles
       versions: [*sles_15_7]
@@ -163,7 +166,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -174,7 +177,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -185,7 +188,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
 
@@ -194,7 +197,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
 
@@ -203,7 +206,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -214,7 +217,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -225,7 +228,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -236,7 +239,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
 
@@ -245,7 +248,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -256,7 +259,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -267,7 +270,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
 
@@ -276,7 +279,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
 
@@ -285,7 +288,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -296,7 +299,18 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
+    Windows:
+      versions: [*windows_11]
+    WSL2:
+      versions: ["26.04.1", "24.04.5", "22.04.5"]
+
+  AMD Radeon PRO W7900D:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
+    Red Hat Enterprise Linux:
+      <<: *rhel
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -307,7 +321,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -318,7 +332,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -329,7 +343,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -340,7 +354,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -351,7 +365,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -362,7 +376,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -373,7 +387,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:
@@ -384,7 +398,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
 
@@ -393,7 +407,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
 
@@ -402,14 +416,14 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
 
   AMD Radeon RX 7600:
     Ubuntu:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
 
@@ -418,14 +432,14 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
 
   AMD Radeon PRO V620:
     Ubuntu:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_2, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
 
 AMD Ryzen:
   AMD Ryzen AI Max+ PRO 495:
@@ -771,6 +785,114 @@ AMD Ryzen:
       versions: [*windows_11]
 
   AMD Ryzen 3 210:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 7 PRO 253:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 7 PRO 249:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 7 PRO 217:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 5 PRO 225:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 5 PRO 224:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 5 PRO 216:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 3 PRO 205:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 7 253:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 7 249:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 7 217:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 5 225:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 5 224:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 5 216:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 3 205:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 9 180:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 7 165:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 7 155:
+    Ubuntu:
+      versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
+    Windows:
+      versions: [*windows_11]
+
+  AMD Ryzen 5 125:
     Ubuntu:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe]
     Windows:

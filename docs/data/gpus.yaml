@@ -59,6 +59,9 @@ _mkt_series:
   - &ryzen_200_series
     name: AMD Ryzen 200 Series
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen.html#tabs-1181ea0b44-item-895d56feed-tab
+  - &ryzen_100_series
+    name: AMD Ryzen 100 Series
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen.html
 _architectures:
   - &arch_cdna_4
     name: CDNA 4
@@ -207,6 +210,11 @@ AMD Radeon:
     series: *radeon_pro_w7000_series
     arch: *arch_rdna_3
     mkt_page: https://www.amd.com/en/products/graphics/workstations/radeon-pro/w7900.html
+  AMD Radeon PRO W7900D:
+    gfx: gfx1100
+    series: *radeon_pro_w7000_series
+    arch: *arch_rdna_3
+    mkt_page: https://www.amd.com/zh-cn/products/graphics/workstations/radeon-pro/w7900d.html
   AMD Radeon PRO W7800 48GB:
     gfx: gfx1100
     series: *radeon_pro_w7000_series
@@ -525,6 +533,13 @@ AMD Ryzen:
     arch: *arch_rdna_3_5
     codename: Krackan Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-5-330.html
+  AMD Ryzen 7 PRO 253:
+    gfx: gfx1103
+    series: *ryzen_pro_200_series
+    igpu: Radeon 780M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-253.html
   AMD Ryzen 7 PRO 250:
     gfx: gfx1103
     series: *ryzen_pro_200_series
@@ -532,6 +547,20 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-250.html
+  AMD Ryzen 7 PRO 249:
+    gfx: gfx1103
+    series: *ryzen_pro_200_series
+    igpu: Radeon 780M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-249.html
+  AMD Ryzen 7 PRO 217:
+    gfx: gfx1103
+    series: *ryzen_pro_200_series
+    igpu: Radeon 740M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-217.html
   AMD Ryzen 5 PRO 230:
     gfx: gfx1103
     series: *ryzen_pro_200_series
@@ -539,6 +568,20 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-5-pro-230.html
+  AMD Ryzen 5 PRO 225:
+    gfx: gfx1103
+    series: *ryzen_pro_200_series
+    igpu: Radeon 760M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-5-pro-225.html
+  AMD Ryzen 5 PRO 224:
+    gfx: gfx1103
+    series: *ryzen_pro_200_series
+    igpu: Radeon 760M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-5-pro-224.html
   AMD Ryzen 5 PRO 220:
     gfx: gfx1103
     series: *ryzen_pro_200_series
@@ -546,6 +589,13 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-5-pro-220.html
+  AMD Ryzen 5 PRO 216:
+    gfx: gfx1103
+    series: *ryzen_pro_200_series
+    igpu: Radeon 740M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-5-pro-216.html
   AMD Ryzen 5 PRO 215:
     gfx: gfx1103
     series: *ryzen_pro_200_series
@@ -560,6 +610,13 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-3-pro-210.html
+  AMD Ryzen 3 PRO 205:
+    gfx: gfx1103
+    series: *ryzen_pro_200_series
+    igpu: Radeon 740M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-3-pro-205.html
   AMD Ryzen 9 270:
     gfx: gfx1103
     series: *ryzen_200_series
@@ -574,6 +631,13 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-7-260.html
+  AMD Ryzen 7 253:
+    gfx: gfx1103
+    series: *ryzen_200_series
+    igpu: Radeon 780M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-7-253.html
   AMD Ryzen 7 250:
     gfx: gfx1103
     series: *ryzen_200_series
@@ -581,6 +645,20 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-7-250.html
+  AMD Ryzen 7 249:
+    gfx: gfx1103
+    series: *ryzen_200_series
+    igpu: Radeon 780M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-7-249.html
+  AMD Ryzen 7 217:
+    gfx: gfx1103
+    series: *ryzen_200_series
+    igpu: Radeon 740M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-7-217.html
   AMD Ryzen 5 240:
     gfx: gfx1103
     series: *ryzen_200_series
@@ -595,6 +673,20 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-5-230.html
+  AMD Ryzen 5 225:
+    gfx: gfx1103
+    series: *ryzen_200_series
+    igpu: Radeon 760M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-5-225.html
+  AMD Ryzen 5 224:
+    gfx: gfx1103
+    series: *ryzen_200_series
+    igpu: Radeon 760M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-5-224.html
   AMD Ryzen 5 220:
     gfx: gfx1103
     series: *ryzen_200_series
@@ -602,6 +694,13 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-5-220.html
+  AMD Ryzen 5 216:
+    gfx: gfx1103
+    series: *ryzen_200_series
+    igpu: Radeon 740M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-5-216.html
   AMD Ryzen 3 210:
     gfx: gfx1103
     series: *ryzen_200_series
@@ -609,3 +708,38 @@ AMD Ryzen:
     arch: *arch_rdna_3
     codename: Hawk Point
     mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-3-210.html
+  AMD Ryzen 3 205:
+    gfx: gfx1103
+    series: *ryzen_200_series
+    igpu: Radeon 740M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/200-series/amd-ryzen-3-205.html
+  AMD Ryzen 9 180:
+    gfx: gfx1103
+    series: *ryzen_100_series
+    igpu: Radeon 780M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/100-series/amd-ryzen-9-180.html
+  AMD Ryzen 7 165:
+    gfx: gfx1103
+    series: *ryzen_100_series
+    igpu: Radeon 760M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/100-series/amd-ryzen-7-165.html
+  AMD Ryzen 7 155:
+    gfx: gfx1103
+    series: *ryzen_100_series
+    igpu: Radeon 740M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/100-series/amd-ryzen-7-155.html
+  AMD Ryzen 5 125:
+    gfx: gfx1103
+    series: *ryzen_100_series
+    igpu: Radeon 740M
+    arch: *arch_rdna_3
+    codename: Hawk Point
+    mkt_page: https://www.amd.com/en/products/processors/laptop/ryzen/100-series/amd-ryzen-7-125.html
