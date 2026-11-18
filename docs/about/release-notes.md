@@ -451,21 +451,23 @@ For a historical overview of ROCm component updates, see the {doc}`ROCm consolid
 
 ROCm known issues are noted on {fab}`github` [GitHub](https://github.com/ROCm/TheRock/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Verified%20Issue%22). These issues will be fixed in a future ROCm release. For known issues related to individual components, review the [ROCm component changelogs](#rocm-component-changelogs).
 
+(wsl2-illegal-memory-access)=
 ### AI workloads might fail with an illegal memory access error on AMD Ryzen APUs under WSL2
 
-AI workloads running under WSL2 on AMD Ryzen APUs (gfx1150, gfx1151, gfx1153) might fail during execution with an illegal memory access error in ROCm 10.2.0. Observed error messages include:
+AI workloads running under WSL2 with ROCm 10.2.0 on AMD Ryzen APUs (gfx1150, gfx1151, gfx1152, gfx1103, and gfx1153) might fail with an illegal memory access error. The failure terminates the workload and has been observed with PyTorch and llama.cpp.
+
+Observed error messages include:
 
 ```
 ROCm error: an illegal memory access was encountered
-
 torch.AcceleratorError: CUDA error:
 an illegal memory access was encountered
-
 HSA_STATUS_ERROR_MEMORY_APERTURE_VIOLATION:
 The agent attempted to access memory beyond the largest legal address.
-
 GPU fence timeout after 30000ms — possible device fault
 ```
+
+As a workaround, use ROCm 10.1.0 or the latest ROCm 10.3.0 nightly build.
 
 ### ComfyUI workloads might show lower performance on some AMD Radeon GPUs and Ryzen APUs
 
@@ -476,20 +478,71 @@ ComfyUI-based AI workloads using the AOTriton backend might show lower performan
 Hugging Face model training workloads might see lower training throughput on AMD Instinct MI355X and MI350X (gfx950) GPUs, compared to builds that use AOTriton 0.11.2b. Impacted models include BERT, DistilBERT, RoBERTa-large, and GPT-2. As a workaround, rebuild PyTorch and pin AOTriton to version 0.11.2b.
 
 ```{note}
-This issue is partially addressed in ROCm 10.2.0 for some Hugging Face models. See the [ROCm 10.2.0 resolved issues](hugging-face-model-training-throughput-might-drop-on-amd-instinct-mi350-series-gpus) entry for details.
+This issue is partially addressed in ROCm 10.2.0 for some Hugging Face models. See the [ROCm 10.2.0 resolved issues](hugging-face-model-training-throughput-for-specific-model-is-restored-on-amd-instinct-mi350x) entry for details.
 ```
 
 ### rocHPL throughput might regress on AMD Instinct MI325X GPUs
 
-rocHPL workloads running on AMD Instinct MI325X GPUs (gfx942) in an 8-GPU configuration might see approximately 19% lower throughput compared to previous ROCm releases, dropping from roughly 570,000 GFLOPS to 463,000 GFLOPS. As a workaround, set `ROCBLAS_USE_HIPBLASLT=0` to use the Tensile backend instead of hipBLASLt for rocHPL:
+rocHPL workloads running on AMD Instinct MI325X GPUs (gfx942) in an 8-GPU configuration might see lower throughput compared to previous ROCm releases, dropping from roughly 570,000 GFLOPS to 463,000 GFLOPS. As a workaround, set `ROCBLAS_USE_HIPBLASLT=0` to use the Tensile backend instead of hipBLASLt for rocHPL:
 
 ```
 ROCBLAS_USE_HIPBLASLT=0 <rocHPL command>
 ```
 
-### ROCm Compute Profiler and ROCm Systems Profiler are unavailable on WSL2
+### GPU Mode2 reset might time out on AMD Instinct MI300A GPUs
 
-ROCm Compute Profiler and ROCm Systems Profiler don't support WSL2, although the ROCm Core SDK supports WSL2 for other components. To profile with these tools, use a native Linux system.
+When a workload triggers a hardware hang or RAS error on AMD Instinct MI300A GPUs (gfx942), the amdgpu Mode2 reset used to recover the GPU might time out with `failed to send mode2 reset, error code -62`. After the timeout, the SMU stops responding, and subsequent GPU management calls fail with `amdsmi_init() timed out after 60s. The GPU driver may be unresponsive.`
+
+### AMD Instinct MI300A systems might reboot spontaneously on RHEL 10.3
+
+AMD Instinct MI300A systems might reboot spontaneously on Linux kernels that enable the `X86_FEATURE_INVLPGB` broadcast TLB flush, including RHEL 10.3. This happens because the `TLBSYNC` instruction used by the broadcast TLB flush sometimes hangs on MI300A, triggering a CPU machine check watchdog that sync-floods the data fabric. As a workaround, add `clearcpuid=419` to the kernel command line.
+
+### CRIU restore fails on AMD Instinct MI350X GPUs
+
+CRIU restore fails for GPU workloads on AMD Instinct MI350X GPUs. When `criu restore` is called for any workload that creates a GPU queue, the `AMDKFD_IOC_CRIU_OP` restore ioctl returns `Invalid argument` and restore exits with:
+
+```
+amdgpu_plugin: Restore ioctl failed: Invalid argument
+amdgpu_plugin: Failed to restore (ret:-1)
+Restoring FAILED.
+```
+
+Checkpoint operations (`criu dump`) complete successfully; only restore is affected. No workaround is available.
+
+### An in-place amdgpu-dkms upgrade might fail to load the new driver on Linux
+
+When upgrading `amdgpu-dkms` in place without rebooting, `modprobe -r amdgpu` does not unload the full module stack, and the old `amdttm` and `amdkcl` modules stay resident in memory. Loading the new driver then fails with `modprobe: ERROR: could not insert 'amdgpu': Invalid argument` because `amddrm_ttm_helper` rejects stale symbol versions exported by the leftover modules.
+
+As a workaround, unload all remaining amdgpu-related modules before reinstalling the driver:
+
+```
+sudo modprobe -r amdgpu amdttm
+lsmod | grep -E '^(amdgpu|amdxcp|amddrm|amdttm|amd_sched|amdkcl)'
+```
+
+If any modules remain listed, unload each with `sudo modprobe -r <module_name>`, remove the old driver packages, install the new packages, and load the driver with `sudo modprobe amdgpu`.
+
+### AGFHC rocTwitch and Sprites subtests might fail on AMD Instinct GPUs
+
+The AGFHC Sprites subtest might fail with `TEST_GFX_SPRITES_FAIL`, reporting `NO_FREE_RESOURCE (0x5)` from the embers allocator and terminating `firexs2` with return code 255. This failure occurs only when the rocTwitch and Sprites subtests run together; running either subtest independently completes successfully.
+
+### RCCL communicator initialization fails when each rank is bound to a single GPU
+
+In RCCL jobs where each rank sees only one GPU — for example, with Slurm's `--gpu-bind=closest`, or per-rank `HIP_VISIBLE_DEVICES` or `ROCR_VISIBLE_DEVICES` settings — communicator initialization fails. `ncclCommInitRank` returns `ncclInternalError`, which applications and rccl-tests report as "internal error - please report this issue to the NCCL developers". Jobs where each rank sees two or more GPUs, or all GPUs on the node, are not affected.
+
+As a workaround, let every rank see all GPUs on the node. The application is then responsible for selecting the GPU closest to its CPU binding; applications that do not will lose CPU–GPU locality. Alternatively, rebuild RCCL from a source revision that contains the fix and preload it ahead of the packaged library, which preserves the existing binding.
+
+### VCN decode might hang on AMD Instinct MI325X GPUs
+
+Video decode workloads using rocDecode on AMD Instinct MI325X GPUs might hang intermittently when decode bursts are separated by idle gaps of approximately one second or longer. This happens because each idle gap triggers a VCN power-gate cycle; on power-up, the VCN firmware might read the ring-buffer size register before the hardware restores it, reading 0 and preventing submitted commands from completing. Only the affected VCN instance stalls; the remaining VCN instances on the GPU continue operating. In distributed training jobs that decode video in the input pipeline, the stalled rank stops progressing and the job fails with a collective-communication timeout. This issue will be resolved in a VCN firmware update for an upcoming Best Known Configuration (BKC) release.
+
+### rocdecode VP9 video decoding might cause a VCN ring timeout and GPU reset on AMD Instinct MI350 Series GPUs
+
+Decoding VP9 video clips using `rocdecode` on AMD Instinct MI350 Series (gfx950) GPUs might cause the VCN video-decode engine to hang with a ring timeout. The ring reset fails, triggering a full GPU mode 1 reset. This occurs because of a regression in the VCN firmware. This issue will be resolved in a VCN firmware update for an upcoming Best Known Configuration (BKC) release.
+
+### Packed FP32 instructions might produce unexpected data on AMD Instinct MI350X GPUs
+ 
+On AMD Instinct MI350X GPU (gfx950), kernels that use `v_pk_add_f32`, `v_pk_mul_f32`, or `v_pk_fma_f32` instructions with certain `op_sel` encodings can produce unexpected results. As a workaround, the LLVM compiler corrects these encodings by commuting operands for packed ADD/MUL and splitting packed FMA into two scalar `v_fma_f32` instructions. The assembler also rejects invalid `op_sel` values in hand-written assembly. Kernels compiled with an earlier ROCm release that contain the affected encodings must be recompiled to benefit from this workaround.
 
 ## ROCm resolved issues
 
