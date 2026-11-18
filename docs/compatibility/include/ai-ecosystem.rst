@@ -80,6 +80,18 @@
    .. matrix-row::
       :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
 
+      .. matrix-cell:: SGLang
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
+
+      .. matrix-cell:: 0.5.21
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
+
+      .. matrix-cell:: 3.14
+         :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1201 gfx=gfx1200 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103
+
+   .. matrix-row::
+      :show-cond: os=ubuntu os=debian os=rhel os=oracle-linux os=rocky-linux os=sles
+
       .. matrix-cell:: TensorFlow
          :rowspan: 2
          :show-cond: gfx=gfx950 gfx=gfx942 gfx=gfx1200 gfx=gfx1201 gfx=gfx1100 gfx=gfx1101 gfx=gfx1102 gfx=gfx1103

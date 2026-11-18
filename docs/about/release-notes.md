@@ -104,6 +104,7 @@ This release enables support for the following frameworks:
 * PyTorch 2.15.0
 * JAX 0.11.2
 * vLLM 0.32.0
+* SGLang 0.5.21
 
 The updated framework support replaces the previous PyTorch 2.12.0, JAX 0.11.0, and vLLM 0.29.0 support.
 
@@ -541,7 +542,7 @@ Video decode workloads using rocDecode on AMD Instinct MI325X GPUs might hang in
 Decoding VP9 video clips using `rocdecode` on AMD Instinct MI350 Series (gfx950) GPUs might cause the VCN video-decode engine to hang with a ring timeout. The ring reset fails, triggering a full GPU mode 1 reset. This occurs because of a regression in the VCN firmware. This issue will be resolved in a VCN firmware update for an upcoming Best Known Configuration (BKC) release.
 
 ### Packed FP32 instructions might produce unexpected data on AMD Instinct MI350X GPUs
- 
+
 On AMD Instinct MI350X GPU (gfx950), kernels that use `v_pk_add_f32`, `v_pk_mul_f32`, or `v_pk_fma_f32` instructions with certain `op_sel` encodings can produce unexpected results. As a workaround, the LLVM compiler corrects these encodings by commuting operands for packed ADD/MUL and splitting packed FMA into two scalar `v_fma_f32` instructions. The assembler also rejects invalid `op_sel` values in hand-written assembly. Kernels compiled with an earlier ROCm release that contain the affected encodings must be recompiled to benefit from this workaround.
 
 ## ROCm resolved issues
