@@ -123,268 +123,108 @@ HIP adds new APIs to give you more control over modules, libraries, and kernels:
 * `hipLibraryGetModule` returns the module handle associated with a library.
 * `hipKernelSetAttributeForDevice` sets a device-wide attribute for a kernel on a specific device.
 
-##### Compile-time API version selection added
-
-The new `HIP_TARGET_API_VERSION` macro lets you select the target HIP API version at compile time, which helps maintain source compatibility for applications written against an earlier API version. The default is `700`, which matches the current HIP 7 release, and it changes only at a major ROCm release.
-
-Setting the macro has no effect today, but we recommend defining it explicitly so your build keeps compiling unchanged when the default moves. Because the macro is set per translation unit, you can adopt a future major HIP API version incrementally, one part of your build at a time.
-
-```{note}
-When HIP 8 is introduced in a future release, this macro will initially be the only way to access it: define `HIP_TARGET_API_VERSION` as `800` for one target while the rest of your build stays on `700`. For example, HIP 8 aliases `hipMemAdvise` to `hipMemAdvise_v2`, which takes a `hipMemLocation` structure instead of a device ID.
-```
-
-For more information, see the [HIP section](#hip-7-17-0) in the ROCm component changelogs.
-
 ### Profiling and debugging tools
 
 #### ROCprofiler-SDK feature highlights
 
-ROCprofiler-SDK improves profiling across the toolchain. This release adds device-wide SPM counter sampling for gfx1200, gfx1201, and gfx1250, experimental WSL2 profiling for validated RDNA 3.5 systems, and Agent Skills that let AI coding assistants run and interpret profiling workflows. It also makes thread trace more reliable for applications that span many GPUs or processes, improves timestamp alignment and PC sampling accuracy, and extends HIP and HSA API tracing. Diagnostics and input validation make problems easier to spot and avoid. The following sections describe each change.
+The following are notable changes to ROCprofiler-SDK and `rocprofv3`. For the full list, see the [ROCprofiler-SDK changelog](#rocprofiler-sdk-1-4-2).
 
 ##### Device-wide counter sampling added
 
-Device-wide sampling lets you observe GPU counter behavior across a whole run, even when no kernels are running, with more control over the sampling interval. ROCprofiler-SDK adds a device counting mode for the Streaming Performance Monitor (SPM), which samples counters on a GPU for as long as profiling is active, whether or not kernels are running. It also adds SPM support for gfx1200, gfx1201, and gfx1250, lets you set the sample interval in reference-clock cycles, limits dispatch SPM to selected GPUs, and records where on the GPU each counter sample was measured in the rocpd database.
+Device-wide sampling lets you observe GPU counter behavior throughout a run, even when no kernels are running. The new device counting mode for the Streaming Performance Monitor (SPM) samples counters on a GPU for as long as profiling is active. SPM now supports gfx1200, gfx1201, and gfx1250, and on those GPUs you can set the sample interval in reference-clock cycles.
 
-* Device counting mode samples SPM counters on an agent for as long as the context is active, independent of any kernel dispatch. Use `rocprofiler_configure_spm_device_counting_service` to collect the samples as `rocprofiler_spm_counter_record_t` records, which carry no dispatch information. This lets you observe device-level counter behavior across the whole run, including intervals in which nothing is dispatched.
+##### Thread trace reliability and timestamps improved
 
-* SPM is now supported on gfx1200, gfx1201, and gfx1250. On gfx1250, samples also report the shader array and workgroup processor (WGP). These are encoded in the counter instance ID, alongside XCC, shader engine, and instance.
+Thread trace is more reliable for applications that use many GPUs or processes. It now creates queues only on GPUs that load a code object, and its timestamps line up with API traces. SQTT markers and the `rocprof-trace-decoder` Python API now ship with ROCm, so you no longer need to build them from source.
 
-* The new `ROCPROFILER_SPM_PARAMETER_TYPE_SAMPLE_INTERVAL_REFCLK_CYCLES` parameter sets the SPM sample interval in reference-clock cycles instead of shader-clock cycles. The sampling rate then doesn't move with the shader clock. The parameter is supported on gfx1200, gfx1201, and gfx1250. Other agents return `ROCPROFILER_STATUS_ERROR_INVALID_ARGUMENT`. Agent configuration queries now report shader-clock and reference-clock intervals separately. `rocprofv3 --spm-sample-interval-unit` accepts the new `refclk_cycles` value.
+##### Other enhancements
 
-* The new experimental `rocprofiler_spm_dispatch_counting_service_set_agents()` function scopes dispatch SPM to a selected set of GPU agents. Two SPM contexts can now be active at the same time when their agent sets don't overlap.
-
-* SPM counter location is now stored on `rocpd_info_pmc` in rocpd schema 3.0.5. Each combination of agent, counter, XCC, shader engine, shader array, WGP, and instance has its own pmc id. `rocpd_pmc_event` stores the sample value and points at that id. Location dimensions that don't apply to a counter are stored as `NULL` and left blank in CSV output. The instance index is always stored.
-
-##### Thread trace improvements
-
-ROCprofiler-SDK improves thread trace reliability and scalability for applications that use many GPUs or processes, and makes trace data easier to correlate with API traces and to decode on standard ROCm installations. Thread trace now creates queues only on GPUs that load a code object, and adds timestamps that line up with API traces. SQTT markers and the `rocprof-trace-decoder` Python API now ship with ROCm, and `rocprofv3 --att` works on installations that ship only the versioned decoder library.
-
-* Thread trace now allocates its memory and signals through KFD and copies trace data with SDMA. When an SDMA copy isn't possible, it falls back to HSA with a warning. This removes thread trace's dependence on HSA resource lifetime and fixes crashes and hangs that occurred when thread trace ran after `main()` returned.
-
-* The new `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE` parameter and the `rocprofiler_thread_trace_resource_mode_t` enum control when thread trace queues are allocated. Thread trace previously created a queue on every visible GPU at HSA initialization. This produced a large number of unused queues for applications spanning many processes or jobs that expose dozens of devices but use few of them. The modes are:
-  * `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_CODE_OBJECT` creates the queue for a GPU only when the first code object is loaded on it, so GPUs the application never uses get no queue. This is the new default.
-  * `ROCPROFILER_THREAD_TRACE_PARAMETER_RESOURCE_MODE_HSA` allocates at HSA initialization, matching previous releases.
-  * The `HIP`, `ALL`, and `DISPATCH` modes are reserved and return `ROCPROFILER_STATUS_ERROR_NOT_IMPLEMENTED`.
-
-* In `rocprofv3`, select the resource mode with `--att-resource-mode` (`default`, `hsa`, or `code-object`). To restore the previous allocation behavior, use `--att-resource-mode hsa`.
-
-* The new `start_timestamp` and `end_timestamp` fields, of type `rocprofiler_thread_trace_timestamp_t`, in `rocprofiler_thread_trace_shader_data_t` each carry a GPU clock value and a system clock value. Thread trace data can now be lined up directly with API traces on a common timeline.
-
-* SQTT markers now ship as part of the ROCm compiler package, so they're present in a standard ROCm installation. Previously, they required building the compiler from source.
-
-* The `att-no-detail` parameter is now supported on gfx1200 and gfx1201. It collects occupancy data without instruction-level detail, for lower-volume traces.
-
-* `rocprofv3 --att` now works on installations that ship only the versioned decoder library, such as TheRock runtime wheels. The thread trace decoder is now resolved by versioned library name (`librocprof-trace-decoder.so.<major>`, then `.so.<major>.<minor>`, then `.so.<major>.<minor>.<patch>`) before falling back to the unversioned name.
-
-* The `rocprof-trace-decoder` Python API now ships with ROCm. It was previously available only from the `rocm-systems` sources. Decoding ATT/SQTT data from Python therefore works against a standard installation.
-
-For details, see [Using thread trace](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/how-to/using-thread-trace.html) and [ROCprof Trace Decoder and thread trace APIs](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/api-reference/thread_trace.html).
-
-##### WSL2 profiling support added for RDNA 3.5 (experimental)
-
-ROCprofiler-SDK and `rocprofv3` can now profile HIP and HSA workloads on WSL2, including counter collection and thread trace (`--att`). Compute support itself is provided by the ROCm runtime. These changes add the profiling path on top of it. Support is validated on RDNA 3.5 (gfx1150, Strix Point). Other gfx115x SKUs weren't explicitly validated.
-
-On WSL, `rocprofiler_query_available_agents` returns consistent agent information whether or not the HSA runtime has initialized. `rocprofv3-avail` and counter metric lookup both require this. To provide it, the KMT topology is read up front through `librocdxg`, using the same thunk interface as the HSA runtime, and an agent is published only once all of its required topology information has been collected. Native Linux continues to use the existing KFD/sysfs path for agent enumeration. A few shared error-handling fixes from this work also apply to Linux.
-
-WSL2 provides GPU access through `/dev/dxg` rather than `/dev/kfd`, so paths that assume a native KFD device node now degrade cleanly. `rocprofv3 --pmc` no longer aborts when `/dev/kfd` is absent, and PC sampling and KFD-only controls are reported as unavailable. For thread trace, basic ATT capture and decoding are validated on gfx1150. Combining `--att` with `--selected-regions` isn't yet supported on WSL2 and might produce an empty trace. For details, see [Using rocprofv3 on WSL2](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/how-to/using-rocprofv3-on-wsl.html).
-
-##### Kernel dispatch handling optimized
-
-Counter collection, Advanced Thread Trace, SPM, and PC sampling now run only on the GPUs where you enable them, so a service configured on one GPU doesn't affect dispatches on other GPUs. Previously, each service added itself to a shared list of callbacks that the HSA queue controller walked on every kernel dispatch. Now each service's dispatch hooks are called directly, after a check that the service is active on the GPU receiving the dispatch.
-
-##### Closer GPU and CPU timestamp alignment
-
-ROCprofiler-SDK now asks the ROCr runtime for more precise matching of GPU and CPU timestamps when it registers with the runtime. This makes GPU and host events line up more closely on a shared timeline. It applies when GPU timestamp collection is configured and the runtime provides the ROCr tools API. Older runtimes, and tools that trace only CPU APIs or markers, keep the existing behavior.
-
-##### Invalid stochastic PC samples filtered out
-
-`rocprofv3` now checks each stochastic PC sample against the instruction at its PC. Stochastic PC sampling can return a sample whose program counter doesn't correspond to a real instruction boundary. Samples that fail the check are dropped and counted as invalid. Samples from unknown code objects are kept as is. Tool authors can use the same check through `rocprofiler::sdk::pc_sampling::verify_sample` in the header-only `rocprofiler-sdk/cxx/pc_sampling.hpp`.
-
-The PC sampling buffer size is also increased, from 4 MB to 64 MB, on the multi-chiplet targets gfx94x, gfx95x, and gfx125x. ROCr allocates one PC sampling buffer per XCC, so these multi-XCC parts need a larger overall buffer. At the previous size, many samples were dropped or invalid at reasonable sampling rates. Single-XCC targets keep the 4 MB buffer.
-
-##### OpenMP tools now run alongside ROCprofiler-SDK
-
-Your own OpenMP Tools (OMPT) tool can now run alongside ROCprofiler-SDK instead of being displaced by it. ROCprofiler-SDK takes the OMPT interface only when a registered client subscribes to OMPT tracing. Otherwise, it passes the interface on to the next OMPT tool.
-
-##### ROCprofiler-SDK Agent Skills added
-
-ROCprofiler-SDK now ships a set of Agent Skills under `skills/`. They package profiling workflows as instructions that AI coding assistants can follow. The skills are:
-
-* `rocprofv3`: general tracing, counter collection, and rocpd post-processing.
-* `thread-trace`: ATT collection and interpretation.
-* `pc-sampling`: stochastic and host-trap sampling, including stall-reason analysis.
-
-Each skill ships with evaluation cases and tests. For details, see the [ROCprofiler-SDK skills](https://github.com/ROCm/rocm-systems/tree/develop/projects/rocprofiler-sdk/skills) directory.
-
-##### Tracing expanded to more HIP and HSA APIs
-
-ROCprofiler-SDK adds tracing for the following:
-
-* Memory copy tracing now covers `hsa_amd_memory_async_batch_copy`. Each copy in a batch is reported as its own memory copy record through the existing callback and buffer tracing kinds.
-
-* Added tracing support for the HIP APIs `hipKernelSetAttributeForDevice`, `hipLibraryGetModule`, `hipModuleEnumerateFunctions`, and `hipDeviceFlushGPUDirectRDMAWrites`.
-
-* Added tracing support for the HSA APIs `hsa_amd_enable_high_precision_timestamps`, `hsa_amd_agent_set_attribute`, `hsa_amd_vmem_get_vmem_info`, and `hsa_amd_svm_discard_and_prefetch_batch_async`.
-
-##### Target support added for gfx117x and gfx1250
-
-ROCprofiler-SDK now supports the gfx117x, gfx1250-strict, and gfx1250 targets.
-
-##### Usability and diagnostics improvements
-
-This release improves input validation, diagnostics, and logging in ROCprofiler-SDK and `rocprofv3`. One environment variable was renamed, so check scripts that set `ROCPROF_ABORT_FLUSH_TIMEOUT_SECONDS`.
-
-* Extra counter YAML files passed with `-E`/`--extra-counters` are validated before they're loaded. A malformed definition now produces an error naming the field that's wrong, instead of a crash or a hang.
-
-* When collecting hardware performance counters (PMCs) on GPUs from gfx1100 up to but not including gfx1250, ROCprofiler-SDK warns if `power_dpm_force_performance_level` isn't `profile_standard` or can't be read, because dynamic power and clock scaling skew counter values. Set the level with, for example, `amd-smi set --perf-level STABLE_STD`.
-
-* `rocprofv3` now rejects multi-pass counter collection from an input file when combined with `--pid` or `--collection-period`, matching the existing behavior for multiple `--pmc` flags. The error message names what made the run multi-pass.
-
-* Environment variables are no longer written to the rocpd database when their name contains any of `api_key`, `auth`, `bearer`, `cert`, `credential`, `header`, `key`, `password`, `private`, `_pwd`, `secret`, or `token`. Matching is a case-insensitive substring test, so the filter is deliberately broad and excludes some variables that hold nothing sensitive. Each excluded variable is named in a log message, so it's clear what was dropped and why.
-
-* The four tool lifecycle traces in `registration.cpp` are logged at info level instead of warning, so processes that load a ROCprofiler-SDK tool with logging disabled no longer write them to stderr. They remain visible with `ROCPROFILER_LOG_LEVEL=info`.
-
-* `ROCPROF_ABORT_FLUSH_TIMEOUT_SECONDS` is replaced by `ROCPROF_FINALIZE_WAIT_TIMEOUT_SECONDS` (default 10 seconds), which now covers both the abort wait and the wait for child processes during finalization. Scripts that set the old variable must be updated; the old name is no longer read.
-
-* New documentation covers [using `rocprofv3` with LLM inference frameworks](https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/develop/how-to/using-rocprofv3-with-inference-frameworks.html).
-
-* A [HIP event tracing sample](https://github.com/ROCm/rocm-systems/tree/3f917c0d61869b153dae1264e712b414a9343d10/projects/rocprofiler-sdk/samples/hip_event_tracing) was added.
-
-For more information, see the [ROCprofiler-SDK section](#rocprofiler-sdk-1-4-2) in the ROCm component changelogs.
+* Improved PC sampling accuracy so fewer samples are dropped or invalid. PC sampling now uses a larger sample buffer on gfx94x, gfx95x, and gfx125x, and `rocprofv3` filters out invalid stochastic PC samples.
+* Added support for running your own OpenMP Tools (OMPT) tool alongside ROCprofiler-SDK.
 
 ##### ROCm Compute Viewer updates
 
-ROCm Compute Viewer (`rocprof-compute-viewer`) is developed in its own [repository](https://github.com/ROCm/rocprof-compute-viewer) and versioned separately from ROCprofiler-SDK. The following changes landed in the same timeframe as this release:
-
-* Disassembly in the ISA view is now colored by instruction category (vector, matrix, scalar ALU, scalar memory, memory, LDS, scratch, branch, control, and wait) in both light and dark themes, so you can see the composition of a kernel without reading every mnemonic. Instructions that generate no thread trace token are left unstyled. Coloring is based only on the mnemonic, so an operand or comment that contains a category word doesn't change a line's color.
-
-* The ISA panel now has a column header. You can resize columns by dragging a divider, restore automatic sizing by double-clicking the divider, and hide columns individually. Selectors in the header choose the draw type and the annotation category displayed alongside the disassembly.
-
-* Line numbers can be shown next to the disassembly and are remembered in the application configuration across sessions.
-
-* The viewer parses Streaming Performance Monitor data from gfx1200, gfx1201, gfx1250, and NAVI4 traces, including the associated derived counters.
-
-For details about the ISA view, see [Views and controls](https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/latest/reference/views.html).
+ROCm Compute Viewer (`rocprof-compute-viewer`) is developed in its own [repository](https://github.com/ROCm/rocprof-compute-viewer) and versioned separately from ROCprofiler-SDK. This release adds SPM data support for gfx1200, gfx1201, and gfx1250 traces, including derived counters. The ISA view gains color coding by instruction category, resizable and hideable columns, and optional line numbers. For details about the ISA view, see [Views and controls](https://rocm.docs.amd.com/projects/rocprof-compute-viewer/en/latest/reference/views.html).
 
 #### ROCm Compute Profiler feature highlights
 
-ROCm Compute Profiler (`rocprofiler-compute`) improves profiling and analysis workflows with simplified dependency installation, richer memory and PC-sampling analysis, enhanced roofline reporting, and Agent Skills for AI coding assistants. This release also includes a breaking change to command-line options and deprecates the analyze mode GUI and TUI options. Some capabilities are hardware-specific or experimental; the following sections describe supported configurations and usage.
+The following are notable changes to ROCm Compute Profiler (`rocprofiler-compute`). This release includes a breaking change to command-line options. For the full list, see the [ROCm Compute Profiler changelog](#rocm-compute-profiler-3-10-0).
 
-##### Command-line options updated (breaking change)
+##### Command-line options aligned with rocprofv3 (breaking change)
 
-Profile mode options now match `rocprofv3`, so the same commands work in both tools. Scripts that use `-d` or `--dispatch` to select dispatches need updating. Select dispatches with `--kernel-iteration-range` instead, and set the output directory with `-d` or `--output-directory`. Dispatch IDs now start at 1, so they line up with the IDs `rocprofv3` reports. For details, see [Kernel iteration filtering](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#profiling-kernel-iteration-range).
+The dispatch filter and output directory options in profile mode now match `rocprofv3`. If your scripts select dispatches with `-d` or `--dispatch`, update them to use `--kernel-iteration-range`. `-d` now sets the output directory, and dispatch IDs now start at 1. For details, see [Kernel iteration filtering](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.2.0/how-to/profile/mode.html#profiling-kernel-iteration-range).
 
-##### Installation simplified and Python 3.14 supported
+##### Memory chart redesigned and bandwidth analysis added
 
-The following changes affect how you install ROCm Compute Profiler:
+The memory chart shows more traffic detail on AMD Instinct GPUs and AMD Ryzen AI APUs (gfx115x), and MI350 Series GPUs get experimental bandwidth bottleneck analysis.
 
-* Analyze mode dependencies now install with a single command, `pip install "rocm-profiler[compute-analyze]"`. Installing them into their own virtual environment keeps them from conflicting with packages your application uses, such as `torch` or `numpy`. Run `rocprof-compute analyze --verify-deps` to check that nothing is missing.
+* Redesigned the memory chart for AMD Instinct GPUs. It breaks down read, write, and atomic requests and shows L2-to-fabric bandwidth. On MI300 Series and earlier GPUs, it also shows the percentage of traffic to high-bandwidth memory (HBM) and remote memory. On MI350 Series GPUs, it shows Local Data Share (LDS) activity and per-channel HBM, xGMI, and PCIe bandwidth.
+* Improved the memory chart for AMD Ryzen AI APUs (gfx115x) with per-interface traffic, LDS utilization, renamed metrics, and updated arrows, labels, and legend.
+* Added experimental memory bandwidth analysis on MI350 Series GPUs. It marks bottlenecks at the L1 cache, L2 cache, or memory fabric on the chart and explains each one. Collect the data with `--experimental --membw-analysis`. For details, see [Using memory bandwidth analysis](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.2.0/how-to/membw_analysis.html).
 
-* Python 3.14 is supported for both profiling and analysis.
+##### Roofline supports MXFP8
 
-For details, see [Install the analyze mode dependencies](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/install/core-install.html#analyze-deps).
+Roofline analysis now covers MXFP8 and lets you compare precisions and runs side by side.
 
-##### Memory chart layout redesigned
+* Added MXFP8 roofline support on AMD Instinct MI350 Series GPUs, for both peak measurement and kernel analysis.
+* Improved the standalone roofline HTML report to include every datatype the GPU supports in one report, with fixed axes so you can compare runs side by side.
 
-The following changes improve the memory chart in ROCm Compute Profiler:
+For details, see [Standalone roofline](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.2.0/how-to/profile/mode.html#standalone-roofline) and [Roofline HTML generation](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.2.0/how-to/analyze/cli.html#roofline-html-generation).
 
-* The memory chart for AMD Instinct GPUs has a new layout that is easier to read in the terminal. It breaks down read, write, and atomic requests, shows bandwidth between the L2 cache and the memory fabric, and reports how much traffic goes to high-bandwidth memory (HBM) and to remote memory. On AMD Instinct MI350 Series GPUs, it also shows Local Data Share (LDS) activity and per-channel bandwidth for HBM, xGMI, and PCIe.
+##### Other enhancements
 
-* The memory chart for AMD Ryzen APUs now reports the traffic measured at each interface, adds LDS utilization, and uses clearer labels, arrows, and legend.
+* Added a single install command for analyze mode dependencies, `pip install "rocm-profiler[compute-analyze]"`. Use `rocprof-compute analyze --verify-deps` to check that nothing is missing. For details, see [Install the analyze mode dependencies](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.2.0/install/core-install.html#analyze-deps).
+* Added two PC sampling metrics for each instruction: active thread percent, which points to branch divergence, and wave occupancy, which requires stochastic sampling. For details, see [PC sampling](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.2.0/how-to/pc_sampling.html).
 
-For details, see [Analyzing with the CLI](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html).
+##### Deprecations
 
-##### Memory bandwidth analysis added (experimental)
-
-On AMD Instinct MI350 Series GPUs, memory bandwidth analysis now shows where memory traffic stalls: at the L1 cache, the L2 cache, or the memory fabric interface. It marks each bottleneck on the memory chart and adds a guidance panel below the chart that explains what was measured and how it affects performance. Collect the data with `--experimental --membw-analysis` at profile time. Analyze mode picks it up automatically. For details, see [Using memory bandwidth analysis](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/membw_analysis.html).
-
-##### PC sampling metrics and folder naming updated
-
-The following changes affect PC sampling output in ROCm Compute Profiler:
-
-* PC sampling reports two new metrics for each instruction. Active thread percent shows how many threads in a wave were active, so a low value points to branch divergence. Wave occupancy shows how full the GPU was with waves when the sample was taken, and requires stochastic sampling. Both appear in the terminal output, the per-kernel CSV files, and the analysis database.
-
-* Each kernel's results folder is now named after the kernel, so you can find a kernel's results without looking up its ID.
-
-For details, see [PC sampling](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/pc_sampling.html).
-
-##### Torch trace ships prebuilt for PyTorch 2.13 and 2.14
-
-The following changes improve PyTorch profiling in ROCm Compute Profiler:
-
-* Torch trace (experimental) now ships prebuilt for PyTorch 2.13 and 2.14, so it no longer needs to build a tracing library on your machine. It records PyTorch operators on every thread, including those that run during the backward pass. Other PyTorch versions use a reduced trace that misses backward-pass operators.
-
-* If PyTorch and the profiler load different ROCm installations, profiling now stops with a clear message that points to the PyTorch and ROCm installation instructions.
-
-For details, see [Torch trace](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#torch-operator-mapping).
-
-##### Roofline MXFP8 support and HTML report updated
-
-The following changes improve roofline in ROCm Compute Profiler:
-
-* Roofline now supports the MXFP8 datatype on AMD Instinct MI350 Series GPUs, both when measuring peak performance and when analyzing kernels.
-
-* The standalone roofline HTML report includes every datatype the GPU supports, with a switch to move between them, so you no longer need a separate report for each precision. The chart axes are fixed for each GPU, so you can compare reports from two runs side by side.
-
-For details, see [Standalone roofline](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/profile/mode.html#standalone-roofline) and [Roofline HTML generation](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html#roofline-html-generation).
-
-##### Compute Profiler Agent Skills added
-
-ROCm Compute Profiler now ships Agent Skills for AI coding assistants such as Claude Code, Codex, and Cursor. With the skills installed, your assistant can profile your application, find the slow kernels, and explain why, using speed-of-light, roofline, memory, PC sampling, and Torch trace analysis. Run the included `install-skills.sh` script to add them to your assistant. For details, see [Agent Skills](https://github.com/ROCm/rocm-systems/blob/develop/projects/rocprofiler-compute/skills/README.md).
-
-##### Analyze mode reads profiling data directly
-
-Analyze mode now uses less disk space because it reads the profiling output directly instead of writing a merged copy of all counter data. It prints fewer repeated warnings, so the messages that matter stand out. It also stops right away when profiling data is unreadable, instead of reporting results from incomplete data. For details, see [Analyze mode](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/mode.html).
-
-##### Analyze mode GUI and TUI options deprecated
-
-The analyze mode `--gui` and `--tui` options are deprecated and will be removed in a future release. Use command-line analysis instead. It can:
-
-* Print results to the terminal.
-* Save results as text, CSV files, or an analysis database with `--output-format`.
-* Generate interactive roofline charts as HTML.
-
-For details, see [Analysis output formats](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html#analysis-output-format) and [Roofline HTML generation](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/develop/how-to/analyze/cli.html#roofline-html-generation).
-
-For more information, see the [ROCm Compute Profiler section](#rocm-compute-profiler-3-10-0) in the ROCm component changelogs.
+* Deprecated the analyze mode `--gui` and `--tui` options. They will be removed in a future release. Use command-line analysis instead, which supports text, CSV, and analysis database output. For details, see [Analysis output formats](https://rocm.docs.amd.com/projects/rocprofiler-compute/en/docs-10.2.0/how-to/analyze/cli.html#analysis-output-format).
 
 #### ROCm Systems Profiler feature highlights
 
-The following are notable enhancements to ROCm Systems Profiler:
+The following are notable changes to ROCm Systems Profiler. For the full list, see the [ROCm Systems Profiler changelog](#rocm-systems-profiler-1-10-0).
 
 ##### rocsys unified command added
 
-ROCm Systems Profiler adds `rocsys`, a single command-line entry point for its tools, so you can run any of them from one command instead of calling each `rocprof-sys-*` binary separately. Run `rocsys -- ./app` or `rocsys profile -- ./app` to produce a full trace profile, or `rocsys rewrite` to run `rocprof-sys-instrument` in binary-rewrite mode (`-o`). The `instrument`, `causal`, `avail`, `python`, and `attach` subcommands forward to the existing tools. The `rocprof-sys-*` binaries are unchanged. For details, see [Using rocsys](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/using-rocsys.html).
+`rocsys` is a single entry point for all ROCm Systems Profiler tools, so you no longer need to call each `rocprof-sys-*` binary separately. The existing binaries are unchanged.
 
-##### AMD Infinity Storage I/O telemetry supported
+* Run `rocsys -- ./app` or `rocsys profile -- ./app` for a full trace profile.
+* Run `rocsys rewrite` to instrument a binary in binary-rewrite mode.
+* Use the `instrument`, `causal`, `avail`, `python`, and `attach` subcommands to run the existing tools.
 
-ROCm Systems Profiler now supports AMD Infinity Storage technology I/O telemetry. Per-GPU I/O counters are sampled into the profiler output. Enable collection with `ROCPROFSYS_USE_HIPFILE`, and select the metrics to collect with `ROCPROFSYS_HIPFILE_METRICS`. For details, see [hipFile telemetry](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/hipfile-telemetry.html).
+For details, see [Using rocsys](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/docs-10.2.0/how-to/using-rocsys.html).
 
-##### Attaching to processes in containers supported
+##### Other enhancements
 
-`rocprof-sys-attach` can now attach to a process running in a containerized environment. For details, see [Attaching to a running process](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/develop/how-to/attaching-to-running-process.html).
-
-##### Systems Profiler Agent Skills added
-
-ROCm Systems Profiler skills are now available in the [AMD Skills](https://github.com/amd/skills) repository. With the skills installed, your AI coding assistant can help you:
-
-* Choose a profiling preset (`choosing-a-profiling-preset`): pick the built-in preset that fits your workload, such as an AI training job, an MPI or HPC application, or a low-overhead production run, and get the exact command to run.
-
-* Discover profiling options (`discovering-profiling-options`): find out which hardware counters or ROCm APIs are available on your machine and which command to use.
-
-* Instrument binaries (`instrumenting-binaries`): instrument an application at runtime or by rewriting the binary, include or exclude functions and modules, preview with a dry run, and balance detail against overhead.
-
-For more information, see the [ROCm Systems Profiler section](#rocm-systems-profiler-1-10-0) in the ROCm component changelogs.
+* Added AMD Infinity Storage technology I/O telemetry. Per-GPU I/O counters are sampled into the profiler output. Enable it with `ROCPROFSYS_USE_HIPFILE`. For details, see [hipFile telemetry](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/docs-10.2.0/how-to/hipfile-telemetry.html).
+* Added support for `rocprof-sys-attach` to attach to processes running in containers. For details, see [Attaching to a running process](https://rocm.docs.amd.com/projects/rocprofiler-systems/en/docs-10.2.0/how-to/attaching-to-running-process.html).
 
 ### Control and monitoring tools
 
 #### AMD SMI feature highlights
 
-The following are notable changes to AMD SMI:
+The following are notable changes to AMD SMI. For the full list, see the [AMD SMI changelog](#amd-smi-27-2-0).
+
+##### AMD SMI Python library on PyPI
+
+The AMD SMI Python library is now on PyPI as `amdsmi` 27.2.0; you can install it
+using `pip install amdsmi`. This PyPI package bundles the AMD SMI library, so using
+the Python API doesn't require a ROCm installation. It provides the Python library only;
+the `amd-smi` command-line tool ships with ROCm. `amdsmi` releases on PyPI follow the
+AMD SMI library version (27.2.0 as of ROCm 10.2), not the ROCm SDK version.
+
+Requirements:
+
+- Linux x86_64 with glibc 2.27 or later
+- Python 3.6 or later and pip 20.3 or later (older pip versions install the unrelated legacy 7.0.2 release instead)
+- [The amdgpu driver](#release-supported-fw)
+- `libdrm-amdgpu1` (Ubuntu/Debian), `libdrm` (RHEL), or `libdrm_amdgpu1` (SLES)
+
+See [https://pypi.org/project/amdsmi/](https://pypi.org/project/amdsmi/) for more information.
 
 ##### Power profile management added
 
-You can now discover, activate, and configure the driver's predefined power and performance profiles from both the C API and the CLI. AMD SMI calls them AMPP (AMD SMI power profile) and uses `ampp` in API and CLI names, for example `amd-smi static --ampp`. Profiles and fields are enumerated at runtime, so your tools pick up whatever the driver exposes without hard-coded profile lists. The existing `amdsmi_*_gpu_power_profile*` preset-mask API is unchanged.
+You can now discover, activate, and configure the driver's predefined power and performance profiles from both the C API and the CLI. AMD SMI calls them AMPP (AMD SMI power profile) and uses `ampp` in API and CLI names, for example `amd-smi static --ampp`. Profiles and fields are enumerated at runtime, so your tools pick up whatever the driver exposes without hard-coded profile lists.
 
 ##### Link topology API added for bare metal
 
