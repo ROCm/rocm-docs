@@ -22,7 +22,7 @@
       .. matrix-cell:: 2.15.0
          :show-cond: fam=radeon fam=ryzen
 
-      .. matrix-cell:: 3.14, 3.13, 3.12, 3.11, 3.10
+      .. matrix-cell:: 3.14, 3.13, 3.12, 3.11
 
    .. matrix-row::
       :show-cond: os=windows os=wsl
