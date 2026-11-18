@@ -236,13 +236,7 @@ The new `amdsmi_get_link_topology()` API lets you query the link between two GPU
 
 ##### Energy counter API supports AMD Radeon GPUs
 
-`amdsmi_get_energy_count` now returns valid data on supported AMD Radeon GPUs in bare-metal and pass-through environments, so you can track cumulative energy use and calculate average power draw between readings on Radeon platforms. Previously, the API was available only on AMD Instinct GPUs.
-
-The API now reports:
-
-- `energy_accumulator`: the cumulative energy counter, sourced from GPU metrics.
-- `counter_resolution`: the unit of the counter, so you can convert raw counts to joules.
-- `timestamp`: the time of each reading. Divide the change in energy by the change in time between two calls to get power.
+`amdsmi_get_energy_count` now returns valid data on supported AMD Radeon GPUs in bare-metal and pass-through environments, so you can track energy use and calculate average power draw. Previously, the API was available only on AMD Instinct GPUs.
 
 ##### CLI exit codes and output updated (breaking changes)
 
@@ -250,45 +244,43 @@ The `amd-smi` CLI now returns more specific exit codes, a structured error forma
 
 - **Exit codes:** Exit codes now identify the failure type more precisely and match the `code` printed in the error message. `amd-smi ras` also exits non-zero when a CPER file fails to decode, where it previously exited `0`. `set` and `reset` commands continue past a per-device failure instead of stopping.
 - **Error messages:** Errors are now structured, and `--json` and `--csv` errors gain an `error_type` field. `--csv` rows gain a third column, so parsers that expect two fields per row need updating.
-- **Metric output:** `amd-smi metric` omits fields that show N/A in human-readable output. Use `--show-unsupported` to restore them. JSON and CSV output are unchanged.
+- **Metric output:** `amd-smi metric` omits fields that the GPU's metrics table version can't report, so human-readable output shows fewer N/A values. On AMD Instinct MI300X, MI325X, and MI355X GPUs, `--power` no longer prints `THROTTLE_STATUS`, and `--usage` no longer prints `MM_ACTIVITY`, `VCN_ACTIVITY`, or `JPEG_ACTIVITY`. Use `--show-unsupported` to restore omitted fields. JSON and CSV output are unchanged.
 
-For API names, CLI syntax, and exit code values, see the [AMD SMI section](#amd-smi-27-2-0) in the ROCm component changelogs.
+For API names, CLI syntax, and exit code values, see the [AMD SMI changelog](#amd-smi-27-2-0).
 
 ### Libraries
 
 #### hipBLASLt feature highlights
 
-The following are notable enhancements to hipBLASLt:
+The following are notable enhancements to hipBLASLt. For the full list, see the [hipBLASLt changelog](#hipblaslt-1-5-0).
 
 ##### Complex GEMM support added
 
-Scientific and engineering applications can now run single-precision (CGEMM) and double-precision (ZGEMM) complex matrix multiplications on AMD Instinct MI350 Series and MI300 Series GPUs (gfx950 and gfx942). Support covers the `HIP_C_32F` and `HIP_C_64F` data types and transpose and conjugate-transpose combinations of the A and B matrices. Complex GEMM solutions are also available through rocBLAS. Performance tuning for specific shapes is ongoing.
+Scientific and engineering applications can now run single-precision (CGEMM) and double-precision (ZGEMM) complex matrix multiplications on AMD Instinct MI350 Series and MI300 Series GPUs (gfx950 and gfx942). Support covers the `HIP_C_32F` and `HIP_C_64F` data types and transpose and conjugate-transpose combinations of the A and B matrices. Complex GEMM solutions are also available through rocBLAS.
 
-##### Smaller installed package size
+##### Solution catalogs stay compressed on disk
 
-hipBLASLt now installs its solution selection catalogs as zlib-compressed `.dat.zlib` files in Debian and RPM packages. A catalog is decompressed on first use, which can add initial overhead. Subsequent calls are unaffected. hipSPARSELt also loads catalogs in this format.
+hipBLASLt solution catalogs now stay compressed on disk as `.dat.zlib` files, instead of being compressed only in the package. For example, the gfx942 catalogs use about 194 MB on disk instead of about 3.8 GB. A catalog is decompressed on first use, which can add initial overhead. Subsequent calls are unaffected. hipSPARSELt also loads catalogs in this format.
 
 ##### Sub-matrix offsets supported for batched GEMM
 
-General batched GEMM now accepts 64-bit element offsets into sub-matrices, so you can run a batched GEMM on a sub-matrix of a larger pre-allocated buffer without copying data. This is available on gfx942, gfx950, and gfx1250.
+General batched GEMM now accepts 64-bit element offsets, so you can run GEMM on a smaller sub-matrix of a larger pre-allocated matrix. This also improves performance because the device pointer array no longer needs to be copied back and forth between the host and the device. This is available on gfx942, gfx950, and gfx1250.
 
 - **Matrix layout attribute:** To apply an offset, set `HIPBLASLT_MATRIX_LAYOUT_OFFSET` on the matrix layout.
-- **Requirements:** Nonzero offsets require `HIPBLASLT_BATCH_MODE_POINTER_ARRAY`. For strided batched GEMM, use the stride instead. A nonzero offset with the sub-byte MX types `HIP_R_6F_E2M3`, `HIP_R_6F_E3M2`, or `HIP_R_4F_E2M1` returns `HIPBLAS_STATUS_NOT_SUPPORTED`.
+- **Requirements:** Nonzero offsets require `HIPBLASLT_BATCH_MODE_POINTER_ARRAY`. For non-batched and strided batched GEMM, apply the offset directly through the strided batch offset instead. A nonzero offset with the sub-byte MX types `HIP_R_6F_E2M3`, `HIP_R_6F_E3M2`, or `HIP_R_4F_E2M1` returns `HIPBLAS_STATUS_NOT_SUPPORTED`.
 - **Benchmarking:** `hipblaslt-bench` supports the new `batch_offset_a`, `batch_offset_b`, `batch_offset_c`, and `batch_offset_d` arguments.
-
-For more information, see the [hipBLASLt section](#hipblaslt-1-5-0) in the ROCm component changelogs.
 
 #### hipFile feature highlights
 
-The following are notable enhancements to hipFile:
+The following are notable enhancements to hipFile. For the full list, see the [hipFile changelog](#hipfile-0-6-0).
 
 ##### Asynchronous I/O failover and new documentation
 
-hipFile adds failover for asynchronous fast path I/O, a batch I/O example, and Stats API documentation.
+hipFile adds failover for asynchronous fastpath I/O, a batch I/O example, and Stats API documentation.
 
-- **Async fast path failover:** Asynchronous fast path I/O now fails over when the fast path reports a device error, instead of failing the request.
+- **Async fastpath failover:** Asynchronous fastpath I/O now switches to the fallback I/O backend when the fastpath reports a device error (`ENODEV` or `EREMOTEIO`), instead of failing the request. Synchronous and batch I/O already behaved this way.
 - **Batch round-trip example:** A new `batch-roundtrip` example shows how to use the batch I/O API.
-- **Stats API documentation:** The new [Statistics API reference](https://rocm.docs.amd.com/projects/hipFile/en/develop/reference/api-stats.html) covers how to read I/O statistics.
+- **Stats API documentation:** The new [Statistics API reference](https://rocm.docs.amd.com/projects/hipFile/en/docs-10.2.0/reference/api-stats.html) covers how to read I/O statistics.
 
 ##### PyTorch adds AMD Infinity Storage hipFile support
 
