@@ -10,8 +10,8 @@
   To update component URLs or groups: edit components-default.yaml.
 
   URL selection (Linux):
-  - If github_repo contains "rocm-libraries" → use rtd_project URL
-  - Otherwise → use github_repo URL
+  - If the component has an rtd_project → use rtd_project URL
+  - Otherwise → fall back to github_repo URL
   - Placeholders: ${release_tag} and ${rtd_version_slug} are substituted from meta.
 
   show-cond semantics (selector JS):
@@ -58,7 +58,7 @@
 {%- macro linux_url(name) -%}
 {%- if name in comps_d and comps_d[name].xref is defined -%}
 {%- set xref = comps_d[name].xref -%}
-{%- if xref.github_repo is defined and "rocm-libraries" in xref.github_repo -%}
+{%- if xref.rtd_project is defined -%}
 {{- sub(xref.rtd_project) -}}
 {%- elif xref.github_repo is defined -%}
 {{- sub(xref.github_repo) -}}
