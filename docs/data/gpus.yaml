@@ -210,6 +210,11 @@ AMD Radeon:
     series: *radeon_pro_w7000_series
     arch: *arch_rdna_3
     mkt_page: https://www.amd.com/en/products/graphics/workstations/radeon-pro/w7900.html
+  AMD Radeon PRO W7900D:
+    gfx: gfx1100
+    series: *radeon_pro_w7000_series
+    arch: *arch_rdna_3
+    mkt_page: https://www.amd.com/zh-cn/products/graphics/workstations/radeon-pro/w7900d.html
   AMD Radeon PRO W7800 48GB:
     gfx: gfx1100
     series: *radeon_pro_w7000_series

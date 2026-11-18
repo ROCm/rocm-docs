@@ -60,6 +60,11 @@ $defs:
     properties:
       name:
         type: string
+      version:
+        type: string
       url:
+        type: string
+        format: uri
+      doc_url:
         type: string
         format: uri

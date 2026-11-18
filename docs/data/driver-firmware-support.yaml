@@ -6,6 +6,7 @@ _amdgpu_drivers:
   - &amdgpu_31_70_0
     version: "31.70.0"
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-31.70.0/documentation/release-notes.html
+    note: 'The following known issues are observed with amdgpu driver 31.70.0 that pairs with ROCm 10.2.0. They will be fixed in an upcoming amdgpu driver release:<ul><li><a href="#gpu-mode2-reset-might-time-out-on-amd-instinct-mi300a-gpus">GPU Mode2 reset might time out on AMD Instinct MI300A GPUs</a></li><li><a href="#agfhc-roctwitch-and-sprites-subtests-might-fail-on-amd-instinct-gpus">AGFHC rocTwitch and Sprites subtests might fail on AMD Instinct GPUs</a></li></ul>'
   - &amdgpu_31_60_0
     version: "31.60.0"
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-31.60.0/documentation/release-notes.html
@@ -47,15 +48,15 @@ _amdgpu_drivers:
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-30.20.0/documentation/release-notes.html
 
 _windows_drivers:
-  - &adrenalin_26_11_1
+  - &adrenalin_26_11_2
     name: "AMD Software: Adrenalin Edition"
     label: Adrenalin Driver
-    version: "26.11.1"
-    url: https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-ROCM-10-02.html
+    version: "26.11.2"
+    url: https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-WIN-26-11-2.html
   - &windows_oem_26_20_xy
     name: Windows CDE CPR driver
     label: Windows CDE CPR driver
-    version: "26.20.xy"
+    version: "N/A"
 # }}}
 
 AMD Instinct:
@@ -126,10 +127,10 @@ AMD Instinct:
 AMD Radeon:
   linux:
     amdgpu: [*amdgpu_31_70_0, *amdgpu_31_60_0]
-  windows: [*adrenalin_26_11_1, *windows_oem_26_20_xy]
+  windows: [*adrenalin_26_11_2, *windows_oem_26_20_xy]
 
 AMD Ryzen:
   linux:
     - {os: "Ubuntu 26.04.1", driver: "7.0.0 inbox kernel​"}
     - {os: "Ubuntu 24.04.5", driver: "6.17.0-1032-oem or later OEM kernel​"}
-  windows: [*adrenalin_26_11_1, *windows_oem_26_20_xy]
+  windows: [*adrenalin_26_11_2, *windows_oem_26_20_xy]

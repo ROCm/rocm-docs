@@ -458,6 +458,24 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - 11
           - 0
         *
+          - Radeon PRO W7900D
+          - RDNA3
+          - gfx1100
+          - 48
+          - 96
+          - 32 or 64
+          - 128
+          - 96
+          - 6
+          - 256
+          - 32
+          - 16
+          - 32
+          - 768
+          - 32
+          - 11
+          - 0
+        *
           - Radeon PRO W7900
           - RDNA3
           - gfx1100
