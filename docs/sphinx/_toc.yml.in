@@ -180,7 +180,7 @@ subtrees:
       entries:
           - url: https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/
             title: AI Developer Hub
-          - url: https://github.com/ROCm/rocm-examples/tree/release/therock-10.0
+          - url: https://github.com/ROCm/rocm-examples/tree/release/therock-10.2
             title: ROCm examples
     - caption: Reference
       entries:
