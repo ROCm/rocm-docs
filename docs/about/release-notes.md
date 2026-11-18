@@ -21,7 +21,7 @@ Since ROCm 7.14, ROCm uses [TheRock](https://github.com/ROCm/TheRock) as its bui
 
 ## Release highlights
 
-This release adds platform, framework, runtime, profiling, and library enhancements across AMD Instinct™, Radeon™, and Ryzen™ platforms. It expands support for AMD Ryzen processors with integrated Radeon graphics and selected GPU virtualization configurations, and updates support for PyTorch, JAX, vLLM, and SGLang. Profiling tools add workflow and diagnostic improvements, plus Agent Skills that help AI coding assistants select, run, and interpret profiling workflows. HIP adds new APIs and API-version targeting. Library updates include complex GEMM support in hipBLASLt and new and improved sparse routines in rocSPARSE.
+This release adds platform, framework, runtime, profiling, and library enhancements across AMD Instinct™, Radeon™, and Ryzen™ platforms. It expands support for AMD Ryzen processors with integrated Radeon graphics and selected GPU virtualization configurations, and updates support for PyTorch, JAX, and vLLM. Profiling tools add device-wide Streaming Performance Monitor (SPM) counter sampling, a unified `rocsys` command for ROCm Systems Profiler, and improved memory analysis in ROCm Compute Profiler. HIP adds new module, library, and kernel APIs. Library updates include complex GEMM support in hipBLASLt and new and improved sparse routines in rocSPARSE.
 
 ### Platform and hardware support
 
@@ -29,7 +29,7 @@ This release adds support for additional AMD Ryzen APUs and new GPU virtualizati
 
 #### Expanded AMD GPU support
 
-ROCm {{ ROCM_VERSION }} adds support for the following AMD APUs:
+ROCm {{ ROCM_VERSION }} adds support for the following AMD APUs and GPUs:
 
 - [AMD Ryzen 7 PRO 253](https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-253.html)
 - [AMD Ryzen 7 PRO 249](https://www.amd.com/en/products/processors/laptop/ryzen-pro/200-series/amd-ryzen-7-pro-249.html)
@@ -49,6 +49,7 @@ ROCm {{ ROCM_VERSION }} adds support for the following AMD APUs:
 - [AMD Ryzen 7 165](https://www.amd.com/en/products/processors/laptop/ryzen/100-series/amd-ryzen-7-165.html)
 - [AMD Ryzen 7 155](https://www.amd.com/en/products/processors/laptop/ryzen/100-series/amd-ryzen-7-155.html)
 - [AMD Ryzen 5 125](https://www.amd.com/en/products/processors/laptop/ryzen/100-series/amd-ryzen-7-125.html)
+- [AMD Radeon PRO W7900D](https://www.amd.com/zh-cn/products/graphics/workstations/radeon-pro/w7900d.html)
 
 For the complete list of supported AMD hardware, see [AMD hardware support](#amd-hardware-support).
 
@@ -56,9 +57,25 @@ For the complete list of supported AMD hardware, see [AMD hardware support](#amd
 
 ROCm {{ ROCM_VERSION }} adds support for:
 
+* RHEL 10.3 for AMD Instinct and Radeon GPUs.
+  * RHEL 10.3 replaces RHEL 10.2 as the validated RHEL 10 release for AMD Radeon GPUs.
+* RHEL 9.9 for AMD Instinct and Radeon GPUs.
+  * RHEL 9.9 replaces RHEL 9.8 as the validated RHEL 9 release for AMD Radeon GPUs.
 * SLES 16.1 for AMD Instinct GPUs.
 
 For the full list of supported Linux distributions, see [Operating system support](#operating-system-support).
+
+#### Installation updates
+
+ROCm {{ ROCM_VERSION }} introduces several improvements to the Runfile Installer:
+
+* Added support for HPC SDK (hipTensor, rocALUTION) component installation.
+* Added support for new Linux distributions: SLES 16.1, RHEL 9.9, and RHEL 10.3.
+* Improved installation of installer-specific dependencies.
+* Fixed additional dependency installation issues for SLES.
+* Added support for various Ryzen APUs.
+* Improved multi-GPU detection.
+* Minor bug fixes.
 
 #### Expanded GPU virtualization support for Instinct and Radeon GPUs
 
@@ -71,10 +88,10 @@ ROCm {{ ROCM_VERSION }} adds support for the following virtualization configurat
 
 **Radeon**
 
-* On AMD Radeon PRO W7800, W7900, and W7900 Dual Slot:
+* On AMD Radeon PRO W7800, W7900, W7900D, and W7900 Dual Slot:
   * KVM Passthrough with Ubuntu 24.04 or Ubuntu 26.04 host OS and Ubuntu 24.04 or Ubuntu 26.04 guest OS.
 
-Supported Single Root I/O Virtualization (SR-IOV) configurations require the [AMD GPU Virtualization Driver (GIM) 9.4.0.K](https://mkmartifactory.amd.com:8443/artifactory/sw-virt-prod-local/KVM_OpenSource_Releases/9.4.0.K/). For details, see [GPU virtualization support](#gpu-virtualization-support).
+Supported Single Root I/O Virtualization (SR-IOV) configurations require the [AMD GPU Virtualization Driver (GIM) 9.4.0.K](https://github.com/amd/MxGPU-Virtualization/releases/tag/9.4.0.K). For details, see [GPU virtualization support](#gpu-virtualization-support).
 
 #### GPU partitioning support update
 
@@ -87,9 +104,8 @@ This release enables support for the following frameworks:
 * PyTorch 2.15.0
 * JAX 0.11.2
 * vLLM 0.32.0
-* SGLang 0.5.21
 
-The updated framework support replaces the previous PyTorch 2.12.0, JAX 0.11.0, vLLM 0.29.0, and SGLang 0.5.18 support.
+The updated framework support replaces the previous PyTorch 2.12.0, JAX 0.11.0, and vLLM 0.29.0 support.
 
 For details, see [AI ecosystem support](#ai-ecosystem-support).
 
@@ -97,7 +113,7 @@ For details, see [AI ecosystem support](#ai-ecosystem-support).
 
 #### HIP feature highlights
 
-The following are notable enhancements to HIP:
+The following are notable enhancements to HIP. For the full list, see the [HIP changelog](#hip-7-17-0).
 
 ##### Module, library, and kernel APIs added
 
