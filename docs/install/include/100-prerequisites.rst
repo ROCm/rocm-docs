@@ -487,9 +487,6 @@ Prerequisites
 
             wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
             sudo rpm -ivh epel-release-latest-8.noarch.rpm
-
-         .. code-block:: bash
-
             sudo dnf config-manager --enable codeready-builder-for-rhel-8-x86_64-rpms
 
    .. selected:: os=oracle-linux

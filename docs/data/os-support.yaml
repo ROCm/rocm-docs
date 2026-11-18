@@ -14,10 +14,10 @@ _versions:
   - &debian_13 { version: "13", kernel: "6.12" }
   - &debian_12 { version: "12", kernel: "6.1.0" }
   - &rhel_10_3 { version: "10.3", kernel: "6.12.0-264", graphics: true }
-  - &rhel_10_2 { version: "10.2", kernel: "6.12.0-211", graphics: true }
+  - &rhel_10_2 { version: "10.2", kernel: "6.12.0-211" }
   - &rhel_10_0 { version: "10.0", kernel: "6.12.0-55" }
   - &rhel_9_9 { version: "9.9", kernel: "5.14.0-741", graphics: true }
-  - &rhel_9_8 { version: "9.8", kernel: "5.14.0-687", graphics: true }
+  - &rhel_9_8 { version: "9.8", kernel: "5.14.0-687" }
   - &rhel_9_6 { version: "9.6", kernel: "5.14.0-570" }
   - &rhel_9_4 { version: "9.4", kernel: "5.14.0-427" }
   - &rhel_8_10 { version: "8.10", kernel: "4.18.0-553" }
@@ -310,7 +310,7 @@ AMD Radeon:
       versions: [*ubuntu_26_04, *ubuntu_24_04_hwe, *ubuntu_22_04_hwe]
     Red Hat Enterprise Linux:
       <<: *rhel
-      versions: [*rhel_10_3, *rhel_10_2, *rhel_9_9, *rhel_9_8]
+      versions: [*rhel_10_3, *rhel_9_9]
     Windows:
       versions: [*windows_11]
     WSL2:

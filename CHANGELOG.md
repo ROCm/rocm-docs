@@ -62,40 +62,38 @@ See the [ROCm 10.2.0 release notes](https://rocm.docs.amd.com/en/docs-10.2.0/abo
   * Implemented in the AMD SMI library over the fwupd daemon's D-Bus BIOS-settings interface; the fwupd path is used only for the integrated (APU) GPU, and PolicyKit brokers authorization instead of requiring explicit root. Reading needs fwupd >= 1.8.4; writing needs fwupd >= 2.1.1 (Ubuntu 26.04+).
 
 * **Reworked `amd-smi` CLI process exit codes.**  
-  How exit codes are chosen:
-  * Library failures exit with the underlying `AMDSMI_STATUS_*` value (0-56).
-  * CLI-only errors use dedicated codes in the reserved 193-253 band.
-  * When more than one failure with different codes is recorded in a single run — across devices, or across sub-steps of one command (e.g., `reset --clocks`) — the process exits `204`.
+  * How exit codes are chosen:
+    * Library failures exit with the underlying `AMDSMI_STATUS_*` value (0-56).
+    * CLI-only errors use dedicated codes in the reserved 193-253 band.
+    * When more than one failure with different codes is recorded in a single run — across devices, or across sub-steps of one command (e.g., `reset --clocks`) — the process exits `204`.
+  * Multi-device `set`/`reset` behavior:
+    * A per-device GPU failure is now recorded, and the command continues to the remaining devices.
+    * The exit code is decided once, after every device has been attempted. Previously a single device failure could abort the loop early.
+  * Notable value changes (many cases previously aliased onto `1`/`2`; each now has a distinct code):
 
-  Multi-device `set`/`reset` behavior:
-  * A per-device GPU failure is now recorded, and the command continues to the remaining devices.
-  * The exit code is decided once, after every device has been attempted. Previously a single device failure could abort the loop early.
+    | Case | Was | Now |
+    | --- | --- | --- |
+    | Import failure | `1` | `193` |
+    | Invalid command | `1` | `194` |
+    | Invalid parameter | `2` | `195` |
+    | Device not found (bad device index, or no devices present) | `3` / `255` | `196` |
+    | Invalid file path | `4` | `197` |
+    | Invalid parameter value | `5` | `198` |
+    | Missing parameter value | `6` | `199` |
+    | Command not supported (CLI, parse-time) | `7` | `200` (distinct from library `NOT_SUPPORTED` = `2`) |
+    | Device interface unavailable (CLI, runtime) | — | `201` |
+    | Required target/argument missing | `9` | `202` |
+    | Invalid subcommand | `10` | `203` |
+    | Permission denied | `11` | `10` (real `AMDSMI_STATUS_NO_PERM`) |
+    | Mixed device/field failures (differing codes) | — | `204` |
+    | `amdsmi_init()` watchdog timeout | `2` | `205` |
+    | Drivers not loaded | `255` | `206` |
+    | Interactive confirmation declined (answering no, or closing stdin) | `1` | `207` |
+    | Library (device) failure | `(1000 + status)` wrapped to a byte | underlying `AMDSMI_STATUS_*` (`0`-`56`) |
+    | Unknown/unmapped library error | `231` | `255` (library `UNKNOWN_ERROR` reported as its low byte) |
+    | Library status too large to report as an exit code | — | `253` (not reachable with current library versions) |
 
-  Notable value changes (many cases previously aliased onto `1`/`2`; each now has a distinct code):
-
-  | Case | Was | Now |
-  | --- | --- | --- |
-  | Import failure | `1` | `193` |
-  | Invalid command | `1` | `194` |
-  | Invalid parameter | `2` | `195` |
-  | Device not found (bad device index, or no devices present) | `3` / `255` | `196` |
-  | Invalid file path | `4` | `197` |
-  | Invalid parameter value | `5` | `198` |
-  | Missing parameter value | `6` | `199` |
-  | Command not supported (CLI, parse-time) | `7` | `200` (distinct from library `NOT_SUPPORTED` = `2`) |
-  | Device interface unavailable (CLI, runtime) | — | `201` |
-  | Required target/argument missing | `9` | `202` |
-  | Invalid subcommand | `10` | `203` |
-  | Permission denied | `11` | `10` (real `AMDSMI_STATUS_NO_PERM`) |
-  | Mixed device/field failures (differing codes) | — | `204` |
-  | `amdsmi_init()` watchdog timeout | `2` | `205` |
-  | Drivers not loaded | `255` | `206` |
-  | Interactive confirmation declined (answering no, or closing stdin) | `1` | `207` |
-  | Library (device) failure | `(1000 + status)` wrapped to a byte | underlying `AMDSMI_STATUS_*` (`0`-`56`) |
-  | Unknown/unmapped library error | `231` | `255` (library `UNKNOWN_ERROR` reported as its low byte) |
-  | Library status too large to report as an exit code | — | `253` (not reachable with current library versions) |
-
-  The `Was`/`Now` values are process exit codes (`$?`). Previously the printed `code` field showed the *negative* of these (e.g., `-7`) while the process exited with the absolute value (`7`); the rework makes the printed `code` and `$?` agree (both `200`).
+  * The `Was`/`Now` values are process exit codes (`$?`). Previously the printed `code` field showed the *negative* of these (e.g., `-7`) while the process exited with the absolute value (`7`); the rework makes the printed `code` and `$?` agree (both `200`).
 
 * **`amd-smi set --power-cap` now applies per GPU instead of aborting on the first out-of-range device.**  
   * Each GPU is validated against its own reported range.
@@ -984,6 +982,10 @@ See the [ROCm 10.2.0 release notes](https://rocm.docs.amd.com/en/docs-10.2.0/abo
 * Fixed `rocprofv3` process attachment failing with framework workloads and Python wheels. Attachment libraries now load on runtime-only installs that lack unversioned library symlinks. Loading the same library through different paths is no longer treated as a conflict. A compatible library next to `rocprofiler-register` is preferred over an unrelated installation.
 * Fixed `rocprofv3 --att` ignoring `ROCPROF_ATT_LIBRARY_PATH`. It searched the whole filesystem from `/` and used the first trace decoder it found.
 * Fixed `rocprofiler-sdk-rocattach` failing to find symbols such as `rocprofiler_register_detach` in the target process when the library's memory mappings didn't line up one-to-one, in address order, with its loadable segments.
+
+#### Known issues
+
+* Thread trace can produce an incorrect binary (.att) size in gfx115x.
 
 ### **rocRAND** (5.2.0)
 

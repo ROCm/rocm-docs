@@ -7,13 +7,13 @@ Installation
 
       If you have ROCm 7.2.4 or older installed, please uninstall it before proceeding.
 
-.. selected:: os=rhel rhel-ver=10.0 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10 rhel-ver=10.3 rhel-ver=10.2 rhel-ver=9.9 rhel-ver=9.8 i=pkgman i=runfile
+.. selected:: os=rhel rhel-ver=10.0 rhel-ver=9.6 rhel-ver=9.4 rhel-ver=8.10 rhel-ver=9.9 rhel-ver=9.8 i=pkgman i=runfile
 
    .. note::
 
       If you have ROCm 7.2.4 or older installed, please uninstall it before proceeding.
 
-.. selected:: os=sles sles-ver=15.7 sles-ver=16.0 sles-ver=16.1 i=pkgman i=runfile
+.. selected:: os=sles sles-ver=15.7 i=pkgman i=runfile
 
    .. note::
 
