@@ -222,6 +222,13 @@ in ROCm |ROCM_VERSION|, see the :doc:`Release notes </about/release-notes>`.
 
 .. include:: ./include/050-intro.rst
 
+.. selected:: i=runfile
+   :heading: Detailed installation
+   :heading-level: 2
+
+   For detailed installation options and configuration, see
+   :doc:`ROCm Runfile Installer </install/rocm-runfile-installer>`.
+
 ----
 
 .. _rocm-prerequisites:
