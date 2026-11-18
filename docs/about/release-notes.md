@@ -554,23 +554,19 @@ Previously, the RAS error injection and query interfaces (used to validate error
 
 ### Valgrind workloads might stop responding on WSL2 with high system RAM
 
-Previously, running workloads under Valgrind on WSL2 might stop responding during ROCm runtime initialization on AMD Radeon GPUs, such as the AMD Radeon RX 9060, on systems with a large amount of system RAM. This happens because WSL reserves GPU address space upfront in a way that can collide with Valgrind's reserved memory range as system RAM grows. As a workaround, if Valgrind must be used on WSL2, limit the RAM available to the WSL instance to below approximately 36 GB (for example, using the `.wslconfig` `memory=` setting). Try lowering it more if the issue persists. Workloads that don't use Valgrind are unaffected. See [GitHub issue #8793](https://github.com/ROCm/TheRock/issues/8793).
+Previously, running workloads under Valgrind on WSL2 might stop responding during ROCm runtime initialization on AMD Radeon GPUs, such as the AMD Radeon RX 9060, on systems with a large amount of system RAM. This happened because WSL reserved GPU address space upfront in a way that could collide with Valgrind's reserved memory range as system RAM grows. Workloads that don't use Valgrind are unaffected. See [GitHub issue #8793](https://github.com/ROCm/TheRock/issues/8793).
 
 ### Concurrent rocprofv3 profiling causes node reset on AMD Instinct MI300A GPUs
 
 Previously, running `rocprofv3 --pmc` or `--kernel-trace` concurrently across multiple GPUs of a single AMD Instinct MI300A node might hard-reset the node, terminating all co-resident jobs and requiring a manual power cycle to recover. See [GitHub issue #8229](https://github.com/ROCm/TheRock/issues/8229).
 
-### Hugging Face model training throughput might drop on AMD Instinct MI350 Series GPUs
+### Hugging Face model training throughput for specific models is restored on AMD Instinct MI350X
 
-Previously, Hugging Face model training workloads on AMD Instinct MI355X and AMD Instinct MI350X GPUs (gfx950) experienced 10–25% lower training throughput.
+ROCm 10.2.0 restores Hugging Face model training throughput to previous levels for BART, GPT-2, and Llama 2 70B Chat workloads on AMD Instinct MI350X (gfx950) GPUs, recovering the throughput loss reported in the ROCm 10.1.0 known issues. See [GitHub issue #8878](https://github.com/ROCm/TheRock/issues/8878).
 
 ```{note}
 A residual performance gap remains on some models. See the [ROCm 10.2.0 known issues](hugging-face-model-training-throughput-might-regress-on-amd-instinct-mi350-series-gpus) for current status and workarounds.
 ```
-
-### LlamaFactory model training crash on AMD Radeon RDNA4 GPUs
-
-Previously, training models with LlamaFactory on AMD Radeon RDNA4 GPUs could crash with a GPU reset or page fault during the backward pass. This occurred in LoRA fine-tuning workloads when hipBLASLt selected a kernel that read memory out of bounds for small gradient GEMMs on RDNA4.
 
 ## ROCm upcoming changes
 
