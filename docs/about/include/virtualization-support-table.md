@@ -377,28 +377,11 @@
           </thead>
         <tbody>
         <tr>
-          <td style="vertical-align: middle">
-            <p>Radeon AI PRO R9700S</p>
-          </td>
-          <td rowspan="3" style="vertical-align: middle">
-            <p>KVM</p>
-          </td>
-          <td style="vertical-align: middle">
-            <p>Passthrough</p>
-          </td>
-          <td style="vertical-align: middle">
-            <p style="text-align: center">—</p>
-          </td>
-          <td style="vertical-align: middle">
-            <p>Ubuntu 24.04</p>
-          </td>
-          <td style="vertical-align: middle">
-            <p>Ubuntu 24.04</p>
-          </td>
-        </tr>
-        <tr>
           <td rowspan="2" style="vertical-align: middle">
             <p>Radeon PRO V710</p>
+          </td>
+          <td rowspan="2" style="vertical-align: middle">
+            <p>KVM</p>
           </td>
           <td rowspan="2" style="vertical-align: middle">
             <p>SR-IOV</p>
