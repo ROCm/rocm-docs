@@ -21,11 +21,11 @@ Since ROCm 7.14, ROCm uses [TheRock](https://github.com/ROCm/TheRock) as its bui
 
 ## Release highlights
 
-This release adds platform, framework, runtime, profiling, and library enhancements across AMD Instinct™, Radeon™, and Ryzen™ platforms. It expands support for AMD Ryzen processors with integrated Radeon graphics and selected GPU virtualization configurations, and updates support for PyTorch, JAX, and vLLM. Profiling tools add device-wide Streaming Performance Monitor (SPM) counter sampling, a unified `rocsys` command for ROCm Systems Profiler, and improved memory analysis in ROCm Compute Profiler. HIP adds new module, library, and kernel APIs. Library updates include complex GEMM support in hipBLASLt and new and improved sparse routines in rocSPARSE.
+This release adds platform, framework, runtime, profiling, and library enhancements across AMD Instinct™, Radeon™, and Ryzen™ platforms. It expands support for AMD Ryzen processors with integrated Radeon graphics and AMD Instinct GPU virtualization, and updates support for PyTorch, JAX, and vLLM. Profiling tools add device-wide Streaming Performance Monitor (SPM) counter sampling, a unified `rocsys` command for ROCm Systems Profiler, and improved memory analysis in ROCm Compute Profiler. HIP adds new module, library, and kernel APIs. Library updates include complex GEMM support in hipBLASLt and new and improved sparse routines in rocSPARSE.
 
 ### Platform and hardware support
 
-This release adds support for additional AMD Ryzen APUs and new GPU virtualization configurations.
+This release adds support for additional AMD Ryzen APUs and a new GPU virtualization configuration.
 
 #### Expanded AMD GPU support
 
@@ -77,19 +77,12 @@ ROCm {{ ROCM_VERSION }} introduces several improvements to the Runfile Installer
 * Improved multi-GPU detection.
 * Minor bug fixes.
 
-#### Expanded GPU virtualization support for Instinct and Radeon GPUs
+#### Expanded GPU virtualization support for Instinct GPUs
 
-ROCm {{ ROCM_VERSION }} adds support for the following virtualization configurations on AMD Instinct and Radeon GPUs:
-
-**Instinct**
+ROCm {{ ROCM_VERSION }} adds support for the following virtualization configuration on AMD Instinct GPUs:
 
 * On AMD Instinct MI350P:
   * KVM SR-IOV with Ubuntu 24.04 host OS and Ubuntu 24.04 guest OS.
-
-**Radeon**
-
-* On AMD Radeon PRO W7800, W7900, W7900D, and W7900 Dual Slot:
-  * KVM Passthrough with Ubuntu 24.04 or Ubuntu 26.04 host OS and Ubuntu 24.04 or Ubuntu 26.04 guest OS.
 
 Supported Single Root I/O Virtualization (SR-IOV) configurations require the [AMD GPU Virtualization Driver (GIM) 9.4.0.K](https://github.com/amd/MxGPU-Virtualization/releases/tag/9.4.0.K). For details, see [GPU virtualization support](#gpu-virtualization-support).
 
