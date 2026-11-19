@@ -164,12 +164,6 @@ AMD Instinct:
       guest_os: [Ubuntu 22.04, RHEL 9.4]
 
 AMD Radeon:
-  AMD Radeon AI PRO R9700S:
-    - hypervisor: KVM
-      technology: Passthrough
-      host_os: Ubuntu 24.04
-      guest_os: [Ubuntu 24.04]
-
   AMD Radeon PRO V710:
     - hypervisor: KVM
       technology: SR-IOV
