@@ -47,7 +47,7 @@
 {%- set ns_vf = namespace(html=vf_parts[0]) -%}
 {%- for part in vf_parts[1:] -%}
   {%- set ns_fn.count = ns_fn.count + 1 -%}
-  {%- set ns_vf.html = ns_vf.html ~ '<a href="#fn-multivf" style="vertical-align:super;font-size:0.75em;">[*]</a>' ~ part -%}
+  {%- set ns_vf.html = ns_vf.html ~ '<a href="#fn-multivf" style="vertical-align:super;font-size:0.75em;"><strong>[*]</strong></a>' ~ part -%}
 {%- endfor -%}
 {%- set vf = ns_vf.html -%}
       {%- set _ = sub_list.append({
@@ -161,7 +161,7 @@
 </table>
 {%- if ns_fn.count > 0 %}
 <p id="fn-multivf" style="font-size: 0.875em; margin-top: 0.5em;">
-  <sup>[*]</sup> Multi-VF support requires a compatible firmware.
+  <strong><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></strong> Multi-VF support requires a compatible firmware.
 </p>
 {%- endif %}
 {%- endmacro -%}
