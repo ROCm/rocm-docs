@@ -115,7 +115,7 @@
 </table>
 {%- for drv in gpu_list[0].gpu.linux.amdgpu %}
 {%- if drv.note is defined %}
-<p id="fn-amdgpu-{{ drv.version | replace('.', '-') }}"><sup>[*]</sup> {{ drv.note }}</p>
+<p id="fn-amdgpu-{{ drv.version | replace('.', '-') }}"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span> {{ drv.note }}</p>
 {%- endif %}
 {%- endfor %}
 
