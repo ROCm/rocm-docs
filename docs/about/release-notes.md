@@ -49,8 +49,6 @@ ROCm 7.14.0 adds support for the following virtualization configurations on AMD 
 
 * On MI350X: VMware ESXi 9.1 with Ubuntu 24.04 guest OS.
 
-* On Radeon AI PRO R9700S: KVM Passthrough with Ubuntu 24.04 host OS and Ubuntu 24.04 guest OS.
-
 * On Radeon PRO V710: KVM SR-IOV with Ubuntu 24.04 host OS and Ubuntu 24.04 guest OS.
 
 Supported Single Root I/O Virtualization (SR-IOV) configurations require the [AMD GPU Virtualization Driver (GIM) 9.1.0.K](https://github.com/amd/MxGPU-Virtualization/releases/tag/9.1.0.K). For details, see [GPU virtualization support](#gpu-virtualization-support).
