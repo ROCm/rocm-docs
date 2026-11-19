@@ -129,7 +129,7 @@ Prerequisites
 
                .. code-block:: bash
 
-                  zypper install sudo wget SUSEConnect perl
+                  zypper install sudo wget SUSEConnect perl update-alternatives
 
             .. selected:: i=pip
 
