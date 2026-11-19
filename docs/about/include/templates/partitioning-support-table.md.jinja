@@ -290,7 +290,7 @@
 </table>
 {%- if ns_fn.needed %}
 <aside class="footnote brackets" id="partitioning-support-{{ section_key }}-footnotes" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></span>
+<span><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></span>
 <span class="backrefs">({% for i in range(1, ns_fn.count + 1) %}<a role="doc-backlink" href="#{{ section_key }}-fn-ref-{{ i }}">{{ i }}</a>{% if not loop.last %}, {% endif %}{% endfor %})</span>
 <p>Multi-VF support requires a compatible firmware. See <a href="#kernel-driver-and-firmware-bundle-support">Kernel driver and firmware bundle support</a> for the list of required firmware versions and supported configurations.</p>
 </aside>
@@ -367,7 +367,7 @@
 </table>
 {%- if ns_fn.needed %}
 <aside class="footnote brackets" id="partitioning-support-sriov-footnotes" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></span>
+<span><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></span>
 <span class="backrefs">({% for i in range(1, ns_fn.count + 1) %}<a role="doc-backlink" href="#sriov-fn-ref-{{ i }}">{{ i }}</a>{% if not loop.last %}, {% endif %}{% endfor %})</span>
 <p>Multi-VF support requires a compatible firmware. See <a href="#kernel-driver-and-firmware-bundle-support">Kernel driver and firmware bundle support</a> for the list of required firmware versions and supported configurations.</p>
 </aside>
