@@ -466,7 +466,7 @@ The ``<options>`` parameter can be set to these options:
 
   * ``help``: Displays information on how to use the ROCm Runfile Installer.
   * ``version``: Displays the current version of the ROCm Runfile Installer.
-  * ``buildinfo``: Display ROCm build information (theRock commit, GitHub run ID, and so on).
+  * ``buildinfo``: Display ROCm build information (TheRock commit, GitHub run ID, and so on).
 
 * Runfile options
 
@@ -1187,7 +1187,7 @@ The ROCm Runfile Installer command line interface includes options for informati
 
 * ``buildinfo``
 
-  This information option displays theRock build information, including commit hash, GitHub run ID, build date,
+  This information option displays TheRock build information, including commit hash, GitHub run ID, build date,
   and other build metadata.
 
   Use ``buildinfo`` as a standalone ``<options>`` parameter:
