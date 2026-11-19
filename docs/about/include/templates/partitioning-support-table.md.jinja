@@ -280,7 +280,7 @@
 {%- if loop.first %}
       <td{% if n_rows > 1 %} rowspan="{{ n_rows }}" style="vertical-align: middle;"{% endif %}><p>{{ dev_label }}</p></td>
 {%- endif %}
-      <td><p>{{ vfs_display(entry) | trim }}{% if multi_vf %}<a id="{{ section_key }}-fn-ref-{{ ns_fn.count }}" class="footnote-reference brackets" href="#partitioning-support-{{ section_key }}-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a>{% endif %}</p></td>
+      <td><p>{{ vfs_display(entry) | trim }}{% if multi_vf %}<a id="{{ section_key }}-fn-ref-{{ ns_fn.count }}" class="footnote-reference brackets" href="#partitioning-support-{{ section_key }}-footnotes" role="doc-noteref"><strong><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></strong></a>{% endif %}</p></td>
       <td><p>{{ entry.compute }}{% if entry.default is defined and entry.default %} (Default){% endif %}</p></td>
       <td><p>{{ entry.memory }}</p></td>
     </tr>
@@ -289,7 +289,7 @@
   </tbody>
 </table>
 {%- if ns_fn.needed %}
-<p id="partitioning-support-{{ section_key }}-footnotes" style="font-size: 0.875em; margin-top: 0.5em;"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span> Multi-VF support requires a compatible firmware. See <a href="#kernel-driver-and-firmware-bundle-support">Kernel driver and firmware bundle support</a> for the list of required firmware versions and supported configurations.</p>
+<p id="partitioning-support-{{ section_key }}-footnotes" style="font-size: 0.875em; margin-top: 0.5em;"><strong><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></strong> Multi-VF support requires a compatible firmware. See <a href="#kernel-driver-and-firmware-bundle-support">Kernel driver and firmware bundle support</a> for the list of required firmware versions and supported configurations.</p>
 {%- endif %}
 {%- endmacro -%}
 
@@ -352,7 +352,7 @@
 {%- if loop.first %}
       <td{% if n_rows > 1 %} rowspan="{{ n_rows }}" style="vertical-align: middle;"{% endif %}><p>{{ dev_label }}</p></td>
 {%- endif %}
-      <td><p>{{ vfs_display(entry) | trim }}{% if multi_vf %}<a id="sriov-fn-ref-{{ ns_fn.count }}" class="footnote-reference brackets" href="#partitioning-support-sriov-footnotes" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a>{% endif %}</p></td>
+      <td><p>{{ vfs_display(entry) | trim }}{% if multi_vf %}<a id="sriov-fn-ref-{{ ns_fn.count }}" class="footnote-reference brackets" href="#partitioning-support-sriov-footnotes" role="doc-noteref"><strong><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></strong></a>{% endif %}</p></td>
       <td><p>{{ entry.compute }}{% if entry.default is defined and entry.default %} (Default){% endif %}</p></td>
       <td><p>{{ entry.memory }}</p></td>
     </tr>
@@ -362,7 +362,7 @@
   </tbody>
 </table>
 {%- if ns_fn.needed %}
-<p id="partitioning-support-sriov-footnotes" style="font-size: 0.875em; margin-top: 0.5em;"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span> Multi-VF support requires a compatible firmware. See <a href="#kernel-driver-and-firmware-bundle-support">Kernel driver and firmware bundle support</a> for the list of required firmware versions and supported configurations.</p>
+<p id="partitioning-support-sriov-footnotes" style="font-size: 0.875em; margin-top: 0.5em;"><strong><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></strong> Multi-VF support requires a compatible firmware. See <a href="#kernel-driver-and-firmware-bundle-support">Kernel driver and firmware bundle support</a> for the list of required firmware versions and supported configurations.</p>
 {%- endif %}
 {%- endmacro -%}
 
