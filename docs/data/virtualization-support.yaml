@@ -244,13 +244,6 @@ AMD Instinct:
       vf_modes: [*vf_na, *vf_na]
 
 AMD Radeon:
-  AMD Radeon AI PRO R9700S:
-    - hypervisor: KVM
-      technology: Passthrough
-      host_os: Ubuntu 24.04
-      guest_os: [Ubuntu 24.04]
-      vf_modes: [*vf_na]
-
   AMD Radeon PRO V710:
     - hypervisor: KVM
       technology: SR-IOV
