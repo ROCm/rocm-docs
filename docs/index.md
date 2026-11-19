@@ -47,11 +47,11 @@ Full-stack documentation and recipes to deploy AI workloads on AMD
 GPUs using popular ROCm-enabled frameworks.
 
 - Deep learning frameworks
-  - [PyTorch](https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/frameworks/pytorch/install.html)
-  - [JAX](https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/frameworks/jax/install.html)
+  - [PyTorch](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/pytorch/install.html)
+  - [JAX](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/jax/install.html)
 - Inference
-  - [vLLM](https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/inference/vllm.html)
-  - [SGLang](https://rocm.docs.amd.com/projects/ai-ecosystem-internal/en/rocm10-2-0-staging/inference/sglang.html)
+  - [vLLM](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/vllm.html)
+  - [SGLang](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/inference/sglang.html)
 +++
 [Go to AI Ecosystem docs](https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/index.html)
 :::

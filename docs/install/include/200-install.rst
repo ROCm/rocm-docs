@@ -287,7 +287,7 @@ Installation
    :heading: Install AMD Software: Adrenalin Edition
    :heading-level: 3
 
-   For details and the download link, see https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-WIN-26-11-2.htmls.
+   For details and the download link, see https://www.amd.com/en/resources/support-articles/release-notes/RN-RAD-WIN-26-11-2.html.
 
 .. _rocm-install-rocm:
 

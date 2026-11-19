@@ -141,13 +141,21 @@ Prerequisites
 
             .. selected:: i=pkgman
 
-               .. code-block:: bash
+               .. selected:: sles-ver=15.7 sles-ver=16.0
 
-                  zypper install sudo wget SUSEConnect perl
+                  .. code-block:: bash
+
+                     zypper install sudo wget SUSEConnect perl update-alternatives
+
+               .. selected:: sles-ver=16.1
+
+                  .. code-block:: bash
+
+                     zypper install sudo wget SUSEConnect perl
 
             .. selected:: i=pip
 
-               .. selected:: sles-ver=16.1 sles-ver=16.0 sles-ver=15.6
+               .. selected:: sles-ver=16.1 sles-ver=16.0
 
                   .. code-block:: bash
 
