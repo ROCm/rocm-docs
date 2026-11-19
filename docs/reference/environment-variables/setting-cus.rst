@@ -34,9 +34,13 @@ The environment variables have the following syntax:
     CU_Set = GPU_list : CU_list              ex. 0,2-4,7:0-15,32-47 OR 0,2-4,7:0x337F
     HSA_CU_MASK = CU_Set [; CU_Set]*         ex. 0,2-4,7:0-15,32-47; 3-9:0x337F
 
-The GPU indices are taken post ``ROCR_VISIBLE_DEVICES`` reordering. The listed or masked CUs are enabled for listed GPUs, and the others are disabled. Unlisted GPUs are not be affected, and their CUs are enabled.
+GPU indices refer to the GPU order after ``ROCR_VISIBLE_DEVICES`` reordering. ``HIP_VISIBLE_DEVICES`` and ``CUDA_VISIBLE_DEVICES`` don't change this numbering. For listed GPUs, the listed or masked CUs are enabled and the others are disabled. Unlisted GPUs aren't affected, and their CUs remain enabled.
 
-The variable parsing stops when a syntax error occurs. The erroneous set and the following are ignored. Repeating GPU or CU IDs results in a syntax error. Specifying a mask with no usable CUs (CU_list is 0x0) results in a syntax error. To exclude GPU devices, use ``ROCR_VISIBLE_DEVICES``.
+.. note::
+
+   A process started with ``HIP_VISIBLE_DEVICES=5`` uses GPU 5. ``HSA_CU_MASK=0:0-15`` restricts GPU 0, not GPU 5, to CUs 0-15, so the process's kernels can still use every CU of GPU 5. To limit this process to CUs 0-15 of GPU 5, set ``HSA_CU_MASK=5:0-15``, or select the GPU with ``ROCR_VISIBLE_DEVICES=5`` instead of ``HIP_VISIBLE_DEVICES`` and set ``HSA_CU_MASK=0:0-15``. With ``ROCR_VISIBLE_DEVICES=5``, the selected GPU is GPU 0 for both ROCr and HIP.
+
+Variable parsing stops when a syntax error occurs, and ROCr reports no error or warning. The erroneous set and the following sets are ignored. Repeating GPU or CU IDs results in a syntax error. Specifying a mask with no usable CUs (``CU_list`` is ``0x0``) results in a syntax error. To exclude GPU devices, use ``ROCR_VISIBLE_DEVICES``.
 
 .. note::
 
