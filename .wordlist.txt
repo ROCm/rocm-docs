@@ -5,6 +5,7 @@ ACK
 ACS
 AFID
 AFIDs
+AGFHC
 AGPR
 AGPRs
 AINIC
@@ -14,7 +15,9 @@ AMD
 AMDGPU
 AMDGPUs
 AMDMIGraphX
+AMG
 AMI
+AMPP
 AOCC
 AOMP
 AOT
@@ -74,6 +77,7 @@ CCCL
 CCD
 CDI
 CDNA
+CGEMM
 CGUI
 CHOLQR
 CHTML
@@ -96,6 +100,7 @@ CPUs
 CPX
 CPack
 CQ
+CRIU
 CSC
 CSDATA
 CSE
@@ -173,6 +178,7 @@ DiT
 DirectX
 Disaggregated
 DistilBERT
+Docker's
 Dockerfile
 Dockerized
 Doxygen
@@ -329,6 +335,7 @@ IOMMU
 IOP
 IOPM
 IOPS
+IOR
 IOV
 IPC
 IPU
@@ -553,6 +560,7 @@ Perfetto
 PipelineParallel
 Pipelining
 PnP
+Podman
 Pollara
 PowerEdge
 PowerShell
@@ -562,6 +570,7 @@ Pretraining
 Primus
 Profiler's
 Proxytrace
+PyPI
 PyPi
 PyTorch
 Pytest
@@ -626,6 +635,7 @@ Rickle
 RoBERTa
 RoCE
 RocPD
+Ruge
 RunNodes
 RunOneNode
 Runfile
@@ -687,14 +697,17 @@ Shlens
 SiLU
 Skylake
 Slurm
+Slurm's
 Softmax
 SpGEAM
+SpGEMM
 SpMM
 SpMV
 Spack
 SplitK
 StreamingLLM
 Strix
+Stueben
 Supermicro
 SwiGLU
 SystemDB
@@ -827,6 +840,7 @@ YAML
 YAMLs
 YML
 YModel
+ZGEMM
 ZeRO
 ZenDNN
 abquant
@@ -1029,6 +1043,7 @@ ethernet
 exascale
 executables
 factorizations
+failover
 fallbacks
 fam
 fam
@@ -1039,6 +1054,7 @@ fd
 ffmpeg
 fft
 filesystem
+fio
 flang
 fmha
 fmt
@@ -1060,6 +1076,7 @@ gfx
 gitd
 githooks
 github
+glibc
 globals
 gnupg
 gpt
@@ -1074,6 +1091,7 @@ gz
 gzip
 hardcoded
 heterogenous
+hideable
 hipBLAS
 hipBLASLt
 hipBLASLt's
@@ -1114,6 +1132,7 @@ hipsolver
 hipsparse
 hipsparselt
 hipstdpar
+hiptensor
 hlist
 hostname
 hotspot
@@ -1216,6 +1235,7 @@ mkdir
 mlirmiopen
 mtypes
 mul
+multigrid
 multihost
 multimodal
 mutex
@@ -1251,6 +1271,7 @@ parallelizing
 param
 parameterization
 params
+parsers
 passthrough
 pb
 pc
@@ -1278,6 +1299,7 @@ prefetch
 prefetchable
 prefill
 prefills
+preload
 preloaded
 preprocess
 preprocessed
@@ -1331,6 +1353,7 @@ representativeness
 req
 resampling
 rescaling
+resizable
 reusability
 rgb
 rhel
@@ -1344,6 +1367,7 @@ rocDecode
 rocFFT
 rocFFT's
 rocHPCG
+rocHPL
 rocJPEG
 rocJpeg
 rocLIB
@@ -1357,6 +1381,7 @@ rocSOLVER
 rocSPARSE
 rocSPARSE's
 rocThrust
+rocTwitch
 rocWMMA
 rocalution
 rocattach
@@ -1378,6 +1403,7 @@ rocrand
 rocshmem
 rocsolver
 rocsparse
+rocsys
 rocthrust
 roctracer
 roctx
@@ -1430,6 +1456,7 @@ stochastically
 strided
 stringification
 subcommand
+subcommands
 subdirectory
 subexpression
 subfolder
@@ -1440,6 +1467,8 @@ submodule
 submodules
 subnet
 subnets
+subtest
+subtests
 sudo
 supercomputing
 suse
