@@ -10,6 +10,7 @@ _amdgpu_drivers:
   - &amdgpu_31_60_0
     version: "31.60.0"
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-31.60.0/documentation/release-notes.html
+    note: 'Instinct MI350P with AMD GPU Driver (amdgpu) 31.60.0 is not recommended. Use AMD GPU Driver (amdgpu) 31.70.0 or later.'
   - &amdgpu_31_50_0
     version: "31.50.0"
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-31.50.0/documentation/release-notes.html
