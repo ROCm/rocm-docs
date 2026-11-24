@@ -7,7 +7,7 @@ _amdgpu_drivers:
     version: "31.70.0"
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-31.70.0/documentation/release-notes.html
     marker: "*"
-    note: 'The following known issues are observed with amdgpu driver 31.70.0 that pairs with ROCm 10.2.0. They will be fixed in an upcoming amdgpu driver release:<ul><li><a href="#gpu-mode2-reset-might-time-out-on-amd-instinct-mi300a-gpus">GPU Mode2 reset might time out on AMD Instinct MI300A GPUs</a></li><li><a href="#agfhc-roctwitch-and-sprites-subtests-might-fail-on-amd-instinct-gpus">AGFHC rocTwitch and Sprites subtests might fail on AMD Instinct GPUs</a></li></ul>'
+    note: 'The following known issues are observed with AMD GPU Driver (amdgpu) 31.70.0 that pairs with ROCm 10.2.0. They will be fixed in an upcoming amdgpu driver release:<ul><li><a href="#gpu-mode2-reset-might-time-out-on-amd-instinct-mi300a-gpus">GPU Mode2 reset might time out on AMD Instinct MI300A GPUs</a></li><li><a href="#agfhc-roctwitch-and-sprites-subtests-might-fail-on-amd-instinct-gpus">AGFHC rocTwitch and Sprites subtests might fail on AMD Instinct GPUs</a></li></ul>'
   - &amdgpu_31_60_0
     version: "31.60.0"
     url: https://instinct.docs.amd.com/projects/amdgpu-docs/en/docs-31.60.0/documentation/release-notes.html
