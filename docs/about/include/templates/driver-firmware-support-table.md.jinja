@@ -104,7 +104,7 @@
         <p>
           <strong>AMD GPU Driver (amdgpu)</strong><br>
 {%- for drv in gpu.linux.amdgpu %}
-          <a href="{{ drv.url }}" target="_blank">{{ drv.version }}</a>{% if drv.note is defined %}<a href="#fn-amdgpu-{{ drv.version | replace('.', '-') }}" style="vertical-align:super;font-size:0.75em;"><strong><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></strong></a>{% endif %}<br>
+          <a href="{{ drv.url }}" target="_blank">{{ drv.version }}</a>{% if drv.note is defined %}<a href="#fn-amdgpu-{{ drv.version | replace('.', '-') }}" style="vertical-align:super;font-size:0.75em;"><strong><span class="fn-bracket">[</span>{{ drv.marker | default('*') }}<span class="fn-bracket">]</span></strong></a>{% endif %}<br>
 {%- endfor %}
         </p>
       </td>
@@ -115,7 +115,7 @@
 </table>
 {%- for drv in gpu_list[0].gpu.linux.amdgpu %}
 {%- if drv.note is defined %}
-<p id="fn-amdgpu-{{ drv.version | replace('.', '-') }}"><strong><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></strong> {{ drv.note }}</p>
+<p id="fn-amdgpu-{{ drv.version | replace('.', '-') }}"><strong><span class="fn-bracket">[</span>{{ drv.marker | default('*') }}<span class="fn-bracket">]</span></strong> {{ drv.note }}</p>
 {%- endif %}
 {%- endfor %}
 
