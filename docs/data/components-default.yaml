@@ -19,240 +19,240 @@ rocm_core_sdk:
       description: System management interface to control AMD GPU settings, monitor performance, and retrieve device and process information.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/amdsmi/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/amdsmi
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/amdsmi
     Composable Kernel:
       group: *math_libs
       description: Provides a programming model for writing performance critical kernels for machine learning workloads across multiple architectures.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/composable_kernel/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/composablekernel
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/composablekernel
     HIP:
       group: *runtimes
       description: A C++ runtime API and kernel programming language designed for AMD GPUs. By providing an interface closely aligned with NVIDIA CUDA, HIP allows developers to write portable applications and efficiently migrate existing CUDA code to AMD platforms.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/HIP/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/hip
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/hip
     hipBLAS:
       group: *math_libs
       description: BLAS-marshalling library that supports rocBLAS and cuBLAS backends.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipBLAS/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hipblas
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipblas
     hipBLASLt:
       group: *math_libs
       description: Provides general matrix-matrix operations with a flexible API and extends functionalities beyond traditional BLAS library.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipBLASLt/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hipblaslt
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipblaslt
     hipCUB:
       group: *math_libs
       description: Thin header-only wrapper library on top of rocPRIM or CUB that allows project porting using the CUB library to the HIP layer.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipCUB/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hipcub
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipcub
     hipFile:
       group: *storage
       description: AMD's Infinity Storage library that provides direct-to-GPU I/O for the ROCm platform.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipFile/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/hipfile
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/hipfile
     hipFFT:
       group: *math_libs
       description: Fast Fourier Transforms (FFT)-marshalling library that supports rocFFT or cuFFT backends.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipFFT/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hipfft
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipfft
     HIPIFY:
       group: *compilers
       description: Translates CUDA source code into portable HIP C++.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/HIPIFY/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/HIPIFY/tree/docs/10.2.0
+        github_repo: https://github.com/ROCm/HIPIFY/tree/${release_tag}
     hipRAND:
       group: *math_libs
       description: Ports CUDA applications that use the cuRAND library into the HIP layer.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipRAND/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hiprand
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hiprand
     hipSOLVER:
       group: *math_libs
       description: LAPACK-marshalling library that supports rocSOLVER and cuSOLVER backends.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipSOLVER/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hipsolver
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipsolver
     hipSPARSE:
       group: *math_libs
       description: SPARSE-marshalling library that supports rocSPARSE and cuSPARSE backends.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipSPARSE/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hipsparse
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipsparse
     hipSPARSELt:
       group: *math_libs
       description: Sparse matrix-matrix operations library.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipSPARSELt/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hipsparselt
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipsparselt
     hipThreads:
       group: *threading
       description: Concurrency library that implements C++ threading and synchronization primitives for AMD GPU kernels.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/hipThreads/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/hipthreads
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/hipthreads
     libhipcxx:
       group: *math_libs
       description: The C++ Standard Library for HIP, providing an opt-in, incremental, heterogeneous implementation of C++ Standard Library features that work in both host and device code.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/libhipcxx/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/libhipcxx/tree/docs/10.2.0
+        github_repo: https://github.com/ROCm/libhipcxx/tree/${release_tag}
     LLVM:
       group: *compilers
       description: AMD's LLVM-based compiler infrastructure, including the ROCm device compiler (amdclang), which compiles HIP and OpenCL code for AMD GPUs.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/llvm-project/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/llvm-project/tree/docs/10.2.0/amd
+        github_repo: https://github.com/ROCm/llvm-project/tree/${release_tag}/amd
     MIOpen:
       group: *math_libs
       description: An open source deep-learning library.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/MIOpen/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/miopen
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/miopen
     RCCL:
       group: *comm_libs
       description: Standalone library that provides multi-GPU and multi-node collective communication primitives.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rccl/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rccl
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rccl
     rocBLAS:
       group: *math_libs
       description: BLAS implementation (in the HIP programming language) on the ROCm runtime and toolchains.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocBLAS/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rocblas
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rocblas
     ROCdbgapi:
       group: *debuggers
       description: ROCm debugger API library.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/ROCdbgapi/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocdbgapi
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocdbgapi
     rocDecode:
       group: *media_libs
       description: High-performance SDK for access to video decoding features on AMD GPUs.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocDecode/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocdecode
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocdecode
     rocFFT:
       group: *math_libs
       description: Software library for computing Fast Fourier Transforms (FFTs) written in HIP.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocFFT/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rocfft
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rocfft
     ROCgdb:
       group: *debuggers
       description: Source-level debugger for Linux, based on the GNU Debugger (GDB).
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/ROCgdb/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/ROCgdb/tree/docs/10.2.0
+        github_repo: https://github.com/ROCm/ROCgdb/tree/${release_tag}
     rocJPEG:
       group: *media_libs
       description: Library for decoding JPEG images on AMD GPUs.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocJPEG/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocjpeg
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocjpeg
     RPP:
       group: *media_libs
       description: Computer vision library for AMD processors with HIP or CPU backends.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rpp/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rpp
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rpp
     rocminfo:
       group: *sys_tools
       description: Reports system information.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocminfo/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocminfo
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocminfo
     ROCm Compute Profiler:
       group: *profilers
       description: Kernel-level profiling for machine learning and high performance computing (HPC) workloads.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocprofiler-compute/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocprofiler-compute
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocprofiler-compute
     ROCm Data Center Tool:
       group: *sys_tools
       description: Simplifies administration and addresses key infrastructure challenges in AMD GPUs in cluster and data-center environments.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rdc/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rdc
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rdc
     ROCm Systems Profiler:
       group: *profilers
       description: Comprehensive profiling and tracing of applications running on the CPU or the CPU and GPU.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocprofiler-systems/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocprofiler-systems
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocprofiler-systems
     ROCprofiler-SDK:
       group: *profilers
       description: Toolkit for developing analysis tools for profiling and tracing GPU compute applications.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocprofiler-sdk/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocprofiler-sdk
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocprofiler-sdk
     rocRAND:
       group: *math_libs
       description: Provides functions that generate pseudorandom and quasirandom numbers.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocRAND/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rocrand
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rocrand
     ROCr Debug Agent:
       group: *debuggers
       description: Prints the state of all AMD GPU wavefronts that caused a queue error by sending a SIGQUIT signal to the process while the program is running.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocr_debug_agent/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocr-debug-agent
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocr-debug-agent
     ROCr Runtime:
       group: *runtimes
       description: AMD's implementation of the HSA (Heterogeneous System Architecture) runtime, providing the foundation for GPU execution and management in the ROCm software stack.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/ROCR-Runtime/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocr-runtime
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocr-runtime
     rocSHMEM:
       group: *comm_libs
       description: An intra-kernel networking library that provides GPU-centric networking through an OpenSHMEM-like interface.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocSHMEM/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-systems/tree/docs/10.2.0/projects/rocshmem
+        github_repo: https://github.com/ROCm/rocm-systems/tree/${release_tag}/projects/rocshmem
     rocSOLVER:
       group: *math_libs
       description: An implementation of LAPACK routines on ROCm software, implemented in the HIP programming language and optimized for AMD's latest discrete GPUs.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocSOLVER/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rocsolver
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rocsolver
     rocSPARSE:
       group: *math_libs
       description: Exposes a common interface that provides BLAS for sparse computation implemented on ROCm runtime and toolchains (in the HIP programming language).
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocSPARSE/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rocsparse
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rocsparse
     rocPRIM:
       group: *math_libs
       description: Header-only library for HIP parallel primitives.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocPRIM/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rocprim
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rocprim
     rocThrust:
       group: *math_libs
       description: Parallel algorithm library.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocThrust/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rocthrust
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rocthrust
     rocWMMA:
       group: *math_libs
       description: C++ library for accelerating mixed-precision matrix multiply-accumulate (MMA) operations.
       xref:
         rtd_project: https://rocm.docs.amd.com/projects/rocWMMA/en/${rtd_version_slug}/
-        github_repo: https://github.com/ROCm/rocm-libraries/tree/docs/10.2.0/projects/rocwmma
+        github_repo: https://github.com/ROCm/rocm-libraries/tree/${release_tag}/projects/rocwmma
     SPIRV-LLVM-Translator:
       group: *compilers
       description: Library and tool for bidirectional translation between SPIR-V and LLVM.
       xref:
-        github_repo: https://github.com/ROCm/SPIRV-LLVM-Translator/tree/docs/10.2.0
+        github_repo: https://github.com/ROCm/SPIRV-LLVM-Translator/tree/${release_tag}
 
 rocm_hpc_sdk:
   components:
@@ -273,4 +273,4 @@ rocm_extras:
   - name: ROCm Validation Suite
     xref:
       rtd_project: https://rocm.docs.amd.com/projects/ROCmValidationSuite/en/${rtd_version_slug}/
-      github_repo: https://github.com/ROCm/ROCmValidationSuite/tree/docs/10.2.0
+      github_repo: https://github.com/ROCm/ROCmValidationSuite/tree/${release_tag}
