@@ -1537,7 +1537,7 @@ For more information about ROCm hardware compatibility, see the ROCm `Compatibil
           - AMD Ryzen AI 5 330
           - Radeon 820M
           - RDNA3.5
-          - gfx1152
+          - gfx1153
           - Dynamic + carveout
           - 2
           - 32 or 64
