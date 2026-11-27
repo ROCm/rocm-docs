@@ -734,6 +734,7 @@
 * Added the `rocJpegGetDecoderCaps` API and the `RocJpegDecodeCaps` structure to query the decode capabilities of a rocJPEG handle, including the number of JPEG cores, the supported JPEG coding processes, image resolutions, chroma subsamplings, and output formats, the native output surface format of each chroma subsampling as verified with the VA-API driver, and the hardware ROI decode and color conversion support.
 * Added the `RocJpegSurfaceFormat` enum to describe the layout of the decoded image produced by the VCN JPEG decoder, and the `RocJpegCodingProcess` enum to report the supported JPEG coding processes.
 * Added the `jpegDecodeCaps` sample to demonstrate the `rocJpegGetDecoderCaps` API.
+* Added HIP-based color conversion kernels to the batched decode path, improving batched decoding performance.
 
 #### ROCm Compute Profiler (3.10.0)
 
